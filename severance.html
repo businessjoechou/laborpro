@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" href="favicon.svg">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>資遣費計算機｜LaborPro</title>
+<meta name="description" content="依台灣勞基法§17、勞退條例§12計算資遣費，支援新制、舊制及兩制並計，自動計算預告工資，免費使用。">
+<meta name="keywords" content="資遣費計算,勞基法資遣費,新制資遣費,舊制資遣費,勞退條例第12條,勞基法第17條,預告工資,台灣勞基法">
+<meta name="robots" content="index, follow">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #131c13;
+    --paper: #eef5ec;
+    --gold: #c8901a;
+    --muted: #617a5e;
+    --border: #b0c8ac;
+    --soft: #d8ecd4;
+    --card: #ffffff;
+    --accent: #2a6e3e;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--ink);
+    color: var(--paper);
+    font-family: 'Noto Sans TC', sans-serif;
+    min-height: 100vh;
+    font-size: 15px;
+  }
+
+  header {
+    background: var(--ink);
+    border-bottom: 1px solid #1e2e1e;
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    max-width: 100%;
+  }
+
+  .logo {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--paper);
+  }
+
+  .logo span { color: var(--gold); }
+
+  .back-link {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.08em;
+    transition: color 0.2s;
+  }
+
+  .back-link:hover { color: var(--gold); }
+
+  .progress-bar { height: 3px; background: #1e2e1e; }
+  .progress-fill { height: 100%; background: var(--gold); transition: width 0.4s ease; }
+
+  main {
+    max-width: 560px;
+    margin: 0 auto;
+    padding: 32px 20px 120px;
+  }
+
+  /* Step */
+  .step { display: none; }
+  .step.active { display: block; animation: fadeUp 0.3s ease both; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .step-header {
+    margin-bottom: 28px;
+  }
+
+  .step-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .step-title {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--paper);
+    line-height: 1.35;
+    margin-bottom: 6px;
+  }
+
+  .step-sub {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  /* Wizard card */
+  .wizard {
+    background: var(--paper);
+    color: var(--ink);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 14px;
+  }
+
+  .wizard-section-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--soft);
+  }
+
+  .field-group {
+    margin-bottom: 18px;
+  }
+
+  .field-group:last-child { margin-bottom: 0; }
+
+  .field-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+
+  .field-group label .hint {
+    font-weight: 400;
+    color: var(--muted);
+    font-size: 12px;
+    margin-left: 6px;
+  }
+
+  input[type="date"],
+  input[type="number"],
+  select {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    background: var(--card);
+    font-size: 14px;
+    font-family: 'Noto Sans TC', sans-serif;
+    color: var(--ink);
+    transition: border-color 0.2s;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  input[type="date"] {
+    font-family: 'DM Mono', monospace;
+  }
+
+  input[type="number"] {
+    font-family: 'DM Mono', monospace;
+  }
+
+  input[type="date"]:focus,
+  input[type="number"]:focus,
+  select:focus {
+    outline: none;
+    border-color: var(--accent);
+    background: #fff;
+  }
+
+  .select-wrap {
+    position: relative;
+  }
+
+  .select-wrap::after {
+    content: '▾';
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+    pointer-events: none;
+    font-size: 12px;
+  }
+
+  .select-wrap select {
+    padding-right: 32px;
+  }
+
+  .extra-field {
+    display: none;
+    margin-top: 12px;
+    padding: 14px;
+    background: #e8f4e4;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+  }
+
+  .extra-field.visible { display: block; }
+
+  .extra-field label {
+    font-size: 12px;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  /* Result cards */
+  .result-hero {
+    background: var(--ink);
+    color: var(--paper);
+    border-radius: 14px;
+    padding: 28px 24px;
+    text-align: center;
+    margin-bottom: 14px;
+  }
+
+  .result-hero-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .result-hero-amount {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--gold);
+    line-height: 1.2;
+    margin-bottom: 6px;
+  }
+
+  .result-hero-sub {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .result-card {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 14px;
+    color: var(--ink);
+  }
+
+  .result-card-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--soft);
+  }
+
+  .result-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 9px 0;
+    border-bottom: 1px solid var(--soft);
+  }
+
+  .result-row:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .result-row-label {
+    font-size: 13px;
+    color: var(--muted);
+    flex: 1;
+    line-height: 1.5;
+  }
+
+  .result-row-val {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink);
+    text-align: right;
+    margin-left: 12px;
+  }
+
+  .result-row-val.highlight {
+    color: var(--accent);
+    font-size: 15px;
+    font-weight: 700;
+  }
+
+  .notice-card {
+    background: #fff8e8;
+    border: 1.5px solid #e8c87a;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 14px;
+    color: var(--ink);
+  }
+
+  .notice-card-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: #8a6010;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #e8d88a;
+  }
+
+  .notice-paid-card {
+    background: #eef8f2;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 14px;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .notice-paid-icon {
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+
+  .notice-paid-text {
+    font-size: 13px;
+    color: var(--accent);
+    line-height: 1.6;
+  }
+
+  .total-claim-box {
+    background: var(--accent);
+    color: #fff;
+    border-radius: 14px;
+    padding: 22px 24px;
+    margin-bottom: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .total-claim-label {
+    font-size: 14px;
+    font-weight: 500;
+    opacity: 0.9;
+  }
+
+  .total-claim-label small {
+    display: block;
+    font-size: 11px;
+    opacity: 0.65;
+    margin-top: 2px;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .total-claim-amount {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .law-note {
+    background: var(--paper);
+    border-left: 3px solid var(--gold);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 14px;
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.75;
+    margin-bottom: 14px;
+  }
+
+  .law-note strong { color: var(--ink); }
+
+  .warn-box {
+    background: #fff3e8;
+    border: 1px solid #e8c882;
+    border-left: 3px solid var(--gold);
+    border-radius: 6px;
+    padding: 12px 14px;
+    font-size: 12px;
+    color: #7a5810;
+    line-height: 1.7;
+    margin-bottom: 14px;
+  }
+
+  /* Bottom nav */
+  .nav-bar {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--ink);
+    border-top: 1px solid #1e2e1e;
+    padding: 14px 20px;
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    max-width: 560px;
+  }
+
+  .btn {
+    flex: 1;
+    padding: 14px;
+    border-radius: 10px;
+    border: none;
+    font-size: 15px;
+    font-family: 'Noto Sans TC', sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+  }
+
+  .btn-primary:hover { background: #225c34; }
+
+  .btn-secondary {
+    background: #1e2e1e;
+    color: var(--muted);
+    flex: 0 0 auto;
+    padding: 14px 20px;
+  }
+
+  .btn-secondary:hover { color: var(--paper); }
+
+  .btn-reset {
+    background: transparent;
+    border: 1px solid #2a3e2a;
+    color: var(--muted);
+  }
+
+  .btn-reset:hover { border-color: var(--muted); color: var(--paper); }
+
+  @media (max-width: 480px) {
+    .result-hero-amount { font-size: 28px; }
+    .total-claim-amount { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Labor<span>Pro</span></div>
+  <a href="index.html" class="back-link">← 返回首頁</a>
+</header>
+<div class="progress-bar">
+  <div class="progress-fill" id="progressFill" style="width: 50%"></div>
+</div>
+
+<main>
+
+  <!-- Step 1 -->
+  <div class="step active" id="step1">
+    <div class="step-header">
+      <div class="step-label">Step 1 of 2 · 基本資料</div>
+      <h1 class="step-title">資遣費計算機</h1>
+      <p class="step-sub">依勞基法§17（舊制）與勞工退休金條例§12（新制）計算應領資遣費及預告工資。</p>
+    </div>
+
+    <div class="wizard">
+      <div class="wizard-section-title">適用制度</div>
+
+      <div class="field-group">
+        <label>適用退休制度</label>
+        <div class="select-wrap">
+          <select id="regime" onchange="onRegimeChange()">
+            <option value="new">新制（勞退條例§12）</option>
+            <option value="old">舊制（勞基法§17）</option>
+            <option value="both">兩制並計</option>
+          </select>
+        </div>
+        <div class="extra-field" id="switchDateGroup">
+          <label>新制起算日</label>
+          <input type="date" id="switchDate" value="2005-07-01">
+          <p style="font-size:11px;color:var(--muted);margin-top:6px;">通常為2005年7月1日（勞退新制施行日）</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="wizard">
+      <div class="wizard-section-title">服務年資</div>
+
+      <div class="field-group">
+        <label>到職日期</label>
+        <input type="date" id="startDate">
+      </div>
+
+      <div class="field-group">
+        <label>離職日期</label>
+        <input type="date" id="endDate">
+      </div>
+    </div>
+
+    <div class="wizard">
+      <div class="wizard-section-title">薪資資料</div>
+
+      <div class="field-group">
+        <label>平均工資（月薪）<span class="hint" style="font-weight:400;color:var(--muted);font-size:12px;margin-left:6px;">離職前6個月平均</span></label>
+        <input type="number" id="avgWage" placeholder="50000" min="0" inputmode="numeric">
+      </div>
+
+      <div class="field-group">
+        <label>雇主是否已給付預告工資？</label>
+        <div class="select-wrap">
+          <select id="noticePaid">
+            <option value="否">否（尚未給付）</option>
+            <option value="是">是（已給付）</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="warn-box">
+      ⚠ 本計算機提供參考試算，實際資遣費須依個別勞動契約及工資認定，建議諮詢勞動局或專業律師。
+    </div>
+  </div>
+
+  <!-- Step 2 — Results -->
+  <div class="step" id="step2">
+    <div class="step-header">
+      <div class="step-label">Step 2 of 2 · 計算結果</div>
+      <h1 class="step-title">資遣費試算結果</h1>
+      <p class="step-sub">依您輸入的資料，以下為應領資遣費及相關金額試算。</p>
+    </div>
+
+    <!-- 年資摘要 -->
+    <div class="result-card">
+      <div class="result-card-title">年資摘要</div>
+      <div class="result-row">
+        <span class="result-row-label">到職日期</span>
+        <span class="result-row-val" id="r_startDate">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">離職日期</span>
+        <span class="result-row-val" id="r_endDate">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">服務年資</span>
+        <span class="result-row-val highlight" id="r_tenure">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">平均工資</span>
+        <span class="result-row-val" id="r_avgWage">—</span>
+      </div>
+    </div>
+
+    <!-- 資遣費主結果 -->
+    <div class="result-hero" id="r_severanceHero">
+      <div class="result-hero-label">應領資遣費</div>
+      <div class="result-hero-amount" id="r_severanceAmount">—</div>
+      <div class="result-hero-sub" id="r_severanceSub">—</div>
+    </div>
+
+    <!-- 兩制並計明細（條件顯示） -->
+    <div class="result-card" id="r_bothCard" style="display:none;">
+      <div class="result-card-title">兩制並計明細</div>
+      <div class="result-row">
+        <span class="result-row-label">舊制年資（勞基法§17）</span>
+        <span class="result-row-val" id="r_oldTenure">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">舊制資遣費</span>
+        <span class="result-row-val" id="r_oldAmount">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">新制年資（勞退§12）</span>
+        <span class="result-row-val" id="r_newTenure">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">新制資遣費</span>
+        <span class="result-row-val" id="r_newAmount">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label" style="font-weight:600;color:var(--ink);">合計資遣費</span>
+        <span class="result-row-val highlight" id="r_totalBoth">—</span>
+      </div>
+    </div>
+
+    <!-- 預告工資 -->
+    <div id="r_noticeSection">
+      <!-- 未給付 -->
+      <div class="notice-card" id="r_noticeUnpaid" style="display:none;">
+        <div class="notice-card-title">預告工資（§16）— 尚未給付</div>
+        <div class="result-row">
+          <span class="result-row-label">預告期間</span>
+          <span class="result-row-val" id="r_noticeDays">—</span>
+        </div>
+        <div class="result-row">
+          <span class="result-row-label">預告工資金額</span>
+          <span class="result-row-val highlight" id="r_noticeAmount">—</span>
+        </div>
+        <p style="font-size:12px;color:#8a6010;margin-top:12px;line-height:1.7;">雇主應另行給付，勞工可依法請求。</p>
+      </div>
+      <!-- 已給付 -->
+      <div class="notice-paid-card" id="r_noticePaid" style="display:none;">
+        <div class="notice-paid-icon">✓</div>
+        <div class="notice-paid-text">雇主已給付預告工資，無需額外請求。</div>
+      </div>
+    </div>
+
+    <!-- 總請求金額 -->
+    <div class="total-claim-box" id="r_totalClaimBox">
+      <div class="total-claim-label">
+        合計可請求金額
+        <small id="r_totalClaimNote">含資遣費</small>
+      </div>
+      <div class="total-claim-amount" id="r_totalClaim">—</div>
+    </div>
+
+    <!-- 法律依據 -->
+    <div class="law-note">
+      <strong>法律依據</strong><br>
+      · <strong>勞基法§17</strong>：舊制資遣費，每滿1年給付1個月平均工資，最高6個月<br>
+      · <strong>勞退條例§12</strong>：新制資遣費，每滿1年給付0.5個月平均工資，最高6個月；未滿1年依比例計算<br>
+      · <strong>勞基法§16</strong>：預告期間；繼續工作3個月以上未滿1年者10日，滿1年以上未滿3年者20日，滿3年以上者30日
+    </div>
+  </div>
+
+</main>
+
+<!-- Nav bar -->
+<div class="nav-bar" id="navBar">
+  <button class="btn btn-secondary" id="btnBack" onclick="goBack()" style="display:none;">← 上一步</button>
+  <button class="btn btn-primary" id="btnNext" onclick="goNext()">計算資遣費 →</button>
+  <button class="btn btn-reset" id="btnReset" onclick="resetAll()" style="display:none;">重新計算</button>
+</div>
+
+<script>
+  const state = {};
+  let currentStep = 1;
+  const totalSteps = 2;
+
+  function showStep(n) {
+    document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+    document.getElementById('step' + n).classList.add('active');
+    const pct = (n / totalSteps) * 100;
+    document.getElementById('progressFill').style.width = pct + '%';
+    currentStep = n;
+
+    const btnBack  = document.getElementById('btnBack');
+    const btnNext  = document.getElementById('btnNext');
+    const btnReset = document.getElementById('btnReset');
+
+    if (n === 1) {
+      btnBack.style.display  = 'none';
+      btnNext.style.display  = 'flex';
+      btnReset.style.display = 'none';
+      btnNext.textContent    = '計算資遣費 →';
+    } else {
+      btnBack.style.display  = 'block';
+      btnNext.style.display  = 'none';
+      btnReset.style.display = 'flex';
+    }
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function goBack() {
+    if (currentStep > 1) showStep(currentStep - 1);
+  }
+
+  function goNext() {
+    if (currentStep === 1) {
+      if (!validateStep1()) return;
+      collectStep1();
+      calculate();
+      showStep(2);
+    }
+  }
+
+  function resetAll() {
+    showStep(1);
+  }
+
+  function onRegimeChange() {
+    const v = document.getElementById('regime').value;
+    const g = document.getElementById('switchDateGroup');
+    if (v === 'both') {
+      g.classList.add('visible');
+    } else {
+      g.classList.remove('visible');
+    }
+  }
+
+  function validateStep1() {
+    const start = document.getElementById('startDate').value;
+    const end   = document.getElementById('endDate').value;
+    const wage  = parseFloat(document.getElementById('avgWage').value);
+
+    if (!start) { alert('請填寫到職日期。'); return false; }
+    if (!end)   { alert('請填寫離職日期。'); return false; }
+    if (new Date(start) >= new Date(end)) { alert('離職日期須晚於到職日期。'); return false; }
+    if (!wage || wage <= 0) { alert('請輸入有效的平均工資。'); return false; }
+
+    const regime = document.getElementById('regime').value;
+    if (regime === 'both') {
+      const sw = document.getElementById('switchDate').value;
+      if (!sw) { alert('請填寫新制起算日。'); return false; }
+      if (new Date(sw) <= new Date(start)) { alert('新制起算日須晚於到職日期。'); return false; }
+      if (new Date(sw) >= new Date(end))   { alert('新制起算日須早於離職日期。'); return false; }
+    }
+    return true;
+  }
+
+  function collectStep1() {
+    state.regime      = document.getElementById('regime').value;
+    state.startDate   = document.getElementById('startDate').value;
+    state.endDate     = document.getElementById('endDate').value;
+    state.avgWage     = parseFloat(document.getElementById('avgWage').value);
+    state.noticePaid  = document.getElementById('noticePaid').value;
+    state.switchDate  = document.getElementById('switchDate').value;
+  }
+
+  // ─── Calculation helpers ───────────────────────────────────────────────────
+
+  function calcMonths(from, to) {
+    const d1 = new Date(from), d2 = new Date(to);
+    let years  = d2.getFullYear() - d1.getFullYear();
+    let months = d2.getMonth()    - d1.getMonth();
+    let days   = d2.getDate()     - d1.getDate();
+    if (days < 0)   { months--; days += 30; }
+    if (months < 0) { years--;  months += 12; }
+    const totalMonths = years * 12 + months + days / 30;
+    return { years, months, days, totalMonths };
+  }
+
+  function calcSeveranceNew(totalMonths, avgWage) {
+    // §12 勞退條例: 每滿1年 = 0.5個月, 上限6個月
+    const raw = (totalMonths / 12) * 0.5;
+    return Math.min(raw, 6) * avgWage;
+  }
+
+  function calcSeveranceOld(totalMonths, avgWage) {
+    // §17 勞基法: 每滿1年 = 1個月, 上限6個月
+    const raw = totalMonths / 12;
+    return Math.min(raw, 6) * avgWage;
+  }
+
+  function calcNotice(totalMonths, avgWage) {
+    // §16 預告期間
+    if (totalMonths < 3)  return { days: 0,  amount: 0,                    label: '未滿3個月，無需預告' };
+    if (totalMonths < 12) return { days: 10, amount: avgWage / 30 * 10,    label: '3個月以上未滿1年：10日' };
+    if (totalMonths < 36) return { days: 20, amount: avgWage / 30 * 20,    label: '1年以上未滿3年：20日' };
+    return                       { days: 30, amount: avgWage / 30 * 30,    label: '3年以上：30日' };
+  }
+
+  function fmt(n) {
+    return 'NT$ ' + Math.round(n).toLocaleString('zh-TW');
+  }
+
+  function fmtTenure(y, m, d) {
+    const parts = [];
+    if (y > 0) parts.push(y + ' 年');
+    if (m > 0) parts.push(m + ' 個月');
+    if (d > 0) parts.push(d + ' 天');
+    return parts.length ? parts.join(' ') : '未滿1個月';
+  }
+
+  // ─── Main calculate ────────────────────────────────────────────────────────
+
+  function calculate() {
+    const { regime, startDate, endDate, avgWage, noticePaid, switchDate } = state;
+
+    // Fill summary
+    document.getElementById('r_startDate').textContent = startDate;
+    document.getElementById('r_endDate').textContent   = endDate;
+    document.getElementById('r_avgWage').textContent   = fmt(avgWage);
+
+    let severancePay = 0;
+    const totalInfo  = calcMonths(startDate, endDate);
+
+    document.getElementById('r_tenure').textContent =
+      fmtTenure(totalInfo.years, totalInfo.months, totalInfo.days);
+
+    // Notice
+    const notice = calcNotice(totalInfo.totalMonths, avgWage);
+
+    // ── Regime logic ──
+    if (regime === 'new') {
+      severancePay = calcSeveranceNew(totalInfo.totalMonths, avgWage);
+      document.getElementById('r_bothCard').style.display = 'none';
+      document.getElementById('r_severanceSub').textContent =
+        '勞退條例§12 新制｜' + fmtTenure(totalInfo.years, totalInfo.months, totalInfo.days);
+
+    } else if (regime === 'old') {
+      severancePay = calcSeveranceOld(totalInfo.totalMonths, avgWage);
+      document.getElementById('r_bothCard').style.display = 'none';
+      document.getElementById('r_severanceSub').textContent =
+        '勞基法§17 舊制｜' + fmtTenure(totalInfo.years, totalInfo.months, totalInfo.days);
+
+    } else {
+      // 兩制並計
+      const oldInfo = calcMonths(startDate, switchDate);
+      const newInfo = calcMonths(switchDate, endDate);
+      const oldPay  = calcSeveranceOld(oldInfo.totalMonths,  avgWage);
+      const newPay  = calcSeveranceNew(newInfo.totalMonths,  avgWage);
+      severancePay  = oldPay + newPay;
+
+      document.getElementById('r_bothCard').style.display = 'block';
+      document.getElementById('r_oldTenure').textContent  =
+        fmtTenure(oldInfo.years, oldInfo.months, oldInfo.days);
+      document.getElementById('r_oldAmount').textContent  = fmt(oldPay);
+      document.getElementById('r_newTenure').textContent  =
+        fmtTenure(newInfo.years, newInfo.months, newInfo.days);
+      document.getElementById('r_newAmount').textContent  = fmt(newPay);
+      document.getElementById('r_totalBoth').textContent  = fmt(severancePay);
+      document.getElementById('r_severanceSub').textContent =
+        '兩制並計｜新制起算 ' + switchDate;
+    }
+
+    document.getElementById('r_severanceAmount').textContent = fmt(severancePay);
+
+    // Notice pay
+    const noticeUnpaid = document.getElementById('r_noticeUnpaid');
+    const noticePaidEl = document.getElementById('r_noticePaid');
+    let   noticePayAmount = 0;
+
+    if (noticePaid === '否') {
+      noticeUnpaid.style.display = 'block';
+      noticePaidEl.style.display = 'none';
+      if (notice.days > 0) {
+        document.getElementById('r_noticeDays').textContent   = notice.label;
+        document.getElementById('r_noticeAmount').textContent = fmt(notice.amount);
+        noticePayAmount = notice.amount;
+      } else {
+        document.getElementById('r_noticeDays').textContent   = notice.label;
+        document.getElementById('r_noticeAmount').textContent = 'NT$ 0';
+      }
+    } else {
+      noticeUnpaid.style.display = 'none';
+      noticePaidEl.style.display = 'flex';
+    }
+
+    // Total
+    const total = severancePay + noticePayAmount;
+    document.getElementById('r_totalClaim').textContent = fmt(total);
+    document.getElementById('r_totalClaimNote').textContent =
+      noticePaid === '否' && notice.days > 0
+        ? '含資遣費 + 預告工資'
+        : '資遣費';
+  }
+
+  // Init
+  showStep(1);
+</script>
+</body>
+</html>

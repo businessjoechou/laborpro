@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>職災補償試算｜LaborPro</title>
+<meta name="description" content="依勞基法§59計算職業災害醫療、工資、失能、死亡補償金額，含雇主無過失責任說明。">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://laborpro.app/work-injury.html">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #131c13;
+    --paper: #eef5ec;
+    --gold: #c8901a;
+    --muted: #617a5e;
+    --border: #b0c8ac;
+    --soft: #d8ecd4;
+    --card: #ffffff;
+    --accent: #2a6e3e;
+    --danger: #8b2020;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--paper); color: var(--ink); font-family: 'Noto Sans TC', sans-serif; min-height: 100vh; font-size: 15px; }
+  header { background: var(--ink); color: var(--paper); padding: 20px 24px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .logo { font-family: 'Noto Serif TC', serif; font-size: 20px; font-weight: 700; letter-spacing: 0.04em; }
+  .logo span { color: var(--gold); }
+  .home-link { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); text-decoration: none; }
+  .home-link:hover { color: var(--gold); }
+  .progress-bar { height: 3px; background: var(--soft); }
+  .progress-fill { height: 100%; background: var(--gold); transition: width 0.4s ease; }
+  main { padding: 24px 20px 100px; max-width: 560px; margin: 0 auto; }
+  .step-label { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 8px; }
+  h2 { font-family: 'Noto Serif TC', serif; font-size: 22px; font-weight: 700; margin-bottom: 6px; line-height: 1.4; }
+  .subtitle { font-size: 13px; color: var(--muted); margin-bottom: 28px; line-height: 1.6; }
+  .card { background: var(--card); border: 1.5px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 14px; }
+  .field-group { margin-bottom: 18px; }
+  .field-group:last-child { margin-bottom: 0; }
+  label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 8px; color: var(--ink); }
+  .input-prefix { display: flex; align-items: center; }
+  .prefix-label { background: var(--soft); border: 1.5px solid var(--border); border-right: none; border-radius: 8px 0 0 8px; padding: 12px 12px; font-family: 'DM Mono', monospace; font-size: 12px; color: var(--muted); white-space: nowrap; }
+  input[type="number"] { flex: 1; width: 100%; padding: 12px 14px; border: 1.5px solid var(--border); border-radius: 8px; background: var(--paper); font-size: 15px; font-family: 'DM Mono', monospace; color: var(--ink); transition: border-color 0.2s; -webkit-appearance: none; }
+  .input-prefix input[type="number"] { border-radius: 0 8px 8px 0; }
+  input:focus { outline: none; border-color: var(--gold); }
+  select { width: 100%; padding: 12px 14px; border: 1.5px solid var(--border); border-radius: 8px; background: var(--paper); font-size: 14px; font-family: 'Noto Sans TC', sans-serif; color: var(--ink); transition: border-color 0.2s; -webkit-appearance: none; appearance: none; cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23617a5e' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
+  select:focus { outline: none; border-color: var(--gold); }
+  .info-box { background: #e6f0e6; border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 6px; padding: 12px 14px; font-size: 12px; color: var(--accent); line-height: 1.7; margin-bottom: 14px; }
+  .warn-box { background: #fdf3e7; border: 1px solid #e8c882; border-left: 3px solid var(--gold); border-radius: 6px; padding: 12px 14px; font-size: 12px; color: #7a5a10; line-height: 1.7; margin-bottom: 14px; }
+  .law-note { border-left: 3px solid var(--gold); padding-left: 12px; font-size: 12px; color: var(--muted); line-height: 1.7; margin-top: 10px; }
+  .section-title { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 14px; }
+  .static-value { padding: 12px 14px; background: var(--soft); border: 1.5px solid var(--border); border-radius: 8px; font-family: 'DM Mono', monospace; font-size: 13px; color: var(--accent); }
+  .step { display: none; }
+  .step.active { display: block; animation: fadeUp 0.3s ease both; }
+  .result-hero { background: var(--ink); color: var(--paper); border-radius: 12px; padding: 24px 20px; margin-bottom: 14px; text-align: center; }
+  .result-hero-label { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 8px; }
+  .result-hero-amount { font-family: 'Noto Serif TC', serif; font-size: 36px; font-weight: 700; color: var(--gold); margin-bottom: 6px; }
+  .result-hero-sub { font-size: 13px; color: var(--muted); }
+  .breakdown-card { background: var(--card); border: 1.5px solid var(--border); border-radius: 12px; overflow: hidden; margin-bottom: 14px; }
+  .breakdown-header { background: var(--soft); padding: 12px 16px; font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 0.14em; text-transform: uppercase; }
+  .breakdown-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; border-bottom: 1px solid var(--soft); gap: 12px; }
+  .breakdown-row:last-child { border-bottom: none; }
+  .breakdown-label { font-size: 13px; color: var(--ink); flex: 1; }
+  .breakdown-value { font-family: 'DM Mono', monospace; font-size: 13px; font-weight: 500; color: var(--accent); text-align: right; }
+  .breakdown-row.total { background: var(--soft); }
+  .breakdown-row.total .breakdown-label { font-weight: 600; }
+  .breakdown-row.total .breakdown-value { font-size: 15px; color: var(--ink); font-weight: 700; }
+  .notice-card { background: #fff8ee; border: 1.5px solid #e8c882; border-radius: 12px; padding: 18px 20px; margin-bottom: 14px; }
+  .notice-card-title { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--gold); letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 10px; }
+  .notice-item { font-size: 12px; color: #6a4a10; line-height: 1.8; padding-left: 14px; position: relative; margin-bottom: 6px; }
+  .notice-item:last-child { margin-bottom: 0; }
+  .notice-item::before { content: '▸'; position: absolute; left: 0; color: var(--gold); }
+  .nav-bar { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); background: var(--card); border-top: 1px solid var(--border); padding: 14px 20px; display: flex; gap: 10px; width: 100%; max-width: 560px; }
+  .btn { flex: 1; padding: 14px; border-radius: 10px; border: none; font-size: 15px; font-family: 'Noto Sans TC', sans-serif; font-weight: 500; cursor: pointer; transition: all 0.2s; }
+  .btn-primary { background: var(--ink); color: var(--paper); }
+  .btn-primary:hover { background: var(--accent); }
+  .btn-secondary { background: var(--soft); color: var(--muted); }
+  .btn-print { background: var(--accent); color: #fff; flex: 2; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+  @media print { header, .nav-bar, .progress-bar { display: none; } main { padding: 20px; } }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Labor<span>Pro</span></div>
+  <a href="index.html" class="home-link">← 首頁</a>
+</header>
+<div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:33%"></div></div>
+
+<main>
+
+  <!-- Step 1 -->
+  <div class="step active" id="step1">
+    <div class="step-label">Step 1 of 3 · 基本資訊</div>
+    <h2>職災補償類型</h2>
+    <p class="subtitle">請選擇職業災害補償類型，並輸入原領日薪，系統將依勞基法§59計算各項補償金額。</p>
+
+    <div class="info-box">
+      勞基法§59規定雇主對職業災害勞工之補償責任為無過失責任，不論雇主有無過失均須補償。
+    </div>
+
+    <div class="card">
+      <div class="field-group">
+        <label>補償類型</label>
+        <select id="injuryType" onchange="state.injuryType = this.value">
+          <option value="medical">醫療補償（§59第1款）</option>
+          <option value="wage">工資補償（§59第2款，停工期間）</option>
+          <option value="disability">失能補償（§59第3款）</option>
+          <option value="death">死亡補償（§59第4款）</option>
+          <option value="combined">複合（多項合計）</option>
+        </select>
+      </div>
+      <div class="field-group">
+        <label>原領日薪（元）<span style="font-size:11px;color:var(--muted);font-weight:400;margin-left:6px">通常為月薪 ÷ 30</span></label>
+        <div class="input-prefix">
+          <span class="prefix-label">NT$</span>
+          <input type="number" id="dailyWage" placeholder="0" min="0" inputmode="numeric" oninput="state.dailyWage = +this.value">
+        </div>
+        <div class="law-note" style="margin-top:8px">原領工資依事故發生前六個月平均薪資計算；如受傷前已連續工作未滿六個月者，按實際工作期間之平均薪資計算。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 2 -->
+  <div class="step" id="step2">
+    <div class="step-label">Step 2 of 3 · 補償明細</div>
+    <h2>補償金額明細</h2>
+    <p class="subtitle">請依補償類型填入相關數據，系統將自動計算各項補償金額。</p>
+
+    <!-- 醫療費用補償 -->
+    <div class="card section-card" id="medicalSection">
+      <div class="section-title">醫療費用補償｜§59第1款</div>
+      <div class="field-group">
+        <label>實際醫療費用（元）</label>
+        <div class="input-prefix">
+          <span class="prefix-label">NT$</span>
+          <input type="number" id="medicalCost" placeholder="0" min="0" inputmode="numeric" oninput="state.medicalCost = +this.value">
+        </div>
+      </div>
+      <div class="law-note">
+        §59第1款：勞工受傷或罹患職業病時，雇主應補償其必要之醫療費用，包括診療費、藥品費、復健費等必要支出，全額補償。
+      </div>
+    </div>
+
+    <!-- 停工工資補償 -->
+    <div class="card section-card" id="wageSection">
+      <div class="section-title">停工工資補償｜§59第2款</div>
+      <div class="field-group">
+        <label>停工天數（日）</label>
+        <div class="input-prefix">
+          <span class="prefix-label">天</span>
+          <input type="number" id="shutdownDays" placeholder="0" min="0" inputmode="numeric" oninput="state.shutdownDays = +this.value">
+        </div>
+        <div id="wageCalcPreview" style="margin-top:8px;font-size:12px;color:var(--muted)"></div>
+      </div>
+      <div class="law-note">
+        §59第2款：勞工在醫療中不能工作時，雇主應按原領工資補償；工資補償與職業災害勞工保護法或勞工保險給付可互相抵充（§60）。
+      </div>
+    </div>
+
+    <!-- 失能補償 -->
+    <div class="card section-card" id="disabilitySection">
+      <div class="section-title">失能補償｜§59第3款</div>
+      <div class="field-group">
+        <label>失能等級</label>
+        <select id="disabilityGrade" onchange="state.disabilityGrade = +this.value; updateDisabilityPreview()">
+          <option value="1">第1–2級（1,200 日）</option>
+          <option value="3">第3級（1,000 日）</option>
+          <option value="4">第4級（840 日）</option>
+          <option value="5">第5級（740 日）</option>
+          <option value="6">第6級（620 日）</option>
+          <option value="7">第7級（540 日）</option>
+          <option value="8">第8級（440 日）</option>
+          <option value="9">第9級（360 日）</option>
+          <option value="10">第10級（280 日）</option>
+          <option value="11">第11級（200 日）</option>
+          <option value="12">第12級（160 日）</option>
+          <option value="13">第13級（120 日）</option>
+          <option value="14">第14級（80 日）</option>
+          <option value="15">第15級（40 日）</option>
+        </select>
+        <div id="disabilityPreview" style="margin-top:8px;font-size:12px;color:var(--muted)"></div>
+      </div>
+      <div class="law-note">
+        §59第3款：勞工遭遇職業傷害或罹患職業病，經治療終止後，如身體遺存殘廢，應按其平均工資及殘廢程度，一次給予失能補償。
+      </div>
+    </div>
+
+    <!-- 死亡補償 -->
+    <div class="card section-card" id="deathSection">
+      <div class="section-title">死亡補償｜§59第4款</div>
+      <div class="field-group">
+        <label>喪葬費（元）</label>
+        <div class="input-prefix">
+          <span class="prefix-label">NT$</span>
+          <input type="number" id="funeralSubsidy" placeholder="0" min="0" inputmode="numeric" oninput="state.funeralSubsidy = +this.value">
+        </div>
+      </div>
+      <div class="field-group">
+        <label>死亡補償</label>
+        <div class="static-value" id="deathCompText">—（請先在步驟一輸入日薪）</div>
+      </div>
+      <div class="law-note">
+        §59第4款：勞工因遭遇職業災害死亡時，雇主除給予喪葬費五個月平均工資外，應一次給予其遺屬四十個月平均工資之死亡補償。
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Step 3 / Results -->
+  <div class="step" id="step3">
+    <div class="step-label">結果 · 職災補償試算</div>
+    <h2>職災補償試算結果</h2>
+    <p class="subtitle">以下為依勞基法§59計算之職業災害補償金額試算。</p>
+    <div id="resultContent"></div>
+  </div>
+
+</main>
+
+<div class="nav-bar" id="navBar">
+  <button class="btn btn-secondary" id="btnBack" style="display:none" onclick="goBack()">上一步</button>
+  <button class="btn btn-primary" id="btnNext" onclick="goNext()">下一步 →</button>
+</div>
+
+<script>
+  let currentStep = 1;
+  const totalSteps = 3;
+  let state = {
+    injuryType: 'medical',
+    dailyWage: 0,
+    medicalCost: 0,
+    shutdownDays: 0,
+    disabilityGrade: 1,
+    funeralSubsidy: 0
+  };
+
+  const sectionMap = {
+    medical:    ['medicalSection'],
+    wage:       ['wageSection'],
+    disability: ['disabilitySection'],
+    death:      ['deathSection'],
+    combined:   ['medicalSection', 'wageSection', 'disabilitySection', 'deathSection']
+  };
+
+  const gradedays = {
+    1: 1200, 3: 1000, 4: 840, 5: 740, 6: 620, 7: 540,
+    8: 440, 9: 360, 10: 280, 11: 200, 12: 160, 13: 120, 14: 80, 15: 40
+  };
+
+  const gradeLabel = {
+    1: '第1–2級', 3: '第3級', 4: '第4級', 5: '第5級', 6: '第6級', 7: '第7級',
+    8: '第8級', 9: '第9級', 10: '第10級', 11: '第11級', 12: '第12級',
+    13: '第13級', 14: '第14級', 15: '第15級'
+  };
+
+  function fmt(n) { return 'NT$ ' + Math.round(n).toLocaleString('zh-TW'); }
+
+  function updateStep2Sections() {
+    const allSections = ['medicalSection', 'wageSection', 'disabilitySection', 'deathSection'];
+    const visible = sectionMap[state.injuryType] || [];
+    allSections.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.style.display = visible.includes(id) ? 'block' : 'none';
+    });
+    updateDeathCompText();
+    updateDisabilityPreview();
+  }
+
+  function updateDeathCompText() {
+    const el = document.getElementById('deathCompText');
+    if (!el) return;
+    if (state.dailyWage > 0) {
+      const monthly = state.dailyWage * 30;
+      const deathComp = monthly * 40;
+      el.textContent = `5個月平均工資喪葬費 + 40個月平均工資死亡補償 ≈ 死亡補償部分 ${fmt(deathComp)}`;
+    } else {
+      el.textContent = '—（請先在步驟一輸入日薪）';
+    }
+  }
+
+  function updateDisabilityPreview() {
+    const el = document.getElementById('disabilityPreview');
+    if (!el) return;
+    const days = gradedays[state.disabilityGrade] || 1200;
+    if (state.dailyWage > 0) {
+      const amount = state.dailyWage * days;
+      el.textContent = `補償天數：${days} 日 × 日薪 NT$ ${state.dailyWage.toLocaleString('zh-TW')} = ${fmt(amount)}`;
+    } else {
+      el.textContent = `補償天數：${days} 日（請輸入日薪後查看金額）`;
+    }
+  }
+
+  function updateWagePreview() {
+    const el = document.getElementById('wageCalcPreview');
+    if (!el) return;
+    const days = state.shutdownDays || 0;
+    if (state.dailyWage > 0 && days > 0) {
+      el.textContent = `${days} 天 × 日薪 NT$ ${state.dailyWage.toLocaleString('zh-TW')} = ${fmt(days * state.dailyWage)}`;
+    }
+  }
+
+  document.getElementById('shutdownDays').addEventListener('input', updateWagePreview);
+
+  function goNext() {
+    if (currentStep === 1) {
+      if (state.dailyWage <= 0) { alert('請輸入原領日薪'); return; }
+      currentStep = 2;
+      showStep(2);
+    } else if (currentStep === 2) {
+      currentStep = 3;
+      renderResults();
+      showStep(3);
+    }
+  }
+
+  function goBack() {
+    if (currentStep > 1) { currentStep--; showStep(currentStep); }
+  }
+
+  function showStep(n) {
+    document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+    document.getElementById('step' + n).classList.add('active');
+    document.getElementById('progressFill').style.width = (n / totalSteps * 100) + '%';
+    document.getElementById('btnBack').style.display = n > 1 ? 'block' : 'none';
+    if (n === 2) {
+      updateStep2Sections();
+      updateDeathCompText();
+    }
+    if (n === totalSteps) {
+      document.getElementById('navBar').innerHTML = `
+        <button class="btn btn-secondary" onclick="goBack()">← 重新計算</button>
+        <button class="btn btn-print" onclick="window.print()">列印 / PDF</button>
+      `;
+    } else {
+      document.getElementById('btnNext').textContent = n === 2 ? '計算補償 →' : '下一步 →';
+    }
+    window.scrollTo(0, 0);
+  }
+
+  function renderResults() {
+    const type = state.injuryType;
+    const dw = state.dailyWage;
+    const visible = sectionMap[type] || [];
+
+    let items = [];
+    let total = 0;
+
+    if (visible.includes('medicalSection')) {
+      const v = state.medicalCost || 0;
+      items.push({ label: '醫療費用補償（§59第1款）', value: v, note: '全額補償必要醫療費用' });
+      total += v;
+    }
+    if (visible.includes('wageSection')) {
+      const v = (state.shutdownDays || 0) * dw;
+      items.push({ label: `停工工資補償（§59第2款）`, value: v, note: `${state.shutdownDays || 0} 天 × 日薪 NT$ ${dw.toLocaleString('zh-TW')}` });
+      total += v;
+    }
+    if (visible.includes('disabilitySection')) {
+      const days = gradedays[state.disabilityGrade] || 1200;
+      const v = dw * days;
+      items.push({ label: `失能補償（§59第3款，${gradeLabel[state.disabilityGrade]}）`, value: v, note: `${days} 日 × 日薪` });
+      total += v;
+    }
+    if (visible.includes('deathSection')) {
+      const monthly = dw * 30;
+      const funeralComp = monthly * 5;
+      const deathComp = monthly * 40;
+      const funeral = state.funeralSubsidy || 0;
+      items.push({ label: '喪葬費（§59第4款，5個月平均工資）', value: funeralComp, note: `月薪 NT$ ${monthly.toLocaleString('zh-TW')} × 5 個月` });
+      if (funeral > 0 && funeral !== funeralComp) {
+        items.push({ label: '　→ 實際喪葬費用（雇主補償差額）', value: Math.max(funeral - funeralComp, 0), note: '若實際喪葬費超過5個月工資，依實補足' });
+      }
+      items.push({ label: '死亡補償（§59第4款，40個月平均工資）', value: deathComp, note: `月薪 NT$ ${monthly.toLocaleString('zh-TW')} × 40 個月` });
+      total += funeralComp + deathComp;
+    }
+
+    const typeLabel = {
+      medical: '醫療補償', wage: '工資補償', disability: '失能補償',
+      death: '死亡補償', combined: '複合補償（多項合計）'
+    };
+
+    document.getElementById('resultContent').innerHTML = `
+      <div class="result-hero">
+        <div class="result-hero-label">職災補償合計（試算）</div>
+        <div class="result-hero-amount">${total > 0 ? fmt(total) : '—'}</div>
+        <div class="result-hero-sub">${typeLabel[type]} ／ 日薪 NT$ ${dw.toLocaleString('zh-TW')}</div>
+      </div>
+
+      <div class="breakdown-card">
+        <div class="breakdown-header">補償明細</div>
+        ${items.map(i => `
+          <div class="breakdown-row">
+            <div class="breakdown-label">
+              ${i.label}
+              ${i.note ? `<div style="font-size:11px;color:var(--muted);margin-top:2px">${i.note}</div>` : ''}
+            </div>
+            <div class="breakdown-value">${i.value > 0 ? fmt(i.value) : '—'}</div>
+          </div>
+        `).join('')}
+        <div class="breakdown-row total">
+          <div class="breakdown-label">補償合計</div>
+          <div class="breakdown-value">${fmt(total)}</div>
+        </div>
+      </div>
+
+      <div class="notice-card">
+        <div class="notice-card-title">重要法律說明</div>
+        <div class="notice-item">雇主依勞基法§59之補償責任為<strong>無過失責任</strong>，不論雇主是否有過失，均須給付職災補償。</div>
+        <div class="notice-item">勞保或職業災害保險給付可抵充雇主依§59之補償責任（勞基法§60），雇主可主張扣除已給付保險金額。</div>
+        <div class="notice-item">勞工除依勞基法請求補償外，如能證明雇主有<strong>過失</strong>，得另依民法第184條請求侵權行為損害賠償，不受§59補償金額上限限制。</div>
+      </div>
+
+      <div class="card">
+        <div class="law-note">
+          <strong>勞基法§59</strong>：勞工因遭遇職業災害而致死亡、殘廢、傷害或疾病時，雇主應依左列規定予以補償。<br><br>
+          <strong>勞基法§60</strong>：雇主依前條規定給付之補償金額，得抵充就同一事故所生損害之賠償金額。<br><br>
+          <strong>民法§184</strong>：因故意或過失，不法侵害他人之權利者，負損害賠償責任。
+        </div>
+      </div>
+    `;
+  }
+</script>
+</body>
+</html>

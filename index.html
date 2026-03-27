@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" href="favicon.svg">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LaborPro｜台灣勞基法計算機</title>
+<meta name="description" content="台灣最專業的勞基法計算平台，免費提供資遣費、加班費、特休未休折現、職災補償、不當解雇分析等計算工具，依中華民國勞動基準法設計。">
+<meta name="keywords" content="資遣費計算,加班費計算,特休計算,職災補償,不當解雇,勞基法,預告工資,勞退新制,舊制資遣費,台灣勞工">
+<meta name="robots" content="index, follow">
+<meta name="author" content="LaborPro">
+<meta property="og:title" content="LaborPro｜台灣勞基法計算機">
+<meta property="og:description" content="免費計算資遣費、加班費、特休折現、職災補償。依台灣勞基法設計，快速精確試算。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://laborpro.app/">
+<meta property="og:site_name" content="LaborPro">
+<meta property="og:locale" content="zh_TW">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="LaborPro｜台灣勞基法計算機">
+<meta name="twitter:description" content="免費計算資遣費、加班費、特休折現、職災補償。依台灣勞基法設計。">
+<link rel="canonical" href="https://laborpro.app/">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #131c13;
+    --paper: #eef5ec;
+    --gold: #c8901a;
+    --muted: #617a5e;
+    --border: #b0c8ac;
+    --soft: #d8ecd4;
+    --card: #ffffff;
+    --accent: #2a6e3e;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--ink);
+    color: var(--paper);
+    font-family: 'Noto Sans TC', sans-serif;
+    min-height: 100vh;
+    font-size: 15px;
+  }
+
+  /* Hero */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 0 24px;
+    max-width: 560px;
+    margin: 0 auto;
+    justify-content: center;
+  }
+
+  .hero-top {
+    padding-top: 48px;
+    margin-bottom: 64px;
+  }
+
+  .logo {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+  }
+
+  .logo span { color: var(--gold); }
+
+  .tag {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    border: 1px solid #2a3a2a;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-left: 12px;
+    vertical-align: middle;
+  }
+
+  .hero-title {
+    font-family: 'Noto Serif TC', serif;
+    font-size: clamp(32px, 8vw, 48px);
+    font-weight: 700;
+    line-height: 1.25;
+    margin-bottom: 16px;
+    letter-spacing: 0.02em;
+  }
+
+  .hero-title em {
+    font-style: normal;
+    color: var(--gold);
+  }
+
+  .hero-sub {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.8;
+    margin-bottom: 48px;
+  }
+
+  /* Tool cards */
+  .tool-grid { display: flex; flex-direction: column; gap: 12px; margin-bottom: 48px; }
+
+  .tool-card {
+    display: block;
+    text-decoration: none;
+    border: 1.5px solid #1e2e1e;
+    border-radius: 12px;
+    padding: 20px 22px;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+  }
+
+  .tool-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: var(--gold);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .tool-card:hover { border-color: var(--gold); transform: translateX(4px); }
+  .tool-card:hover::before { opacity: 0.04; }
+
+  .tool-card-inner { position: relative; z-index: 1; display: flex; align-items: center; gap: 18px; }
+
+  .tool-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    min-width: 24px;
+  }
+
+  .tool-info { flex: 1; }
+
+  .tool-name {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--paper);
+    margin-bottom: 4px;
+    line-height: 1.4;
+  }
+
+  .tool-desc {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .tool-arrow {
+    color: var(--muted);
+    font-size: 16px;
+    transition: transform 0.2s, color 0.2s;
+  }
+
+  .tool-card:hover .tool-arrow { transform: translateX(4px); color: var(--gold); }
+
+  /* Divider line */
+  .divider {
+    height: 1px;
+    background: #1e2e1e;
+    margin: 0 0 16px;
+  }
+
+  /* Footer */
+  .hero-footer {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: #2e4230;
+    letter-spacing: 0.08em;
+    padding-bottom: 48px;
+    line-height: 2;
+  }
+
+  .hero-footer a { color: #2e4230; text-decoration: none; }
+
+  /* Law strip */
+  .law-strip {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 40px;
+  }
+
+  .law-pill {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: #4a6248;
+    border: 1px solid #1e2e1e;
+    padding: 4px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.08em;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-title { animation: fadeUp 0.5s ease both; }
+  .hero-sub { animation: fadeUp 0.5s 0.1s ease both; }
+  .law-strip { animation: fadeUp 0.5s 0.15s ease both; }
+  .tool-grid { animation: fadeUp 0.5s 0.2s ease both; }
+
+  /* FAQ SEO Section */
+  .faq-section { padding: 0 24px 64px; max-width: 560px; margin: 0 auto; }
+  .faq-heading { font-family: 'DM Mono', monospace; font-size: 10px; color: #2e4230; letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 20px; }
+  .faq-item { border-top: 1px solid #1e2e1e; padding: 18px 0; }
+  .faq-q { font-family: 'Noto Serif TC', serif; font-size: 14px; font-weight: 600; color: var(--paper); margin-bottom: 8px; line-height: 1.5; }
+  .faq-a { font-size: 13px; color: var(--muted); line-height: 1.8; }
+  .faq-a a { color: var(--gold); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-top">
+    <div class="logo">Labor<span>Pro</span><span class="tag">v1.0</span></div>
+  </div>
+
+  <h1 class="hero-title">台灣勞基法<br><em>權益計算</em>平台</h1>
+
+  <p class="hero-sub">
+    涵蓋資遣費試算、加班費計算、特休折現、職災補償、不當解雇分析<br>
+    依中華民國勞動基準法與勞工退休金條例設計<br>
+    協助勞工與人資從業人員快速釐清勞動權益。
+  </p>
+
+  <div class="law-strip">
+    <span class="law-pill">§11</span>
+    <span class="law-pill">§12</span>
+    <span class="law-pill">§14</span>
+    <span class="law-pill">§16</span>
+    <span class="law-pill">§17</span>
+    <span class="law-pill">§24</span>
+    <span class="law-pill">§38</span>
+    <span class="law-pill">§39</span>
+    <span class="law-pill">§59</span>
+    <span class="law-pill">勞退§12</span>
+  </div>
+
+  <div class="tool-grid">
+
+    <a class="tool-card" href="severance.html">
+      <div class="tool-card-inner">
+        <div class="tool-num">01</div>
+        <div class="tool-info">
+          <div class="tool-name">資遣費計算機</div>
+          <div class="tool-desc">舊制§17 ／ 新制退休金條例§12<br>含預告工資試算、兩制並計</div>
+        </div>
+        <span class="tool-arrow">→</span>
+      </div>
+    </a>
+
+    <a class="tool-card" href="overtime.html">
+      <div class="tool-card-inner">
+        <div class="tool-num">02</div>
+        <div class="tool-info">
+          <div class="tool-name">加班費計算機</div>
+          <div class="tool-desc">平日延長 ／ 休息日 ／ 國定假日<br>依勞基法§24、§39精確計算</div>
+        </div>
+        <span class="tool-arrow">→</span>
+      </div>
+    </a>
+
+    <a class="tool-card" href="annual-leave.html">
+      <div class="tool-card-inner">
+        <div class="tool-num">03</div>
+        <div class="tool-info">
+          <div class="tool-name">特休未休折現</div>
+          <div class="tool-desc">年資 → 特休天數（§38）<br>未休日數換算折現金額</div>
+        </div>
+        <span class="tool-arrow">→</span>
+      </div>
+    </a>
+
+    <a class="tool-card" href="work-injury.html">
+      <div class="tool-card-inner">
+        <div class="tool-num">04</div>
+        <div class="tool-info">
+          <div class="tool-name">職災補償試算</div>
+          <div class="tool-desc">§59醫療、工資、失能、死亡補償<br>含雇主連帶責任說明</div>
+        </div>
+        <span class="tool-arrow">→</span>
+      </div>
+    </a>
+
+    <a class="tool-card" href="wrongful-dismissal.html">
+      <div class="tool-card-inner">
+        <div class="tool-num">05</div>
+        <div class="tool-info">
+          <div class="tool-name">不當解雇分析</div>
+          <div class="tool-desc">§11、§12、§14解雇合法性判斷<br>預告工資、資遣費請求評估</div>
+        </div>
+        <span class="tool-arrow">→</span>
+      </div>
+    </a>
+
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="hero-footer">
+    © 2026 LaborPro. All rights reserved.<br>
+    本平台僅供參考，不構成法律意見。實際案件請諮詢專業律師。
+  </div>
+</div>
+
+<section class="faq-section" aria-label="常見問題">
+  <div class="faq-heading">常見問題 FAQ</div>
+
+  <div class="faq-item">
+    <div class="faq-q">資遣費新制和舊制有什麼差別？</div>
+    <div class="faq-a">舊制依勞基法§17計算，每滿1年給付1個月平均工資，最高6個月；新制依勞工退休金條例§12，每滿1年給付0.5個月平均工資，同樣上限6個月。2005年7月1日勞退新制施行後到職者適用新制；之前到職者依年資比例兩制並計。可使用<a href="severance.html">資遣費計算機</a>快速試算。</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">加班費怎麼計算？</div>
+    <div class="faq-a">依勞基法§24，平日延長工時第1至2小時加給1/3（即時薪×4/3），第3至4小時加給2/3（即時薪×5/3）。休息日出勤前2小時亦為×4/3，之後為×5/3，且工作未滿4小時以4小時計、滿4小時未滿8小時以8小時計。國定假日出勤依§39應加倍給付。可使用<a href="overtime.html">加班費計算機</a>精確試算。</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">特別休假未休可以請求折現嗎？</div>
+    <div class="faq-a">依勞基法§38第4項，年度終結或契約終止時，雇主應將勞工未休畢的特別休假日數折算工資給付，不得片面取消。折現金額以月薪除以30計算日薪，再乘以未休天數。可使用<a href="annual-leave.html">特休未休折現工具</a>依年資自動計算應休天數及折現金額。</div>
+  </div>
+
+</section>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "LaborPro 台灣勞基法計算機",
+  "url": "https://laborpro.app/",
+  "description": "台灣勞基法計算平台，提供資遣費、加班費、特休折現、職災補償、不當解雇等免費計算工具。",
+  "inLanguage": "zh-TW",
+  "author": {"@type": "Organization", "name": "LaborPro", "url": "https://laborpro.app/"}
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "LaborPro 勞基法計算工具清單",
+  "url": "https://laborpro.app/",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "資遣費計算機",
+      "description": "舊制§17 ／ 新制退休金條例§12，含預告工資試算、兩制並計",
+      "url": "https://laborpro.app/severance.html"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "加班費計算機",
+      "description": "平日延長 ／ 休息日 ／ 國定假日，依勞基法§24、§39精確計算",
+      "url": "https://laborpro.app/overtime.html"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "特休未休折現",
+      "description": "年資 → 特休天數（§38），未休日數換算折現金額",
+      "url": "https://laborpro.app/annual-leave.html"
+    },
+    {
+      "@type": "ListItem",
+      "position": 4,
+      "name": "職災補償試算",
+      "description": "§59醫療、工資、失能、死亡補償，含雇主連帶責任說明",
+      "url": "https://laborpro.app/work-injury.html"
+    },
+    {
+      "@type": "ListItem",
+      "position": 5,
+      "name": "不當解雇分析",
+      "description": "§11、§12、§14解雇合法性判斷，預告工資、資遣費請求評估",
+      "url": "https://laborpro.app/wrongful-dismissal.html"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "資遣費新制和舊制有什麼差別？",
+      "acceptedAnswer": {"@type": "Answer", "text": "舊制依勞基法§17計算，每滿1年給付1個月平均工資，最高6個月；新制依勞工退休金條例§12，每滿1年給付0.5個月平均工資，上限6個月。2005年7月1日勞退新制施行後到職者適用新制；之前到職者依年資比例兩制並計。"}
+    },
+    {
+      "@type": "Question",
+      "name": "加班費怎麼計算？",
+      "acceptedAnswer": {"@type": "Answer", "text": "依勞基法§24，平日延長工時第1至2小時加給1/3（時薪×4/3），第3至4小時加給2/3（時薪×5/3）。休息日出勤前2小時×4/3，之後×5/3，未滿4小時以4小時計。國定假日出勤依§39加倍給付。"}
+    },
+    {
+      "@type": "Question",
+      "name": "特別休假未休可以請求折現嗎？",
+      "acceptedAnswer": {"@type": "Answer", "text": "依勞基法§38第4項，年度終結或契約終止時，雇主應將勞工未休畢的特別休假日數折算工資給付。折現金額以月薪除以30計算日薪，再乘以未休天數。"}
+    }
+  ]
+}
+</script>
+</body>
+</html>
