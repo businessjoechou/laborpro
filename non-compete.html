@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" href="favicon.svg">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>競業禁止合法性分析｜LaborPro</title>
+<meta name="description" content="免費分析競業禁止協議是否符合台灣勞基法§9-1五項要件，包括正當營業利益、補償金足額、期間合理等，提供合法性評估與行動建議。">
+<meta name="keywords" content="競業禁止,勞基法第9-1條,競業禁止協議,競業禁止補償金,競業禁止合法性,台灣競業禁止,離職競業禁止">
+<meta name="robots" content="index, follow">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #131c13;
+    --paper: #eef5ec;
+    --gold: #c8901a;
+    --muted: #617a5e;
+    --border: #b0c8ac;
+    --soft: #d8ecd4;
+    --card: #ffffff;
+    --accent: #2a6e3e;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--ink);
+    color: var(--paper);
+    font-family: 'Noto Sans TC', sans-serif;
+    min-height: 100vh;
+    font-size: 15px;
+  }
+
+  header {
+    background: var(--ink);
+    border-bottom: 1px solid #1e2e1e;
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .logo {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--paper);
+  }
+
+  .logo span { color: var(--gold); }
+
+  .back-link {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.08em;
+    transition: color 0.2s;
+  }
+
+  .back-link:hover { color: var(--gold); }
+
+  .progress-bar { height: 3px; background: #1e2e1e; }
+  .progress-fill { height: 100%; background: var(--gold); transition: width 0.4s ease; }
+
+  main {
+    max-width: 560px;
+    margin: 0 auto;
+    padding: 32px 20px 120px;
+  }
+
+  .step { display: none; }
+  .step.active { display: block; animation: fadeUp 0.3s ease both; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .step-header { margin-bottom: 28px; }
+
+  .step-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .step-title {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--paper);
+    line-height: 1.35;
+    margin-bottom: 6px;
+  }
+
+  .step-sub {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  .wizard {
+    background: var(--paper);
+    color: var(--ink);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 14px;
+  }
+
+  .wizard-section-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--soft);
+  }
+
+  .field-group { margin-bottom: 18px; }
+  .field-group:last-child { margin-bottom: 0; }
+
+  .field-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 8px;
+    line-height: 1.4;
+  }
+
+  .field-hint {
+    display: block;
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 5px;
+    line-height: 1.6;
+    font-weight: 400;
+  }
+
+  select,
+  input[type="number"] {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    background: var(--card);
+    font-size: 14px;
+    font-family: 'Noto Sans TC', sans-serif;
+    color: var(--ink);
+    transition: border-color 0.2s;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  input[type="number"] {
+    font-family: 'DM Mono', monospace;
+  }
+
+  select:focus,
+  input[type="number"]:focus {
+    outline: none;
+    border-color: var(--accent);
+    background: #fff;
+  }
+
+  input[type="number"]::placeholder { color: #aac0a8; }
+
+  /* Check cards */
+  .check-card {
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin-bottom: 10px;
+    font-size: 13px;
+    line-height: 1.7;
+  }
+
+  .check-card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 6px;
+  }
+
+  .check-icon {
+    font-size: 16px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .check-title {
+    font-weight: 600;
+    font-size: 13px;
+    flex: 1;
+    line-height: 1.4;
+  }
+
+  .check-law {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    opacity: 0.7;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .check-desc { font-size: 12px; line-height: 1.65; }
+
+  .check-pass {
+    background: #e8f5e9;
+    border: 1px solid #a5d6a7;
+    border-left: 3px solid var(--accent);
+    color: #1b5e20;
+  }
+
+  .check-fail {
+    background: #fdeaea;
+    border: 1px solid #e8b0b0;
+    border-left: 3px solid #c0392b;
+    color: #8b2020;
+  }
+
+  .check-warn {
+    background: #fff8e1;
+    border: 1px solid #ffe082;
+    border-left: 3px solid #f9a825;
+    color: #6d4c00;
+  }
+
+  /* Overall verdict */
+  .verdict-card {
+    border-radius: 14px;
+    padding: 20px 22px;
+    margin-bottom: 14px;
+  }
+
+  .verdict-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    opacity: 0.8;
+  }
+
+  .verdict-title {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.4;
+    margin-bottom: 6px;
+  }
+
+  .verdict-sub {
+    font-size: 12px;
+    line-height: 1.7;
+    opacity: 0.85;
+  }
+
+  .verdict-score {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 28px;
+    font-weight: 500;
+    margin-bottom: 10px;
+  }
+
+  .verdict-green {
+    background: #e8f5e9;
+    border: 1.5px solid #a5d6a7;
+    color: #1b5e20;
+  }
+
+  .verdict-yellow {
+    background: #fff8e1;
+    border: 1.5px solid #ffe082;
+    color: #5d4000;
+  }
+
+  .verdict-red {
+    background: #fdeaea;
+    border: 1.5px solid #e8b0b0;
+    color: #8b2020;
+  }
+
+  /* Compensation detail */
+  .result-card {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 14px;
+    color: var(--ink);
+  }
+
+  .result-card-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--soft);
+  }
+
+  .breakdown-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .breakdown-table tbody tr {
+    border-bottom: 1px solid var(--soft);
+  }
+
+  .breakdown-table tbody tr:last-child {
+    border-bottom: none;
+  }
+
+  .breakdown-table tbody td {
+    padding: 10px 0;
+    font-size: 13px;
+    vertical-align: middle;
+  }
+
+  .breakdown-table tbody td:last-child {
+    text-align: right;
+    font-family: 'DM Mono', monospace;
+    font-weight: 500;
+  }
+
+  .td-label { color: var(--ink); }
+
+  .gap-detail {
+    background: #fdeaea;
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-top: 10px;
+    font-size: 12px;
+    color: #8b2020;
+    line-height: 1.8;
+  }
+
+  .gap-detail .gap-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 0;
+    border-bottom: 1px solid #f5c6c6;
+  }
+
+  .gap-detail .gap-line:last-child { border-bottom: none; }
+
+  .gap-detail .gap-line strong {
+    font-family: 'DM Mono', monospace;
+    font-size: 14px;
+    color: #c0392b;
+  }
+
+  /* Action list */
+  .action-list {
+    background: #1e2e1e;
+    border: 1px solid #2a3e2a;
+    border-radius: 12px;
+    padding: 20px 22px;
+    margin-bottom: 14px;
+  }
+
+  .action-list-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #2a3e2a;
+  }
+
+  .action-list ol {
+    padding-left: 20px;
+    list-style: decimal;
+  }
+
+  .action-list ol li {
+    font-size: 13px;
+    color: var(--paper);
+    line-height: 1.75;
+    margin-bottom: 8px;
+    opacity: 0.9;
+  }
+
+  .action-list ol li:last-child { margin-bottom: 0; }
+
+  .law-note {
+    background: var(--paper);
+    border-left: 3px solid var(--gold);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 14px;
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.75;
+    margin-bottom: 14px;
+  }
+
+  .law-note strong { color: var(--ink); }
+
+  .salary-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #1e2e1e;
+    border: 1px solid #2a3e2a;
+    border-radius: 20px;
+    padding: 5px 14px;
+    margin-bottom: 24px;
+  }
+
+  .salary-chip-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+  }
+
+  .salary-chip-val {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: var(--gold);
+    font-weight: 500;
+  }
+
+  .nav-bar {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--ink);
+    border-top: 1px solid #1e2e1e;
+    padding: 14px 20px;
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    max-width: 560px;
+  }
+
+  .btn {
+    flex: 1;
+    padding: 14px;
+    border-radius: 10px;
+    border: none;
+    font-size: 15px;
+    font-family: 'Noto Sans TC', sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-primary:hover { background: #225c34; }
+
+  .btn-secondary {
+    background: #1e2e1e;
+    color: var(--muted);
+    flex: 0 0 auto;
+    padding: 14px 20px;
+  }
+
+  .btn-secondary:hover { color: var(--paper); }
+
+  .btn-reset {
+    background: transparent;
+    border: 1px solid #2a3e2a;
+    color: var(--muted);
+  }
+
+  .btn-reset:hover { border-color: var(--muted); color: var(--paper); }
+
+  .hidden { display: none !important; }
+
+  .disclaimer-bar {
+    max-width: 560px;
+    margin: 0 auto;
+    padding: 16px 24px 40px;
+    font-size: 11.5px;
+    color: rgba(255,255,255,0.35);
+    line-height: 1.7;
+    border-top: 1px solid rgba(255,255,255,0.07);
+  }
+
+  .disclaimer-bar strong { color: rgba(255,255,255,0.55); }
+
+  @media (max-width: 480px) {
+    .step-title { font-size: 20px; }
+    .verdict-title { font-size: 15px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Labor<span>Pro</span></div>
+  <a href="index.html" class="back-link">← 返回首頁</a>
+</header>
+<div class="progress-bar">
+  <div class="progress-fill" id="progressFill" style="width: 50%"></div>
+</div>
+
+<main>
+
+  <!-- Step 1 — 協議內容 -->
+  <div class="step active" id="step1">
+    <div class="step-header">
+      <div class="step-label">Step 1 of 2 · 協議內容</div>
+      <h1 class="step-title">競業禁止協議分析</h1>
+      <p class="step-sub">依勞基法§9-1五項要件，逐一分析競業禁止協議的合法性。</p>
+    </div>
+
+    <div class="wizard">
+      <div class="wizard-section-title">保護利益與保密接觸</div>
+
+      <div class="field-group">
+        <label for="hasLegitInterest">雇主有應受保護之正當營業利益（如技術秘密、客戶名單）？</label>
+        <select id="hasLegitInterest">
+          <option value="是">是</option>
+          <option value="否">否</option>
+          <option value="不確定">不確定</option>
+        </select>
+        <span class="field-hint">§9-1第1項第1款：雇主須有值得保護的正當利益，協議方具備必要性。</span>
+      </div>
+
+      <div class="field-group">
+        <label for="hasSecretAccess">勞工職位確實能接觸或使用雇主之營業秘密？</label>
+        <select id="hasSecretAccess">
+          <option value="是">是</option>
+          <option value="否">否</option>
+        </select>
+        <span class="field-hint">§9-1第1項第2款：限制對象應以真正能接觸機密之勞工為限。</span>
+      </div>
+    </div>
+
+    <div class="wizard">
+      <div class="wizard-section-title">競業禁止條件</div>
+
+      <div class="field-group">
+        <label for="periodMonths">競業禁止期間（月）</label>
+        <input type="number" id="periodMonths" placeholder="12" min="1" max="60" inputmode="numeric">
+        <span class="field-hint">§9-1第1項第3款：競業禁止期間上限為 24 個月。</span>
+      </div>
+
+      <div class="field-group">
+        <label for="scopeReasonable">競業禁止範圍（區域、職業類別、競業對象）是否合理且有限縮？</label>
+        <select id="scopeReasonable">
+          <option value="是">是</option>
+          <option value="否">否</option>
+          <option value="不確定">不確定</option>
+        </select>
+        <span class="field-hint">§9-1第1項第3款：範圍應與保護利益相稱，過寬可能被法院縮減或認定無效。</span>
+      </div>
+    </div>
+
+    <div class="wizard">
+      <div class="wizard-section-title">補償金計算</div>
+
+      <div class="field-group">
+        <label for="monthlySalary">離職前月薪（元）</label>
+        <input type="number" id="monthlySalary" placeholder="40000" min="0" inputmode="numeric">
+      </div>
+
+      <div class="field-group">
+        <label for="monthlyCompensation">協議中每月補償金額（元）</label>
+        <input type="number" id="monthlyCompensation" placeholder="20000" min="0" inputmode="numeric">
+        <span class="field-hint">§9-1第1項第4款：補償金應達離職前月薪之 50% 以上。</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 2 — 合法性評估 -->
+  <div class="step" id="step2">
+    <div class="step-header">
+      <div class="step-label">Step 2 of 2 · 合法性評估</div>
+      <h1 class="step-title">§9-1 五要件分析</h1>
+      <p class="step-sub">依勞基法§9-1逐項評估競業禁止協議之合法性。</p>
+    </div>
+
+    <!-- 薪資 chip -->
+    <div class="salary-chip">
+      <span class="salary-chip-label">月薪</span>
+      <span class="salary-chip-val" id="r_salary">—</span>
+      <span class="salary-chip-label" style="margin-left:8px;">期間</span>
+      <span class="salary-chip-val" id="r_period">—</span>
+    </div>
+
+    <!-- Check card 1: 正當營業利益 -->
+    <div class="check-card" id="cc1">
+      <div class="check-card-header">
+        <span class="check-icon" id="cc1_icon">—</span>
+        <div>
+          <span class="check-law">§9-1 第1項第1款</span>
+          <div class="check-title">要件一：正當營業利益</div>
+        </div>
+      </div>
+      <div class="check-desc" id="cc1_desc">—</div>
+    </div>
+
+    <!-- Check card 2: 接觸營業秘密 -->
+    <div class="check-card" id="cc2">
+      <div class="check-card-header">
+        <span class="check-icon" id="cc2_icon">—</span>
+        <div>
+          <span class="check-law">§9-1 第1項第2款</span>
+          <div class="check-title">要件二：勞工接觸營業秘密</div>
+        </div>
+      </div>
+      <div class="check-desc" id="cc2_desc">—</div>
+    </div>
+
+    <!-- Check card 3: 期間合理 -->
+    <div class="check-card" id="cc3">
+      <div class="check-card-header">
+        <span class="check-icon" id="cc3_icon">—</span>
+        <div>
+          <span class="check-law">§9-1 第1項第3款</span>
+          <div class="check-title">要件三：期間是否合理（≤ 24 個月）</div>
+        </div>
+      </div>
+      <div class="check-desc" id="cc3_desc">—</div>
+    </div>
+
+    <!-- Check card 4: 範圍合理 -->
+    <div class="check-card" id="cc4">
+      <div class="check-card-header">
+        <span class="check-icon" id="cc4_icon">—</span>
+        <div>
+          <span class="check-law">§9-1 第1項第3款</span>
+          <div class="check-title">要件四：範圍是否合理</div>
+        </div>
+      </div>
+      <div class="check-desc" id="cc4_desc">—</div>
+    </div>
+
+    <!-- Check card 5: 補償金足額 -->
+    <div class="check-card" id="cc5">
+      <div class="check-card-header">
+        <span class="check-icon" id="cc5_icon">—</span>
+        <div>
+          <span class="check-law">§9-1 第1項第4款</span>
+          <div class="check-title">要件五：補償金是否足額（≥ 月薪 50%）</div>
+        </div>
+      </div>
+      <div class="check-desc" id="cc5_desc">—</div>
+    </div>
+
+    <!-- 補償金差額（條件顯示） -->
+    <div class="result-card hidden" id="r_compGapCard">
+      <div class="result-card-title">補償金差額試算</div>
+      <table class="breakdown-table">
+        <tbody>
+          <tr>
+            <td class="td-label">月薪</td>
+            <td id="r_compSalary">—</td>
+          </tr>
+          <tr>
+            <td class="td-label">法定最低補償金（月薪 × 50%）</td>
+            <td id="r_compMinRequired">—</td>
+          </tr>
+          <tr>
+            <td class="td-label">協議補償金</td>
+            <td id="r_compActual">—</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="gap-detail">
+        <div class="gap-line">
+          <span>每月差額（應補足）</span>
+          <strong id="r_compMonthlyGap">—</strong>
+        </div>
+        <div class="gap-line">
+          <span>總差額（× 期間月數）</span>
+          <strong id="r_compTotalGap">—</strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- 整體評估 -->
+    <div class="verdict-card" id="r_verdict">
+      <div class="verdict-label">整體評估</div>
+      <div class="verdict-score" id="r_verdictScore">—</div>
+      <div class="verdict-title" id="r_verdictTitle">—</div>
+      <div class="verdict-sub" id="r_verdictSub">—</div>
+    </div>
+
+    <!-- 行動建議 -->
+    <div class="action-list">
+      <div class="action-list-title">行動建議</div>
+      <ol>
+        <li>如補償金不足，可主張協議無效（§9-1第2項）。</li>
+        <li>如範圍過寬，法院可能依§9-1第3項縮減至合理範圍。</li>
+        <li>建議保存在職期間接觸客戶資訊之紀錄，作為日後主張之依據。</li>
+        <li>離職前建議諮詢律師確認協議效力，避免事後爭議。</li>
+      </ol>
+    </div>
+
+    <!-- 法律依據 -->
+    <div class="law-note">
+      <strong>法律依據</strong><br>
+      · <strong>勞基法§9-1第1項</strong>：競業禁止之五項要件——正當利益、接觸機密、合理期間與範圍、足額補償<br>
+      · <strong>勞基法§9-1第2項</strong>：違反第1項各款規定者，其約定無效<br>
+      · <strong>勞基法§9-1第3項</strong>：競業禁止之期間、區域、職業活動之範圍及就業對象，未符合第1項第3款規定時，由法院審酌，以不超過2年、合理範圍為限
+    </div>
+  </div>
+
+</main>
+
+<div class="nav-bar">
+  <button class="btn btn-secondary" id="btnBack" onclick="goBack()" style="display:none;">← 上一步</button>
+  <button class="btn btn-primary"   id="btnNext" onclick="goNext()">下一步 →</button>
+  <button class="btn btn-reset"     id="btnReset" onclick="resetAll()" style="display:none;">重新計算</button>
+</div>
+
+<div class="disclaimer-bar"><strong>免責聲明</strong>：本平台之計算結果僅供初步參考，不構成法律意見或法律諮詢服務。實際案件因個案事實、適用法規及法院見解不同，結果可能有所差異，建議諮詢具執照之律師或相關法律專業人員。</div>
+
+<script>
+  const state = {};
+  let currentStep = 1;
+  const totalSteps = 2;
+
+  function fmt(n) {
+    return '$' + Math.round(n).toLocaleString('zh-TW');
+  }
+
+  function showStep(n) {
+    document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+    document.getElementById('step' + n).classList.add('active');
+    const pct = (n / totalSteps) * 100;
+    document.getElementById('progressFill').style.width = pct + '%';
+    currentStep = n;
+
+    const btnBack  = document.getElementById('btnBack');
+    const btnNext  = document.getElementById('btnNext');
+    const btnReset = document.getElementById('btnReset');
+
+    if (n === 1) {
+      btnBack.style.display  = 'none';
+      btnNext.style.display  = 'flex';
+      btnReset.style.display = 'none';
+      btnNext.textContent    = '分析合法性 →';
+    } else {
+      btnBack.style.display  = 'block';
+      btnNext.style.display  = 'none';
+      btnReset.style.display = 'flex';
+    }
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function goBack() {
+    if (currentStep > 1) showStep(currentStep - 1);
+  }
+
+  function goNext() {
+    if (currentStep === 1) {
+      if (!validateStep1()) return;
+      collectStep1();
+      calculate();
+      showStep(2);
+    }
+  }
+
+  function resetAll() {
+    document.getElementById('hasLegitInterest').value    = '是';
+    document.getElementById('hasSecretAccess').value     = '是';
+    document.getElementById('periodMonths').value        = '';
+    document.getElementById('scopeReasonable').value     = '是';
+    document.getElementById('monthlySalary').value       = '';
+    document.getElementById('monthlyCompensation').value = '';
+    showStep(1);
+  }
+
+  function validateStep1() {
+    const period = parseFloat(document.getElementById('periodMonths').value);
+    if (!period || period <= 0) {
+      alert('請輸入有效的競業禁止期間（月數）。');
+      return false;
+    }
+    const salary = parseFloat(document.getElementById('monthlySalary').value);
+    if (!salary || salary <= 0) {
+      alert('請輸入有效的離職前月薪金額。');
+      return false;
+    }
+    const comp = parseFloat(document.getElementById('monthlyCompensation').value);
+    if (comp === undefined || comp === null || isNaN(comp) || document.getElementById('monthlyCompensation').value === '') {
+      alert('請輸入每月補償金額（可填 0）。');
+      return false;
+    }
+    return true;
+  }
+
+  function collectStep1() {
+    state.hasLegitInterest    = document.getElementById('hasLegitInterest').value;
+    state.hasSecretAccess     = document.getElementById('hasSecretAccess').value;
+    state.periodMonths        = parseFloat(document.getElementById('periodMonths').value);
+    state.scopeReasonable     = document.getElementById('scopeReasonable').value;
+    state.monthlySalary       = parseFloat(document.getElementById('monthlySalary').value);
+    state.monthlyCompensation = parseFloat(document.getElementById('monthlyCompensation').value) || 0;
+  }
+
+  function setCheckCard(id, status, desc) {
+    // status: 'pass' | 'fail' | 'warn'
+    const card = document.getElementById(id);
+    const icon = document.getElementById(id + '_icon');
+    const descEl = document.getElementById(id + '_desc');
+
+    card.classList.remove('check-pass', 'check-fail', 'check-warn');
+    if (status === 'pass') {
+      card.classList.add('check-pass');
+      icon.textContent = '✓';
+    } else if (status === 'fail') {
+      card.classList.add('check-fail');
+      icon.textContent = '✗';
+    } else {
+      card.classList.add('check-warn');
+      icon.textContent = '⚠';
+    }
+    descEl.innerHTML = desc;
+  }
+
+  function calculate() {
+    const s = state;
+    let passCount = 0;
+
+    // Chips
+    document.getElementById('r_salary').textContent = fmt(s.monthlySalary);
+    document.getElementById('r_period').textContent = s.periodMonths + ' 個月';
+
+    // ── 要件一：正當營業利益 ──
+    if (s.hasLegitInterest === '是') {
+      setCheckCard('cc1', 'pass', '具備應受保護之正當營業利益，滿足此要件。');
+      passCount++;
+    } else if (s.hasLegitInterest === '否') {
+      setCheckCard('cc1', 'fail', '欠缺應受保護之正當營業利益，競業禁止協議可能被認定無效。');
+    } else {
+      setCheckCard('cc1', 'warn', '是否具備正當利益尚不明確。法院通常採較高認定標準，建議蒐集相關事證（如技術文件、客戶名單保密措施等）確認。');
+    }
+
+    // ── 要件二：勞工接觸營業秘密 ──
+    if (s.hasSecretAccess === '是') {
+      setCheckCard('cc2', 'pass', '勞工職位確實能接觸雇主之營業秘密，限制競業具備必要性，滿足此要件。');
+      passCount++;
+    } else {
+      setCheckCard('cc2', 'fail', '勞工若未實際接觸或使用雇主機密，限制競業欠缺必要性，協議效力存疑。');
+    }
+
+    // ── 要件三：期間合理 ──
+    const period = s.periodMonths;
+    if (period <= 24) {
+      setCheckCard('cc3', 'pass', '競業禁止期間 ' + period + ' 個月，未超過法定上限 24 個月，滿足此要件。');
+      passCount++;
+    } else {
+      setCheckCard('cc3', 'fail', '競業禁止期間 ' + period + ' 個月，超過法定上限 2 年（24 個月）。超過部分無效，可主張僅前 24 個月有約束力。');
+    }
+
+    // ── 要件四：範圍合理 ──
+    if (s.scopeReasonable === '是') {
+      setCheckCard('cc4', 'pass', '競業禁止範圍（區域、職業類別、對象）合理且有所限縮，滿足此要件。');
+      passCount++;
+    } else if (s.scopeReasonable === '否') {
+      setCheckCard('cc4', 'warn', '競業禁止範圍過寬，法院可能依§9-1第3項介入縮減至合理範圍，或認定無效。');
+    } else {
+      setCheckCard('cc4', 'warn', '範圍合理性尚待確認。建議對照協議條款，確認是否有區域、職業類別或競業對象之明確限縮，否則存在被法院認定過寬之風險。');
+    }
+
+    // ── 要件五：補償金足額 ──
+    const minComp = s.monthlySalary * 0.5;
+    const compRatio = s.monthlySalary > 0
+      ? (s.monthlyCompensation / s.monthlySalary * 100)
+      : 0;
+    const compGap = minComp - s.monthlyCompensation;
+    const totalCompGap = compGap * Math.min(period, 24);
+
+    if (s.monthlyCompensation >= minComp) {
+      setCheckCard('cc5', 'pass',
+        '補償金 ' + fmt(s.monthlyCompensation) + '/月，達月薪 ' + compRatio.toFixed(1) + '%，符合§9-1第1項第4款最低 50% 要求，滿足此要件。');
+      passCount++;
+      document.getElementById('r_compGapCard').classList.add('hidden');
+    } else {
+      setCheckCard('cc5', 'fail',
+        '補償金 ' + fmt(s.monthlyCompensation) + '/月，僅達月薪 ' + compRatio.toFixed(1) + '%，低於法定 50% 下限（' + fmt(minComp) + '/月），協議可能因此無效（§9-1第2項）。');
+
+      // 差額卡片
+      document.getElementById('r_compGapCard').classList.remove('hidden');
+      document.getElementById('r_compSalary').textContent     = fmt(s.monthlySalary);
+      document.getElementById('r_compMinRequired').textContent = fmt(minComp);
+      document.getElementById('r_compActual').textContent     = fmt(s.monthlyCompensation);
+      document.getElementById('r_compMonthlyGap').textContent = fmt(compGap);
+      document.getElementById('r_compTotalGap').textContent   = fmt(totalCompGap) + '（共 ' + Math.min(period, 24) + ' 個月）';
+    }
+
+    // ── 整體評估 ──
+    const verdict = document.getElementById('r_verdict');
+    const scoreEl  = document.getElementById('r_verdictScore');
+    const titleEl  = document.getElementById('r_verdictTitle');
+    const subEl    = document.getElementById('r_verdictSub');
+
+    scoreEl.textContent = passCount + ' / 5 要件通過';
+    verdict.classList.remove('verdict-green', 'verdict-yellow', 'verdict-red');
+
+    if (passCount === 5) {
+      verdict.classList.add('verdict-green');
+      titleEl.textContent = '競業禁止協議合法性較高，建議遵守';
+      subEl.textContent   = '五項要件均符合勞基法§9-1規定，協議具備較高之法律效力。如有疑慮，仍可諮詢律師確認個案細節。';
+    } else if (passCount >= 3) {
+      verdict.classList.add('verdict-yellow');
+      titleEl.textContent = '協議存在瑕疵，建議尋求法律意見再決定是否遵守';
+      subEl.textContent   = '部分要件未達法定標準，協議效力存在不確定性。強行違反可能承擔法律責任，但若協議本身有瑕疵，亦可能主張全部或部分無效。';
+    } else {
+      verdict.classList.add('verdict-red');
+      titleEl.textContent = '協議合法性存疑，可能被法院認定全部或部分無效';
+      subEl.textContent   = '多項要件未符合§9-1規定，協議被法院認定無效之可能性較高。強烈建議在採取任何行動前諮詢律師以確認風險。';
+    }
+  }
+
+  // Init
+  showStep(1);
+</script>
+</body>
+</html>

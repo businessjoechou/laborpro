@@ -219,6 +219,19 @@
   .faq-q { font-family: 'Noto Serif TC', serif; font-size: 14px; font-weight: 600; color: var(--paper); margin-bottom: 8px; line-height: 1.5; }
   .faq-a { font-size: 13px; color: var(--muted); line-height: 1.8; }
   .faq-a a { color: var(--gold); text-decoration: none; }
+
+  /* Category label */
+  .category-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 8px 0 4px;
+  }
+
+  .disclaimer-bar{max-width:560px;margin:0 auto;padding:16px 24px 40px;font-size:11.5px;color:rgba(255,255,255,0.35);line-height:1.7;border-top:1px solid rgba(255,255,255,0.07);}
+  .disclaimer-bar strong{color:rgba(255,255,255,0.55);}
 </style>
 </head>
 <body>
@@ -237,12 +250,18 @@
   </p>
 
   <div class="law-strip">
+    <span class="law-pill">§9-1</span>
     <span class="law-pill">§11</span>
     <span class="law-pill">§12</span>
     <span class="law-pill">§14</span>
     <span class="law-pill">§16</span>
     <span class="law-pill">§17</span>
+    <span class="law-pill">§21</span>
     <span class="law-pill">§24</span>
+    <span class="law-pill">§30</span>
+    <span class="law-pill">§32</span>
+    <span class="law-pill">§34</span>
+    <span class="law-pill">§36</span>
     <span class="law-pill">§38</span>
     <span class="law-pill">§39</span>
     <span class="law-pill">§59</span>
@@ -301,6 +320,52 @@
         <div class="tool-info">
           <div class="tool-name">不當解雇分析</div>
           <div class="tool-desc">§11、§12、§14解雇合法性判斷<br>預告工資、資遣費請求評估</div>
+        </div>
+        <span class="tool-arrow">→</span>
+      </div>
+    </a>
+
+    <div class="category-label">勞動條件合規</div>
+
+    <a class="tool-card" href="work-hours.html">
+      <div class="tool-card-inner">
+        <div class="tool-num">06</div>
+        <div class="tool-info">
+          <div class="tool-name">工時合規檢查</div>
+          <div class="tool-desc">§30週工時、§32加班上限、§34換班間隔<br>§36例假與休息日合規逐項分析</div>
+        </div>
+        <span class="tool-arrow">→</span>
+      </div>
+    </a>
+
+    <a class="tool-card" href="pension.html">
+      <div class="tool-card-inner">
+        <div class="tool-num">07</div>
+        <div class="tool-info">
+          <div class="tool-name">勞退提撥試算</div>
+          <div class="tool-desc">雇主6%強制提撥＋自願提撥複利試算<br>預估退休帳戶總額與月退金額</div>
+        </div>
+        <span class="tool-arrow">→</span>
+      </div>
+    </a>
+
+    <a class="tool-card" href="min-wage.html">
+      <div class="tool-card-inner">
+        <div class="tool-num">08</div>
+        <div class="tool-info">
+          <div class="tool-name">最低工資合規</div>
+          <div class="tool-desc">薪資結構拆解，判斷是否低於基本工資<br>§21合規檢查，含差額計算</div>
+        </div>
+        <span class="tool-arrow">→</span>
+      </div>
+    </a>
+
+    <a class="tool-card" href="non-compete.html">
+      <div class="tool-card-inner">
+        <div class="tool-num">09</div>
+        <div class="tool-info">
+          <div class="tool-name">競業禁止分析</div>
+          <div class="tool-desc">§9-1五要件逐項評估，協議合法性判斷<br>補償金足額計算、無效主張建議</div>
         </div>
         <span class="tool-arrow">→</span>
       </div>
@@ -415,5 +480,6 @@
   ]
 }
 </script>
+<div class="disclaimer-bar"><strong>免責聲明</strong>：本平台之計算結果僅供初步參考，不構成法律意見或法律諮詢服務。實際案件因個案事實、適用法規及法院見解不同，結果可能有所差異，建議諮詢具執照之律師或相關法律專業人員。</div>
 </body>
 </html>
