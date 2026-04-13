@@ -48,6 +48,9 @@ header {
 .logo span { color: var(--gold); }
 
 .parent-brand {
+  display: flex;
+  align-items: center;
+  gap: 5px;
   font-family: 'DM Mono', monospace;
   font-size: 9px;
   color: rgba(255, 255, 255, 0.35);
@@ -57,6 +60,12 @@ header {
 .parent-brand span {
   text-transform: uppercase;
   letter-spacing: 0.18em;
+}
+.parent-brand .cl-icon {
+  width: 13px;
+  height: 13px;
+  flex-shrink: 0;
+  border-radius: 3px;
 }
 
 .back-link {
