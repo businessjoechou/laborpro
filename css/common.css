@@ -669,13 +669,13 @@ textarea:focus {
   margin: 0 auto;
   padding: 20px 24px 120px;
   font-size: 12px;
-  color: #d4cfc6;
+  color: #3a3a3a;
   line-height: 1.8;
   border-top: 2px solid var(--gold);
-  background: rgba(255,255,255,0.04);
+  background: rgba(0,0,0,0.04);
   border-radius: 0 0 12px 12px;
 }
-.disclaimer-bar strong { color: var(--gold); font-size: 13px; }
+.disclaimer-bar strong { color: #8b2020; font-size: 13px; }
 
 /* ===== Badge / Tag ===== */
 .badge {
