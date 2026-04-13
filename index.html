@@ -75,6 +75,18 @@
   }
   .logo span { color: var(--gold); }
 
+  .parent-brand {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.35);
+    letter-spacing: 0.14em;
+    margin-bottom: 6px;
+  }
+  .parent-brand span {
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+  }
+
   .tag {
     display: inline-block;
     font-family: 'DM Mono', monospace;
@@ -600,7 +612,10 @@
 
 <div class="hero">
   <div class="hero-top">
-    <a href="/" class="logo">Labor<span>Pro</span><span class="tag">v1.0</span></a>
+    <div>
+      <div class="parent-brand">周全 <span>ChouLegal</span></div>
+      <a href="/" class="logo">Labor<span>Pro</span><span class="tag">v1.0</span></a>
+    </div>
   </div>
 
   <span class="eyebrow">中華民國勞基法 · 勞動權益</span>

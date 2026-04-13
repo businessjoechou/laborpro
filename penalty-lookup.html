@@ -18,6 +18,8 @@
 <meta property="og:locale" content="zh_TW">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="js/persona.js"></script>
+<script src="js/case-law-data.js"></script>
+<script src="js/case-law-render.js"></script>
 <link rel="stylesheet" href="css/common.css">
 <script type="application/ld+json">
 {
@@ -172,7 +174,10 @@
 <body>
 
 <header>
-  <a href="index.html" class="logo">Labor<span>Pro</span></a>
+  <a href="index.html" style="text-decoration:none;color:inherit">
+    <div class="parent-brand">周全 <span>ChouLegal</span></div>
+    <div class="logo">Labor<span>Pro</span></div>
+  </a>
   <a class="back-link" href="index.html">← 首頁</a>
 </header>
 
@@ -197,6 +202,7 @@
   <div class="result-count" id="resultCount"></div>
   <div id="cardContainer"></div>
   <div class="no-results" id="noResults">找不到符合的違規態樣，請調整搜尋條件。</div>
+  <div id="penaltyResultArea"></div>
 
   <div class="law-note" style="margin-top:8px;">
     <strong>注意事項</strong><br>
@@ -346,6 +352,16 @@
 
     document.getElementById('resultCount').textContent = '共 ' + list.length + ' 項違規態樣';
     document.getElementById('noResults').style.display = list.length === 0 ? 'block' : 'none';
+
+    // 從顯示的違規項目中解析最低罰鍰總和，用於匹配判例
+    var totalMinPenalty = 0;
+    list.forEach(function(v) {
+      var m = v.penalty.match(/(\d+)萬/);
+      if (m) totalMinPenalty += parseInt(m[1], 10) * 10000;
+    });
+    if (totalMinPenalty > 0) {
+      LaborPro.renderCaseLaw('penalty', totalMinPenalty, 'penaltyResultArea');
+    }
   }
 
   window.setCategory = function(cat, btnEl) {

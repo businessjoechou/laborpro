@@ -17,6 +17,8 @@
 <meta property="og:description" content="合法 vs 違法解僱成本比較，一目了然。資遣費＋預告工資＋特休折現完整試算。">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="js/persona.js"></script>
+<script src="js/case-law-data.js"></script>
+<script src="js/case-law-render.js"></script>
 <link rel="stylesheet" href="css/common.css">
 <style>
   .extra-field {
@@ -145,7 +147,10 @@
 <body>
 
 <header>
-  <a href="index.html" class="logo">Labor<span>Pro</span></a>
+  <a href="index.html" style="text-decoration:none;color:inherit">
+    <div class="parent-brand">周全 <span>ChouLegal</span></div>
+    <div class="logo">Labor<span>Pro</span></div>
+  </a>
   <a class="back-link" href="index.html">← 首頁</a>
 </header>
 <div class="progress-bar">
@@ -534,6 +539,7 @@
     document.getElementById('r_heroAmount').textContent = fmt(legalTotal);
     document.getElementById('r_heroSub').textContent =
       fmtTenure(tenure.years, tenure.months, tenure.days) + '｜' + reasonLabels[s.reason];
+    LaborPro.renderCaseLaw('termination', legalTotal, 'r_hero');
 
     // ─── Render breakdown ────────────────────────────────────────────────────
     document.getElementById('r_severance').textContent = fmt(severance);

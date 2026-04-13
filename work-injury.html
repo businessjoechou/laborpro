@@ -14,6 +14,8 @@
 <link rel="canonical" href="https://laborpro.app/work-injury.html">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="js/persona.js"></script>
+<script src="js/case-law-data.js"></script>
+<script src="js/case-law-render.js"></script>
 <link rel="stylesheet" href="css/common.css">
 <style>
   body { background: var(--paper); color: var(--ink); }
@@ -64,7 +66,10 @@
 <body>
 
 <header>
-  <a href="index.html" class="logo">Labor<span>Pro</span></a>
+  <a href="index.html" style="text-decoration:none;color:inherit">
+    <div class="parent-brand">周全 <span>ChouLegal</span></div>
+    <div class="logo">Labor<span>Pro</span></div>
+  </a>
   <a class="back-link" href="index.html">← 首頁</a>
 </header>
 <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:33%"></div></div>
@@ -362,7 +367,7 @@
     };
 
     document.getElementById('resultContent').innerHTML = `
-      <div class="result-hero">
+      <div class="result-hero" id="workInjuryResultHero">
         <div class="result-hero-label"><span class="worker-only">您可請求的補償</span><span class="employer-only">雇主補償責任</span></div>
         <div class="result-hero-amount">${total > 0 ? fmt(total) : '—'}</div>
         <div class="result-hero-sub">${typeLabel[type]} ／ 日薪 NT$ ${dw.toLocaleString('zh-TW')}</div>
@@ -400,6 +405,7 @@
         </div>
       </div>
     `;
+    LaborPro.renderCaseLaw('workInjury', total, 'workInjuryResultHero');
   }
 </script>
 <div class="disclaimer-bar"><strong>免責聲明</strong>：本平台之計算結果僅供初步參考，不構成法律意見或法律諮詢服務。實際案件因個案事實、適用法規及法院見解不同，結果可能有所差異，建議諮詢具執照之律師或相關法律專業人員。</div>

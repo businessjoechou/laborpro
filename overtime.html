@@ -15,6 +15,8 @@
 <meta property="og:type" content="website">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="js/persona.js"></script>
+<script src="js/case-law-data.js"></script>
+<script src="js/case-law-render.js"></script>
 <link rel="stylesheet" href="css/common.css">
 <style>
   .field-group label { line-height: 1.4; }
@@ -197,7 +199,10 @@
 <body>
 
 <header>
-  <a href="index.html" class="logo">Labor<span>Pro</span></a>
+  <a href="index.html" style="text-decoration:none;color:inherit">
+    <div class="parent-brand">周全 <span>ChouLegal</span></div>
+    <div class="logo">Labor<span>Pro</span></div>
+  </a>
   <a class="back-link" href="index.html">← 首頁</a>
 </header>
 <div class="progress-bar">
@@ -315,7 +320,7 @@
     </div>
 
     <!-- 總加班費 -->
-    <div class="result-hero">
+    <div class="result-hero" id="otResultHero">
       <div class="result-hero-label"><span class="worker-only">您的加班費應為</span><span class="employer-only">應付加班費成本</span></div>
       <div class="result-hero-amount" id="r_totalOT">—</div>
       <div class="result-hero-sub" id="r_totalSub">—</div>
@@ -572,6 +577,7 @@
     const total  = wdPay + rdPay + holPay + susPay;
 
     document.getElementById('r_totalOT').textContent = fmt(total);
+    LaborPro.renderCaseLaw('overtime', total, 'otResultHero');
 
     // Sub-label
     const parts = [];
