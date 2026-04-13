@@ -831,6 +831,12 @@ const ALL_TOOLS = {
       worker: '退休後每月可以領多少？雇主6%＋自提複利試算',
       employer: '員工勞退提撥成本精算，雇主6%強制提繳金額計算'
     }},
+  'pension-claim': { href: 'pension-claim.html', badge: 'new',
+    name: { all: '退休金請領' },
+    desc: {
+      worker: '退休時可以領多少？新制一次領vs月退比較、舊制基數計算',
+      employer: '員工退休金給付試算，新制§24、舊制§55請領金額計算'
+    }},
   'labor-insurance': { href: 'labor-insurance.html',
     name: { all: '勞保費用與給付試算' },
     desc: {
@@ -905,7 +911,7 @@ const TABS = [
     id: 'leave',
     label: '假別與福利',
     subtitle: '特休、育嬰假、勞退提撥、勞保給付完整試算。',
-    tools: ['leave-calc', 'parental-leave', 'pension', 'labor-insurance']
+    tools: ['leave-calc', 'parental-leave', 'pension', 'pension-claim', 'labor-insurance']
   },
   {
     id: 'compliance',

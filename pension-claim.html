@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" href="favicon.svg">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>退休金請領計算機｜LaborPro</title>
+<meta name="description" content="依勞工退休金條例§24（新制）與勞基法§55（舊制）計算可領退休金，新制一次領與月退比較、舊制基數計算，免費使用。">
+<meta name="keywords" content="退休金請領,勞退新制,勞退舊制,月退休金,一次領退休金,勞基法第55條,勞工退休金條例第24條,退休金基數,台灣勞基法">
+<meta name="robots" content="index, follow">
+<meta name="author" content="LaborPro">
+<meta property="og:site_name" content="LaborPro">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="js/persona.js"></script>
+<script src="js/case-law-data.js"></script>
+<script src="js/case-law-render.js"></script>
+<link rel="stylesheet" href="css/common.css">
+<style>
+  .regime-fields { display: none; margin-top: 14px; }
+  .regime-fields.visible { display: block; }
+
+  .field-hint {
+    display: block;
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 5px;
+    line-height: 1.6;
+    font-weight: 400;
+  }
+
+  .formula-box {
+    background: #e8f4e4;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    padding: 14px;
+    margin-top: 10px;
+    font-size: 12px;
+    color: var(--accent);
+    line-height: 1.8;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .formula-box strong { color: var(--ink); }
+
+  .compare-box {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  .compare-card {
+    flex: 1;
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 16px;
+    text-align: center;
+    color: var(--ink);
+  }
+
+  .compare-card.recommended {
+    border-color: var(--accent);
+    background: #eef8f2;
+  }
+
+  .compare-card-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .compare-card-amount {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+
+  .compare-card.recommended .compare-card-amount {
+    color: var(--accent);
+  }
+
+  .compare-card-sub {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .recommend-badge {
+    display: inline-block;
+    background: var(--accent);
+    color: #fff;
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    letter-spacing: 0.06em;
+    margin-bottom: 6px;
+  }
+
+  @media (max-width: 480px) {
+    .compare-box { flex-direction: column; }
+    .compare-card-amount { font-size: 18px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" style="text-decoration:none;color:inherit">
+    <div class="parent-brand"><img class="cl-icon" src="choulegal-icon.svg" alt="">周全 <span>ChouLegal</span></div>
+    <div class="logo">Labor<span>Pro</span></div>
+  </a>
+  <a class="back-link" href="index.html">← 首頁</a>
+</header>
+<div class="progress-bar">
+  <div class="progress-fill" id="progressFill" style="width: 50%"></div>
+</div>
+
+<main>
+
+  <!-- Step 1 -->
+  <div class="step active" id="step1">
+    <div class="step-header">
+      <div class="step-label">Step 1 of 2 · 基本資料</div>
+      <h1 class="step-title">退休金請領計算機</h1>
+      <p class="step-sub">依勞工退休金條例§24（新制）與勞基法§55（舊制）計算退休時可領取之退休金金額。</p>
+    </div>
+
+    <div class="wizard">
+      <div class="wizard-section-title">退休制度</div>
+
+      <div class="field-group">
+        <label>適用退休制度</label>
+        <div class="select-wrap">
+          <select id="regime" onchange="onRegimeChange()">
+            <option value="new">勞退新制（勞工退休金條例）</option>
+            <option value="old">勞退舊制（勞基法§55）</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="wizard">
+      <div class="wizard-section-title">薪資資料</div>
+
+      <div class="field-group">
+        <label>月平均工資（元）<span class="hint" style="font-weight:400;color:var(--muted);font-size:12px;margin-left:6px;">退休前6個月平均</span></label>
+        <input type="number" id="avgWage" placeholder="50000" min="0" inputmode="numeric">
+        <span class="field-hint">舊制以此計算退休金基數金額；新制作為參考。</span>
+      </div>
+    </div>
+
+    <!-- 新制欄位 -->
+    <div class="regime-fields visible" id="newFields">
+      <div class="wizard">
+        <div class="wizard-section-title">勞退新制資料</div>
+
+        <div class="field-group">
+          <label>個人帳戶累積金額（元）</label>
+          <input type="number" id="accountBalance" placeholder="800000" min="0" inputmode="numeric">
+          <span class="field-hint">可至勞保局「勞工退休金個人專戶查詢」取得，或使用本站「勞退提撥試算」估算。</span>
+        </div>
+
+        <div class="field-group">
+          <label>新制工作年資（年）</label>
+          <input type="number" id="newSeniority" placeholder="20" min="0" step="1" inputmode="numeric">
+          <span class="field-hint">2005年7月1日起算之年資。年資滿15年可選月退，未滿15年僅能一次領。</span>
+        </div>
+
+        <div class="field-group">
+          <label>預計請領年齡</label>
+          <div class="select-wrap">
+            <select id="claimAge">
+              <option value="60">60歲（最早請領）</option>
+              <option value="65">65歲</option>
+              <option value="70">70歲（延後請領）</option>
+            </select>
+          </div>
+          <span class="field-hint">依§24，年滿60歲即可請領。延後請領帳戶持續累積。</span>
+        </div>
+
+        <div class="field-group">
+          <label>預計請領時帳戶總額（元，選填）</label>
+          <input type="number" id="projectedBalance" placeholder="" min="0" inputmode="numeric">
+          <span class="field-hint">含未來投資收益之預估總額。若不填則以目前帳戶累積金額計算。</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 舊制欄位 -->
+    <div class="regime-fields" id="oldFields">
+      <div class="wizard">
+        <div class="wizard-section-title">勞退舊制資料</div>
+
+        <div class="field-group">
+          <label>到職日期</label>
+          <input type="date" id="startDate">
+        </div>
+
+        <div class="field-group">
+          <label>退休日期</label>
+          <input type="date" id="retireDate">
+        </div>
+
+        <div class="field-group">
+          <label>退休原因</label>
+          <div class="select-wrap">
+            <select id="retireReason">
+              <option value="voluntary">自請退休（§53）</option>
+              <option value="mandatory">強制退休（§54）</option>
+            </select>
+          </div>
+          <span class="field-hint">§53：工作15年以上且年滿55歲，或工作25年以上，或年滿60歲。§54：年滿65歲或心神喪失不堪勝任。</span>
+        </div>
+
+        <div class="field-group">
+          <label>因執行職務致心神喪失或身體殘廢？</label>
+          <div class="select-wrap">
+            <select id="workDisability">
+              <option value="no">否</option>
+              <option value="yes">是（加給20%）</option>
+            </select>
+          </div>
+          <span class="field-hint">依§55第2項，因執行職務致殘者，加給20%基數。</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="warn-box">
+      ⚠ 本計算機提供參考試算，實際退休金依個人帳戶實際金額、勞動部公告餘命月數及個別年資認定為準，建議諮詢勞保局或專業律師。
+    </div>
+  </div>
+
+  <!-- Step 2 — Results -->
+  <div class="step" id="step2">
+    <div class="step-header">
+      <div class="step-label">Step 2 of 2 · 計算結果</div>
+      <h1 class="step-title">退休金試算結果</h1>
+      <p class="step-sub">依您輸入的資料，以下為預估可領退休金及相關明細。</p>
+    </div>
+
+    <!-- 主結果 -->
+    <div class="result-hero" id="pensionResultHero">
+      <div class="result-hero-label"><span class="worker-only">預估可領退休金</span><span class="employer-only">預估退休金給付</span></div>
+      <div class="result-hero-amount" id="r_totalAmount">—</div>
+      <div class="result-hero-sub" id="r_totalSub">—</div>
+    </div>
+
+    <!-- 新制：一次領 vs 月退比較 -->
+    <div id="r_newCompare" style="display:none;">
+      <div class="compare-box">
+        <div class="compare-card" id="r_lumpCard">
+          <div class="compare-card-label">一次領</div>
+          <div class="compare-card-amount" id="r_lumpAmount">—</div>
+          <div class="compare-card-sub" id="r_lumpSub">帳戶全額一次領回</div>
+        </div>
+        <div class="compare-card" id="r_monthlyCard">
+          <div class="compare-card-label">月退休金</div>
+          <div class="compare-card-amount" id="r_monthlyAmount">—</div>
+          <div class="compare-card-sub" id="r_monthlySub">—</div>
+        </div>
+      </div>
+
+      <div class="result-card" id="r_newDetail">
+        <div class="result-card-title">新制請領明細</div>
+        <div class="result-row">
+          <span class="result-row-label">帳戶總額</span>
+          <span class="result-row-val" id="r_newAccountTotal">—</span>
+        </div>
+        <div class="result-row">
+          <span class="result-row-label">請領年齡</span>
+          <span class="result-row-val" id="r_newClaimAge">—</span>
+        </div>
+        <div class="result-row">
+          <span class="result-row-label">新制年資</span>
+          <span class="result-row-val" id="r_newSeniority">—</span>
+        </div>
+        <div class="result-row">
+          <span class="result-row-label">請領方式</span>
+          <span class="result-row-val highlight" id="r_newClaimType">—</span>
+        </div>
+        <div class="result-row" id="r_newMonthlyRow" style="display:none;">
+          <span class="result-row-label">平均餘命月數</span>
+          <span class="result-row-val" id="r_newLifeMonths">—</span>
+        </div>
+        <div class="result-row" id="r_newMonthlyCalcRow" style="display:none;">
+          <span class="result-row-label">月退金計算</span>
+          <span class="result-row-val" id="r_newMonthlyCalc">—</span>
+        </div>
+      </div>
+
+      <div class="info-box" id="r_newEligibility">—</div>
+    </div>
+
+    <!-- 舊制：基數計算明細 -->
+    <div id="r_oldDetail" style="display:none;">
+      <div class="result-card">
+        <div class="result-card-title">舊制基數計算明細</div>
+        <div class="result-row">
+          <span class="result-row-label">到職日期</span>
+          <span class="result-row-val" id="r_oldStartDate">—</span>
+        </div>
+        <div class="result-row">
+          <span class="result-row-label">退休日期</span>
+          <span class="result-row-val" id="r_oldRetireDate">—</span>
+        </div>
+        <div class="result-row">
+          <span class="result-row-label">工作年資</span>
+          <span class="result-row-val" id="r_oldTenure">—</span>
+        </div>
+        <div class="result-row">
+          <span class="result-row-label">退休原因</span>
+          <span class="result-row-val" id="r_oldReason">—</span>
+        </div>
+        <div class="result-row">
+          <span class="result-row-label">前15年基數（每年2基數）</span>
+          <span class="result-row-val" id="r_oldFirst15">—</span>
+        </div>
+        <div class="result-row" id="r_oldAfter15Row">
+          <span class="result-row-label">超過15年基數（每年1基數）</span>
+          <span class="result-row-val" id="r_oldAfter15">—</span>
+        </div>
+        <div class="result-row" id="r_oldDisabilityRow" style="display:none;">
+          <span class="result-row-label">職災加給20%</span>
+          <span class="result-row-val" id="r_oldDisability">—</span>
+        </div>
+        <div class="result-row">
+          <span class="result-row-label">合計基數</span>
+          <span class="result-row-val highlight" id="r_oldTotalUnits">—</span>
+        </div>
+        <div class="result-row">
+          <span class="result-row-label">基數金額（月平均工資）</span>
+          <span class="result-row-val" id="r_oldUnitWage">—</span>
+        </div>
+        <div class="result-row">
+          <span class="result-row-label" style="font-weight:600;color:var(--ink);">退休金總額</span>
+          <span class="result-row-val highlight" id="r_oldTotal">—</span>
+        </div>
+      </div>
+
+      <div class="formula-box">
+        <strong>計算公式（勞基法§55）</strong><br>
+        前15年：min(年資, 15) × 2 基數<br>
+        超過15年：max(年資 - 15, 0) × 1 基數<br>
+        合計基數上限：45 基數<br>
+        退休金 = 基數 × 月平均工資<br>
+        <span id="r_formulaDetail">—</span>
+      </div>
+    </div>
+
+    <!-- Persona 專區 -->
+    <div class="worker-only" style="background:#eef8f2;border:1.5px solid var(--accent);border-radius:12px;padding:16px 20px;margin-bottom:14px;">
+      <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:8px;">勞工退休權益提醒</div>
+      <div style="font-size:12px;color:#1a3a28;line-height:1.9;">
+        · 新制：年滿<strong>60歲</strong>即可請領，年資滿15年可選月退或一次領<br>
+        · 舊制：符合§53自請退休條件即可申請（15年+55歲、25年、60歲）<br>
+        · 新制帳戶餘額可至<strong>勞保局網站</strong>或以自然人憑證查詢<br>
+        · 退休金請求權自退休次月起<strong>5年內</strong>不行使而消滅（§58）<br>
+        · 舊制退休金由雇主支付，如雇主未依規提撥退休準備金，仍應給付<br>
+        · 勞動部諮詢專線：<strong>1955</strong>
+      </div>
+    </div>
+
+    <div class="employer-only" style="background:#fef8e8;border:1.5px solid #c8901a;border-radius:12px;padding:16px 20px;margin-bottom:14px;">
+      <div style="font-size:12px;font-weight:700;color:#8a5a10;margin-bottom:8px;">雇主合規提醒</div>
+      <div style="font-size:12px;color:#4a3a10;line-height:1.9;">
+        · 舊制退休金未足額提撥退休準備金：罰<strong>9萬至45萬</strong>（§78）<br>
+        · 雇主不得拒絕符合§53條件之自請退休申請<br>
+        · 強制退休（§54）須於勞工年滿65歲時主動辦理<br>
+        · 舊制退休金應於勞工退休之日起<strong>30日內</strong>給付（§55）<br>
+        · 新制雇主每月提撥≧6%，未依規提繳罰<strong>6萬至30萬</strong>（勞退§49）<br>
+        · 建議定期檢視舊制退休準備金是否足額
+      </div>
+    </div>
+
+    <!-- 法律依據 -->
+    <div class="law-note">
+      <strong>法律依據</strong><br>
+      · <strong>勞工退休金條例§24</strong>：勞工年滿60歲，工作年資滿15年以上者，得選擇請領月退休金或一次退休金；未滿15年者請領一次退休金<br>
+      · <strong>勞基法§53</strong>：自請退休條件——工作15年以上年滿55歲、工作25年以上、年滿60歲<br>
+      · <strong>勞基法§54</strong>：強制退休——年滿65歲、心神喪失或身體殘廢不堪勝任工作<br>
+      · <strong>勞基法§55</strong>：舊制退休金基數——前15年每年2基數，超過部分每年1基數，最高45基數<br>
+      · <strong>勞基法§56</strong>：雇主應按月提撥勞工退休準備金
+    </div>
+  </div>
+
+</main>
+
+<!-- Nav bar -->
+<div class="nav-bar" id="navBar">
+  <button class="btn btn-secondary" id="btnBack" onclick="goBack()" style="display:none;">← 上一步</button>
+  <button class="btn btn-primary" id="btnNext" onclick="goNext()">計算退休金 →</button>
+  <button class="btn btn-reset" id="btnReset" onclick="resetAll()" style="display:none;">重新計算</button>
+</div>
+
+<script>
+  const state = {};
+  let currentStep = 1;
+  const totalSteps = 2;
+
+  // ─── Step navigation ──────────────────────────────────────────────────────
+
+  function showStep(n) {
+    document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+    document.getElementById('step' + n).classList.add('active');
+    const pct = (n / totalSteps) * 100;
+    document.getElementById('progressFill').style.width = pct + '%';
+    currentStep = n;
+
+    const btnBack  = document.getElementById('btnBack');
+    const btnNext  = document.getElementById('btnNext');
+    const btnReset = document.getElementById('btnReset');
+
+    if (n === 1) {
+      btnBack.style.display  = 'none';
+      btnNext.style.display  = 'flex';
+      btnReset.style.display = 'none';
+      btnNext.textContent    = '計算退休金 →';
+    } else {
+      btnBack.style.display  = 'block';
+      btnNext.style.display  = 'none';
+      btnReset.style.display = 'flex';
+    }
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function goBack() {
+    if (currentStep > 1) showStep(currentStep - 1);
+  }
+
+  function goNext() {
+    if (currentStep === 1) {
+      if (!validateStep1()) return;
+      collectStep1();
+      calculate();
+      showStep(2);
+    }
+  }
+
+  function resetAll() {
+    showStep(1);
+  }
+
+  // ─── Regime toggle ────────────────────────────────────────────────────────
+
+  function onRegimeChange() {
+    const v = document.getElementById('regime').value;
+    document.getElementById('newFields').classList.toggle('visible', v === 'new');
+    document.getElementById('oldFields').classList.toggle('visible', v === 'old');
+  }
+
+  // ─── Validation ───────────────────────────────────────────────────────────
+
+  function validateStep1() {
+    const regime = document.getElementById('regime').value;
+    const wage   = parseFloat(document.getElementById('avgWage').value);
+
+    if (!wage || wage <= 0) {
+      alert('請輸入有效的月平均工資。');
+      return false;
+    }
+
+    if (regime === 'new') {
+      const balance   = parseFloat(document.getElementById('accountBalance').value);
+      const seniority = parseFloat(document.getElementById('newSeniority').value);
+      if (!balance || balance <= 0) {
+        alert('請輸入個人帳戶累積金額。');
+        return false;
+      }
+      if (isNaN(seniority) || seniority < 0) {
+        alert('請輸入有效的新制工作年資。');
+        return false;
+      }
+    }
+
+    if (regime === 'old') {
+      const start  = document.getElementById('startDate').value;
+      const retire = document.getElementById('retireDate').value;
+      if (!start) { alert('請填寫到職日期。'); return false; }
+      if (!retire) { alert('請填寫退休日期。'); return false; }
+      if (new Date(start) >= new Date(retire)) {
+        alert('退休日期須晚於到職日期。');
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  // ─── Collect inputs ───────────────────────────────────────────────────────
+
+  function collectStep1() {
+    state.regime  = document.getElementById('regime').value;
+    state.avgWage = parseFloat(document.getElementById('avgWage').value);
+
+    if (state.regime === 'new') {
+      state.accountBalance   = parseFloat(document.getElementById('accountBalance').value);
+      state.newSeniority     = parseFloat(document.getElementById('newSeniority').value) || 0;
+      state.claimAge         = parseInt(document.getElementById('claimAge').value);
+      const projected        = parseFloat(document.getElementById('projectedBalance').value);
+      state.projectedBalance = (!isNaN(projected) && projected > 0) ? projected : state.accountBalance;
+    }
+
+    if (state.regime === 'old') {
+      state.startDate      = document.getElementById('startDate').value;
+      state.retireDate     = document.getElementById('retireDate').value;
+      state.retireReason   = document.getElementById('retireReason').value;
+      state.workDisability = document.getElementById('workDisability').value;
+    }
+  }
+
+  // ─── Helpers ──────────────────────────────────────────────────────────────
+
+  function fmt(n) {
+    return 'NT$ ' + Math.round(n).toLocaleString('zh-TW');
+  }
+
+  function calcYears(from, to) {
+    const d1 = new Date(from), d2 = new Date(to);
+    let years  = d2.getFullYear() - d1.getFullYear();
+    let months = d2.getMonth()    - d1.getMonth();
+    let days   = d2.getDate()     - d1.getDate();
+    if (days < 0)   { months--; days += 30; }
+    if (months < 0) { years--;  months += 12; }
+    return { years, months, days, totalYears: years + months / 12 + days / 365 };
+  }
+
+  function fmtTenure(y, m, d) {
+    const parts = [];
+    if (y > 0) parts.push(y + ' 年');
+    if (m > 0) parts.push(m + ' 個月');
+    if (d > 0) parts.push(d + ' 天');
+    return parts.length ? parts.join(' ') : '未滿1個月';
+  }
+
+  // 平均餘命月數簡表（依勞動部公告簡化）
+  function getLifeMonths(age) {
+    if (age <= 60) return 288; // 24年
+    if (age <= 65) return 228; // 19年
+    return 168;                // 14年
+  }
+
+  // ─── Main calculation ─────────────────────────────────────────────────────
+
+  function calculate() {
+    if (state.regime === 'new') {
+      calculateNew();
+    } else {
+      calculateOld();
+    }
+  }
+
+  function calculateNew() {
+    const accountTotal = state.projectedBalance;
+    const seniority    = state.newSeniority;
+    const age          = state.claimAge;
+    const lifeMonths   = getLifeMonths(age);
+    const canMonthly   = seniority >= 15;
+
+    // Lump sum = account total
+    const lumpSum = accountTotal;
+
+    // Monthly = account total / life months
+    const monthlyPension = accountTotal / lifeMonths;
+
+    // Show result sections
+    document.getElementById('r_newCompare').style.display = 'block';
+    document.getElementById('r_oldDetail').style.display  = 'none';
+
+    // Hero
+    const heroAmount = canMonthly ? monthlyPension : lumpSum;
+    document.getElementById('r_totalAmount').textContent = canMonthly
+      ? fmt(monthlyPension) + ' /月'
+      : fmt(lumpSum);
+    document.getElementById('r_totalSub').textContent = canMonthly
+      ? '勞退新制月退休金｜年資 ' + seniority + ' 年，' + age + ' 歲請領'
+      : '勞退新制一次領｜年資 ' + seniority + ' 年，' + age + ' 歲請領';
+
+    // Compare cards
+    const lumpCard    = document.getElementById('r_lumpCard');
+    const monthlyCard = document.getElementById('r_monthlyCard');
+
+    document.getElementById('r_lumpAmount').textContent = fmt(lumpSum);
+    document.getElementById('r_lumpSub').textContent    = '帳戶全額一次領回';
+
+    if (canMonthly) {
+      monthlyCard.style.display = 'block';
+      document.getElementById('r_monthlyAmount').textContent = fmt(monthlyPension) + ' /月';
+      document.getElementById('r_monthlySub').textContent    = '帳戶總額 ÷ ' + lifeMonths + ' 個月';
+
+      // Recommend monthly (total payout over life > lump sum by definition, plus longevity protection)
+      monthlyCard.classList.add('recommended');
+      lumpCard.classList.remove('recommended');
+      monthlyCard.querySelector('.compare-card-label').innerHTML =
+        '<span class="recommend-badge">建議</span> 月退休金';
+      lumpCard.querySelector('.compare-card-label').textContent = '一次領';
+    } else {
+      monthlyCard.style.display = 'none';
+      lumpCard.classList.remove('recommended');
+      lumpCard.querySelector('.compare-card-label').textContent = '一次領（唯一選項）';
+    }
+
+    // Detail card
+    document.getElementById('r_newAccountTotal').textContent = fmt(accountTotal);
+    document.getElementById('r_newClaimAge').textContent     = age + ' 歲';
+    document.getElementById('r_newSeniority').textContent    = seniority + ' 年';
+
+    if (canMonthly) {
+      document.getElementById('r_newClaimType').textContent    = '可選月退或一次領';
+      document.getElementById('r_newMonthlyRow').style.display = 'flex';
+      document.getElementById('r_newLifeMonths').textContent   = lifeMonths + ' 個月';
+      document.getElementById('r_newMonthlyCalcRow').style.display = 'flex';
+      document.getElementById('r_newMonthlyCalc').textContent  =
+        fmt(accountTotal) + ' ÷ ' + lifeMonths + ' = ' + fmt(monthlyPension) + '/月';
+    } else {
+      document.getElementById('r_newClaimType').textContent    = '僅能一次領';
+      document.getElementById('r_newMonthlyRow').style.display = 'none';
+      document.getElementById('r_newMonthlyCalcRow').style.display = 'none';
+    }
+
+    // Eligibility note
+    document.getElementById('r_newEligibility').innerHTML = canMonthly
+      ? '您的新制年資滿 <strong>15 年</strong>，可自由選擇<strong>月退休金</strong>或<strong>一次退休金</strong>。月退休金依帳戶總額除以平均餘命月數按月發給，享有活到老領到老的保障。'
+      : '您的新制年資未滿 <strong>15 年</strong>，依勞退條例§24規定，僅能請領<strong>一次退休金</strong>（帳戶全額領回）。如年資尚未屆滿，可考慮延後退休以累積更多年資。';
+
+    // Case law
+    LaborPro.renderCaseLaw('termination', lumpSum, 'pensionResultHero');
+  }
+
+  function calculateOld() {
+    const { startDate, retireDate, avgWage, retireReason, workDisability } = state;
+    const tenure = calcYears(startDate, retireDate);
+
+    // Base units calculation
+    const fullYears = tenure.totalYears;
+    const first15   = Math.min(fullYears, 15) * 2;
+    const after15   = Math.max(fullYears - 15, 0) * 1;
+    let baseUnits   = first15 + after15;
+    baseUnits        = Math.min(baseUnits, 45);
+
+    // Disability bonus
+    let disabilityUnits = 0;
+    if (workDisability === 'yes') {
+      disabilityUnits = baseUnits * 0.2;
+    }
+
+    const totalUnits = baseUnits + disabilityUnits;
+    const totalPay   = totalUnits * avgWage;
+
+    // Show result sections
+    document.getElementById('r_newCompare').style.display = 'none';
+    document.getElementById('r_oldDetail').style.display  = 'block';
+
+    // Hero
+    document.getElementById('r_totalAmount').textContent = fmt(totalPay);
+    document.getElementById('r_totalSub').textContent    =
+      '勞基法§55 舊制｜' + fmtTenure(tenure.years, tenure.months, tenure.days) +
+      '｜' + (retireReason === 'voluntary' ? '自請退休' : '強制退休');
+
+    // Detail card
+    document.getElementById('r_oldStartDate').textContent  = startDate;
+    document.getElementById('r_oldRetireDate').textContent  = retireDate;
+    document.getElementById('r_oldTenure').textContent      = fmtTenure(tenure.years, tenure.months, tenure.days);
+    document.getElementById('r_oldReason').textContent      =
+      retireReason === 'voluntary' ? '自請退休（§53）' : '強制退休（§54）';
+
+    const first15Val = Math.min(fullYears, 15);
+    const after15Val = Math.max(fullYears - 15, 0);
+    document.getElementById('r_oldFirst15').textContent =
+      'min(' + fullYears.toFixed(1) + ', 15) × 2 = ' + first15.toFixed(1) + ' 基數';
+
+    if (after15Val > 0) {
+      document.getElementById('r_oldAfter15Row').style.display = 'flex';
+      document.getElementById('r_oldAfter15').textContent =
+        '(' + fullYears.toFixed(1) + ' - 15) × 1 = ' + after15.toFixed(1) + ' 基數';
+    } else {
+      document.getElementById('r_oldAfter15Row').style.display = 'flex';
+      document.getElementById('r_oldAfter15').textContent = '0 基數（年資未超過15年）';
+    }
+
+    if (workDisability === 'yes') {
+      document.getElementById('r_oldDisabilityRow').style.display = 'flex';
+      document.getElementById('r_oldDisability').textContent =
+        baseUnits.toFixed(1) + ' × 20% = +' + disabilityUnits.toFixed(1) + ' 基數';
+    } else {
+      document.getElementById('r_oldDisabilityRow').style.display = 'none';
+    }
+
+    document.getElementById('r_oldTotalUnits').textContent =
+      totalUnits.toFixed(1) + ' 基數' + (baseUnits >= 45 ? '（已達上限）' : '');
+    document.getElementById('r_oldUnitWage').textContent = fmt(avgWage);
+    document.getElementById('r_oldTotal').textContent    = fmt(totalPay);
+
+    // Formula detail
+    document.getElementById('r_formulaDetail').innerHTML =
+      '<br>您的計算：' + totalUnits.toFixed(1) + ' 基數 × ' + fmt(avgWage) + ' = <strong>' + fmt(totalPay) + '</strong>';
+
+    // Case law
+    LaborPro.renderCaseLaw('termination', totalPay, 'pensionResultHero');
+  }
+
+  // Init
+  showStep(1);
+</script>
+<div class="disclaimer-bar"><strong>免責聲明</strong>：本平台之計算結果僅供初步參考，不構成法律意見或法律諮詢服務。實際案件因個案事實、適用法規及法院見解不同，結果可能有所差異，建議諮詢具執照之律師或相關法律專業人員。</div>
+</body>
+</html>

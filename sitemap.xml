@@ -24,4 +24,5 @@
   <url><loc>https://laborpro.vercel.app/hr-cost.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://laborpro.vercel.app/compliance-audit.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://laborpro.vercel.app/termination-cost.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://laborpro.vercel.app/pension-claim.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
 </urlset>
