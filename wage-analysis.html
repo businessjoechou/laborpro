@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" href="favicon.svg">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>工資認定分析器｜LaborPro</title>
+<meta name="description" content="依勞基法第2條第3款「經常性給與」認定工資項目，自動計算工資總額、時薪、日薪，標示爭議項目，免費使用。">
+<meta name="keywords" content="工資認定,經常性給與,勞基法第2條,薪資結構分析,工資計算,時薪計算,日薪計算,台灣勞基法">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://laborpro.tw/wage-analysis.html">
+<meta property="og:title" content="工資認定分析器｜LaborPro">
+<meta property="og:description" content="依勞基法第2條第3款認定工資項目，自動計算工資總額、時薪、日薪。">
+<meta property="og:type" content="website">
+<meta name="author" content="LaborPro">
+<meta property="og:site_name" content="LaborPro">
+<meta property="og:locale" content="zh_TW">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="js/persona.js"></script>
+<link rel="stylesheet" href="css/common.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "工資認定分析器",
+  "description": "依勞基法第2條第3款「經常性給與」認定各薪資項目是否屬於工資，計算工資總額、時薪、日薪。",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "All",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "TWD" }
+}
+</script>
+<style>
+  .item-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--soft);
+  }
+  .item-row:last-child { border-bottom: none; }
+  .item-row select {
+    flex: 1.2;
+    min-width: 0;
+    padding: 10px 28px 10px 10px;
+    font-size: 13px;
+  }
+  .item-row input[type="number"] {
+    flex: 1;
+    min-width: 0;
+    padding: 10px;
+    font-size: 13px;
+  }
+  .item-row .cb-wrap {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .item-row .cb-wrap input { width: 16px; height: 16px; accent-color: var(--accent); }
+  .btn-add-row {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    border: 1.5px dashed var(--border);
+    border-radius: 10px;
+    background: transparent;
+    color: var(--accent);
+    font-size: 13px;
+    font-family: 'Noto Sans TC', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-add-row:hover { border-color: var(--accent); background: #e8f4e4; }
+  .btn-remove {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 16px;
+    cursor: pointer;
+    padding: 4px;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+  .btn-remove:hover { color: var(--danger); }
+  .wage-tag {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 20px;
+    letter-spacing: 0.04em;
+  }
+  .wage-tag.yes { background: rgba(42,110,62,0.12); color: var(--accent); }
+  .wage-tag.no { background: rgba(139,32,32,0.12); color: var(--danger); }
+  .wage-tag.warn { background: rgba(200,144,26,0.15); color: #8a6010; }
+  .analysis-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--soft);
+    gap: 8px;
+  }
+  .analysis-row:last-child { border-bottom: none; }
+  .analysis-name { font-size: 13px; color: var(--ink); flex: 1; }
+  .analysis-amount {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: var(--ink);
+    min-width: 80px;
+    text-align: right;
+  }
+  .analysis-row.warn-row {
+    background: #fffbe8;
+    margin: 0 -20px;
+    padding: 10px 20px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="logo">Labor<span>Pro</span></a>
+  <a class="back-link" href="index.html">← 首頁</a>
+</header>
+<div class="progress-bar">
+  <div class="progress-fill" id="progressFill" style="width: 33%"></div>
+</div>
+
+<main>
+
+  <!-- Step 1: 輸入薪資項目 -->
+  <div class="step active" id="step1">
+    <div class="step-header">
+      <div class="step-label">Step 1 of 3 &middot; 輸入薪資項目</div>
+      <h1 class="step-title">工資認定分析器</h1>
+      <p class="step-sub">依勞基法&sect;2第3款「經常性給與」判定各薪資項目是否屬於工資，自動計算工資總額、日薪及時薪。</p>
+    </div>
+
+    <div class="wizard">
+      <div class="wizard-section-title">每月薪資明細</div>
+      <div id="itemList">
+        <!-- 動態項目列 -->
+      </div>
+      <button class="btn-add-row" onclick="addRow()">+ 新增薪資項目</button>
+    </div>
+
+    <div class="warn-box">
+      &#9888; 工資認定須依個案判斷，本工具依一般實務通說提供初步分析，建議諮詢勞動局或專業律師。
+    </div>
+  </div>
+
+  <!-- Step 2: 判定結果 -->
+  <div class="step" id="step2">
+    <div class="step-header">
+      <div class="step-label">Step 2 of 3 &middot; 工資判定</div>
+      <h1 class="step-title">各項認定結果</h1>
+      <p class="step-sub">依勞基法&sect;2第3款及施行細則&sect;10，判定各薪資項目是否為「工資」。</p>
+    </div>
+
+    <div class="wizard" id="analysisCard">
+      <div class="wizard-section-title">逐項認定</div>
+      <div id="analysisBody"></div>
+    </div>
+
+    <div class="notice-card" id="warnItemsCard" style="display:none;">
+      <div class="notice-card-title">爭議項目提醒</div>
+      <p id="warnItemsText" style="font-size:12px;color:#7a5810;line-height:1.7;"></p>
+    </div>
+  </div>
+
+  <!-- Step 3: 計算結果 -->
+  <div class="step" id="step3">
+    <div class="step-header">
+      <div class="step-label">Step 3 of 3 &middot; 計算結果</div>
+      <h1 class="step-title">工資總額試算</h1>
+      <p class="step-sub">依認定結果計算工資總額及衍生數值。</p>
+    </div>
+
+    <div class="result-hero">
+      <div class="result-hero-label">經認定之工資總額（月）</div>
+      <div class="result-hero-amount" id="r_wageTotal">--</div>
+      <div class="result-hero-sub" id="r_wageSub">依勞基法&sect;2&sect;III 經常性給與</div>
+    </div>
+
+    <div class="result-card">
+      <div class="result-card-title">衍生計算</div>
+      <div class="result-row">
+        <span class="result-row-label">日薪（&divide;30）</span>
+        <span class="result-row-val highlight" id="r_daily">--</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">時薪（&divide;30&divide;8）</span>
+        <span class="result-row-val highlight" id="r_hourly">--</span>
+      </div>
+    </div>
+
+    <div class="result-card" id="r_wageItems">
+      <div class="result-card-title">工資項目</div>
+      <div id="r_wageList"></div>
+    </div>
+
+    <div class="result-card" id="r_nonWageItems" style="display:none;">
+      <div class="result-card-title">非工資項目</div>
+      <div id="r_nonWageList"></div>
+    </div>
+
+    <div class="notice-card" id="r_warnCard" style="display:none;">
+      <div class="notice-card-title">爭議項目（建議諮詢專業意見）</div>
+      <div id="r_warnList"></div>
+    </div>
+
+    <div class="law-note">
+      <strong>法律依據</strong><br>
+      &middot; <strong>勞基法&sect;2第3款</strong>：工資謂勞工因工作而獲得之報酬，包括工資、薪金及按計時、計日、計月、計件以現金或實物等方式給付之獎金、津貼及其他任何名義之經常性給與均屬之。<br>
+      &middot; <strong>勞基法施行細則&sect;10</strong>：非經常性給與之例示，如年終獎金、差旅費等。
+    </div>
+  </div>
+
+</main>
+
+<div class="nav-bar" id="navBar">
+  <button class="btn btn-secondary" id="btnBack" onclick="goBack()" style="display:none;">&larr; 上一步</button>
+  <button class="btn btn-primary" id="btnNext" onclick="goNext()">開始分析 &rarr;</button>
+  <button class="btn btn-reset" id="btnReset" onclick="resetAll()" style="display:none;">重新分析</button>
+</div>
+
+<div class="disclaimer-bar"><strong>免責聲明</strong>：本平台之計算結果僅供初步參考，不構成法律意見或法律諮詢服務。實際案件因個案事實、適用法規及法院見解不同，結果可能有所差異，建議諮詢具執照之律師或相關法律專業人員。</div>
+
+<script src="js/fmt.js"></script>
+<script src="js/calc-utils.js"></script>
+<script>
+/* === 薪資項目定義 === */
+const ITEMS = [
+  { name: '底薪',     isWage: true,  note: '勞務對價，屬工資' },
+  { name: '全勤獎金', isWage: 'warn', note: '實務多認定為工資（最高法院判決），但具爭議' },
+  { name: '伙食津貼', isWage: true,  note: '固定按月發放，屬工資（每月2,400元以下免稅但仍為工資）' },
+  { name: '交通補助', isWage: 'depends', note: '固定按月發放→工資；實報實銷→非工資', defaultWage: true },
+  { name: '職務加給', isWage: true,  note: '因職務而固定支領，屬工資' },
+  { name: '績效獎金', isWage: 'warn', note: '按月或按季固定發→可能是工資；不固定→非工資' },
+  { name: '年終獎金', isWage: false, note: '恩惠性給與，通常非工資（施行細則§10）' },
+  { name: '加班費',   isWage: 'special', note: '非經常性工資，但依法另計（§24）' },
+  { name: '差旅費',   isWage: false, note: '實支實付，非工資（施行細則§10）' },
+  { name: '其他',     isWage: 'depends', note: '依是否為「經常性給與」個案判斷', defaultWage: false }
+];
+
+const itemOptions = ITEMS.map(i => i.name);
+let rowCount = 0;
+
+function addRow(preset, amount) {
+  rowCount++;
+  const id = rowCount;
+  const list = document.getElementById('itemList');
+  const div = document.createElement('div');
+  div.className = 'item-row';
+  div.id = 'row_' + id;
+
+  const sel = preset || '底薪';
+  const amt = amount || '';
+
+  const itemDef = ITEMS.find(i => i.name === sel);
+  const checked = itemDef && (itemDef.isWage === true || itemDef.isWage === 'warn' || (itemDef.isWage === 'depends' && itemDef.defaultWage));
+
+  div.innerHTML = `
+    <div class="select-wrap" style="flex:1.2;min-width:0;">
+      <select id="sel_${id}" onchange="onItemChange(${id})" style="width:100%;">
+        ${itemOptions.map(n => `<option value="${n}" ${n===sel?'selected':''}>${n}</option>`).join('')}
+      </select>
+    </div>
+    <input type="number" id="amt_${id}" placeholder="月金額" min="0" inputmode="numeric" value="${amt}" style="flex:1;min-width:0;">
+    <div class="cb-wrap">
+      <input type="checkbox" id="cb_${id}" ${checked?'checked':''}>
+      <span>經常性</span>
+    </div>
+    <button class="btn-remove" onclick="removeRow(${id})" title="刪除">&times;</button>
+  `;
+  list.appendChild(div);
+}
+
+function onItemChange(id) {
+  const sel = document.getElementById('sel_' + id).value;
+  const cb = document.getElementById('cb_' + id);
+  const def = ITEMS.find(i => i.name === sel);
+  if (def) {
+    if (def.isWage === true) cb.checked = true;
+    else if (def.isWage === false || def.isWage === 'special') cb.checked = false;
+    else if (def.isWage === 'warn') cb.checked = true;
+    else if (def.isWage === 'depends') cb.checked = def.defaultWage;
+  }
+}
+
+function removeRow(id) {
+  const el = document.getElementById('row_' + id);
+  if (el) el.remove();
+}
+
+function getRows() {
+  const rows = [];
+  document.querySelectorAll('.item-row').forEach(el => {
+    const id = el.id.replace('row_', '');
+    const name = document.getElementById('sel_' + id).value;
+    const amount = parseFloat(document.getElementById('amt_' + id).value) || 0;
+    const regular = document.getElementById('cb_' + id).checked;
+    const def = ITEMS.find(i => i.name === name);
+    rows.push({ name, amount, regular, def });
+  });
+  return rows;
+}
+
+function fmt(n) {
+  return 'NT$ ' + Math.round(n).toLocaleString('zh-TW');
+}
+
+/* === Wizard navigation === */
+let currentStep = 1;
+const totalSteps = 3;
+
+function showStep(n) {
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+  document.getElementById('step' + n).classList.add('active');
+  document.getElementById('progressFill').style.width = ((n / totalSteps) * 100) + '%';
+  currentStep = n;
+
+  const btnBack = document.getElementById('btnBack');
+  const btnNext = document.getElementById('btnNext');
+  const btnReset = document.getElementById('btnReset');
+
+  if (n === 1) {
+    btnBack.style.display = 'none';
+    btnNext.style.display = 'flex';
+    btnReset.style.display = 'none';
+    btnNext.textContent = '開始分析 \u2192';
+  } else if (n === 2) {
+    btnBack.style.display = 'block';
+    btnNext.style.display = 'flex';
+    btnReset.style.display = 'none';
+    btnNext.textContent = '查看結果 \u2192';
+  } else {
+    btnBack.style.display = 'block';
+    btnNext.style.display = 'none';
+    btnReset.style.display = 'flex';
+  }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function goBack() { if (currentStep > 1) showStep(currentStep - 1); }
+
+function goNext() {
+  if (currentStep === 1) {
+    const rows = getRows();
+    if (rows.length === 0) { alert('請至少新增一項薪資項目。'); return; }
+    if (rows.some(r => r.amount <= 0)) { alert('請確認每項薪資金額皆大於 0。'); return; }
+    analyzeItems(rows);
+    showStep(2);
+  } else if (currentStep === 2) {
+    calculateResult();
+    showStep(3);
+  }
+}
+
+function resetAll() { showStep(1); }
+
+/* === Step 2: 分析 === */
+let analyzedRows = [];
+
+function analyzeItems(rows) {
+  analyzedRows = rows.map(r => {
+    let status, tag, reason;
+    const d = r.def;
+    if (!d) { status = r.regular ? 'yes' : 'no'; tag = r.regular ? '工資' : '非工資'; reason = '依經常性判定'; }
+    else if (d.isWage === true) { status = 'yes'; tag = '工資'; reason = d.note; }
+    else if (d.isWage === false) { status = 'no'; tag = '非工資'; reason = d.note; }
+    else if (d.isWage === 'special') { status = 'no'; tag = '另計'; reason = d.note; }
+    else if (d.isWage === 'warn') { status = 'warn'; tag = '爭議'; reason = d.note; }
+    else if (d.isWage === 'depends') { status = r.regular ? 'yes' : 'no'; tag = r.regular ? '工資' : '非工資'; reason = d.note; }
+    else { status = r.regular ? 'yes' : 'no'; tag = r.regular ? '工資' : '非工資'; reason = '依經常性判定'; }
+    return { ...r, status, tag, reason };
+  });
+
+  const body = document.getElementById('analysisBody');
+  body.innerHTML = '';
+  analyzedRows.forEach(r => {
+    const cls = r.status === 'warn' ? ' warn-row' : '';
+    const tagCls = r.status === 'yes' ? 'yes' : r.status === 'warn' ? 'warn' : 'no';
+    body.innerHTML += `
+      <div class="analysis-row${cls}">
+        <span class="analysis-name">${r.name}</span>
+        <span class="analysis-amount">${fmt(r.amount)}</span>
+        <span class="wage-tag ${tagCls}">${r.tag}</span>
+      </div>
+      <div style="padding:0 0 8px;font-size:11px;color:var(--muted);line-height:1.6;">${r.reason}</div>
+    `;
+  });
+
+  const warns = analyzedRows.filter(r => r.status === 'warn');
+  const warnCard = document.getElementById('warnItemsCard');
+  if (warns.length > 0) {
+    warnCard.style.display = 'block';
+    document.getElementById('warnItemsText').textContent =
+      warns.map(w => w.name).join('、') + ' 為實務上常見爭議項目，建議保留發放紀錄以供舉證。本工具將爭議項目「暫列入」工資總額計算。';
+  } else {
+    warnCard.style.display = 'none';
+  }
+}
+
+/* === Step 3: 計算 === */
+function calculateResult() {
+  const wageItems = analyzedRows.filter(r => r.status === 'yes' || r.status === 'warn');
+  const nonWageItems = analyzedRows.filter(r => r.status === 'no');
+
+  const wageTotal = wageItems.reduce((s, r) => s + r.amount, 0);
+  const daily = wageTotal / 30;
+  const hourly = wageTotal / 30 / 8;
+
+  document.getElementById('r_wageTotal').textContent = fmt(wageTotal);
+  document.getElementById('r_daily').textContent = fmt(daily);
+  document.getElementById('r_hourly').textContent = fmt(hourly);
+
+  // Wage items list
+  const wl = document.getElementById('r_wageList');
+  wl.innerHTML = '';
+  wageItems.forEach(r => {
+    const tagCls = r.status === 'warn' ? 'warn' : 'yes';
+    wl.innerHTML += `<div class="result-row">
+      <span class="result-row-label">${r.name} ${r.status==='warn'?'<span class="wage-tag warn">爭議</span>':''}</span>
+      <span class="result-row-val">${fmt(r.amount)}</span>
+    </div>`;
+  });
+
+  // Non-wage items
+  const nwCard = document.getElementById('r_nonWageItems');
+  const nwl = document.getElementById('r_nonWageList');
+  if (nonWageItems.length > 0) {
+    nwCard.style.display = 'block';
+    nwl.innerHTML = '';
+    nonWageItems.forEach(r => {
+      nwl.innerHTML += `<div class="result-row">
+        <span class="result-row-label">${r.name}</span>
+        <span class="result-row-val">${fmt(r.amount)}</span>
+      </div>`;
+    });
+  } else {
+    nwCard.style.display = 'none';
+  }
+
+  // Warn card
+  const warns = analyzedRows.filter(r => r.status === 'warn');
+  const wc = document.getElementById('r_warnCard');
+  if (warns.length > 0) {
+    wc.style.display = 'block';
+    document.getElementById('r_warnList').innerHTML = warns.map(r =>
+      `<div style="padding:6px 0;font-size:12px;color:#7a5810;line-height:1.6;border-bottom:1px solid #e8d88a;">
+        <strong>${r.name}</strong>（${fmt(r.amount)}）— ${r.reason}
+      </div>`
+    ).join('');
+  } else {
+    wc.style.display = 'none';
+  }
+}
+
+/* Init: 預設兩列 */
+addRow('底薪', '');
+addRow('全勤獎金', '');
+showStep(1);
+</script>
+</body>
+</html>

@@ -6,57 +6,63 @@
 <link rel="apple-touch-icon" href="favicon.svg">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LaborPro｜台灣勞基法計算機</title>
-<meta name="description" content="台灣最專業的勞基法計算平台，免費提供資遣費、加班費、特休未休折現、職災補償、不當解雇分析等計算工具，依中華民國勞動基準法設計。">
+<meta name="description" content="台灣最專業的勞基法計算平台，免費提供資遣費、加班費、特休未休折現、職災補償、不當解雇分析等 20+ 個計算工具，依中華民國勞動基準法設計。">
 <meta name="keywords" content="資遣費計算,加班費計算,特休計算,職災補償,不當解雇,勞基法,預告工資,勞退新制,舊制資遣費,台灣勞工">
 <meta name="robots" content="index, follow">
 <meta name="author" content="LaborPro">
 <meta property="og:title" content="LaborPro｜台灣勞基法計算機">
 <meta property="og:description" content="免費計算資遣費、加班費、特休折現、職災補償。依台灣勞基法設計，快速精確試算。">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://laborpro.app/">
+<meta property="og:url" content="https://laborpro.vercel.app/">
 <meta property="og:site_name" content="LaborPro">
 <meta property="og:locale" content="zh_TW">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="LaborPro｜台灣勞基法計算機">
-<meta name="twitter:description" content="免費計算資遣費、加班費、特休折現、職災補償。依台灣勞基法設計。">
-<link rel="canonical" href="https://laborpro.app/">
+<link rel="canonical" href="https://laborpro.vercel.app/">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="js/persona.js"></script>
 <style>
+  *:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
   :root {
     --ink: #131c13;
+    --ink-2: #1a241a;
     --paper: #eef5ec;
     --gold: #c8901a;
+    --gold-soft: #d4a742;
     --muted: #617a5e;
-    --border: #b0c8ac;
-    --soft: #d8ecd4;
-    --card: #ffffff;
+    --muted-2: #3a4a38;
+    --border: #1e2e1e;
+    --border-2: #2a3e2a;
+    --card: #1a241a;
     --accent: #2a6e3e;
+    --danger: #8b2020;
+    --badge-new: #2a6e3e;
+    --badge-hot: #c8901a;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
-
+  html { scroll-behavior: smooth; }
   body {
     background: var(--ink);
     color: var(--paper);
     font-family: 'Noto Sans TC', sans-serif;
     min-height: 100vh;
     font-size: 15px;
+    line-height: 1.6;
   }
 
-  /* Hero */
+  /* ─────────── HERO ─────────── */
   .hero {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    padding: 0 24px;
-    max-width: 560px;
+    padding: 48px 24px 16px;
+    max-width: 620px;
     margin: 0 auto;
-    justify-content: center;
   }
 
   .hero-top {
-    padding-top: 48px;
-    margin-bottom: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 56px;
   }
 
   .logo {
@@ -64,8 +70,9 @@
     font-size: 17px;
     font-weight: 700;
     letter-spacing: 0.04em;
+    color: var(--paper);
+    text-decoration: none;
   }
-
   .logo span { color: var(--gold); }
 
   .tag {
@@ -82,34 +89,304 @@
     vertical-align: middle;
   }
 
-  .hero-title {
-    font-family: 'Noto Serif TC', serif;
-    font-size: clamp(32px, 8vw, 48px);
-    font-weight: 700;
-    line-height: 1.25;
-    margin-bottom: 16px;
-    letter-spacing: 0.02em;
+  .eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 18px;
+    display: block;
   }
 
-  .hero-title em {
-    font-style: normal;
-    color: var(--gold);
+  .hero-title {
+    font-family: 'Noto Serif TC', serif;
+    font-size: clamp(34px, 8vw, 52px);
+    font-weight: 700;
+    line-height: 1.22;
+    margin-bottom: 20px;
+    letter-spacing: 0.01em;
   }
+  .hero-title em { font-style: normal; color: var(--gold); }
 
   .hero-sub {
     font-size: 14px;
     color: var(--muted);
-    line-height: 1.8;
-    margin-bottom: 48px;
+    line-height: 1.85;
+    margin-bottom: 40px;
+    max-width: 440px;
   }
 
-  /* Tool cards */
-  .tool-grid { display: flex; flex-direction: column; gap: 12px; margin-bottom: 48px; }
+  /* ─────────── Persona Bar ─────────── */
+  .persona-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+
+  .persona-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    padding: 5px 14px;
+    border-radius: 20px;
+  }
+
+  .persona-badge.worker {
+    background: rgba(42, 110, 62, 0.15);
+    color: #6acd8a;
+    border: 1px solid rgba(42, 110, 62, 0.4);
+  }
+
+  .persona-badge.employer {
+    background: rgba(200, 144, 26, 0.15);
+    color: var(--gold);
+    border: 1px solid rgba(200, 144, 26, 0.4);
+  }
+
+  .persona-switch {
+    background: none;
+    border: none;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    transition: color 0.2s;
+    padding: 0;
+  }
+  .persona-switch:hover { color: var(--gold); }
+
+  /* ─────────── Search Bar ─────────── */
+  .search-bar {
+    position: relative;
+    margin-bottom: 40px;
+  }
+
+  .search-icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 14px;
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  .search-bar input {
+    width: 100%;
+    padding: 14px 40px 14px 44px;
+    background: rgba(255,255,255,0.04);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    color: var(--paper);
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 14px;
+    transition: border-color 0.2s;
+    -webkit-appearance: none;
+  }
+  .search-bar input:focus {
+    outline: none;
+    border-color: var(--gold);
+    background: rgba(255,255,255,0.06);
+  }
+  .search-bar input::placeholder { color: rgba(238,245,236,0.3); }
+
+  .search-clear {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 20px;
+    cursor: pointer;
+    display: none;
+    padding: 4px 8px;
+    line-height: 1;
+  }
+
+  /* ─────────── Section Headers ─────────── */
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--paper);
+  }
+
+  .section-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.12em;
+  }
+
+  /* ─────────── Featured Strip ─────────── */
+  .featured-strip {
+    display: flex;
+    gap: 14px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding: 4px 0 28px;
+    margin: 0 -24px 40px;
+    padding-left: 24px;
+    padding-right: 24px;
+    scrollbar-width: none;
+  }
+  .featured-strip::-webkit-scrollbar { display: none; }
+
+  .featured-card {
+    flex: 0 0 280px;
+    scroll-snap-align: start;
+    border-radius: 14px;
+    padding: 22px 20px;
+    text-decoration: none;
+    display: block;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+  }
+
+  .featured-card.style-green {
+    background: linear-gradient(135deg, #1a2e1a 0%, #1e3420 100%);
+    border: 1px solid rgba(42, 110, 62, 0.35);
+  }
+  .featured-card.style-green:hover { border-color: var(--accent); }
+
+  .featured-card.style-gold {
+    background: linear-gradient(135deg, #2a2210 0%, #302818 100%);
+    border: 1px solid rgba(200, 144, 26, 0.3);
+  }
+  .featured-card.style-gold:hover { border-color: var(--gold); }
+
+  .featured-card.style-red {
+    background: linear-gradient(135deg, #2a1616 0%, #301c1c 100%);
+    border: 1px solid rgba(139, 32, 32, 0.35);
+  }
+  .featured-card.style-red:hover { border-color: #8b2020; }
+
+  .featured-badge {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    padding: 3px 8px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .featured-badge.new {
+    background: rgba(42, 110, 62, 0.25);
+    color: #7cd4a3;
+    border: 1px solid rgba(42, 110, 62, 0.5);
+  }
+
+  .featured-badge.hot {
+    background: rgba(200, 144, 26, 0.2);
+    color: var(--gold);
+    border: 1px solid rgba(200, 144, 26, 0.4);
+  }
+
+  .featured-badge.alert {
+    background: rgba(139, 32, 32, 0.25);
+    color: #f28b6e;
+    border: 1px solid rgba(139, 32, 32, 0.4);
+  }
+
+  .featured-card-title {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--paper);
+    margin-bottom: 8px;
+    line-height: 1.4;
+  }
+
+  .featured-card-desc {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.7;
+    margin-bottom: 16px;
+  }
+
+  .featured-card-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+  }
+
+  /* ─────────── Tab Navigation ─────────── */
+  .tab-scroll-wrap {
+    overflow-x: auto;
+    margin: 0 -24px 16px;
+    padding: 0 24px;
+    scrollbar-width: none;
+  }
+  .tab-scroll-wrap::-webkit-scrollbar { display: none; }
+
+  .tab-nav {
+    display: flex;
+    gap: 8px;
+    white-space: nowrap;
+  }
+
+  .tab-btn {
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 8px 18px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .tab-btn:hover { border-color: var(--muted); color: var(--paper); }
+  .tab-btn.active {
+    background: var(--gold);
+    color: var(--ink);
+    border-color: var(--gold);
+    font-weight: 600;
+  }
+
+  .tab-subtitle {
+    font-size: 12.5px;
+    color: var(--muted);
+    margin-bottom: 20px;
+    line-height: 1.6;
+  }
+
+  /* ─────────── Tool Cards ─────────── */
+  .tools {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 56px;
+  }
 
   .tool-card {
     display: block;
     text-decoration: none;
-    border: 1.5px solid #1e2e1e;
+    background: transparent;
+    border: 1.5px solid var(--border);
     border-radius: 12px;
     padding: 20px 22px;
     transition: all 0.2s;
@@ -117,263 +394,255 @@
     overflow: hidden;
     cursor: pointer;
   }
-
-  .tool-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: var(--gold);
-    opacity: 0;
-    transition: opacity 0.2s;
+  .tool-card:hover {
+    border-color: var(--gold);
+    background: rgba(200, 144, 26, 0.04);
   }
-
-  .tool-card:hover { border-color: var(--gold); transform: translateX(4px); }
-  .tool-card:hover::before { opacity: 0.04; }
-
-  .tool-card-inner { position: relative; z-index: 1; display: flex; align-items: center; gap: 18px; }
-
-  .tool-num {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-    letter-spacing: 0.1em;
-    min-width: 24px;
+  .tool-card-inner {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
   }
-
-  .tool-info { flex: 1; }
-
+  .tool-info { flex: 1; min-width: 0; }
   .tool-name {
     font-family: 'Noto Serif TC', serif;
-    font-size: 16px;
+    font-size: 17px;
     font-weight: 600;
     color: var(--paper);
-    margin-bottom: 4px;
+    margin-bottom: 6px;
     line-height: 1.4;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
   }
-
   .tool-desc {
-    font-size: 12px;
+    font-size: 12.5px;
     color: var(--muted);
-    line-height: 1.6;
+    line-height: 1.7;
   }
-
   .tool-arrow {
     color: var(--muted);
-    font-size: 16px;
+    font-size: 18px;
     transition: transform 0.2s, color 0.2s;
+    flex-shrink: 0;
+    padding-top: 2px;
+  }
+  .tool-card:hover .tool-arrow {
+    transform: translateX(4px);
+    color: var(--gold);
   }
 
-  .tool-card:hover .tool-arrow { transform: translateX(4px); color: var(--gold); }
+  .tool-card.featured {
+    background: linear-gradient(135deg, #1a241a 0%, #1e2e1e 100%);
+    border-color: rgba(42, 110, 62, 0.35);
+    padding: 24px;
+  }
+  .tool-card.featured .tool-name { font-size: 19px; }
+  .tool-card.featured:hover { border-color: var(--accent); }
 
-  /* Divider line */
-  .divider {
+  .tool-badge {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    padding: 3px 7px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    font-weight: 500;
+    white-space: nowrap;
+    vertical-align: middle;
+  }
+  .tool-badge.new {
+    background: rgba(42, 110, 62, 0.2);
+    color: #7cd4a3;
+    border: 1px solid rgba(42, 110, 62, 0.4);
+  }
+  .tool-badge.hot {
+    background: rgba(200, 144, 26, 0.2);
+    color: var(--gold);
+    border: 1px solid rgba(200, 144, 26, 0.4);
+  }
+
+  /* ─────────── Search Fallback ─────────── */
+  .search-fallback {
+    text-align: center;
+    padding: 40px 20px;
+    border: 1px dashed var(--border);
+    border-radius: 12px;
+  }
+  .search-fallback-title {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 16px;
+    color: var(--paper);
+    margin-bottom: 8px;
+  }
+  .search-fallback-title strong { color: var(--gold); }
+  .search-fallback-hint {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 18px;
+  }
+  .search-chip {
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 12px;
+    color: var(--paper);
+    background: rgba(42, 110, 62, 0.1);
+    border: 1px solid rgba(42, 110, 62, 0.3);
+    border-radius: 20px;
+    padding: 6px 14px;
+    cursor: pointer;
+    transition: all 0.18s;
+    display: inline-block;
+    margin: 4px;
+  }
+  .search-chip:hover {
+    background: rgba(42, 110, 62, 0.2);
+    border-color: var(--accent);
+  }
+
+  /* ─────────── Section Divider ─────────── */
+  .section-divider {
     height: 1px;
-    background: #1e2e1e;
-    margin: 0 0 16px;
+    background: var(--border);
+    margin: 0 auto 36px;
+    max-width: 60px;
   }
 
-  /* Footer */
+  /* ─────────── Footer ─────────── */
   .hero-footer {
     font-family: 'DM Mono', monospace;
     font-size: 11px;
-    color: #2e4230;
+    color: rgba(238, 245, 236, 0.25);
     letter-spacing: 0.08em;
-    padding-bottom: 48px;
+    padding-bottom: 24px;
     line-height: 2;
   }
+  .hero-footer a { color: rgba(238, 245, 236, 0.25); text-decoration: none; }
 
-  .hero-footer a { color: #2e4230; text-decoration: none; }
-
-  /* Law strip */
-  .law-strip {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-    margin-bottom: 40px;
-  }
-
-  .law-pill {
+  /* ─────────── FAQ ─────────── */
+  .faq-section { padding: 0 24px 64px; max-width: 620px; margin: 0 auto; }
+  .faq-heading {
     font-family: 'DM Mono', monospace;
     font-size: 10px;
-    color: #4a6248;
-    border: 1px solid #1e2e1e;
-    padding: 4px 10px;
-    border-radius: 20px;
-    letter-spacing: 0.08em;
+    color: var(--muted);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
   }
+  .faq-item { border-top: 1px solid var(--border); }
+  .faq-q {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    font-family: 'Noto Serif TC', serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--paper);
+    line-height: 1.5;
+    padding: 18px 0;
+    cursor: pointer;
+    user-select: none;
+  }
+  .faq-q:hover { color: var(--gold); }
+  .faq-chevron {
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    opacity: 0.5;
+    transition: transform 0.25s ease;
+  }
+  .faq-item.open .faq-chevron { transform: rotate(180deg); }
+  .faq-a {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.85;
+    display: none;
+    padding-bottom: 18px;
+  }
+  .faq-item.open .faq-a { display: block; }
+  .faq-a a { color: var(--gold); text-decoration: none; }
 
+  .disclaimer-bar {
+    max-width: 620px;
+    margin: 0 auto;
+    padding: 16px 24px 40px;
+    font-size: 11.5px;
+    color: rgba(255, 255, 255, 0.55);
+    line-height: 1.75;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+  }
+  .disclaimer-bar strong { color: rgba(255, 255, 255, 0.8); }
+
+  /* ─────────── Animation ─────────── */
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(16px); }
     to { opacity: 1; transform: translateY(0); }
   }
-
   .hero-title { animation: fadeUp 0.5s ease both; }
-  .hero-sub { animation: fadeUp 0.5s 0.1s ease both; }
-  .law-strip { animation: fadeUp 0.5s 0.15s ease both; }
-  .tool-grid { animation: fadeUp 0.5s 0.2s ease both; }
+  .hero-sub { animation: fadeUp 0.5s 0.08s ease both; }
+  .persona-bar { animation: fadeUp 0.5s 0.12s ease both; }
+  .search-bar { animation: fadeUp 0.5s 0.18s ease both; }
 
-  /* FAQ SEO Section */
-  .faq-section { padding: 0 24px 64px; max-width: 560px; margin: 0 auto; }
-  .faq-heading { font-family: 'DM Mono', monospace; font-size: 10px; color: #2e4230; letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 20px; }
-  .faq-item { border-top: 1px solid #1e2e1e; padding: 18px 0; }
-  .faq-q { font-family: 'Noto Serif TC', serif; font-size: 14px; font-weight: 600; color: var(--paper); margin-bottom: 8px; line-height: 1.5; }
-  .faq-a { font-size: 13px; color: var(--muted); line-height: 1.8; }
-  .faq-a a { color: var(--gold); text-decoration: none; }
-
-  /* Category label */
-  .category-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: var(--muted);
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    padding: 8px 0 4px;
+  /* ─────────── Desktop ─────────── */
+  @media (min-width: 720px) {
+    .hero { padding: 64px 32px 24px; max-width: 780px; }
+    .featured-strip { margin: 0 -32px 56px; padding: 4px 32px 28px; }
+    .featured-card { flex: 0 0 320px; }
+    .tab-scroll-wrap { margin: 0 -32px 16px; padding: 0 32px; }
+    .faq-section { max-width: 780px; padding: 0 32px 80px; }
+    .disclaimer-bar { max-width: 780px; padding: 16px 32px 72px; }
   }
-
-  .disclaimer-bar{max-width:560px;margin:0 auto;padding:16px 24px 40px;font-size:11.5px;color:rgba(255,255,255,0.72);line-height:1.7;border-top:1px solid rgba(255,255,255,0.18);}
-  .disclaimer-bar strong{color:rgba(255,255,255,0.88);}
 </style>
 </head>
 <body>
 
 <div class="hero">
   <div class="hero-top">
-    <div class="logo">Labor<span>Pro</span><span class="tag">v1.0</span></div>
+    <a href="/" class="logo">Labor<span>Pro</span><span class="tag">v1.0</span></a>
   </div>
 
-  <h1 class="hero-title">台灣勞基法<br><em>權益計算</em>平台</h1>
+  <span class="eyebrow">中華民國勞基法 · 勞動權益</span>
+  <h1 class="hero-title">讓每份勞動<br>都被<em>公平對待</em></h1>
+  <p class="hero-sub">資遣費、加班費、職災補償、工時合規——20+ 個專業計算工具，依最新勞基法與勞退條例設計。</p>
 
-  <p class="hero-sub">
-    涵蓋資遣費試算、加班費計算、特休折現、職災補償、不當解雇分析<br>
-    依中華民國勞動基準法與勞工退休金條例設計<br>
-    協助勞工與人資從業人員快速釐清勞動權益。
-  </p>
-
-  <div class="law-strip">
-    <span class="law-pill">§9-1</span>
-    <span class="law-pill">§11</span>
-    <span class="law-pill">§12</span>
-    <span class="law-pill">§14</span>
-    <span class="law-pill">§16</span>
-    <span class="law-pill">§17</span>
-    <span class="law-pill">§21</span>
-    <span class="law-pill">§24</span>
-    <span class="law-pill">§30</span>
-    <span class="law-pill">§32</span>
-    <span class="law-pill">§34</span>
-    <span class="law-pill">§36</span>
-    <span class="law-pill">§38</span>
-    <span class="law-pill">§39</span>
-    <span class="law-pill">§59</span>
-    <span class="law-pill">勞退§12</span>
+  <!-- Persona Bar -->
+  <div class="persona-bar">
+    <div class="persona-badge" id="personaBadge"></div>
+    <button class="persona-switch" onclick="localStorage.removeItem('lp_persona');window.location.href='landing.html'">切換身份</button>
   </div>
 
-  <div class="tool-grid">
-
-    <a class="tool-card" href="severance.html">
-      <div class="tool-card-inner">
-        <div class="tool-num">01</div>
-        <div class="tool-info">
-          <div class="tool-name">資遣費計算機</div>
-          <div class="tool-desc">舊制§17 ／ 新制退休金條例§12<br>含預告工資試算、兩制並計</div>
-        </div>
-        <span class="tool-arrow">→</span>
-      </div>
-    </a>
-
-    <a class="tool-card" href="overtime.html">
-      <div class="tool-card-inner">
-        <div class="tool-num">02</div>
-        <div class="tool-info">
-          <div class="tool-name">加班費計算機</div>
-          <div class="tool-desc">平日延長 ／ 休息日 ／ 國定假日<br>依勞基法§24、§39精確計算</div>
-        </div>
-        <span class="tool-arrow">→</span>
-      </div>
-    </a>
-
-    <a class="tool-card" href="annual-leave.html">
-      <div class="tool-card-inner">
-        <div class="tool-num">03</div>
-        <div class="tool-info">
-          <div class="tool-name">特休未休折現</div>
-          <div class="tool-desc">年資 → 特休天數（§38）<br>未休日數換算折現金額</div>
-        </div>
-        <span class="tool-arrow">→</span>
-      </div>
-    </a>
-
-    <a class="tool-card" href="work-injury.html">
-      <div class="tool-card-inner">
-        <div class="tool-num">04</div>
-        <div class="tool-info">
-          <div class="tool-name">職災補償試算</div>
-          <div class="tool-desc">§59醫療、工資、失能、死亡補償<br>含雇主連帶責任說明</div>
-        </div>
-        <span class="tool-arrow">→</span>
-      </div>
-    </a>
-
-    <a class="tool-card" href="wrongful-dismissal.html">
-      <div class="tool-card-inner">
-        <div class="tool-num">05</div>
-        <div class="tool-info">
-          <div class="tool-name">不當解雇分析</div>
-          <div class="tool-desc">§11、§12、§14解雇合法性判斷<br>預告工資、資遣費請求評估</div>
-        </div>
-        <span class="tool-arrow">→</span>
-      </div>
-    </a>
-
-    <div class="category-label">勞動條件合規</div>
-
-    <a class="tool-card" href="work-hours.html">
-      <div class="tool-card-inner">
-        <div class="tool-num">06</div>
-        <div class="tool-info">
-          <div class="tool-name">工時合規檢查</div>
-          <div class="tool-desc">§30週工時、§32加班上限、§34換班間隔<br>§36例假與休息日合規逐項分析</div>
-        </div>
-        <span class="tool-arrow">→</span>
-      </div>
-    </a>
-
-    <a class="tool-card" href="pension.html">
-      <div class="tool-card-inner">
-        <div class="tool-num">07</div>
-        <div class="tool-info">
-          <div class="tool-name">勞退提撥試算</div>
-          <div class="tool-desc">雇主6%強制提撥＋自願提撥複利試算<br>預估退休帳戶總額與月退金額</div>
-        </div>
-        <span class="tool-arrow">→</span>
-      </div>
-    </a>
-
-    <a class="tool-card" href="min-wage.html">
-      <div class="tool-card-inner">
-        <div class="tool-num">08</div>
-        <div class="tool-info">
-          <div class="tool-name">最低工資合規</div>
-          <div class="tool-desc">薪資結構拆解，判斷是否低於基本工資<br>§21合規檢查，含差額計算</div>
-        </div>
-        <span class="tool-arrow">→</span>
-      </div>
-    </a>
-
-    <a class="tool-card" href="non-compete.html">
-      <div class="tool-card-inner">
-        <div class="tool-num">09</div>
-        <div class="tool-info">
-          <div class="tool-name">競業禁止分析</div>
-          <div class="tool-desc">§9-1五要件逐項評估，協議合法性判斷<br>補償金足額計算、無效主張建議</div>
-        </div>
-        <span class="tool-arrow">→</span>
-      </div>
-    </a>
-
+  <!-- Search -->
+  <div class="search-bar">
+    <span class="search-icon">&#x1F50D;</span>
+    <input type="text" id="toolSearch" placeholder="搜尋工具（例：資遣費、加班、職災、特休）" autocomplete="off">
+    <button class="search-clear" id="searchClear" onclick="clearSearch()">&times;</button>
   </div>
 
-  <div class="divider"></div>
+  <!-- Featured -->
+  <div id="featuredSection">
+    <div class="section-header">
+      <span class="section-title">精選工具</span>
+      <span class="section-eyebrow">← 左右滑動 →</span>
+    </div>
+    <div class="featured-strip" id="featuredStrip"></div>
+  </div>
+
+  <!-- Tab Nav -->
+  <div class="section-header" id="browseHeader">
+    <span class="section-title">分類瀏覽</span>
+    <span class="section-eyebrow">20+ 個工具</span>
+  </div>
+  <div class="tab-scroll-wrap" id="tabScrollWrap">
+    <div id="tabNav" class="tab-nav"></div>
+  </div>
+  <div class="tab-subtitle" id="tabSubtitle"></div>
+
+  <!-- Tool Cards -->
+  <div class="tools" id="toolsContainer"></div>
+
+  <div class="section-divider"></div>
 
   <div class="hero-footer">
     © 2026 LaborPro. All rights reserved.<br>
@@ -385,76 +654,48 @@
   <div class="faq-heading">常見問題 FAQ</div>
 
   <div class="faq-item">
-    <div class="faq-q">資遣費新制和舊制有什麼差別？</div>
+    <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">資遣費新制和舊制有什麼差別？<svg class="faq-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="4,6 8,10 12,6"/></svg></div>
     <div class="faq-a">舊制依勞基法§17計算，每滿1年給付1個月平均工資，最高6個月；新制依勞工退休金條例§12，每滿1年給付0.5個月平均工資，同樣上限6個月。2005年7月1日勞退新制施行後到職者適用新制；之前到職者依年資比例兩制並計。可使用<a href="severance.html">資遣費計算機</a>快速試算。</div>
   </div>
 
   <div class="faq-item">
-    <div class="faq-q">加班費怎麼計算？</div>
-    <div class="faq-a">依勞基法§24，平日延長工時第1至2小時加給1/3（即時薪×4/3），第3至4小時加給2/3（即時薪×5/3）。休息日出勤前2小時亦為×4/3，之後為×5/3，且工作未滿4小時以4小時計、滿4小時未滿8小時以8小時計。國定假日出勤依§39應加倍給付。可使用<a href="overtime.html">加班費計算機</a>精確試算。</div>
+    <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">加班費怎麼計算？<svg class="faq-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="4,6 8,10 12,6"/></svg></div>
+    <div class="faq-a">依勞基法§24，平日延長工時第1至2小時加給1/3（即時薪x4/3），第3至4小時加給2/3（即時薪x5/3）。休息日出勤前2小時亦為x4/3，之後為x5/3，且工作未滿4小時以4小時計、滿4小時未滿8小時以8小時計。國定假日出勤依§39應加倍給付。可使用<a href="overtime.html">加班費計算機</a>精確試算。</div>
   </div>
 
   <div class="faq-item">
-    <div class="faq-q">特別休假未休可以請求折現嗎？</div>
+    <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">特別休假未休可以請求折現嗎？<svg class="faq-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="4,6 8,10 12,6"/></svg></div>
     <div class="faq-a">依勞基法§38第4項，年度終結或契約終止時，雇主應將勞工未休畢的特別休假日數折算工資給付，不得片面取消。折現金額以月薪除以30計算日薪，再乘以未休天數。可使用<a href="annual-leave.html">特休未休折現工具</a>依年資自動計算應休天數及折現金額。</div>
   </div>
 
+  <div class="faq-item">
+    <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">被資遣時雇主需要提前多久通知？<svg class="faq-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="4,6 8,10 12,6"/></svg></div>
+    <div class="faq-a">依勞基法§16，工作3個月以上未滿1年者，預告期間10天；1年以上未滿3年者，20天；3年以上者，30天。未給預告即解雇者，雇主應給付預告期間工資。可使用<a href="severance.html">資遣費計算機</a>一併試算預告工資。</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">職災發生後勞工有哪些補償？<svg class="faq-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="4,6 8,10 12,6"/></svg></div>
+    <div class="faq-a">依勞基法§59，雇主應補償四大項目：(1)醫療費用全額補償、(2)醫療期間原領工資補償、(3)失能補償（依等級40至1,200日平均工資）、(4)死亡補償（5個月平均工資喪葬費+40個月平均工資死亡補償）。可使用<a href="work-injury.html">職災補償試算</a>計算各項金額。</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">勞退新制雇主每月要提撥多少？<svg class="faq-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="4,6 8,10 12,6"/></svg></div>
+    <div class="faq-a">依勞工退休金條例§14，雇主每月應提繳不低於勞工月工資6%至勞工個人退休金專戶。勞工可自願另行提繳最高6%，享有薪資所得稅優惠。可使用<a href="pension.html">勞退提撥試算</a>預估退休帳戶累積金額與月退休金。</div>
+  </div>
 </section>
 
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "WebSite",
-  "name": "LaborPro 台灣勞基法計算機",
-  "url": "https://laborpro.app/",
-  "description": "台灣勞基法計算平台，提供資遣費、加班費、特休折現、職災補償、不當解雇等免費計算工具。",
+  "@type": "WebApplication",
+  "name": "LaborPro",
+  "url": "https://laborpro.vercel.app",
+  "description": "台灣勞基法計算平台，提供資遣費、加班費、特休折現、職災補償、不當解雇等 20+ 個免費計算工具。",
+  "applicationCategory": "LegalApplication",
+  "operatingSystem": "Any",
+  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "TWD"},
   "inLanguage": "zh-TW",
-  "author": {"@type": "Organization", "name": "LaborPro", "url": "https://laborpro.app/"}
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "ItemList",
-  "name": "LaborPro 勞基法計算工具清單",
-  "url": "https://laborpro.app/",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "資遣費計算機",
-      "description": "舊制§17 ／ 新制退休金條例§12，含預告工資試算、兩制並計",
-      "url": "https://laborpro.app/severance.html"
-    },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "name": "加班費計算機",
-      "description": "平日延長 ／ 休息日 ／ 國定假日，依勞基法§24、§39精確計算",
-      "url": "https://laborpro.app/overtime.html"
-    },
-    {
-      "@type": "ListItem",
-      "position": 3,
-      "name": "特休未休折現",
-      "description": "年資 → 特休天數（§38），未休日數換算折現金額",
-      "url": "https://laborpro.app/annual-leave.html"
-    },
-    {
-      "@type": "ListItem",
-      "position": 4,
-      "name": "職災補償試算",
-      "description": "§59醫療、工資、失能、死亡補償，含雇主連帶責任說明",
-      "url": "https://laborpro.app/work-injury.html"
-    },
-    {
-      "@type": "ListItem",
-      "position": 5,
-      "name": "不當解雇分析",
-      "description": "§11、§12、§14解雇合法性判斷，預告工資、資遣費請求評估",
-      "url": "https://laborpro.app/wrongful-dismissal.html"
-    }
-  ]
+  "author": {"@type": "Organization", "name": "LaborPro", "url": "https://laborpro.vercel.app"}
 }
 </script>
 <script type="application/ld+json">
@@ -462,24 +703,362 @@
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "資遣費新制和舊制有什麼差別？",
-      "acceptedAnswer": {"@type": "Answer", "text": "舊制依勞基法§17計算，每滿1年給付1個月平均工資，最高6個月；新制依勞工退休金條例§12，每滿1年給付0.5個月平均工資，上限6個月。2005年7月1日勞退新制施行後到職者適用新制；之前到職者依年資比例兩制並計。"}
-    },
-    {
-      "@type": "Question",
-      "name": "加班費怎麼計算？",
-      "acceptedAnswer": {"@type": "Answer", "text": "依勞基法§24，平日延長工時第1至2小時加給1/3（時薪×4/3），第3至4小時加給2/3（時薪×5/3）。休息日出勤前2小時×4/3，之後×5/3，未滿4小時以4小時計。國定假日出勤依§39加倍給付。"}
-    },
-    {
-      "@type": "Question",
-      "name": "特別休假未休可以請求折現嗎？",
-      "acceptedAnswer": {"@type": "Answer", "text": "依勞基法§38第4項，年度終結或契約終止時，雇主應將勞工未休畢的特別休假日數折算工資給付。折現金額以月薪除以30計算日薪，再乘以未休天數。"}
-    }
+    {"@type": "Question", "name": "資遣費新制和舊制有什麼差別？", "acceptedAnswer": {"@type": "Answer", "text": "舊制依勞基法§17計算，每滿1年給付1個月平均工資，最高6個月；新制依勞工退休金條例§12，每滿1年給付0.5個月平均工資，上限6個月。2005年7月1日勞退新制施行後到職者適用新制；之前到職者依年資比例兩制並計。"}},
+    {"@type": "Question", "name": "加班費怎麼計算？", "acceptedAnswer": {"@type": "Answer", "text": "依勞基法§24，平日延長工時第1至2小時加給1/3（時薪x4/3），第3至4小時加給2/3（時薪x5/3）。休息日出勤前2小時x4/3，之後x5/3，未滿4小時以4小時計。國定假日出勤依§39加倍給付。"}},
+    {"@type": "Question", "name": "特別休假未休可以請求折現嗎？", "acceptedAnswer": {"@type": "Answer", "text": "依勞基法§38第4項，年度終結或契約終止時，雇主應將勞工未休畢的特別休假日數折算工資給付。折現金額以月薪除以30計算日薪，再乘以未休天數。"}},
+    {"@type": "Question", "name": "被資遣時雇主需要提前多久通知？", "acceptedAnswer": {"@type": "Answer", "text": "依勞基法§16，工作3個月以上未滿1年者預告10天；1年以上未滿3年者20天；3年以上者30天。未給預告即解雇者應給付預告期間工資。"}},
+    {"@type": "Question", "name": "職災發生後勞工有哪些補償？", "acceptedAnswer": {"@type": "Answer", "text": "依勞基法§59，雇主應補償：醫療費用全額、醫療期間原領工資、失能補償（依等級40至1200日平均工資）、死亡補償（5個月喪葬費+40個月死亡補償）。"}},
+    {"@type": "Question", "name": "勞退新制雇主每月要提撥多少？", "acceptedAnswer": {"@type": "Answer", "text": "依勞退條例§14，雇主每月提繳不低於月工資6%至勞工個人退休金專戶。勞工可自願另提最高6%，享薪資所得稅優惠。"}}
   ]
 }
 </script>
-<div class="disclaimer-bar"><strong>免責聲明</strong>：本平台之計算結果僅供初步參考，不構成法律意見或法律諮詢服務。實際案件因個案事實、適用法規及法院見解不同，結果可能有所差異，建議諮詢具執照之律師或相關法律專業人員。</div>
+
+<div class="disclaimer-bar"><strong>免責聲明</strong>：本平台之計算結果僅供初步參考，不構成法律意見或法律諮詢服務。實際案件因個案事實、適用法規及法院見解不同，結果可能有所差異，建議諮詢具執照之律師或相關法律專業人員。<div style="margin-top:10px;display:flex;gap:16px;justify-content:center;flex-wrap:wrap;"><a href="privacy.html" style="color:rgba(255,255,255,0.5);font-size:12px;text-decoration:underline;">隱私權政策</a><span style="opacity:0.2;font-size:12px;">·</span><a href="terms.html" style="color:rgba(255,255,255,0.5);font-size:12px;text-decoration:underline;">使用者條款</a><span style="opacity:0.2;font-size:12px;">·</span><span style="color:rgba(255,255,255,0.3);font-size:12px;">© 2026 LaborPro</span></div></div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+// ALL_TOOLS — 工具資料庫
+// ═══════════════════════════════════════════════════════════
+const P = window.LP_PERSONA || 'worker';
+
+const ALL_TOOLS = {
+  severance: { href: 'severance.html', featured: true,
+    name: { all: '資遣費計算機' },
+    desc: {
+      worker: '被資遣時可以拿多少？舊制§17、新制退休金條例§12，含預告工資試算',
+      employer: '員工資遣成本精算，舊制§17、新制退休金條例§12，含預告工資義務'
+    }},
+  overtime: { href: 'overtime.html', featured: true,
+    name: { all: '加班費計算機' },
+    desc: {
+      worker: '你的加班費算對了嗎？平日延長、休息日、國定假日，依§24、§39計算',
+      employer: '加班費用精算，平日延長、休息日、國定假日，依§24、§39合規計算'
+    }},
+  'annual-leave': { href: 'annual-leave.html',
+    name: { all: '特休未休折現' },
+    desc: {
+      worker: '特休沒休完可以換錢！年資→特休天數→折現金額，依§38自動計算',
+      employer: '員工特休未休折現義務，年資→特休天數→應付折現金額，依§38計算'
+    }},
+  'work-injury': { href: 'work-injury.html', featured: true,
+    name: { all: '職災補償試算' },
+    desc: {
+      worker: '職災發生後你能拿多少？§59醫療、工資、失能、死亡四大補償',
+      employer: '職災雇主補償責任精算，§59醫療、工資、失能、死亡四大項目'
+    }},
+  'wrongful-dismissal': { href: 'wrongful-dismissal.html', badge: 'hot',
+    name: { all: '不當解雇分析' },
+    desc: {
+      worker: '被炒魷魚合法嗎？§11、§12、§14解雇合法性判斷，權益請求評估',
+      employer: '解雇員工前必看！§11、§12、§14合法性自檢，降低訴訟風險'
+    }},
+  'settlement-calc': { href: 'settlement-calc.html',
+    name: { all: '離職結算檢查表' },
+    desc: {
+      worker: '離職時雇主該付你什麼？資遣費、預告工資、特休折現一次檢查',
+      employer: '員工離職結算清單，資遣費、預告工資、特休折現逐項確認'
+    }},
+  'dismissal-checklist': { href: 'dismissal-checklist.html',
+    name: { all: '資遣合法性檢查' },
+    desc: {
+      worker: '雇主資遣你的程序合法嗎？逐項檢查解雇要件是否符合',
+      employer: '資遣流程合法性自檢清單，確保每一步都符合法定要件'
+    }},
+  'overtime-detail': { href: 'overtime-detail.html',
+    name: { all: '加班費逐筆結算' },
+    desc: {
+      worker: '逐筆記錄加班，每次加班各算多少，總額一目了然',
+      employer: '逐筆管理員工加班費用，單次明細與月度總額'
+    }},
+  'avg-wage': { href: 'avg-wage.html',
+    name: { all: '平均工資精算器' },
+    desc: {
+      worker: '你的平均工資是多少？影響資遣費、職災補償、退休金的關鍵數字',
+      employer: '精算員工平均工資，資遣費、職災補償的計算基礎'
+    }},
+  'wage-analysis': { href: 'wage-analysis.html',
+    name: { all: '工資認定分析器' },
+    desc: {
+      worker: '你的薪資哪些算「工資」？影響勞保投保、加班費基準',
+      employer: '薪資項目是否屬工資？影響勞健保投保、加班費計算基準'
+    }},
+  'min-wage': { href: 'min-wage.html',
+    name: { all: '最低工資合規' },
+    desc: {
+      worker: '你的薪資有沒有低於基本工資？§21合規檢查與差額計算',
+      employer: '員工薪資結構是否符合§21基本工資規定？差額與罰則計算'
+    }},
+  'payslip-checker': { href: 'payslip-checker.html', badge: 'new',
+    name: { all: '薪資單檢查器' },
+    desc: {
+      worker: '薪資單上的數字對嗎？核對本薪、加班費、勞健保扣款，找出差異',
+      employer: '核對員工薪資單正確性，勞健保級距驗證、扣款合規檢查'
+    }},
+  'leave-calc': { href: 'leave-calc.html',
+    name: { all: '全假別權益計算機' },
+    desc: {
+      worker: '特休、病假、事假、婚喪假——各假別你有幾天？薪資怎麼算？',
+      employer: '員工各假別天數與薪資規定速查，特休、病假、事假一覽表'
+    }},
+  'parental-leave': { href: 'parental-leave.html', badge: 'new',
+    name: { all: '育嬰假與津貼試算' },
+    desc: {
+      worker: '育嬰留職停薪可以請多久？津貼怎麼算？一次搞懂',
+      employer: '員工育嬰假權利義務、津貼給付標準與留職停薪管理'
+    }},
+  pension: { href: 'pension.html',
+    name: { all: '勞退提撥試算' },
+    desc: {
+      worker: '退休後每月可以領多少？雇主6%＋自提複利試算',
+      employer: '員工勞退提撥成本精算，雇主6%強制提繳金額計算'
+    }},
+  'labor-insurance': { href: 'labor-insurance.html',
+    name: { all: '勞保費用與給付試算' },
+    desc: {
+      worker: '勞保保費多少？生育、傷病、失能、老年給付各是多少？',
+      employer: '勞保投保級距、保費分攤計算、各項給付費用概算'
+    }},
+  'work-hours': { href: 'work-hours.html',
+    name: { all: '工時合規檢查' },
+    desc: {
+      worker: '你的工時合法嗎？§30週工時、§32加班上限、§36例假休息日',
+      employer: '公司排班是否合規？§30、§32、§34、§36逐項分析'
+    }},
+  'non-compete': { href: 'non-compete.html',
+    name: { all: '競業禁止分析' },
+    desc: {
+      worker: '離職後競業禁止有效嗎？§9-1五要件評估，無效主張建議',
+      employer: '競業禁止協議合法性自檢，§9-1五要件、補償金額計算'
+    }},
+  'dispute-guide': { href: 'dispute-guide.html',
+    name: { all: '勞資爭議調解導引' },
+    desc: {
+      worker: '跟老闆有糾紛怎麼辦？調解、仲裁、訴訟流程完整導引',
+      employer: '勞資爭議處理流程，調解、仲裁程序與應備文件'
+    }},
+  'penalty-lookup': { href: 'penalty-lookup.html',
+    name: { all: '違規罰鍰速查' },
+    desc: {
+      worker: '雇主違法罰多少？勞基法各條違規罰鍰金額速查',
+      employer: '違反勞基法各條罰鍰金額速查，2萬至150萬罰則一覽'
+    }},
+  'payslip-checker': { href: 'payslip-checker.html', badge: 'new',
+    name: { all: '薪資單檢查器' },
+    desc: {
+      worker: '薪資單金額對嗎？輸入薪資明細，自動核對勞健保扣款與實領金額',
+      employer: '員工薪資單合規檢查，勞健保級距驗證、各項扣款正確性確認'
+    }}
+};
+
+// ═══════════════════════════════════════════════════════════
+// TABS — 分類導覽
+// ═══════════════════════════════════════════════════════════
+const TABS = [
+  {
+    id: 'severance',
+    label: '資遣與補償',
+    subtitle: '資遣費、預告工資、不當解雇、離職結算一次搞定。',
+    tools: ['severance', 'wrongful-dismissal', 'annual-leave', 'settlement-calc', 'dismissal-checklist']
+  },
+  {
+    id: 'wage',
+    label: '工資與加班',
+    subtitle: '加班費精算、平均工資、工資認定、最低工資合規。',
+    tools: ['overtime', 'overtime-detail', 'avg-wage', 'wage-analysis', 'min-wage', 'payslip-checker']
+  },
+  {
+    id: 'leave',
+    label: '假別與福利',
+    subtitle: '特休、育嬰假、勞退提撥、勞保給付完整試算。',
+    tools: ['leave-calc', 'parental-leave', 'pension', 'labor-insurance']
+  },
+  {
+    id: 'compliance',
+    label: '合規與爭議',
+    subtitle: '工時合規、職災補償、競業禁止、罰則速查、爭議調解。',
+    tools: ['work-hours', 'work-injury', 'non-compete', 'dispute-guide', 'penalty-lookup']
+  }
+];
+
+// ═══════════════════════════════════════════════════════════
+// FEATURED — 精選橫向卡片
+// ═══════════════════════════════════════════════════════════
+const FEATURED_LATEST = [
+  {
+    id: 'severance',
+    badge: 'hot', badgeLabel: '最常用',
+    cls: 'style-gold',
+    title: '資遣費計算機',
+    desc: '新舊制並計、預告工資一鍵試算——被資遣必用'
+  },
+  {
+    id: 'wrongful-dismissal',
+    badge: 'alert', badgeLabel: '權益保障',
+    cls: 'style-red',
+    title: '不當解雇分析',
+    desc: '§11、§12、§14 逐條判斷解雇合法性'
+  },
+  {
+    id: 'work-injury',
+    badge: 'new', badgeLabel: '完整四大補償',
+    cls: 'style-green',
+    title: '職災補償試算',
+    desc: '醫療、工資、失能、死亡——雇主補償金額精算'
+  },
+  {
+    id: 'parental-leave',
+    badge: 'new', badgeLabel: 'NEW',
+    cls: 'style-green',
+    title: '育嬰假與津貼',
+    desc: '留停期間、津貼金額、復職權益一次搞懂'
+  },
+  {
+    id: 'penalty-lookup',
+    badge: 'alert', badgeLabel: '雇主必看',
+    cls: 'style-red',
+    title: '違規罰鍰速查',
+    desc: '勞基法各條違規罰則 2 萬～150 萬金額一覽'
+  }
+];
+
+// ═══════════════════════════════════════════════════════════
+// RENDER
+// ═══════════════════════════════════════════════════════════
+let activeTab = 0;
+
+function getDesc(tool) {
+  const d = tool.desc;
+  if (d.all) return d.all;
+  return d[P] || d.worker || '';
+}
+
+function getName(tool) {
+  const n = tool.name;
+  return n.all || n[P] || '';
+}
+
+function renderToolCard(key, tool) {
+  const badge = tool.badge ? `<span class="tool-badge ${tool.badge}">${tool.badge === 'new' ? 'NEW' : tool.badge === 'hot' ? 'HOT' : tool.badge.toUpperCase()}</span>` : '';
+  const featured = tool.featured ? ' featured' : '';
+  return `<a class="tool-card${featured}" href="${tool.href}">
+    <div class="tool-card-inner">
+      <div class="tool-info">
+        <div class="tool-name">${getName(tool)}${badge}</div>
+        <div class="tool-desc">${getDesc(tool)}</div>
+      </div>
+      <span class="tool-arrow">→</span>
+    </div>
+  </a>`;
+}
+
+function renderFeatured() {
+  const strip = document.getElementById('featuredStrip');
+  strip.innerHTML = FEATURED_LATEST.map(f => {
+    const tool = ALL_TOOLS[f.id];
+    if (!tool) return '';
+    return `<a class="featured-card ${f.cls}" href="${tool.href}">
+      <span class="featured-badge ${f.badge}">${f.badgeLabel}</span>
+      <div class="featured-card-title">${f.title}</div>
+      <div class="featured-card-desc">${f.desc}</div>
+      <div class="featured-card-arrow"><span>開始試算</span><span>→</span></div>
+    </a>`;
+  }).join('');
+}
+
+function renderTabs() {
+  const nav = document.getElementById('tabNav');
+  nav.innerHTML = TABS.map((t, i) =>
+    `<button class="tab-btn${i === activeTab ? ' active' : ''}" onclick="switchTab(${i})">${t.label}</button>`
+  ).join('');
+
+  document.getElementById('tabSubtitle').textContent = TABS[activeTab].subtitle;
+
+  const container = document.getElementById('toolsContainer');
+  container.innerHTML = TABS[activeTab].tools
+    .filter(k => ALL_TOOLS[k])
+    .map(k => renderToolCard(k, ALL_TOOLS[k]))
+    .join('');
+}
+
+function switchTab(i) {
+  activeTab = i;
+  renderTabs();
+}
+
+function renderSearch(query) {
+  const q = query.toLowerCase();
+  const container = document.getElementById('toolsContainer');
+  const matches = Object.entries(ALL_TOOLS).filter(([k, t]) => {
+    const name = getName(t);
+    const desc = getDesc(t);
+    return name.toLowerCase().includes(q) || desc.toLowerCase().includes(q) || k.includes(q);
+  });
+
+  if (matches.length === 0) {
+    container.innerHTML = `<div class="search-fallback">
+      <div class="search-fallback-title">找不到「<strong>${query}</strong>」</div>
+      <div class="search-fallback-hint">試試其他關鍵字</div>
+      <div>
+        <span class="search-chip" onclick="setSearch('資遣費')">資遣費</span>
+        <span class="search-chip" onclick="setSearch('加班')">加班</span>
+        <span class="search-chip" onclick="setSearch('職災')">職災</span>
+        <span class="search-chip" onclick="setSearch('特休')">特休</span>
+      </div>
+    </div>`;
+  } else {
+    container.innerHTML = matches.map(([k, t]) => renderToolCard(k, t)).join('');
+  }
+}
+
+function setSearch(q) {
+  const input = document.getElementById('toolSearch');
+  input.value = q;
+  input.dispatchEvent(new Event('input'));
+}
+
+function clearSearch() {
+  const input = document.getElementById('toolSearch');
+  input.value = '';
+  document.getElementById('searchClear').style.display = 'none';
+  document.getElementById('featuredSection').style.display = '';
+  document.getElementById('browseHeader').style.display = '';
+  document.getElementById('tabScrollWrap').style.display = '';
+  document.getElementById('tabSubtitle').style.display = '';
+  renderTabs();
+}
+
+// ─────────── Persona Badge ───────────
+function renderPersonaBadge() {
+  const badge = document.getElementById('personaBadge');
+  if (P === 'employer') {
+    badge.className = 'persona-badge employer';
+    badge.textContent = '🏢 雇主模式';
+  } else {
+    badge.className = 'persona-badge worker';
+    badge.textContent = '👷 勞工模式';
+  }
+}
+
+// ─────────── Init ───────────
+renderPersonaBadge();
+renderFeatured();
+renderTabs();
+
+document.getElementById('toolSearch').addEventListener('input', function () {
+  const q = this.value.trim();
+  const clear = document.getElementById('searchClear');
+  clear.style.display = q ? 'block' : 'none';
+
+  if (q) {
+    document.getElementById('featuredSection').style.display = 'none';
+    document.getElementById('browseHeader').style.display = 'none';
+    document.getElementById('tabScrollWrap').style.display = 'none';
+    document.getElementById('tabSubtitle').style.display = 'none';
+    renderSearch(q);
+  } else {
+    clearSearch();
+  }
+});
+</script>
 </body>
 </html>

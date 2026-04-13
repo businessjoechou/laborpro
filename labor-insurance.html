@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" href="favicon.svg">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>勞保費用與給付試算｜LaborPro</title>
+<meta name="description" content="試算勞保、健保、勞退每月費用，比較老年給付一次請領與月退休金方案，自動對應投保級距，免費使用。">
+<meta name="keywords" content="勞保費用,健保費用,勞退提撥,投保級距,老年給付,月退休金,一次請領,勞保試算,台灣勞基法">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://laborpro.tw/labor-insurance.html">
+<meta property="og:title" content="勞保費用與給付試算｜LaborPro">
+<meta property="og:description" content="試算勞保、健保、勞退每月費用與老年給付方案比較。">
+<meta property="og:type" content="website">
+<meta name="author" content="LaborPro">
+<meta property="og:site_name" content="LaborPro">
+<meta property="og:locale" content="zh_TW">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="js/persona.js"></script>
+<link rel="stylesheet" href="css/common.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "勞保費用與給付試算",
+  "description": "試算勞保、健保、勞退每月費用，比較老年給付一次請領與月退休金方案。",
+  "url": "https://laborpro.tw/labor-insurance.html",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "TWD" }
+}
+</script>
+<style>
+  .bracket-display {
+    background: #eef8f2;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin-top: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .bracket-label {
+    font-size: 12px;
+    color: var(--accent);
+  }
+  .bracket-value {
+    font-family: 'DM Mono', monospace;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--accent);
+  }
+  .cost-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+  .cost-table th {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 8px 6px;
+    border-bottom: 1.5px solid var(--soft);
+    text-align: right;
+  }
+  .cost-table th:first-child { text-align: left; }
+  .cost-table td {
+    padding: 9px 6px;
+    border-bottom: 1px solid var(--soft);
+    color: var(--ink);
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    text-align: right;
+  }
+  .cost-table td:first-child {
+    font-family: 'Noto Sans TC', sans-serif;
+    text-align: left;
+    color: var(--muted);
+    font-size: 13px;
+  }
+  .cost-table tr.total-row td {
+    font-weight: 700;
+    color: var(--ink);
+    border-top: 1.5px solid var(--soft);
+    border-bottom: none;
+  }
+  .cost-table tr.total-row td:first-child { color: var(--ink); }
+  .compare-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  .compare-card {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 16px;
+    text-align: center;
+  }
+  .compare-card.recommended {
+    border-color: var(--accent);
+    background: #eef8f2;
+  }
+  .compare-card-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .compare-card-amount {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--gold);
+    margin-bottom: 4px;
+  }
+  .compare-card-sub {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .compare-card .badge {
+    margin-top: 8px;
+  }
+  .retirement-slider {
+    margin: 12px 0;
+  }
+  .retirement-slider label {
+    font-size: 12px;
+    color: var(--muted);
+    display: block;
+    margin-bottom: 6px;
+  }
+  .retirement-slider input[type="range"] {
+    width: 100%;
+    accent-color: var(--accent);
+  }
+  @media (max-width: 400px) {
+    .compare-grid { grid-template-columns: 1fr; }
+    .compare-card-amount { font-size: 18px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="logo">Labor<span>Pro</span></a>
+  <a class="back-link" href="index.html">← 首頁</a>
+</header>
+<div class="progress-bar">
+  <div class="progress-fill" id="progressFill" style="width: 33%"></div>
+</div>
+
+<main>
+  <!-- Step 1: 輸入 -->
+  <div class="step active" id="step1">
+    <div class="step-header">
+      <div class="step-label">Step 1 of 3 · 基本資料</div>
+      <h1 class="step-title">勞保費用與給付試算</h1>
+      <p class="step-sub">輸入薪資與個人資料，試算勞保、健保、勞退每月費用，以及老年給付方案比較。</p>
+    </div>
+
+    <div class="wizard">
+      <div class="wizard-section-title">薪資資料</div>
+      <div class="field-group">
+        <label>月薪（經常性薪資）</label>
+        <input type="number" id="monthlySalary" placeholder="45000" min="0" inputmode="numeric">
+      </div>
+    </div>
+
+    <div class="wizard">
+      <div class="wizard-section-title">個人資料（老年給付試算用）</div>
+      <div class="field-group">
+        <label>出生年（民國）</label>
+        <input type="number" id="birthYear" placeholder="70" min="30" max="120" inputmode="numeric">
+      </div>
+      <div class="field-group">
+        <label>性別</label>
+        <div class="select-wrap">
+          <select id="gender">
+            <option value="male">男</option>
+            <option value="female">女</option>
+          </select>
+        </div>
+      </div>
+      <div class="field-group">
+        <label>預估投保年資（年）</label>
+        <input type="number" id="insuredYears" placeholder="30" min="1" max="50" inputmode="numeric" value="30">
+      </div>
+      <div class="field-group">
+        <label>勞退自願提撥比例</label>
+        <div class="select-wrap">
+          <select id="voluntaryRate">
+            <option value="0">0%（不自提）</option>
+            <option value="1">1%</option>
+            <option value="2">2%</option>
+            <option value="3">3%</option>
+            <option value="4">4%</option>
+            <option value="5">5%</option>
+            <option value="6">6%</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="warn-box">
+      ⚠ 費率依2026年度基準計算，實際費率可能因年度調整而略有差異。
+    </div>
+  </div>
+
+  <!-- Step 2: 投保級距 -->
+  <div class="step" id="step2">
+    <div class="step-header">
+      <div class="step-label">Step 2 of 3 · 投保級距</div>
+      <h1 class="step-title">對應投保級距</h1>
+      <p class="step-sub">依您的月薪自動對應勞保投保薪資級距。</p>
+    </div>
+
+    <div class="result-card">
+      <div class="result-card-title">薪資與級距</div>
+      <div class="result-row">
+        <span class="result-row-label">您的月薪</span>
+        <span class="result-row-val" id="r_salary">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">勞保投保薪資</span>
+        <span class="result-row-val highlight" id="r_bracket">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">健保投保金額</span>
+        <span class="result-row-val" id="r_nhiBracket">—</span>
+      </div>
+    </div>
+
+    <div class="info-box">
+      投保薪資級距依勞動部公告標準，您的月薪會被歸入最接近的上一級。若月薪超過最高級距 45,800 元，則以 45,800 元計算。
+    </div>
+  </div>
+
+  <!-- Step 3: 結果 -->
+  <div class="step" id="step3">
+    <div class="step-header">
+      <div class="step-label">Step 3 of 3 · 計算結果</div>
+      <h1 class="step-title">費用與給付試算</h1>
+      <p class="step-sub">以下為月繳費用明細及老年給付方案比較。</p>
+    </div>
+
+    <!-- 月繳費用 -->
+    <div class="result-card">
+      <div class="result-card-title">月繳費用明細</div>
+      <table class="cost-table">
+        <thead>
+          <tr><th>項目</th><th>雇主</th><th>勞工</th><th>政府</th></tr>
+        </thead>
+        <tbody id="costTableBody"></tbody>
+      </table>
+    </div>
+
+    <div class="result-hero">
+      <div class="result-hero-label">勞工每月自付合計</div>
+      <div class="result-hero-amount" id="r_workerTotal">—</div>
+      <div class="result-hero-sub" id="r_employerNote">—</div>
+    </div>
+
+    <!-- 老年給付比較 -->
+    <div class="result-card">
+      <div class="result-card-title">老年給付試算</div>
+      <div class="result-row">
+        <span class="result-row-label">投保薪資</span>
+        <span class="result-row-val" id="r_pensionBracket">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">投保年資</span>
+        <span class="result-row-val" id="r_pensionYears">—</span>
+      </div>
+    </div>
+
+    <div class="compare-grid">
+      <div class="compare-card" id="lumpSumCard">
+        <div class="compare-card-label">一次請領</div>
+        <div class="compare-card-amount" id="r_lumpSum">—</div>
+        <div class="compare-card-sub" id="r_lumpSumSub">—</div>
+      </div>
+      <div class="compare-card" id="monthlyCard">
+        <div class="compare-card-label">月退休金</div>
+        <div class="compare-card-amount" id="r_monthlyPension">—</div>
+        <div class="compare-card-sub" id="r_monthlySub">—</div>
+      </div>
+    </div>
+
+    <div class="result-card">
+      <div class="result-card-title">損益兩平分析</div>
+      <div class="result-row">
+        <span class="result-row-label">損益兩平年數</span>
+        <span class="result-row-val highlight" id="r_breakeven">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">損益兩平年齡</span>
+        <span class="result-row-val" id="r_breakevenAge">—</span>
+      </div>
+      <p style="font-size:11px;color:var(--muted);margin-top:10px;line-height:1.6;">
+        若領月退後存活超過此年數，月退方案較一次請領划算。
+      </p>
+    </div>
+
+    <div class="law-note">
+      <strong>費率基準（2026年）</strong><br>
+      · <strong>勞保普通事故</strong>：12%（含就業保險1%）<br>
+      · <strong>勞保職災保險</strong>：平均約 0.21%<br>
+      · <strong>全民健保</strong>：5.17%<br>
+      · <strong>勞退雇主提撥</strong>：月提繳工資 × 6%<br>
+      · <strong>老年給付</strong>：一次請領最高45個月；月退按年資×1.55%計算
+    </div>
+  </div>
+</main>
+
+<div class="nav-bar" id="navBar">
+  <button class="btn btn-secondary" id="btnBack" onclick="goBack()" style="display:none;">← 上一步</button>
+  <button class="btn btn-primary" id="btnNext" onclick="goNext()">下一步 →</button>
+  <button class="btn btn-reset" id="btnReset" onclick="resetAll()" style="display:none;">重新計算</button>
+</div>
+
+<script src="js/fmt.js"></script>
+<script src="js/calc-utils.js"></script>
+<script>
+(function() {
+  var currentStep = 1;
+  var totalSteps = 3;
+  var state = {};
+
+  // Rates (2026)
+  var LABOR_ORDINARY_RATE = 0.12;   // 含就保1%
+  var LABOR_ACCIDENT_RATE = 0.0021;
+  var NHI_RATE = 0.0517;
+  var RETIRE_EMPLOYER_RATE = 0.06;
+
+  function showStep(n) {
+    document.querySelectorAll('.step').forEach(function(s) { s.classList.remove('active'); });
+    document.getElementById('step' + n).classList.add('active');
+    document.getElementById('progressFill').style.width = ((n / totalSteps) * 100) + '%';
+    currentStep = n;
+
+    var btnBack = document.getElementById('btnBack');
+    var btnNext = document.getElementById('btnNext');
+    var btnReset = document.getElementById('btnReset');
+
+    if (n === 1) {
+      btnBack.style.display = 'none';
+      btnNext.style.display = 'flex';
+      btnReset.style.display = 'none';
+      btnNext.textContent = '下一步 →';
+    } else if (n === 2) {
+      btnBack.style.display = 'block';
+      btnNext.style.display = 'flex';
+      btnReset.style.display = 'none';
+      btnNext.textContent = '計算費用 →';
+    } else {
+      btnBack.style.display = 'block';
+      btnNext.style.display = 'none';
+      btnReset.style.display = 'flex';
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  window.goBack = function() { if (currentStep > 1) showStep(currentStep - 1); };
+
+  window.goNext = function() {
+    if (currentStep === 1) {
+      if (!validate()) return;
+      collectData();
+      fillStep2();
+      showStep(2);
+    } else if (currentStep === 2) {
+      calculate();
+      showStep(3);
+    }
+  };
+
+  window.resetAll = function() { showStep(1); };
+
+  function validate() {
+    var salary = parseFloat(document.getElementById('monthlySalary').value);
+    if (!salary || salary <= 0) { alert('請輸入有效月薪。'); return false; }
+    var birthYear = parseInt(document.getElementById('birthYear').value);
+    if (!birthYear || birthYear < 30 || birthYear > 120) { alert('請輸入有效的出生年（民國）。'); return false; }
+    return true;
+  }
+
+  function collectData() {
+    state.salary = parseFloat(document.getElementById('monthlySalary').value);
+    state.birthYear = parseInt(document.getElementById('birthYear').value);
+    state.gender = document.getElementById('gender').value;
+    state.insuredYears = parseInt(document.getElementById('insuredYears').value) || 30;
+    state.voluntaryRate = parseInt(document.getElementById('voluntaryRate').value) / 100;
+    state.bracket = LaborPro.getLaborInsuranceBracket(state.salary);
+    // 健保投保金額大致同勞保投保薪資級距（簡化處理）
+    state.nhiBracket = state.bracket;
+  }
+
+  function fmt(n) { return LaborPro.fmt(n); }
+  function fmtNum(n) { return LaborPro.fmtNum(n); }
+
+  function fillStep2() {
+    document.getElementById('r_salary').textContent = fmt(state.salary);
+    document.getElementById('r_bracket').textContent = fmt(state.bracket);
+    document.getElementById('r_nhiBracket').textContent = fmt(state.nhiBracket);
+  }
+
+  function calculate() {
+    var b = state.bracket;
+    var nhi = state.nhiBracket;
+
+    // 勞保普通事故
+    var laborOrdinary = b * LABOR_ORDINARY_RATE;
+    var laborOrd_employer = Math.round(laborOrdinary * 0.7);
+    var laborOrd_worker = Math.round(laborOrdinary * 0.2);
+    var laborOrd_gov = Math.round(laborOrdinary * 0.1);
+
+    // 勞保職災
+    var laborAccident = Math.round(b * LABOR_ACCIDENT_RATE);
+    var laborAcc_employer = laborAccident;
+
+    // 健保
+    var nhiTotal = nhi * NHI_RATE;
+    var nhi_employer = Math.round(nhiTotal * 0.6);
+    var nhi_worker = Math.round(nhiTotal * 0.3);
+    var nhi_gov = Math.round(nhiTotal * 0.1);
+
+    // 勞退
+    var retireEmployer = Math.round(state.salary * RETIRE_EMPLOYER_RATE);
+    var retireWorker = Math.round(state.salary * state.voluntaryRate);
+
+    // Build table
+    var tbody = document.getElementById('costTableBody');
+    tbody.innerHTML = '';
+
+    function addRow(label, emp, wrk, gov) {
+      var tr = document.createElement('tr');
+      tr.innerHTML = '<td>' + label + '</td><td>' + fmtNum(emp) + '</td><td>' + fmtNum(wrk) + '</td><td>' + fmtNum(gov) + '</td>';
+      tbody.appendChild(tr);
+    }
+
+    addRow('勞保（普通事故）', laborOrd_employer, laborOrd_worker, laborOrd_gov);
+    addRow('勞保（職災保險）', laborAcc_employer, 0, 0);
+    addRow('全民健保', nhi_employer, nhi_worker, nhi_gov);
+    addRow('勞退提撥', retireEmployer, retireWorker, 0);
+
+    var totalEmployer = laborOrd_employer + laborAcc_employer + nhi_employer + retireEmployer;
+    var totalWorker = laborOrd_worker + nhi_worker + retireWorker;
+    var totalGov = laborOrd_gov + nhi_gov;
+
+    var totalTr = document.createElement('tr');
+    totalTr.className = 'total-row';
+    totalTr.innerHTML = '<td>合計</td><td>' + fmtNum(totalEmployer) + '</td><td>' + fmtNum(totalWorker) + '</td><td>' + fmtNum(totalGov) + '</td>';
+    tbody.appendChild(totalTr);
+
+    document.getElementById('r_workerTotal').textContent = fmt(totalWorker);
+    document.getElementById('r_employerNote').textContent = '雇主每月負擔 ' + fmt(totalEmployer);
+
+    // 老年給付
+    var years = state.insuredYears;
+    document.getElementById('r_pensionBracket').textContent = fmt(b);
+    document.getElementById('r_pensionYears').textContent = years + ' 年';
+
+    // 一次請領：投保薪資 × 給付月數（最高45個月）
+    // 前15年每年1個月，第16年起每年2個月
+    var lumpMonths;
+    if (years <= 15) {
+      lumpMonths = years;
+    } else {
+      lumpMonths = 15 + (years - 15) * 2;
+    }
+    lumpMonths = Math.min(lumpMonths, 45);
+    var lumpSum = b * lumpMonths;
+
+    // 月退休金：投保薪資 × 年資 × 1.55%
+    var monthlyPension = b * years * 0.0155;
+
+    document.getElementById('r_lumpSum').textContent = fmt(lumpSum);
+    document.getElementById('r_lumpSumSub').textContent = '投保薪資 × ' + lumpMonths + ' 個月';
+    document.getElementById('r_monthlyPension').textContent = fmt(monthlyPension) + '/月';
+    document.getElementById('r_monthlySub').textContent = '每月領取至終身';
+
+    // 損益兩平
+    var breakevenMonths = monthlyPension > 0 ? lumpSum / monthlyPension : 0;
+    var breakevenYears = Math.round(breakevenMonths / 12 * 10) / 10;
+
+    document.getElementById('r_breakeven').textContent = breakevenYears + ' 年';
+
+    // 退休年齡 (假設65歲退休)
+    var retireAge = 65;
+    var breakevenAge = retireAge + breakevenYears;
+    document.getElementById('r_breakevenAge').textContent = Math.round(breakevenAge * 10) / 10 + ' 歲';
+
+    // Mark recommended
+    var lumpCard = document.getElementById('lumpSumCard');
+    var monthCard = document.getElementById('monthlyCard');
+    lumpCard.classList.remove('recommended');
+    monthCard.classList.remove('recommended');
+    // 一般建議月退（若預期壽命超過兩平年齡）
+    if (breakevenYears < 20) {
+      monthCard.classList.add('recommended');
+    }
+  }
+
+  showStep(1);
+})();
+</script>
+<div class="disclaimer-bar"><strong>免責聲明</strong>：本平台之計算結果僅供初步參考，不構成法律意見或法律諮詢服務。實際費率與給付金額依勞保局核定為準。</div>
+</body>
+</html>

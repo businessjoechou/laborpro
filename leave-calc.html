@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" href="favicon.svg">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>全假別權益計算機｜LaborPro</title>
+<meta name="description" content="依台灣勞基法§38、勞工請假規則、性別工作平等法，一次計算特休、病假、事假、婚假、喪假、產假、陪產檢假、生理假、家庭照顧假等所有假別天數與薪資影響。">
+<meta name="keywords" content="特休計算,假別計算,勞基法特休,勞工請假規則,病假天數,事假天數,婚假天數,產假天數,台灣勞基法假別">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://laborpro.tw/leave-calc.html">
+<meta property="og:title" content="全假別權益計算機｜LaborPro">
+<meta property="og:description" content="依勞基法一次計算所有假別天數與薪資影響">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://laborpro.tw/leave-calc.html">
+<meta name="author" content="LaborPro">
+<meta property="og:site_name" content="LaborPro">
+<meta property="og:locale" content="zh_TW">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="全假別權益計算機｜LaborPro">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "全假別權益計算機",
+  "description": "依台灣勞基法§38、勞工請假規則、性別工作平等法計算所有假別天數與薪資影響",
+  "url": "https://laborpro.tw/leave-calc.html",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "All",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "TWD" }
+}
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="js/persona.js"></script>
+<link rel="stylesheet" href="css/common.css">
+<style>
+  .leave-table-wrap {
+    overflow-x: auto;
+    margin-bottom: 14px;
+  }
+  .leave-table-wrap .data-table td.mono {
+    font-family: 'DM Mono', monospace;
+    font-weight: 500;
+  }
+  .leave-table-wrap .data-table td.law-ref {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .salary-tag {
+    display: inline-block;
+    font-size: 10px;
+    padding: 2px 7px;
+    border-radius: 10px;
+    font-family: 'DM Mono', monospace;
+  }
+  .salary-tag.full { background: rgba(42,110,62,0.12); color: var(--accent); }
+  .salary-tag.half { background: rgba(200,144,26,0.12); color: var(--gold); }
+  .salary-tag.none { background: rgba(139,32,32,0.12); color: var(--danger); }
+  .leave-card-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .leave-mini-card {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+    text-align: center;
+  }
+  .leave-mini-card .lmc-num {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--accent);
+  }
+  .leave-mini-card .lmc-label {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+  @media (max-width: 480px) {
+    .leave-card-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="logo">Labor<span>Pro</span></a>
+  <a class="back-link" href="index.html">← 首頁</a>
+</header>
+<div class="progress-bar">
+  <div class="progress-fill" id="progressFill" style="width: 33%"></div>
+</div>
+
+<main>
+
+  <!-- Step 1 -->
+  <div class="step active" id="step1">
+    <div class="step-header">
+      <div class="step-label">Step 1 of 3 · 基本資料</div>
+      <h1 class="step-title">全假別權益計算</h1>
+      <p class="step-sub">輸入到職資訊，系統將自動計算所有假別的天數與薪資影響。</p>
+    </div>
+
+    <div class="wizard">
+      <div class="wizard-section-title">服務年資</div>
+      <div class="field-group">
+        <label>到職日期</label>
+        <input type="date" id="startDate">
+      </div>
+      <div class="field-group">
+        <label>計算基準日 <span class="hint">預設今天</span></label>
+        <input type="date" id="baseDate">
+      </div>
+    </div>
+
+    <div class="wizard">
+      <div class="wizard-section-title">薪資資料</div>
+      <div class="field-group">
+        <label>月薪（元）</label>
+        <input type="number" id="salary" placeholder="50000" min="0" inputmode="numeric">
+      </div>
+    </div>
+
+    <div class="warn-box">
+      ⚠ 本計算機依法定最低標準計算，雇主如有優於法令之規定，應從其規定。
+    </div>
+  </div>
+
+  <!-- Step 2 -->
+  <div class="step" id="step2">
+    <div class="step-header">
+      <div class="step-label">Step 2 of 3 · 假別明細</div>
+      <h1 class="step-title">各假別權益明細</h1>
+      <p class="step-sub">以下依您的年資自動計算所有假別天數及薪資影響。</p>
+    </div>
+
+    <div class="result-card">
+      <div class="result-card-title">年資摘要</div>
+      <div class="result-row">
+        <span class="result-row-label">到職日期</span>
+        <span class="result-row-val" id="r_start">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">計算基準日</span>
+        <span class="result-row-val" id="r_base">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">服務年資</span>
+        <span class="result-row-val highlight" id="r_tenure">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">月薪</span>
+        <span class="result-row-val" id="r_salary">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">日薪</span>
+        <span class="result-row-val" id="r_daily">—</span>
+      </div>
+    </div>
+
+    <!-- 特休 -->
+    <div class="result-card" id="card_annual">
+      <div class="result-card-title">特別休假（勞基法§38）</div>
+      <div class="result-row">
+        <span class="result-row-label">特休天數</span>
+        <span class="result-row-val highlight" id="r_annualDays">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">薪資</span>
+        <span class="result-row-val"><span class="salary-tag full">全薪</span></span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">未休折現價值</span>
+        <span class="result-row-val gold" id="r_annualCash">—</span>
+      </div>
+    </div>
+
+    <!-- 病假 -->
+    <div class="result-card">
+      <div class="result-card-title">普通傷病假（勞工請假規則§4）</div>
+      <div class="result-row">
+        <span class="result-row-label">天數上限</span>
+        <span class="result-row-val highlight">30 天/年</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">薪資</span>
+        <span class="result-row-val"><span class="salary-tag half">半薪</span></span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">每日扣薪金額</span>
+        <span class="result-row-val" id="r_sickDeduct">—</span>
+      </div>
+    </div>
+
+    <!-- 事假 -->
+    <div class="result-card">
+      <div class="result-card-title">事假（勞工請假規則§7）</div>
+      <div class="result-row">
+        <span class="result-row-label">天數上限</span>
+        <span class="result-row-val highlight">14 天/年</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">薪資</span>
+        <span class="result-row-val"><span class="salary-tag none">不給薪</span></span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">每日扣薪金額</span>
+        <span class="result-row-val" id="r_personalDeduct">—</span>
+      </div>
+    </div>
+
+    <!-- 婚假 -->
+    <div class="result-card">
+      <div class="result-card-title">婚假（勞工請假規則§2）</div>
+      <div class="result-row">
+        <span class="result-row-label">天數</span>
+        <span class="result-row-val highlight">8 天</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">薪資</span>
+        <span class="result-row-val"><span class="salary-tag full">全薪</span></span>
+      </div>
+    </div>
+
+    <!-- 喪假 -->
+    <div class="result-card">
+      <div class="result-card-title">喪假（勞工請假規則§3）</div>
+      <div class="result-row">
+        <span class="result-row-label">父母/配偶/子女喪亡</span>
+        <span class="result-row-val highlight">8 天</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">祖父母/外祖父母/配偶之父母/配偶之養父母或繼父母喪亡</span>
+        <span class="result-row-val">6 天</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">曾祖父母/兄弟姊妹/配偶之祖父母喪亡</span>
+        <span class="result-row-val">3 天</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">薪資</span>
+        <span class="result-row-val"><span class="salary-tag full">全薪</span></span>
+      </div>
+    </div>
+
+    <!-- 產假 -->
+    <div class="result-card">
+      <div class="result-card-title">產假（勞基法§50）</div>
+      <div class="result-row">
+        <span class="result-row-label">天數</span>
+        <span class="result-row-val highlight">56 天（8週）</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">薪資（年資滿6個月）</span>
+        <span class="result-row-val"><span class="salary-tag full">全薪</span></span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">薪資（年資未滿6個月）</span>
+        <span class="result-row-val"><span class="salary-tag half">半薪</span></span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">您的產假薪資標準</span>
+        <span class="result-row-val" id="r_maternitySalary">—</span>
+      </div>
+    </div>
+
+    <!-- 陪產檢假 -->
+    <div class="result-card">
+      <div class="result-card-title">陪產檢及陪產假（性平法§15）</div>
+      <div class="result-row">
+        <span class="result-row-label">天數</span>
+        <span class="result-row-val highlight">7 天</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">薪資</span>
+        <span class="result-row-val"><span class="salary-tag full">全薪</span></span>
+      </div>
+    </div>
+
+    <!-- 生理假 -->
+    <div class="result-card">
+      <div class="result-card-title">生理假（性平法§14）</div>
+      <div class="result-row">
+        <span class="result-row-label">天數</span>
+        <span class="result-row-val highlight">1 天/月</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">薪資</span>
+        <span class="result-row-val"><span class="salary-tag half">半薪</span></span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">每月扣薪金額</span>
+        <span class="result-row-val" id="r_physioDeduct">—</span>
+      </div>
+    </div>
+
+    <!-- 家庭照顧假 -->
+    <div class="result-card">
+      <div class="result-card-title">家庭照顧假（性平法§20）</div>
+      <div class="result-row">
+        <span class="result-row-label">天數</span>
+        <span class="result-row-val highlight">7 天/年</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">薪資</span>
+        <span class="result-row-val"><span class="salary-tag none">不給薪</span></span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">備註</span>
+        <span class="result-row-val" style="font-family:'Noto Sans TC';font-size:12px;">併入事假計算</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 3 -->
+  <div class="step" id="step3">
+    <div class="step-header">
+      <div class="step-label">Step 3 of 3 · 總覽與分析</div>
+      <h1 class="step-title">年度假別權益總覽</h1>
+      <p class="step-sub">彙整所有假別天數、薪資影響與未休折現分析。</p>
+    </div>
+
+    <!-- 總覽表 -->
+    <div class="result-card">
+      <div class="result-card-title">假別總覽表</div>
+      <div class="leave-table-wrap">
+        <table class="data-table" id="summaryTable">
+          <thead>
+            <tr>
+              <th>假別</th>
+              <th>天數</th>
+              <th>薪資</th>
+              <th>法條</th>
+            </tr>
+          </thead>
+          <tbody id="summaryBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 特休未休折現 -->
+    <div class="result-hero">
+      <div class="result-hero-label">特休未休折現金額（全數未休）</div>
+      <div class="result-hero-amount" id="r_totalCash">—</div>
+      <div class="result-hero-sub" id="r_totalCashSub">—</div>
+    </div>
+
+    <!-- 全勤獎金影響 -->
+    <div class="result-card">
+      <div class="result-card-title">全勤獎金影響分析</div>
+      <div class="result-row">
+        <span class="result-row-label">請特休</span>
+        <span class="result-row-val"><span class="status-pass">不影響全勤</span></span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">請病假</span>
+        <span class="result-row-val"><span class="status-warn">視公司規定</span></span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">請事假</span>
+        <span class="result-row-val"><span class="status-fail">通常影響全勤</span></span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">請生理假（每月1日內）</span>
+        <span class="result-row-val"><span class="status-pass">不得扣全勤</span></span>
+      </div>
+    </div>
+
+    <!-- 法律提醒 -->
+    <div class="notice-card">
+      <div class="notice-card-title">法律提醒</div>
+      <p style="font-size:13px;line-height:1.8;color:var(--ink);">
+        <strong>特休未休折現</strong>：年度終結或契約終止時，未休之特休日數，雇主應發給工資（勞基法§38 IV）。<br><br>
+        <strong>特休排定權</strong>：特休由勞工排定之，雇主不得拒絕（勞基法§38 II）。<br><br>
+        <strong>病假扣薪限制</strong>：普通傷病假1年內未超過30日部分，工資折半發給（勞工請假規則§4）。<br><br>
+        <strong>生理假保障</strong>：每月得請1日生理假，全年請假日數未逾3日者，不併入病假計算，薪資減半發給（性平法§14）。
+      </p>
+    </div>
+
+    <div class="law-note">
+      <strong>法律依據</strong><br>
+      · <strong>勞基法§38</strong>：特別休假天數及未休折現<br>
+      · <strong>勞工請假規則§2-§7</strong>：婚假、喪假、病假、事假<br>
+      · <strong>勞基法§50</strong>：產假<br>
+      · <strong>性別工作平等法§14、§15、§20</strong>：生理假、陪產檢假、家庭照顧假
+    </div>
+  </div>
+
+</main>
+
+<div class="nav-bar" id="navBar">
+  <button class="btn btn-secondary" id="btnBack" onclick="goBack()" style="display:none;">← 上一步</button>
+  <button class="btn btn-primary" id="btnNext" onclick="goNext()">開始計算 →</button>
+  <button class="btn btn-reset" id="btnReset" onclick="resetAll()" style="display:none;">重新計算</button>
+</div>
+
+<script src="js/fmt.js"></script>
+<script src="js/calc-utils.js"></script>
+<script>
+  var LP = window.LaborPro;
+  var state = {};
+  var currentStep = 1;
+  var totalSteps = 3;
+
+  // Set default baseDate to today
+  (function () {
+    var today = new Date();
+    var yyyy = today.getFullYear();
+    var mm = String(today.getMonth() + 1).padStart(2, '0');
+    var dd = String(today.getDate()).padStart(2, '0');
+    document.getElementById('baseDate').value = yyyy + '-' + mm + '-' + dd;
+  })();
+
+  function showStep(n) {
+    document.querySelectorAll('.step').forEach(function (s) { s.classList.remove('active'); });
+    document.getElementById('step' + n).classList.add('active');
+    document.getElementById('progressFill').style.width = (n / totalSteps * 100) + '%';
+    currentStep = n;
+
+    var btnBack = document.getElementById('btnBack');
+    var btnNext = document.getElementById('btnNext');
+    var btnReset = document.getElementById('btnReset');
+
+    if (n === 1) {
+      btnBack.style.display = 'none';
+      btnNext.style.display = 'flex';
+      btnReset.style.display = 'none';
+      btnNext.textContent = '開始計算 →';
+    } else if (n === 2) {
+      btnBack.style.display = 'block';
+      btnNext.style.display = 'flex';
+      btnReset.style.display = 'none';
+      btnNext.textContent = '查看總覽 →';
+    } else {
+      btnBack.style.display = 'block';
+      btnNext.style.display = 'none';
+      btnReset.style.display = 'flex';
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function goBack() { if (currentStep > 1) showStep(currentStep - 1); }
+
+  function goNext() {
+    if (currentStep === 1) {
+      if (!validate()) return;
+      collect();
+      calculate();
+      showStep(2);
+    } else if (currentStep === 2) {
+      buildSummary();
+      showStep(3);
+    }
+  }
+
+  function resetAll() { showStep(1); }
+
+  function validate() {
+    var s = document.getElementById('startDate').value;
+    var b = document.getElementById('baseDate').value;
+    var w = parseFloat(document.getElementById('salary').value);
+    if (!s) { alert('請填寫到職日期。'); return false; }
+    if (!b) { alert('請填寫計算基準日。'); return false; }
+    if (new Date(s) >= new Date(b)) { alert('計算基準日須晚於到職日期。'); return false; }
+    if (!w || w <= 0) { alert('請輸入有效的月薪。'); return false; }
+    return true;
+  }
+
+  function collect() {
+    state.startDate = document.getElementById('startDate').value;
+    state.baseDate = document.getElementById('baseDate').value;
+    state.salary = parseFloat(document.getElementById('salary').value);
+  }
+
+  function calculate() {
+    var info = LP.calcMonths(state.startDate, state.baseDate);
+    var daily = LP.getDailyRate(state.salary);
+    var annualDays = LP.getAnnualLeaveDays(info.totalMonths);
+
+    // Step 2 summary
+    document.getElementById('r_start').textContent = LP.fmtDate(state.startDate);
+    document.getElementById('r_base').textContent = LP.fmtDate(state.baseDate);
+    document.getElementById('r_tenure').textContent = LP.fmtTenure(info.years, info.months, info.days);
+    document.getElementById('r_salary').textContent = LP.fmt(state.salary);
+    document.getElementById('r_daily').textContent = LP.fmt(daily);
+
+    // Annual leave
+    document.getElementById('r_annualDays').textContent = annualDays + ' 天';
+    document.getElementById('r_annualCash').textContent = LP.fmt(annualDays * daily);
+
+    // Sick leave deduction (half pay = deduct half daily)
+    document.getElementById('r_sickDeduct').textContent = LP.fmt(daily * 0.5);
+
+    // Personal leave deduction (full daily)
+    document.getElementById('r_personalDeduct').textContent = LP.fmt(daily);
+
+    // Maternity pay standard
+    var over6m = info.totalMonths >= 6;
+    document.getElementById('r_maternitySalary').textContent = over6m ? '全薪（年資已滿6個月）' : '半薪（年資未滿6個月）';
+
+    // Physio leave deduction
+    document.getElementById('r_physioDeduct').textContent = LP.fmt(daily * 0.5);
+
+    // Store for step 3
+    state.info = info;
+    state.daily = daily;
+    state.annualDays = annualDays;
+    state.over6m = over6m;
+  }
+
+  function buildSummary() {
+    var rows = [
+      ['特別休假', state.annualDays + ' 天', '全薪', '勞基法§38'],
+      ['普通傷病假', '30 天/年', '半薪', '請假規則§4'],
+      ['事假', '14 天/年', '不給薪', '請假規則§7'],
+      ['婚假', '8 天', '全薪', '請假規則§2'],
+      ['喪假', '3–8 天', '全薪', '請假規則§3'],
+      ['產假', '56 天', state.over6m ? '全薪' : '半薪', '勞基法§50'],
+      ['陪產檢及陪產假', '7 天', '全薪', '性平法§15'],
+      ['生理假', '1 天/月', '半薪', '性平法§14'],
+      ['家庭照顧假', '7 天/年', '不給薪', '性平法§20']
+    ];
+
+    var tbody = document.getElementById('summaryBody');
+    tbody.innerHTML = '';
+    rows.forEach(function (r) {
+      var tr = document.createElement('tr');
+      r.forEach(function (cell, i) {
+        var td = document.createElement('td');
+        td.textContent = cell;
+        if (i === 1) td.className = 'mono';
+        if (i === 3) td.className = 'law-ref';
+        if (i === 2) {
+          td.innerHTML = '';
+          var tag = document.createElement('span');
+          tag.className = 'salary-tag ' + (cell === '全薪' ? 'full' : cell === '半薪' ? 'half' : 'none');
+          tag.textContent = cell;
+          td.appendChild(tag);
+        }
+        tr.appendChild(td);
+      });
+      tbody.appendChild(tr);
+    });
+
+    var cashTotal = state.annualDays * state.daily;
+    document.getElementById('r_totalCash').textContent = LP.fmt(cashTotal);
+    document.getElementById('r_totalCashSub').textContent =
+      state.annualDays + ' 天特休 × 日薪 ' + LP.fmt(state.daily);
+  }
+
+  showStep(1);
+</script>
+<div class="disclaimer-bar"><strong>免責聲明</strong>：本平台之計算結果僅供初步參考，不構成法律意見或法律諮詢服務。實際案件因個案事實、適用法規及法院見解不同，結果可能有所差異，建議諮詢具執照之律師或相關法律專業人員。</div>
+</body>
+</html>

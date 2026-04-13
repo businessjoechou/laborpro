@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" href="favicon.svg">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>加班費逐筆結算｜LaborPro</title>
+<meta name="description" content="依台灣勞基法§24計算加班費，支援平日、休息日、國定假日、例假日加班，逐筆記錄即時結算，月度彙總與超時警告。">
+<meta name="keywords" content="加班費計算,勞基法加班費,平日加班,休息日加班,國定假日加班,勞基法第24條,加班時數上限,台灣勞基法">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://laborpro.tw/overtime-detail.html">
+<meta property="og:title" content="加班費逐筆結算｜LaborPro">
+<meta property="og:description" content="依勞基法§24逐筆計算加班費，即時結算月度彙總。">
+<meta property="og:type" content="website">
+<meta name="author" content="LaborPro">
+<meta property="og:site_name" content="LaborPro">
+<meta property="og:locale" content="zh_TW">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="js/persona.js"></script>
+<link rel="stylesheet" href="css/common.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "加班費逐筆結算",
+  "description": "依台灣勞基法§24計算加班費，支援平日、休息日、國定假日、例假日加班費逐筆結算。",
+  "url": "https://laborpro.tw/overtime-detail.html",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "TWD" }
+}
+</script>
+<style>
+  .salary-bar {
+    background: var(--paper);
+    color: var(--ink);
+    border-radius: 16px;
+    padding: 20px 24px;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .salary-bar .field-group { margin-bottom: 0; flex: 1; min-width: 160px; }
+  .hourly-display {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: var(--accent);
+    background: #eef8f2;
+    padding: 8px 14px;
+    border-radius: 8px;
+    white-space: nowrap;
+  }
+  .record-list { margin-bottom: 14px; }
+  .record-item {
+    background: var(--paper);
+    color: var(--ink);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 10px;
+    animation: fadeUp 0.2s ease both;
+  }
+  .record-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+  .record-item-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+  .record-item-delete {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 18px;
+    cursor: pointer;
+    padding: 2px 6px;
+    border-radius: 6px;
+    transition: all 0.2s;
+  }
+  .record-item-delete:hover { color: #8b2020; background: rgba(139,32,32,0.08); }
+  .record-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+  }
+  .record-fields .field-group { margin-bottom: 0; }
+  .record-fields label { font-size: 11px; }
+  .record-fields input, .record-fields select { padding: 10px 12px; font-size: 13px; }
+  .record-result {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--soft);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .record-result-detail {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  .record-result-amount {
+    font-family: 'DM Mono', monospace;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--accent);
+    white-space: nowrap;
+  }
+  .add-record-btn {
+    width: 100%;
+    padding: 14px;
+    border: 2px dashed var(--border);
+    border-radius: 12px;
+    background: transparent;
+    color: var(--muted);
+    font-size: 14px;
+    font-family: 'Noto Sans TC', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-bottom: 20px;
+  }
+  .add-record-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .summary-section { margin-top: 8px; }
+  .overtime-warn {
+    display: none;
+    background: #fef2f2;
+    border: 1px solid #e8a0a0;
+    border-left: 3px solid #8b2020;
+    border-radius: 6px;
+    padding: 10px 14px;
+    font-size: 12px;
+    color: #6a1a1a;
+    line-height: 1.7;
+    margin-bottom: 14px;
+  }
+  .overtime-warn.visible { display: block; }
+  .breakdown-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+  .breakdown-table th {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 8px 8px;
+    border-bottom: 1.5px solid var(--soft);
+    text-align: left;
+  }
+  .breakdown-table td {
+    padding: 8px;
+    border-bottom: 1px solid var(--soft);
+    color: var(--ink);
+  }
+  .breakdown-table td:last-child {
+    font-family: 'DM Mono', monospace;
+    font-weight: 600;
+    text-align: right;
+  }
+  .breakdown-table th:last-child { text-align: right; }
+  .illegal-tag {
+    display: inline-block;
+    font-size: 10px;
+    background: rgba(139,32,32,0.1);
+    color: #8b2020;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-left: 6px;
+    font-weight: 600;
+  }
+  @media (max-width: 480px) {
+    .salary-bar { flex-direction: column; align-items: stretch; gap: 10px; }
+    .record-fields { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="logo">Labor<span>Pro</span></a>
+  <a class="back-link" href="index.html">← 首頁</a>
+</header>
+
+<main>
+  <div class="step-header">
+    <div class="step-label">加班費計算 · 勞基法§24</div>
+    <h1 class="step-title">加班費逐筆結算</h1>
+    <p class="step-sub">輸入月薪，逐筆新增加班記錄，系統即時計算每筆加班費並產生月度彙總。</p>
+  </div>
+
+  <!-- 月薪輸入 + 時薪顯示 -->
+  <div class="salary-bar">
+    <div class="field-group">
+      <label>月薪</label>
+      <input type="number" id="monthlySalary" placeholder="30000" min="0" inputmode="numeric" oninput="onSalaryChange()">
+    </div>
+    <div class="hourly-display" id="hourlyDisplay">時薪：—</div>
+  </div>
+
+  <!-- 加班記錄列表 -->
+  <div class="record-list" id="recordList"></div>
+  <button class="add-record-btn" onclick="addRecord()">＋ 新增加班記錄</button>
+
+  <!-- 月度彙總 -->
+  <div class="summary-section">
+    <div class="overtime-warn" id="overtimeWarn">
+      ⚠ 本月加班時數已超過 46 小時上限（勞基法§32），雇主可能面臨 2萬～100萬 罰鍰。
+    </div>
+
+    <div class="result-hero" id="summaryHero" style="display:none;">
+      <div class="result-hero-label">月加班費合計</div>
+      <div class="result-hero-amount" id="totalOvertimePay">NT$ 0</div>
+      <div class="result-hero-sub" id="totalHoursSub">共 0 小時加班</div>
+    </div>
+
+    <div class="result-card" id="breakdownCard" style="display:none;">
+      <div class="result-card-title">加班費明細（按類型分組）</div>
+      <table class="breakdown-table">
+        <thead>
+          <tr><th>類型</th><th>時數</th><th>金額</th></tr>
+        </thead>
+        <tbody id="breakdownBody"></tbody>
+      </table>
+    </div>
+
+    <div class="law-note">
+      <strong>加班費計算標準（勞基法§24）</strong><br>
+      · <strong>平日加班</strong>：前2小時 × 1⅓ 倍，後2小時 × 1⅔ 倍<br>
+      · <strong>休息日加班</strong>：前2小時 × 1⅓ 倍，後6小時 × 1⅔ 倍（最低以4/8/12小時計酬）<br>
+      · <strong>國定假日加班</strong>：全部 × 2 倍<br>
+      · <strong>例假日加班</strong>：全部 × 2 倍（僅天災等特殊原因始得為之）
+    </div>
+  </div>
+</main>
+
+<script src="js/fmt.js"></script>
+<script src="js/calc-utils.js"></script>
+<script>
+(function() {
+  var records = [];
+  var nextId = 1;
+
+  function getSalary() {
+    return parseFloat(document.getElementById('monthlySalary').value) || 0;
+  }
+
+  function getHourly() {
+    var salary = getSalary();
+    return salary > 0 ? salary / 30 / 8 : 0;
+  }
+
+  window.onSalaryChange = function() {
+    var hourly = getHourly();
+    document.getElementById('hourlyDisplay').textContent =
+      hourly > 0 ? '時薪：NT$ ' + Math.round(hourly).toLocaleString('zh-TW') : '時薪：—';
+    recalcAll();
+  };
+
+  /**
+   * 計算單筆加班費
+   */
+  function calcOvertimePay(type, hours, hourlyRate) {
+    if (hourlyRate <= 0 || hours <= 0) return { pay: 0, detail: '' };
+
+    var pay = 0, detail = '';
+
+    switch (type) {
+      case 'weekday': {
+        // 平日：前2hr × 4/3，後2hr × 5/3
+        var h1 = Math.min(hours, 2);
+        var h2 = Math.min(Math.max(hours - 2, 0), 2);
+        var extra = Math.max(hours - 4, 0);
+        pay = h1 * hourlyRate * (4/3) + h2 * hourlyRate * (5/3) + extra * hourlyRate * (5/3);
+        var parts = [];
+        if (h1 > 0) parts.push(h1 + 'h×1.33');
+        if (h2 > 0) parts.push(h2 + 'h×1.67');
+        if (extra > 0) parts.push(extra + 'h×1.67(逾4hr)');
+        detail = parts.join(' + ');
+        break;
+      }
+      case 'restday': {
+        // 休息日：前2hr × 4/3，後6hr × 5/3，最低4/8/12計酬
+        var billableHours = hours;
+        if (hours < 4) billableHours = 4;
+        else if (hours < 8) billableHours = 8;
+        else if (hours < 12) billableHours = 12;
+
+        var r1 = Math.min(billableHours, 2);
+        var r2 = Math.max(billableHours - 2, 0);
+        pay = r1 * hourlyRate * (4/3) + r2 * hourlyRate * (5/3);
+        detail = '實際' + hours + 'h → 計酬' + billableHours + 'h';
+        break;
+      }
+      case 'holiday': {
+        // 國定假日：全部 × 2
+        pay = hours * hourlyRate * 2;
+        detail = hours + 'h × 2倍';
+        break;
+      }
+      case 'mandatory': {
+        // 例假日：全部 × 2（違法提示）
+        pay = hours * hourlyRate * 2;
+        detail = hours + 'h × 2倍（例假日出勤）';
+        break;
+      }
+    }
+    return { pay: Math.round(pay), detail: detail };
+  }
+
+  function getTypeLabel(type) {
+    var map = { weekday: '平日', restday: '休息日', holiday: '國定假日', mandatory: '例假日' };
+    return map[type] || type;
+  }
+
+  window.addRecord = function() {
+    var id = nextId++;
+    var today = new Date().toISOString().split('T')[0];
+    records.push({ id: id, date: today, type: 'weekday', hours: 2 });
+    renderRecords();
+    recalcAll();
+  };
+
+  window.removeRecord = function(id) {
+    records = records.filter(function(r) { return r.id !== id; });
+    renderRecords();
+    recalcAll();
+  };
+
+  window.onRecordChange = function(id, field, value) {
+    var rec = records.find(function(r) { return r.id === id; });
+    if (!rec) return;
+    if (field === 'hours') {
+      rec[field] = parseFloat(value) || 0;
+    } else {
+      rec[field] = value;
+    }
+    recalcAll();
+    // Update inline result
+    updateRecordResult(rec);
+  };
+
+  function renderRecords() {
+    var container = document.getElementById('recordList');
+    container.innerHTML = '';
+    records.forEach(function(rec, idx) {
+      var div = document.createElement('div');
+      div.className = 'record-item';
+      div.id = 'record-' + rec.id;
+      div.innerHTML =
+        '<div class="record-item-header">' +
+          '<span class="record-item-num">#' + (idx + 1) + '</span>' +
+          '<button class="record-item-delete" onclick="removeRecord(' + rec.id + ')" title="刪除">×</button>' +
+        '</div>' +
+        '<div class="record-fields">' +
+          '<div class="field-group">' +
+            '<label>日期</label>' +
+            '<input type="date" value="' + rec.date + '" onchange="onRecordChange(' + rec.id + ',\'date\',this.value)">' +
+          '</div>' +
+          '<div class="field-group">' +
+            '<label>加班類型</label>' +
+            '<div class="select-wrap">' +
+              '<select onchange="onRecordChange(' + rec.id + ',\'type\',this.value)">' +
+                '<option value="weekday"' + (rec.type === 'weekday' ? ' selected' : '') + '>平日</option>' +
+                '<option value="restday"' + (rec.type === 'restday' ? ' selected' : '') + '>休息日</option>' +
+                '<option value="holiday"' + (rec.type === 'holiday' ? ' selected' : '') + '>國定假日</option>' +
+                '<option value="mandatory"' + (rec.type === 'mandatory' ? ' selected' : '') + '>例假日</option>' +
+              '</select>' +
+            '</div>' +
+          '</div>' +
+          '<div class="field-group">' +
+            '<label>加班時數</label>' +
+            '<input type="number" value="' + rec.hours + '" min="0.5" max="12" step="0.5" inputmode="decimal" onchange="onRecordChange(' + rec.id + ',\'hours\',this.value)" oninput="onRecordChange(' + rec.id + ',\'hours\',this.value)">' +
+          '</div>' +
+        '</div>' +
+        '<div class="record-result" id="result-' + rec.id + '">' +
+          '<div class="record-result-detail">—</div>' +
+          '<div class="record-result-amount">—</div>' +
+        '</div>';
+      container.appendChild(div);
+    });
+  }
+
+  function updateRecordResult(rec) {
+    var el = document.getElementById('result-' + rec.id);
+    if (!el) return;
+    var hourly = getHourly();
+    var result = calcOvertimePay(rec.type, rec.hours, hourly);
+    var detailEl = el.querySelector('.record-result-detail');
+    var amountEl = el.querySelector('.record-result-amount');
+
+    if (hourly <= 0) {
+      detailEl.textContent = '請先輸入月薪';
+      amountEl.textContent = '—';
+      return;
+    }
+
+    var label = getTypeLabel(rec.type);
+    var illegal = rec.type === 'mandatory' ? '<span class="illegal-tag">違法風險</span>' : '';
+    detailEl.innerHTML = label + '：' + result.detail + illegal;
+    amountEl.textContent = 'NT$ ' + result.pay.toLocaleString('zh-TW');
+  }
+
+  function recalcAll() {
+    var hourly = getHourly();
+    var totalPay = 0;
+    var totalHours = 0;
+    var byType = { weekday: { hours: 0, pay: 0 }, restday: { hours: 0, pay: 0 }, holiday: { hours: 0, pay: 0 }, mandatory: { hours: 0, pay: 0 } };
+
+    records.forEach(function(rec) {
+      var result = calcOvertimePay(rec.type, rec.hours, hourly);
+      totalPay += result.pay;
+      totalHours += rec.hours;
+      byType[rec.type].hours += rec.hours;
+      byType[rec.type].pay += result.pay;
+      updateRecordResult(rec);
+    });
+
+    // Show/hide summary
+    var hasRecords = records.length > 0 && hourly > 0;
+    document.getElementById('summaryHero').style.display = hasRecords ? 'block' : 'none';
+    document.getElementById('breakdownCard').style.display = hasRecords ? 'block' : 'none';
+
+    if (hasRecords) {
+      document.getElementById('totalOvertimePay').textContent = 'NT$ ' + Math.round(totalPay).toLocaleString('zh-TW');
+      document.getElementById('totalHoursSub').textContent = '共 ' + totalHours + ' 小時加班，' + records.length + ' 筆記錄';
+
+      // Overtime warning (>46h)
+      var warnEl = document.getElementById('overtimeWarn');
+      if (totalHours > 46) {
+        warnEl.classList.add('visible');
+      } else {
+        warnEl.classList.remove('visible');
+      }
+
+      // Breakdown table
+      var tbody = document.getElementById('breakdownBody');
+      tbody.innerHTML = '';
+      var typeOrder = ['weekday', 'restday', 'holiday', 'mandatory'];
+      typeOrder.forEach(function(t) {
+        if (byType[t].hours > 0) {
+          var tr = document.createElement('tr');
+          tr.innerHTML = '<td>' + getTypeLabel(t) + (t === 'mandatory' ? '<span class="illegal-tag">違法風險</span>' : '') + '</td>' +
+            '<td>' + byType[t].hours + ' 小時</td>' +
+            '<td>NT$ ' + Math.round(byType[t].pay).toLocaleString('zh-TW') + '</td>';
+          tbody.appendChild(tr);
+        }
+      });
+      // Total row
+      var totalTr = document.createElement('tr');
+      totalTr.innerHTML = '<td style="font-weight:600;">合計</td><td style="font-weight:600;">' + totalHours + ' 小時</td><td style="font-weight:700;color:var(--accent);">NT$ ' + Math.round(totalPay).toLocaleString('zh-TW') + '</td>';
+      tbody.appendChild(totalTr);
+    }
+  }
+
+  // Init: add one record by default
+  addRecord();
+})();
+</script>
+<div class="disclaimer-bar"><strong>免責聲明</strong>：本平台之計算結果僅供初步參考，不構成法律意見或法律諮詢服務。實際加班費計算須依個別勞動契約及工資認定。</div>
+</body>
+</html>

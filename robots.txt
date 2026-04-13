@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /landing.html
+
+Sitemap: https://laborpro.vercel.app/sitemap.xml

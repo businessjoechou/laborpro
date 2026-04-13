@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" href="favicon.svg">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>離職結算檢查表｜LaborPro</title>
+<meta name="description" content="依台灣勞基法逐項計算離職時應領與應扣款項，含未付工資、特休折現、資遣費、預告工資、勞健保扣繳，支援資遣、自願離職、退休等5種離職類型。">
+<meta name="keywords" content="離職結算,離職應領款項,資遣費計算,特休未休折現,預告工資,勞保自付額,健保自付額,台灣勞基法離職">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://laborpro.tw/settlement-calc.html">
+<meta property="og:title" content="離職結算檢查表｜LaborPro">
+<meta property="og:description" content="依勞基法逐項計算離職時應領與應扣款項">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://laborpro.tw/settlement-calc.html">
+<meta name="author" content="LaborPro">
+<meta property="og:site_name" content="LaborPro">
+<meta property="og:locale" content="zh_TW">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="離職結算檢查表｜LaborPro">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "離職結算檢查表",
+  "description": "依台灣勞基法逐項計算離職時應領與應扣款項，支援5種離職類型",
+  "url": "https://laborpro.tw/settlement-calc.html",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "All",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "TWD" }
+}
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="js/persona.js"></script>
+<link rel="stylesheet" href="css/common.css">
+<style>
+  .type-selector {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .type-option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    background: var(--card);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .type-option:hover { border-color: var(--accent); }
+  .type-option.selected {
+    border-color: var(--accent);
+    background: #eef8f2;
+  }
+  .type-option input[type="radio"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--accent);
+    flex-shrink: 0;
+  }
+  .type-option-text {
+    flex: 1;
+  }
+  .type-option-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .type-option-desc {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+  .section-divider {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 20px 0 14px;
+  }
+  .section-divider::before,
+  .section-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #2a3e2a;
+  }
+  .section-divider span {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .settle-add { color: var(--accent); }
+  .settle-deduct { color: var(--danger); }
+  .settle-total-box {
+    background: linear-gradient(135deg, #c8901a, #a07218);
+    color: #fff;
+    border-radius: 14px;
+    padding: 24px;
+    text-align: center;
+    margin-bottom: 14px;
+  }
+  .settle-total-box .stb-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    opacity: 0.8;
+    margin-bottom: 8px;
+  }
+  .settle-total-box .stb-amount {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 36px;
+    font-weight: 700;
+  }
+  .settle-total-box .stb-sub {
+    font-size: 12px;
+    opacity: 0.7;
+    margin-top: 4px;
+  }
+  .remind-card {
+    background: #eef8f2;
+    border: 1.5px solid var(--accent);
+    border-radius: 12px;
+    padding: 18px;
+    margin-bottom: 14px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .remind-card .rc-icon {
+    font-size: 20px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .remind-card .rc-text {
+    font-size: 13px;
+    color: var(--ink);
+    line-height: 1.7;
+  }
+  .remind-card .rc-text strong {
+    color: var(--accent);
+  }
+  .optional-field {
+    margin-top: 12px;
+    padding: 14px;
+    background: #f8faf8;
+    border-radius: 10px;
+    border: 1px dashed var(--border);
+  }
+  .optional-field label {
+    font-size: 12px;
+    color: var(--muted);
+  }
+  @media (max-width: 480px) {
+    .settle-total-box .stb-amount { font-size: 28px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="logo">Labor<span>Pro</span></a>
+  <a class="back-link" href="index.html">← 首頁</a>
+</header>
+<div class="progress-bar">
+  <div class="progress-fill" id="progressFill" style="width: 33%"></div>
+</div>
+
+<main>
+
+  <!-- Step 1 -->
+  <div class="step active" id="step1">
+    <div class="step-header">
+      <div class="step-label">Step 1 of 3 · 離職資料</div>
+      <h1 class="step-title">離職結算檢查表</h1>
+      <p class="step-sub">選擇離職類型並輸入基本資料，系統將逐項計算應領與應扣款項。</p>
+    </div>
+
+    <div class="wizard">
+      <div class="wizard-section-title">離職類型</div>
+      <div class="field-group">
+        <div class="type-selector" id="typeSelector">
+          <label class="type-option selected" onclick="selectType('layoff')">
+            <input type="radio" name="sepType" value="layoff" checked>
+            <div class="type-option-text">
+              <div class="type-option-title">資遣（雇主解雇）</div>
+              <div class="type-option-desc">勞基法§11、§13但書，含資遣費及預告工資</div>
+            </div>
+          </label>
+          <label class="type-option" onclick="selectType('voluntary')">
+            <input type="radio" name="sepType" value="voluntary">
+            <div class="type-option-text">
+              <div class="type-option-title">自願離職</div>
+              <div class="type-option-desc">勞基法§15，勞工主動提辭</div>
+            </div>
+          </label>
+          <label class="type-option" onclick="selectType('mutual')">
+            <input type="radio" name="sepType" value="mutual">
+            <div class="type-option-text">
+              <div class="type-option-title">合意終止</div>
+              <div class="type-option-desc">勞資雙方協議離職</div>
+            </div>
+          </label>
+          <label class="type-option" onclick="selectType('retire')">
+            <input type="radio" name="sepType" value="retire">
+            <div class="type-option-text">
+              <div class="type-option-title">退休</div>
+              <div class="type-option-desc">勞基法§53自請退休、§54強制退休</div>
+            </div>
+          </label>
+          <label class="type-option" onclick="selectType('contract')">
+            <input type="radio" name="sepType" value="contract">
+            <div class="type-option-text">
+              <div class="type-option-title">定期契約到期</div>
+              <div class="type-option-desc">契約期滿不續約</div>
+            </div>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="wizard">
+      <div class="wizard-section-title">服務年資與薪資</div>
+      <div class="field-group">
+        <label>到職日期</label>
+        <input type="date" id="startDate">
+      </div>
+      <div class="field-group">
+        <label>離職日期</label>
+        <input type="date" id="endDate">
+      </div>
+      <div class="field-group">
+        <label>月薪（元） <span class="hint">含經常性給與</span></label>
+        <input type="number" id="salary" placeholder="50000" min="0" inputmode="numeric">
+      </div>
+      <div class="field-group">
+        <label>適用退休金制度</label>
+        <div class="select-wrap">
+          <select id="regime">
+            <option value="new">新制（勞退條例）</option>
+            <option value="old">舊制（勞基法）</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="wizard">
+      <div class="wizard-section-title">選填項目</div>
+      <div class="field-group">
+        <label>未休特休天數 <span class="hint">留空則自動計算全數未休</span></label>
+        <input type="number" id="unusedLeave" placeholder="自動計算" min="0" inputmode="numeric">
+      </div>
+      <div class="field-group">
+        <label>加班費結餘（元） <span class="hint">選填</span></label>
+        <input type="number" id="overtimePay" placeholder="0" min="0" inputmode="numeric">
+      </div>
+      <div class="field-group">
+        <label>競業禁止補償金（元） <span class="hint">選填，若有約定</span></label>
+        <input type="number" id="nonCompete" placeholder="0" min="0" inputmode="numeric">
+      </div>
+    </div>
+
+    <div class="warn-box">
+      ⚠ 本計算機提供參考試算，實際結算金額應依勞動契約及工資認定為準。
+    </div>
+  </div>
+
+  <!-- Step 2 -->
+  <div class="step" id="step2">
+    <div class="step-header">
+      <div class="step-label">Step 2 of 3 · 逐項計算</div>
+      <h1 class="step-title">結算款項明細</h1>
+      <p class="step-sub" id="step2Sub">依離職類型逐項列出應領與應扣款項。</p>
+    </div>
+
+    <!-- 年資摘要 -->
+    <div class="result-card">
+      <div class="result-card-title">基本資料</div>
+      <div class="result-row">
+        <span class="result-row-label">離職類型</span>
+        <span class="result-row-val" id="r_type">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">到職日期</span>
+        <span class="result-row-val" id="r_start">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">離職日期</span>
+        <span class="result-row-val" id="r_end">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">服務年資</span>
+        <span class="result-row-val highlight" id="r_tenure">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">月薪</span>
+        <span class="result-row-val" id="r_salary">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">日薪</span>
+        <span class="result-row-val" id="r_daily">—</span>
+      </div>
+    </div>
+
+    <!-- 應領項目 -->
+    <div class="section-divider"><span>應領項目</span></div>
+
+    <div class="result-card">
+      <div class="result-card-title">本月未付工資</div>
+      <div class="result-row">
+        <span class="result-row-label">離職當月工作天數</span>
+        <span class="result-row-val" id="r_workedDays">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">本月未付工資</span>
+        <span class="result-row-val highlight" id="r_unpaidWage">—</span>
+      </div>
+    </div>
+
+    <div class="result-card">
+      <div class="result-card-title">特休未休折現（勞基法§38）</div>
+      <div class="result-row">
+        <span class="result-row-label">應有特休天數</span>
+        <span class="result-row-val" id="r_leaveDays">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">未休天數</span>
+        <span class="result-row-val" id="r_unusedDays">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">折現金額</span>
+        <span class="result-row-val highlight" id="r_leaveCash">—</span>
+      </div>
+    </div>
+
+    <!-- 資遣費（條件顯示） -->
+    <div class="result-card" id="severanceCard" style="display:none;">
+      <div class="result-card-title" id="severanceTitle">資遣費</div>
+      <div class="result-row">
+        <span class="result-row-label">適用制度</span>
+        <span class="result-row-val" id="r_regime">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">計算基數</span>
+        <span class="result-row-val" id="r_sevBase">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">資遣費金額</span>
+        <span class="result-row-val highlight" id="r_sevAmount">—</span>
+      </div>
+    </div>
+
+    <!-- 預告工資（條件顯示） -->
+    <div class="result-card" id="noticeCard" style="display:none;">
+      <div class="result-card-title">預告工資（勞基法§16）</div>
+      <div class="result-row">
+        <span class="result-row-label">預告期間</span>
+        <span class="result-row-val" id="r_noticeDays">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">預告工資</span>
+        <span class="result-row-val highlight" id="r_noticeAmount">—</span>
+      </div>
+    </div>
+
+    <!-- 年終獎金比例 -->
+    <div class="result-card">
+      <div class="result-card-title">年終獎金比例</div>
+      <div class="result-row">
+        <span class="result-row-label">本年度服務月份</span>
+        <span class="result-row-val" id="r_servedMonths">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">按比例應領</span>
+        <span class="result-row-val" id="r_bonusRatio">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">估算金額（以1個月計）</span>
+        <span class="result-row-val highlight" id="r_bonusAmount">—</span>
+      </div>
+    </div>
+
+    <!-- 加班費 & 競業禁止（條件顯示） -->
+    <div class="result-card" id="extraCard" style="display:none;">
+      <div class="result-card-title">其他應領</div>
+      <div class="result-row" id="otRow" style="display:none;">
+        <span class="result-row-label">加班費結餘</span>
+        <span class="result-row-val" id="r_overtime">—</span>
+      </div>
+      <div class="result-row" id="ncRow" style="display:none;">
+        <span class="result-row-label">競業禁止補償金</span>
+        <span class="result-row-val" id="r_nonCompete">—</span>
+      </div>
+    </div>
+
+    <!-- 應扣項目 -->
+    <div class="section-divider"><span>應扣項目</span></div>
+
+    <div class="result-card">
+      <div class="result-card-title">勞健保自付額（離職當月）</div>
+      <div class="result-row">
+        <span class="result-row-label">勞保自付額（估算）</span>
+        <span class="result-row-val danger" id="r_laborIns">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">健保自付額（估算）</span>
+        <span class="result-row-val danger" id="r_healthIns">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">合計扣繳</span>
+        <span class="result-row-val danger" id="r_totalDeduct">—</span>
+      </div>
+      <p style="font-size:11px;color:var(--muted);margin-top:10px;line-height:1.6;">
+        註：勞保費率以12%計算（含就保1%），勞工自付20%；健保費率以5.17%計算，勞工自付30%。實際金額依投保級距而定。
+      </p>
+    </div>
+  </div>
+
+  <!-- Step 3 -->
+  <div class="step" id="step3">
+    <div class="step-header">
+      <div class="step-label">Step 3 of 3 · 結算總覽</div>
+      <h1 class="step-title">淨應領金額</h1>
+      <p class="step-sub">彙總所有應領與應扣項目的最終結算金額。</p>
+    </div>
+
+    <!-- 淨應領 -->
+    <div class="settle-total-box">
+      <div class="stb-label">淨應領金額</div>
+      <div class="stb-amount" id="r_netTotal">—</div>
+      <div class="stb-sub" id="r_netSub">—</div>
+    </div>
+
+    <!-- 應領彙總 -->
+    <div class="result-card">
+      <div class="result-card-title">應領項目彙總</div>
+      <div id="addSummary"></div>
+      <div class="result-row" style="border-top:2px solid var(--soft);margin-top:4px;padding-top:12px;">
+        <span class="result-row-label" style="font-weight:600;color:var(--ink);">應領小計</span>
+        <span class="result-row-val highlight" id="r_addTotal">—</span>
+      </div>
+    </div>
+
+    <!-- 應扣彙總 -->
+    <div class="result-card">
+      <div class="result-card-title">應扣項目彙總</div>
+      <div id="deductSummary"></div>
+      <div class="result-row" style="border-top:2px solid var(--soft);margin-top:4px;padding-top:12px;">
+        <span class="result-row-label" style="font-weight:600;color:var(--ink);">應扣小計</span>
+        <span class="result-row-val danger" id="r_deductTotal">—</span>
+      </div>
+    </div>
+
+    <!-- 非自願離職證明提醒 -->
+    <div class="remind-card" id="involuntaryRemind" style="display:none;">
+      <div class="rc-icon">&#9888;</div>
+      <div class="rc-text">
+        <strong>非自願離職證明</strong><br>
+        依就業服務法§33，雇主資遣勞工時應發給「非自願離職證明」。此證明為申請失業給付之必要文件。若雇主拒絕開立，可向勞動局申訴。
+      </div>
+    </div>
+
+    <!-- 行動建議 -->
+    <div class="action-card">
+      <div class="action-card-title">行動建議</div>
+      <div id="actionItems"></div>
+    </div>
+
+    <div class="law-note">
+      <strong>法律依據</strong><br>
+      · <strong>勞基法§38</strong>：特休未休應折發工資<br>
+      · <strong>勞基法§16</strong>：預告期間及預告工資<br>
+      · <strong>勞基法§17、勞退條例§12</strong>：資遣費計算<br>
+      · <strong>勞基法§55</strong>：退休金計算<br>
+      · <strong>就業服務法§33</strong>：非自願離職證明
+    </div>
+  </div>
+
+</main>
+
+<div class="nav-bar" id="navBar">
+  <button class="btn btn-secondary" id="btnBack" onclick="goBack()" style="display:none;">← 上一步</button>
+  <button class="btn btn-primary" id="btnNext" onclick="goNext()">開始計算 →</button>
+  <button class="btn btn-reset" id="btnReset" onclick="resetAll()" style="display:none;">重新計算</button>
+</div>
+
+<script src="js/fmt.js"></script>
+<script src="js/calc-utils.js"></script>
+<script>
+  var LP = window.LaborPro;
+  var state = { sepType: 'layoff' };
+  var currentStep = 1;
+  var totalSteps = 3;
+
+  var typeLabels = {
+    layoff: '資遣（雇主解雇）',
+    voluntary: '自願離職',
+    mutual: '合意終止',
+    retire: '退休',
+    contract: '定期契約到期'
+  };
+
+  function selectType(t) {
+    state.sepType = t;
+    document.querySelectorAll('.type-option').forEach(function (el) {
+      var radio = el.querySelector('input[type="radio"]');
+      var isThis = radio.value === t;
+      el.classList.toggle('selected', isThis);
+      radio.checked = isThis;
+    });
+  }
+
+  function showStep(n) {
+    document.querySelectorAll('.step').forEach(function (s) { s.classList.remove('active'); });
+    document.getElementById('step' + n).classList.add('active');
+    document.getElementById('progressFill').style.width = (n / totalSteps * 100) + '%';
+    currentStep = n;
+
+    var btnBack = document.getElementById('btnBack');
+    var btnNext = document.getElementById('btnNext');
+    var btnReset = document.getElementById('btnReset');
+
+    if (n === 1) {
+      btnBack.style.display = 'none';
+      btnNext.style.display = 'flex';
+      btnReset.style.display = 'none';
+      btnNext.textContent = '開始計算 →';
+    } else if (n === 2) {
+      btnBack.style.display = 'block';
+      btnNext.style.display = 'flex';
+      btnReset.style.display = 'none';
+      btnNext.textContent = '查看結算 →';
+    } else {
+      btnBack.style.display = 'block';
+      btnNext.style.display = 'none';
+      btnReset.style.display = 'flex';
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function goBack() { if (currentStep > 1) showStep(currentStep - 1); }
+
+  function goNext() {
+    if (currentStep === 1) {
+      if (!validate()) return;
+      collect();
+      calcDetails();
+      showStep(2);
+    } else if (currentStep === 2) {
+      buildSummary();
+      showStep(3);
+    }
+  }
+
+  function resetAll() { state = { sepType: state.sepType }; showStep(1); }
+
+  function validate() {
+    var s = document.getElementById('startDate').value;
+    var e = document.getElementById('endDate').value;
+    var w = parseFloat(document.getElementById('salary').value);
+    if (!s) { alert('請填寫到職日期。'); return false; }
+    if (!e) { alert('請填寫離職日期。'); return false; }
+    if (new Date(s) >= new Date(e)) { alert('離職日期須晚於到職日期。'); return false; }
+    if (!w || w <= 0) { alert('請輸入有效的月薪。'); return false; }
+    return true;
+  }
+
+  function collect() {
+    state.startDate = document.getElementById('startDate').value;
+    state.endDate = document.getElementById('endDate').value;
+    state.salary = parseFloat(document.getElementById('salary').value);
+    state.regime = document.getElementById('regime').value;
+    var ul = document.getElementById('unusedLeave').value;
+    state.unusedLeaveManual = ul !== '' ? parseFloat(ul) : null;
+    state.overtimePay = parseFloat(document.getElementById('overtimePay').value) || 0;
+    state.nonCompete = parseFloat(document.getElementById('nonCompete').value) || 0;
+  }
+
+  function calcDetails() {
+    var info = LP.calcMonths(state.startDate, state.endDate);
+    var daily = LP.getDailyRate(state.salary);
+    var annualDays = LP.getAnnualLeaveDays(info.totalMonths);
+    var unusedDays = state.unusedLeaveManual !== null ? state.unusedLeaveManual : annualDays;
+
+    state.info = info;
+    state.daily = daily;
+    state.annualDays = annualDays;
+    state.unusedDays = unusedDays;
+
+    // Basic info
+    document.getElementById('r_type').textContent = typeLabels[state.sepType];
+    document.getElementById('r_start').textContent = LP.fmtDate(state.startDate);
+    document.getElementById('r_end').textContent = LP.fmtDate(state.endDate);
+    document.getElementById('r_tenure').textContent = LP.fmtTenure(info.years, info.months, info.days);
+    document.getElementById('r_salary').textContent = LP.fmt(state.salary);
+    document.getElementById('r_daily').textContent = LP.fmt(daily);
+
+    // 本月未付工資
+    var endD = new Date(state.endDate);
+    var dayOfMonth = endD.getDate();
+    var unpaidWage = daily * dayOfMonth;
+    state.unpaidWage = unpaidWage;
+    document.getElementById('r_workedDays').textContent = dayOfMonth + ' 天';
+    document.getElementById('r_unpaidWage').textContent = LP.fmt(unpaidWage);
+
+    // 特休折現
+    document.getElementById('r_leaveDays').textContent = annualDays + ' 天';
+    document.getElementById('r_unusedDays').textContent = unusedDays + ' 天';
+    var leaveCash = unusedDays * daily;
+    state.leaveCash = leaveCash;
+    document.getElementById('r_leaveCash').textContent = LP.fmt(leaveCash);
+
+    // 資遣費（layoff, retire）
+    var hasSeverance = state.sepType === 'layoff' || state.sepType === 'retire';
+    var sevCard = document.getElementById('severanceCard');
+    state.severancePay = 0;
+    if (hasSeverance) {
+      sevCard.style.display = 'block';
+      var isNew = state.regime === 'new';
+      document.getElementById('severanceTitle').textContent =
+        state.sepType === 'retire' ? '退休金' : '資遣費';
+      document.getElementById('r_regime').textContent =
+        isNew ? '新制（勞退條例§12）' : '舊制（勞基法§17）';
+
+      if (isNew) {
+        var base = info.totalMonths / 12 * 0.5;
+        base = Math.min(base, 6);
+        state.severancePay = base * state.salary;
+        document.getElementById('r_sevBase').textContent = base.toFixed(2) + ' 個月';
+      } else {
+        var base = info.totalMonths / 12;
+        state.severancePay = base * state.salary;
+        document.getElementById('r_sevBase').textContent = base.toFixed(2) + ' 個月';
+      }
+      document.getElementById('r_sevAmount').textContent = LP.fmt(state.severancePay);
+    } else {
+      sevCard.style.display = 'none';
+    }
+
+    // 預告工資（layoff only, assume not yet paid）
+    var noticeCard = document.getElementById('noticeCard');
+    state.noticePay = 0;
+    if (state.sepType === 'layoff') {
+      noticeCard.style.display = 'block';
+      var notice = LP.calcNotice(info.totalMonths, state.salary);
+      state.noticePay = notice.amount;
+      document.getElementById('r_noticeDays').textContent = notice.label;
+      document.getElementById('r_noticeAmount').textContent = LP.fmt(notice.amount);
+    } else {
+      noticeCard.style.display = 'none';
+    }
+
+    // 年終獎金比例
+    var endMonth = endD.getMonth() + 1; // 1-12
+    var servedMonths = endMonth; // 簡化：假設年初開始計
+    // More accurate: from Jan 1 or startDate of this year
+    var yearStart = new Date(endD.getFullYear(), 0, 1);
+    var actualStart = new Date(state.startDate);
+    var fromDate = actualStart > yearStart ? actualStart : yearStart;
+    var servedInfo = LP.calcMonths(
+      fromDate.toISOString().split('T')[0],
+      state.endDate
+    );
+    servedMonths = Math.min(Math.round(servedInfo.totalMonths * 10) / 10, 12);
+    var bonusRatio = servedMonths / 12;
+    var bonusAmount = state.salary * bonusRatio;
+    state.bonusAmount = bonusAmount;
+    state.servedMonths = servedMonths;
+    document.getElementById('r_servedMonths').textContent = servedMonths.toFixed(1) + ' 個月';
+    document.getElementById('r_bonusRatio').textContent = (bonusRatio * 100).toFixed(1) + '%';
+    document.getElementById('r_bonusAmount').textContent = LP.fmt(bonusAmount);
+
+    // 加班費 & 競業禁止
+    var extraCard = document.getElementById('extraCard');
+    var otRow = document.getElementById('otRow');
+    var ncRow = document.getElementById('ncRow');
+    var hasExtra = state.overtimePay > 0 || state.nonCompete > 0;
+    extraCard.style.display = hasExtra ? 'block' : 'none';
+    otRow.style.display = state.overtimePay > 0 ? 'flex' : 'none';
+    ncRow.style.display = state.nonCompete > 0 ? 'flex' : 'none';
+    if (state.overtimePay > 0) document.getElementById('r_overtime').textContent = LP.fmt(state.overtimePay);
+    if (state.nonCompete > 0) document.getElementById('r_nonCompete').textContent = LP.fmt(state.nonCompete);
+
+    // 勞健保扣繳
+    var insuredSalary = LP.getLaborInsuranceBracket(state.salary);
+    // 勞保：費率12%（含就保1%），勞工自付20%，按日計算
+    var laborInsMonth = insuredSalary * 0.12 * 0.2;
+    var laborIns = laborInsMonth / 30 * dayOfMonth;
+    // 健保：費率5.17%，勞工自付30%
+    var healthInsMonth = insuredSalary * 0.0517 * 0.3;
+    var healthIns = healthInsMonth / 30 * dayOfMonth;
+    state.laborIns = laborIns;
+    state.healthIns = healthIns;
+
+    document.getElementById('r_laborIns').textContent = '- ' + LP.fmt(laborIns);
+    document.getElementById('r_healthIns').textContent = '- ' + LP.fmt(healthIns);
+    document.getElementById('r_totalDeduct').textContent = '- ' + LP.fmt(laborIns + healthIns);
+  }
+
+  function buildSummary() {
+    // 應領
+    var addItems = [];
+    addItems.push({ label: '本月未付工資', amount: state.unpaidWage });
+    addItems.push({ label: '特休未休折現', amount: state.leaveCash });
+    if (state.severancePay > 0) {
+      addItems.push({ label: state.sepType === 'retire' ? '退休金' : '資遣費', amount: state.severancePay });
+    }
+    if (state.noticePay > 0) {
+      addItems.push({ label: '預告工資', amount: state.noticePay });
+    }
+    addItems.push({ label: '年終獎金比例', amount: state.bonusAmount });
+    if (state.overtimePay > 0) {
+      addItems.push({ label: '加班費結餘', amount: state.overtimePay });
+    }
+    if (state.nonCompete > 0) {
+      addItems.push({ label: '競業禁止補償金', amount: state.nonCompete });
+    }
+
+    var addTotal = 0;
+    var addContainer = document.getElementById('addSummary');
+    addContainer.innerHTML = '';
+    addItems.forEach(function (item) {
+      addTotal += item.amount;
+      addContainer.innerHTML +=
+        '<div class="result-row">' +
+        '<span class="result-row-label">' + item.label + '</span>' +
+        '<span class="result-row-val settle-add">+ ' + LP.fmt(item.amount) + '</span>' +
+        '</div>';
+    });
+    document.getElementById('r_addTotal').textContent = LP.fmt(addTotal);
+
+    // 應扣
+    var deductItems = [
+      { label: '勞保自付額', amount: state.laborIns },
+      { label: '健保自付額', amount: state.healthIns }
+    ];
+    var deductTotal = 0;
+    var deductContainer = document.getElementById('deductSummary');
+    deductContainer.innerHTML = '';
+    deductItems.forEach(function (item) {
+      deductTotal += item.amount;
+      deductContainer.innerHTML +=
+        '<div class="result-row">' +
+        '<span class="result-row-label">' + item.label + '</span>' +
+        '<span class="result-row-val settle-deduct">- ' + LP.fmt(item.amount) + '</span>' +
+        '</div>';
+    });
+    document.getElementById('r_deductTotal').textContent = '- ' + LP.fmt(deductTotal);
+
+    // 淨額
+    var net = addTotal - deductTotal;
+    document.getElementById('r_netTotal').textContent = LP.fmt(net);
+    document.getElementById('r_netSub').textContent =
+      '應領 ' + LP.fmt(addTotal) + ' − 應扣 ' + LP.fmt(deductTotal);
+
+    // 非自願離職證明
+    var isInvoluntary = state.sepType === 'layoff';
+    document.getElementById('involuntaryRemind').style.display = isInvoluntary ? 'flex' : 'none';
+
+    // 行動建議
+    var actions = [];
+    actions.push('確認薪資明細，核對每一筆應領項目是否入帳');
+    actions.push('確認勞保、健保退保日期是否正確');
+    if (state.leaveCash > 0) {
+      actions.push('確認特休未休折現已納入最後一筆薪資');
+    }
+    if (isInvoluntary) {
+      actions.push('向雇主索取「非自願離職證明」，用於申請失業給付');
+      actions.push('至勞保局辦理失業認定及失業給付申請');
+    }
+    if (state.sepType === 'voluntary') {
+      actions.push('確認是否已依法於預告期間前通知雇主（§15）');
+    }
+    actions.push('確認勞退專戶權益，可至勞保局查詢');
+    actions.push('若有爭議，可撥打 1955 勞工諮詢專線或向各地勞動局申請調解');
+
+    var actionContainer = document.getElementById('actionItems');
+    actionContainer.innerHTML = '';
+    actions.forEach(function (text, i) {
+      actionContainer.innerHTML +=
+        '<div class="action-item">' +
+        '<div class="action-num">' + (i + 1) + '.</div>' +
+        '<div>' + text + '</div>' +
+        '</div>';
+    });
+  }
+
+  showStep(1);
+</script>
+<div class="disclaimer-bar"><strong>免責聲明</strong>：本平台之計算結果僅供初步參考，不構成法律意見或法律諮詢服務。實際結算金額應以雇主提供之薪資明細為準。</div>
+</body>
+</html>

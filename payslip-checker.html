@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" href="favicon.svg">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>薪資單檢查器｜LaborPro</title>
+<meta name="description" content="檢查你的薪資單是否正確——核對本薪、加班費、勞健保扣款、所得稅預扣，自動比對應領金額與實領金額差異，免費使用。">
+<meta name="keywords" content="薪資單檢查,薪資單核對,勞保扣款,健保扣款,所得稅預扣,加班費核對,薪資明細,實領金額,勞基法,台灣薪資">
+<meta name="robots" content="index, follow">
+<meta name="author" content="LaborPro">
+<meta property="og:site_name" content="LaborPro">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:type" content="website">
+<meta property="og:title" content="薪資單檢查器｜LaborPro">
+<meta property="og:description" content="核對薪資單是否正確，自動比對應領與實領差異，含勞健保級距驗證。">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "薪資單檢查器",
+  "description": "檢查薪資單是否正確——核對本薪、加班費、勞健保扣款、所得稅預扣，自動比對應領與實領差異。",
+  "url": "https://laborpro.tw/payslip-checker.html",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "All",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "TWD" },
+  "inLanguage": "zh-TW"
+}
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="js/persona.js"></script>
+<link rel="stylesheet" href="css/common.css">
+<style>
+  .field-group label { line-height: 1.4; }
+
+  .field-hint {
+    display: block;
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 5px;
+    line-height: 1.6;
+    font-weight: 400;
+  }
+
+  input[type="number"]::placeholder { color: #aac0a8; }
+
+  .section-divider {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 20px 0 16px;
+  }
+
+  .section-divider::before,
+  .section-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--soft);
+  }
+
+  .section-divider-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .check-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--soft);
+    font-size: 13px;
+  }
+
+  .check-item:last-child { border-bottom: none; }
+
+  .check-item-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+  }
+
+  .check-item-icon {
+    font-size: 14px;
+    flex-shrink: 0;
+    width: 20px;
+    text-align: center;
+  }
+
+  .check-item-name {
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  .check-item-vals {
+    text-align: right;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+  }
+
+  .check-item-expected {
+    color: var(--muted);
+    font-size: 11px;
+  }
+
+  .check-item-actual {
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  .check-item-diff {
+    font-size: 11px;
+    margin-top: 2px;
+  }
+
+  .diff-ok { color: var(--accent); }
+  .diff-warn { color: var(--danger); }
+
+  .bracket-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    margin-top: 10px;
+  }
+
+  .bracket-table th {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 6px 8px;
+    border-bottom: 1.5px solid var(--soft);
+    text-align: left;
+  }
+
+  .bracket-table td {
+    padding: 6px 8px;
+    border-bottom: 1px solid var(--soft);
+    color: var(--ink);
+    font-family: 'DM Mono', monospace;
+  }
+
+  .bracket-table tr.active td {
+    color: var(--accent);
+    font-weight: 600;
+    background: rgba(42,110,62,0.06);
+  }
+
+  .total-row {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 2px solid var(--soft);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .total-row-label { font-size: 14px; font-weight: 600; color: var(--ink); }
+
+  .total-row-val {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--accent);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="logo">Labor<span>Pro</span></a>
+  <a class="back-link" href="index.html">← 首頁</a>
+</header>
+<div class="progress-bar">
+  <div class="progress-fill" id="progressFill" style="width: 33%"></div>
+</div>
+
+<main>
+
+  <!-- Step 1 — 基本薪資資訊 -->
+  <div class="step active" id="step1">
+    <div class="step-header">
+      <div class="step-label">Step 1 of 3 · 基本薪資資訊</div>
+      <h1 class="step-title">薪資單檢查器</h1>
+      <p class="step-sub">輸入約定月薪與本月工作天數，系統將幫你核對薪資單是否正確。</p>
+    </div>
+
+    <div class="wizard">
+      <div class="wizard-section-title">基本薪資設定</div>
+
+      <div class="field-group">
+        <label>約定月薪（元）</label>
+        <input type="number" id="agreedSalary" placeholder="35000" min="0" inputmode="numeric">
+        <span class="field-hint">勞動契約上約定的每月工資總額（不含加班費）。</span>
+      </div>
+
+      <div class="field-group">
+        <label>本月實際工作天數</label>
+        <input type="number" id="actualDays" placeholder="22" min="0" max="31" inputmode="numeric">
+        <span class="field-hint">本月實際出勤的工作天數。</span>
+      </div>
+
+      <div class="field-group">
+        <label>本月應工作天數</label>
+        <input type="number" id="expectedDays" placeholder="22" min="1" max="31" value="22" inputmode="numeric">
+        <span class="field-hint">本月排定的應出勤天數（預設 22 天）。</span>
+      </div>
+    </div>
+
+    <div class="warn-box">
+      ⚠ 本工具依薪資單項目核對差異，實際薪資結構因公司制度不同可能有所差異，建議搭配勞動契約對照使用。
+    </div>
+  </div>
+
+  <!-- Step 2 — 薪資單明細輸入 -->
+  <div class="step" id="step2">
+    <div class="step-header">
+      <div class="step-label">Step 2 of 3 · 薪資單明細</div>
+      <h1 class="step-title">輸入薪資單明細</h1>
+      <p class="step-sub">照著薪資單上的金額逐項輸入，系統將自動核對每筆數字。</p>
+    </div>
+
+    <div class="wizard">
+      <div class="wizard-section-title">應發項目</div>
+
+      <div class="field-group">
+        <label>本薪（元）</label>
+        <input type="number" id="basePay" placeholder="35000" min="0" inputmode="numeric">
+        <span class="field-hint">薪資單上顯示的本薪金額。</span>
+      </div>
+
+      <div class="field-group">
+        <label>加班費（元）</label>
+        <input type="number" id="otPay" placeholder="0" min="0" inputmode="numeric">
+        <span class="field-hint">薪資單上顯示的加班費金額。</span>
+      </div>
+
+      <div class="field-group">
+        <label>全勤獎金（元）</label>
+        <input type="number" id="attendanceBonus" placeholder="0" min="0" inputmode="numeric">
+      </div>
+
+      <div class="field-group">
+        <label>其他加項（元）</label>
+        <input type="number" id="otherAdd" placeholder="0" min="0" inputmode="numeric">
+        <span class="field-hint">津貼、獎金等其他應發項目合計。</span>
+      </div>
+
+      <div class="section-divider">
+        <span class="section-divider-label">應扣項目</span>
+      </div>
+
+      <div class="field-group">
+        <label>勞保自付額（元）</label>
+        <input type="number" id="laborIns" placeholder="0" min="0" inputmode="numeric">
+        <span class="field-hint">薪資單上的勞保扣款（勞工自付 20%）。</span>
+      </div>
+
+      <div class="field-group">
+        <label>健保自付額（元）</label>
+        <input type="number" id="healthIns" placeholder="0" min="0" inputmode="numeric">
+        <span class="field-hint">薪資單上的健保扣款（勞工自付 30%，含眷屬）。</span>
+      </div>
+
+      <div class="field-group">
+        <label>所得稅預扣（元）</label>
+        <input type="number" id="taxWithhold" placeholder="0" min="0" inputmode="numeric">
+      </div>
+
+      <div class="field-group">
+        <label>其他扣項（元）</label>
+        <input type="number" id="otherDeduct" placeholder="0" min="0" inputmode="numeric">
+        <span class="field-hint">請假扣款、借支扣還等其他扣款合計。</span>
+      </div>
+
+      <div class="section-divider">
+        <span class="section-divider-label">實領金額</span>
+      </div>
+
+      <div class="field-group">
+        <label>薪資單實領金額（元）</label>
+        <input type="number" id="netPay" placeholder="30000" min="0" inputmode="numeric">
+        <span class="field-hint">薪資單上顯示的最終實領（入帳）金額。</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 3 — 檢查結果 -->
+  <div class="step" id="step3">
+    <div class="step-header">
+      <div class="step-label">Step 3 of 3 · 檢查結果</div>
+      <h1 class="step-title">薪資單核對結果</h1>
+      <p class="step-sub">以下為系統自動核算結果，與您薪資單的差異比對。</p>
+    </div>
+
+    <!-- 差異金額 Hero -->
+    <div class="result-hero" id="r_hero">
+      <div class="result-hero-label">薪資單差異金額</div>
+      <div class="result-hero-amount" id="r_diffAmount">—</div>
+      <div class="result-hero-sub" id="r_diffSub">—</div>
+    </div>
+
+    <!-- 差異警告 -->
+    <div class="danger-box" id="r_diffWarn" style="display:none;">
+      <strong style="display:block;font-size:13px;margin-bottom:6px;">⚠ 薪資單與計算結果有差異</strong>
+      <span id="r_diffWarnText"></span>
+    </div>
+
+    <!-- 應發明細 -->
+    <div class="result-card">
+      <div class="result-card-title">應發項目核對</div>
+      <div id="r_earnItems"></div>
+      <div class="total-row">
+        <span class="total-row-label">應發合計</span>
+        <span class="total-row-val" id="r_grossTotal">—</span>
+      </div>
+    </div>
+
+    <!-- 應扣明細 -->
+    <div class="result-card">
+      <div class="result-card-title">應扣項目核對</div>
+      <div id="r_deductItems"></div>
+      <div class="total-row">
+        <span class="total-row-label">應扣合計</span>
+        <span class="total-row-val" id="r_deductTotal" style="color:var(--danger);">—</span>
+      </div>
+    </div>
+
+    <!-- 實領比對 -->
+    <div class="result-card">
+      <div class="result-card-title">實領金額比對</div>
+      <div class="result-row">
+        <span class="result-row-label">應發合計</span>
+        <span class="result-row-val" id="r_gross2">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">應扣合計</span>
+        <span class="result-row-val danger" id="r_deduct2">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">系統計算應實領</span>
+        <span class="result-row-val highlight" id="r_calcNet">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">薪資單實領</span>
+        <span class="result-row-val" id="r_slipNet">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">差異</span>
+        <span class="result-row-val" id="r_netDiff">—</span>
+      </div>
+    </div>
+
+    <!-- 勞保級距檢查 -->
+    <div class="result-card" id="r_laborInsCard">
+      <div class="result-card-title">勞保投保級距驗證</div>
+      <div class="result-row">
+        <span class="result-row-label">推估投保薪資</span>
+        <span class="result-row-val" id="r_laborBracket">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">對應自付額（約 2.4%）</span>
+        <span class="result-row-val" id="r_laborExpected">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">薪資單扣款</span>
+        <span class="result-row-val" id="r_laborActual">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">判定</span>
+        <span class="result-row-val" id="r_laborStatus">—</span>
+      </div>
+    </div>
+
+    <!-- 健保級距檢查 -->
+    <div class="result-card" id="r_healthInsCard">
+      <div class="result-card-title">健保投保級距驗證</div>
+      <div class="result-row">
+        <span class="result-row-label">推估投保薪資</span>
+        <span class="result-row-val" id="r_healthBracket">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">對應自付額（約 1.55%，本人）</span>
+        <span class="result-row-val" id="r_healthExpected">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">薪資單扣款</span>
+        <span class="result-row-val" id="r_healthActual">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">判定</span>
+        <span class="result-row-val" id="r_healthStatus">—</span>
+      </div>
+      <div style="margin-top:10px;font-size:11px;color:var(--muted);line-height:1.7;">
+        * 健保自付額會因眷屬人數不同而增加（每多一名眷屬加收同額），若扣款為本人自付額的整數倍，通常為正常。
+      </div>
+    </div>
+
+    <!-- Persona 專區 — 勞工 -->
+    <div class="worker-only" style="background:#eef8f2;border:1.5px solid var(--accent);border-radius:12px;padding:16px 20px;margin-bottom:14px;">
+      <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:8px;">如何申訴</div>
+      <div style="font-size:12px;color:#1a3a28;line-height:1.9;">
+        · <strong>撥打 1955 勞工諮詢專線</strong>：免費，可諮詢薪資爭議問題<br>
+        · <strong>向當地勞工局申訴</strong>：攜帶薪資單、勞動契約、出勤紀錄前往<br>
+        · <strong>申請勞資爭議調解</strong>：向公司所在地的縣市勞工局提出調解申請<br>
+        · <strong>準備文件</strong>：薪資單影本、銀行轉帳紀錄、勞動契約、出勤打卡紀錄<br>
+        · 建議先以書面（存證信函）向雇主反映薪資差異，保留溝通紀錄
+      </div>
+    </div>
+
+    <!-- Persona 專區 — 雇主 -->
+    <div class="employer-only" style="background:#fef8e8;border:1.5px solid #c8901a;border-radius:12px;padding:16px 20px;margin-bottom:14px;">
+      <div style="font-size:12px;font-weight:700;color:#8a5a10;margin-bottom:8px;">合規提醒</div>
+      <div style="font-size:12px;color:#4a3a10;line-height:1.9;">
+        · <strong>短付工資</strong>：違反勞基法§22，罰鍰 2 萬～100 萬元（§79）<br>
+        · <strong>未足額提繳勞退</strong>：違反勞退條例§14，罰鍰 6 萬～30 萬元<br>
+        · <strong>高薪低報</strong>：以多報少投保勞健保，除補繳保費外另處罰鍰<br>
+        · <strong>薪資單保存義務</strong>：工資清冊應保存 5 年（勞基法§23）<br>
+        · 建議每月核對薪資計算邏輯，確保加班費、勞健保扣款正確
+      </div>
+    </div>
+
+    <!-- 法律依據 -->
+    <div class="law-note">
+      <strong>法律依據</strong><br>
+      · <strong>勞基法§22</strong>：工資應全額直接給付勞工<br>
+      · <strong>勞基法§23</strong>：雇主應提供工資各項目計算方式明細（薪資單）<br>
+      · <strong>勞工保險條例§14</strong>：投保薪資應覈實申報，不得以多報少或以少報多<br>
+      · <strong>全民健康保險法§20</strong>：投保金額依薪資所得覈實申報<br>
+      · <strong>勞工退休金條例§14</strong>：雇主應按月提繳不低於 6% 退休金
+    </div>
+  </div>
+
+</main>
+
+<!-- Nav bar -->
+<div class="nav-bar">
+  <button class="btn btn-secondary" id="btnBack" onclick="goBack()" style="display:none;">← 上一步</button>
+  <button class="btn btn-primary"   id="btnNext" onclick="goNext()">下一步 →</button>
+  <button class="btn btn-reset"     id="btnReset" onclick="resetAll()" style="display:none;">重新檢查</button>
+</div>
+
+<script>
+  const state = {};
+  let currentStep = 1;
+  const totalSteps = 3;
+
+  // ─── 勞保投保級距 (2026) ──────────────────────────────────────────
+  const LABOR_INS_BRACKETS = [
+    27470, 28800, 30300, 31800, 33300, 34800, 36300, 38200, 40100, 42000, 43900, 45800
+  ];
+  const LABOR_INS_WORKER_RATE = 0.12 * 0.20; // 12% total, worker pays 20% = 2.4%
+
+  // 健保投保級距 (同勞保級距，簡化版)
+  const HEALTH_INS_BRACKETS = [
+    27470, 28800, 30300, 31800, 33300, 34800, 36300, 38200, 40100, 42000, 43900, 45800
+  ];
+  const HEALTH_INS_WORKER_RATE = 0.0517 * 0.30; // 5.17% total, worker pays 30% ≈ 1.551%
+
+  function findBracket(salary, brackets) {
+    // Find the bracket that the salary falls into
+    for (let i = 0; i < brackets.length; i++) {
+      if (salary <= brackets[i]) return brackets[i];
+    }
+    return brackets[brackets.length - 1]; // cap at highest
+  }
+
+  // ─── Navigation ─────────────────────────────────────────────────
+  function showStep(n) {
+    document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+    document.getElementById('step' + n).classList.add('active');
+    const pct = (n / totalSteps) * 100;
+    document.getElementById('progressFill').style.width = pct + '%';
+    currentStep = n;
+
+    const btnBack  = document.getElementById('btnBack');
+    const btnNext  = document.getElementById('btnNext');
+    const btnReset = document.getElementById('btnReset');
+
+    if (n === 1) {
+      btnBack.style.display  = 'none';
+      btnNext.style.display  = 'flex';
+      btnReset.style.display = 'none';
+      btnNext.textContent    = '下一步 →';
+    } else if (n === 2) {
+      btnBack.style.display  = 'block';
+      btnNext.style.display  = 'flex';
+      btnReset.style.display = 'none';
+      btnNext.textContent    = '開始檢查 →';
+    } else {
+      btnBack.style.display  = 'block';
+      btnNext.style.display  = 'none';
+      btnReset.style.display = 'flex';
+    }
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function goBack() {
+    if (currentStep > 1) showStep(currentStep - 1);
+  }
+
+  function goNext() {
+    if (currentStep === 1) {
+      if (!validateStep1()) return;
+      collectStep1();
+      showStep(2);
+    } else if (currentStep === 2) {
+      collectStep2();
+      calculate();
+      showStep(3);
+    }
+  }
+
+  function resetAll() {
+    document.getElementById('agreedSalary').value  = '';
+    document.getElementById('actualDays').value     = '';
+    document.getElementById('expectedDays').value   = '22';
+    document.getElementById('basePay').value        = '';
+    document.getElementById('otPay').value          = '';
+    document.getElementById('attendanceBonus').value = '';
+    document.getElementById('otherAdd').value       = '';
+    document.getElementById('laborIns').value       = '';
+    document.getElementById('healthIns').value      = '';
+    document.getElementById('taxWithhold').value    = '';
+    document.getElementById('otherDeduct').value    = '';
+    document.getElementById('netPay').value         = '';
+    showStep(1);
+  }
+
+  // ─── Validation ─────────────────────────────────────────────────
+  function validateStep1() {
+    const salary = parseFloat(document.getElementById('agreedSalary').value);
+    if (!salary || salary <= 0) {
+      alert('請輸入有效的約定月薪金額。');
+      return false;
+    }
+    const actual = parseFloat(document.getElementById('actualDays').value);
+    if (!actual && actual !== 0) {
+      alert('請輸入本月實際工作天數。');
+      return false;
+    }
+    return true;
+  }
+
+  // ─── Collect ────────────────────────────────────────────────────
+  function collectStep1() {
+    state.agreedSalary = parseFloat(document.getElementById('agreedSalary').value) || 0;
+    state.actualDays   = parseFloat(document.getElementById('actualDays').value)   || 0;
+    state.expectedDays = parseFloat(document.getElementById('expectedDays').value) || 22;
+  }
+
+  function collectStep2() {
+    state.basePay         = parseFloat(document.getElementById('basePay').value)         || 0;
+    state.otPay           = parseFloat(document.getElementById('otPay').value)           || 0;
+    state.attendanceBonus = parseFloat(document.getElementById('attendanceBonus').value) || 0;
+    state.otherAdd        = parseFloat(document.getElementById('otherAdd').value)        || 0;
+    state.laborIns        = parseFloat(document.getElementById('laborIns').value)        || 0;
+    state.healthIns       = parseFloat(document.getElementById('healthIns').value)       || 0;
+    state.taxWithhold     = parseFloat(document.getElementById('taxWithhold').value)     || 0;
+    state.otherDeduct     = parseFloat(document.getElementById('otherDeduct').value)     || 0;
+    state.netPay          = parseFloat(document.getElementById('netPay').value)          || 0;
+  }
+
+  // ─── Formatting ─────────────────────────────────────────────────
+  function fmt(n) {
+    return 'NT$ ' + Math.round(n).toLocaleString('zh-TW');
+  }
+
+  function fmtSigned(n) {
+    const abs = Math.abs(Math.round(n));
+    const str = 'NT$ ' + abs.toLocaleString('zh-TW');
+    if (n > 0) return '+' + str;
+    if (n < 0) return '-' + str;
+    return str;
+  }
+
+  // ─── Check item renderer ───────────────────────────────────────
+  function renderCheckItem(name, slipVal, expectedVal, container) {
+    const diff = slipVal - expectedVal;
+    const isMatch = Math.abs(diff) < 1; // within $1 tolerance
+    const icon = isMatch ? '✓' : '⚠';
+    const iconColor = isMatch ? 'var(--accent)' : 'var(--danger)';
+
+    const div = document.createElement('div');
+    div.className = 'check-item';
+    div.innerHTML = `
+      <div class="check-item-left">
+        <span class="check-item-icon" style="color:${iconColor}">${icon}</span>
+        <span class="check-item-name">${name}</span>
+      </div>
+      <div class="check-item-vals">
+        <div class="check-item-actual">${fmt(slipVal)}</div>
+        ${!isMatch ? `<div class="check-item-diff diff-warn">預期 ${fmt(expectedVal)}（差 ${fmtSigned(diff)}）</div>` : ''}
+      </div>
+    `;
+    container.appendChild(div);
+  }
+
+  // ─── Main calculation ───────────────────────────────────────────
+  function calculate() {
+    const {
+      agreedSalary, actualDays, expectedDays,
+      basePay, otPay, attendanceBonus, otherAdd,
+      laborIns, healthIns, taxWithhold, otherDeduct,
+      netPay
+    } = state;
+
+    // --- Calculate expected base pay ---
+    const expectedBasePay = (actualDays >= expectedDays)
+      ? agreedSalary
+      : Math.round(agreedSalary * (actualDays / expectedDays));
+
+    // --- Gross (from payslip) ---
+    const slipGross = basePay + otPay + attendanceBonus + otherAdd;
+    const slipDeductions = laborIns + healthIns + taxWithhold + otherDeduct;
+    const calcNetPay = slipGross - slipDeductions;
+
+    // --- Difference ---
+    const diff = netPay - calcNetPay;
+
+    // Hero
+    const heroEl = document.getElementById('r_diffAmount');
+    const heroSub = document.getElementById('r_diffSub');
+    const heroBox = document.getElementById('r_hero');
+
+    if (Math.abs(diff) < 1) {
+      heroEl.textContent = '無差異';
+      heroEl.style.color = 'var(--accent)';
+      heroSub.textContent = '薪資單實領與計算結果一致';
+    } else {
+      heroEl.textContent = fmtSigned(diff);
+      heroEl.style.color = 'var(--danger)';
+      heroSub.textContent = diff > 0
+        ? '薪資單實領高於計算結果'
+        : '薪資單實領低於計算結果（可能短付）';
+    }
+
+    // Diff warning
+    const warnEl = document.getElementById('r_diffWarn');
+    const warnText = document.getElementById('r_diffWarnText');
+    if (Math.abs(diff) >= 1) {
+      warnEl.style.display = 'block';
+      const reasons = [];
+      if (diff < 0) {
+        reasons.push('薪資單實領低於應領金額，可能原因：');
+        reasons.push('· 有未列出的扣款項目（遲到扣款、借支等）');
+        reasons.push('· 勞健保扣款金額有誤');
+        reasons.push('· 本薪計算方式與預期不同');
+      } else {
+        reasons.push('薪資單實領高於應領金額，可能原因：');
+        reasons.push('· 有未列出的加項（獎金、補貼等）');
+        reasons.push('· 應扣項目計算有誤');
+      }
+      warnText.innerHTML = reasons.join('<br>');
+    } else {
+      warnEl.style.display = 'none';
+    }
+
+    // --- Earn items ---
+    const earnContainer = document.getElementById('r_earnItems');
+    earnContainer.innerHTML = '';
+    renderCheckItem('本薪', basePay, expectedBasePay, earnContainer);
+    if (otPay > 0) {
+      // OT pay — just show as-is since we don't have hours info
+      const otDiv = document.createElement('div');
+      otDiv.className = 'check-item';
+      otDiv.innerHTML = `
+        <div class="check-item-left">
+          <span class="check-item-icon" style="color:var(--muted)">—</span>
+          <span class="check-item-name">加班費</span>
+        </div>
+        <div class="check-item-vals">
+          <div class="check-item-actual">${fmt(otPay)}</div>
+          <div class="check-item-expected" style="font-size:11px;color:var(--muted);">需搭配加班時數驗證</div>
+        </div>
+      `;
+      earnContainer.appendChild(otDiv);
+    }
+    if (attendanceBonus > 0) {
+      const abDiv = document.createElement('div');
+      abDiv.className = 'check-item';
+      abDiv.innerHTML = `
+        <div class="check-item-left">
+          <span class="check-item-icon" style="color:var(--muted)">—</span>
+          <span class="check-item-name">全勤獎金</span>
+        </div>
+        <div class="check-item-vals">
+          <div class="check-item-actual">${fmt(attendanceBonus)}</div>
+        </div>
+      `;
+      earnContainer.appendChild(abDiv);
+    }
+    if (otherAdd > 0) {
+      const oaDiv = document.createElement('div');
+      oaDiv.className = 'check-item';
+      oaDiv.innerHTML = `
+        <div class="check-item-left">
+          <span class="check-item-icon" style="color:var(--muted)">—</span>
+          <span class="check-item-name">其他加項</span>
+        </div>
+        <div class="check-item-vals">
+          <div class="check-item-actual">${fmt(otherAdd)}</div>
+        </div>
+      `;
+      earnContainer.appendChild(oaDiv);
+    }
+    document.getElementById('r_grossTotal').textContent = fmt(slipGross);
+
+    // --- Deduction items ---
+    const deductContainer = document.getElementById('r_deductItems');
+    deductContainer.innerHTML = '';
+
+    // Labor insurance check
+    const laborBracket = findBracket(agreedSalary, LABOR_INS_BRACKETS);
+    const expectedLaborIns = Math.round(laborBracket * LABOR_INS_WORKER_RATE);
+    renderCheckItem('勞保自付額', laborIns, expectedLaborIns, deductContainer);
+
+    // Health insurance check
+    const healthBracket = findBracket(agreedSalary, HEALTH_INS_BRACKETS);
+    const expectedHealthIns = Math.round(healthBracket * HEALTH_INS_WORKER_RATE);
+    // Health ins may include dependents, so check if it's a multiple
+    const healthRatio = healthIns / expectedHealthIns;
+    const isHealthMultiple = healthIns > 0 && expectedHealthIns > 0 && Math.abs(healthRatio - Math.round(healthRatio)) < 0.05;
+    const healthDependents = isHealthMultiple ? Math.round(healthRatio) : 0;
+
+    if (isHealthMultiple && healthDependents >= 1) {
+      const hDiv = document.createElement('div');
+      hDiv.className = 'check-item';
+      const hIcon = '✓';
+      const depNote = healthDependents > 1 ? `（含 ${healthDependents - 1} 名眷屬）` : '（本人）';
+      hDiv.innerHTML = `
+        <div class="check-item-left">
+          <span class="check-item-icon" style="color:var(--accent)">${hIcon}</span>
+          <span class="check-item-name">健保自付額</span>
+        </div>
+        <div class="check-item-vals">
+          <div class="check-item-actual">${fmt(healthIns)}</div>
+          <div style="font-size:11px;color:var(--muted);">${depNote}</div>
+        </div>
+      `;
+      deductContainer.appendChild(hDiv);
+    } else {
+      renderCheckItem('健保自付額', healthIns, expectedHealthIns, deductContainer);
+    }
+
+    if (taxWithhold > 0) {
+      const txDiv = document.createElement('div');
+      txDiv.className = 'check-item';
+      txDiv.innerHTML = `
+        <div class="check-item-left">
+          <span class="check-item-icon" style="color:var(--muted)">—</span>
+          <span class="check-item-name">所得稅預扣</span>
+        </div>
+        <div class="check-item-vals">
+          <div class="check-item-actual">${fmt(taxWithhold)}</div>
+        </div>
+      `;
+      deductContainer.appendChild(txDiv);
+    }
+    if (otherDeduct > 0) {
+      const odDiv = document.createElement('div');
+      odDiv.className = 'check-item';
+      odDiv.innerHTML = `
+        <div class="check-item-left">
+          <span class="check-item-icon" style="color:var(--muted)">—</span>
+          <span class="check-item-name">其他扣項</span>
+        </div>
+        <div class="check-item-vals">
+          <div class="check-item-actual">${fmt(otherDeduct)}</div>
+        </div>
+      `;
+      deductContainer.appendChild(odDiv);
+    }
+    document.getElementById('r_deductTotal').textContent = fmt(slipDeductions);
+
+    // --- Net pay comparison ---
+    document.getElementById('r_gross2').textContent   = fmt(slipGross);
+    document.getElementById('r_deduct2').textContent  = '-' + fmt(slipDeductions);
+    document.getElementById('r_calcNet').textContent  = fmt(calcNetPay);
+    document.getElementById('r_slipNet').textContent  = fmt(netPay);
+
+    const netDiffEl = document.getElementById('r_netDiff');
+    if (Math.abs(diff) < 1) {
+      netDiffEl.innerHTML = '<span class="status-pass">✓ 一致</span>';
+    } else {
+      netDiffEl.innerHTML = `<span class="status-fail">⚠ ${fmtSigned(diff)}</span>`;
+    }
+
+    // --- Labor insurance bracket card ---
+    document.getElementById('r_laborBracket').textContent  = fmt(laborBracket);
+    document.getElementById('r_laborExpected').textContent  = fmt(expectedLaborIns);
+    document.getElementById('r_laborActual').textContent    = fmt(laborIns);
+
+    const laborStatusEl = document.getElementById('r_laborStatus');
+    const laborDiff = Math.abs(laborIns - expectedLaborIns);
+    if (laborIns === 0) {
+      laborStatusEl.innerHTML = '<span class="status-warn">⚠ 未扣款</span>';
+    } else if (laborDiff < 2) {
+      laborStatusEl.innerHTML = '<span class="status-pass">✓ 正常</span>';
+    } else if (laborIns < expectedLaborIns) {
+      laborStatusEl.innerHTML = '<span class="status-fail">⚠ 低於應扣（可能高薪低報）</span>';
+    } else {
+      laborStatusEl.innerHTML = '<span class="status-warn">⚠ 高於應扣（請確認級距）</span>';
+    }
+
+    // --- Health insurance bracket card ---
+    document.getElementById('r_healthBracket').textContent  = fmt(healthBracket);
+    document.getElementById('r_healthExpected').textContent  = fmt(expectedHealthIns);
+    document.getElementById('r_healthActual').textContent    = fmt(healthIns);
+
+    const healthStatusEl = document.getElementById('r_healthStatus');
+    if (healthIns === 0) {
+      healthStatusEl.innerHTML = '<span class="status-warn">⚠ 未扣款</span>';
+    } else if (isHealthMultiple && healthDependents >= 1) {
+      const depText = healthDependents > 1
+        ? `✓ 正常（本人＋${healthDependents - 1} 眷屬）`
+        : '✓ 正常（本人）';
+      healthStatusEl.innerHTML = `<span class="status-pass">${depText}</span>`;
+    } else if (healthIns < expectedHealthIns * 0.9) {
+      healthStatusEl.innerHTML = '<span class="status-fail">⚠ 低於應扣（可能高薪低報）</span>';
+    } else {
+      healthStatusEl.innerHTML = '<span class="status-warn">⚠ 請確認眷屬人數與級距</span>';
+    }
+  }
+
+  // Init
+  showStep(1);
+</script>
+<div class="disclaimer-bar"><strong>免責聲明</strong>：本平台之計算結果僅供初步參考，不構成法律意見或法律諮詢服務。實際案件因個案事實、適用法規及法院見解不同，結果可能有所差異，建議諮詢具執照之律師或相關法律專業人員。</div>
+</body>
+</html>

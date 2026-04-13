@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" href="favicon.svg">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>勞資爭議調解流程導引｜LaborPro</title>
+<meta name="description" content="互動式勞資爭議調解流程導引，依爭議類型與金額引導最佳解決途徑，含所需文件、費用與時程估算。">
+<meta name="keywords" content="勞資爭議,勞動調解,勞資調解,勞動事件法,勞資爭議處理法,勞動局申訴,台灣勞基法">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://laborpro.tw/dispute-guide.html">
+<meta property="og:title" content="勞資爭議調解流程導引｜LaborPro">
+<meta property="og:description" content="互動式決策樹導引勞資爭議最佳解決途徑。">
+<meta property="og:type" content="website">
+<meta name="author" content="LaborPro">
+<meta property="og:site_name" content="LaborPro">
+<meta property="og:locale" content="zh_TW">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="js/persona.js"></script>
+<link rel="stylesheet" href="css/common.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "勞資爭議調解流程導引",
+  "description": "互動式勞資爭議調解流程導引，依爭議類型與金額引導最佳解決途徑。",
+  "url": "https://laborpro.tw/dispute-guide.html",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "TWD" }
+}
+</script>
+<style>
+  .decision-card {
+    background: var(--paper);
+    color: var(--ink);
+    border-radius: 16px;
+    padding: 28px 24px;
+    margin-bottom: 14px;
+    animation: fadeUp 0.3s ease both;
+  }
+  .decision-question {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.4;
+    margin-bottom: 6px;
+  }
+  .decision-hint {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+  .decision-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .decision-option {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    background: var(--card);
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: left;
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 14px;
+    color: var(--ink);
+    line-height: 1.5;
+  }
+  .decision-option:hover { border-color: var(--accent); background: #eef8f2; }
+  .decision-option-letter {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent);
+    background: rgba(42,110,62,0.1);
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .decision-option-text {
+    flex: 1;
+  }
+  .decision-option-text strong {
+    display: block;
+    margin-bottom: 2px;
+  }
+  .decision-option-text small {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  /* Breadcrumb trail */
+  .breadcrumb {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: 16px;
+    align-items: center;
+  }
+  .breadcrumb-item {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    padding: 3px 8px;
+    background: #1e2e1e;
+    border-radius: 4px;
+  }
+  .breadcrumb-item.active { color: var(--gold); background: rgba(200,144,26,0.15); }
+  .breadcrumb-sep {
+    color: var(--muted);
+    font-size: 10px;
+  }
+
+  /* Conclusion page */
+  .conclusion-header {
+    background: var(--accent);
+    color: #fff;
+    border-radius: 14px;
+    padding: 24px;
+    margin-bottom: 14px;
+    text-align: center;
+  }
+  .conclusion-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    opacity: 0.7;
+    margin-bottom: 8px;
+  }
+  .conclusion-title {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.35;
+  }
+
+  .checklist-item {
+    display: flex;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--soft);
+    font-size: 13px;
+    color: var(--ink);
+    line-height: 1.6;
+    align-items: flex-start;
+  }
+  .checklist-item:last-child { border-bottom: none; }
+  .checklist-icon {
+    font-size: 14px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .estimate-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .estimate-box {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    text-align: center;
+  }
+  .estimate-value {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--gold);
+    margin-bottom: 4px;
+  }
+  .estimate-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .back-decision-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 18px;
+    border: 1px solid #2a3e2a;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--muted);
+    font-size: 13px;
+    font-family: 'Noto Sans TC', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-bottom: 16px;
+  }
+  .back-decision-btn:hover { border-color: var(--gold); color: var(--paper); }
+
+  .restart-btn {
+    width: 100%;
+    padding: 14px;
+    border-radius: 10px;
+    border: 1px solid #2a3e2a;
+    background: transparent;
+    color: var(--muted);
+    font-size: 15px;
+    font-family: 'Noto Sans TC', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 14px;
+  }
+  .restart-btn:hover { border-color: var(--muted); color: var(--paper); }
+
+  /* Timeline in conclusion (override for light bg) */
+  .conclusion-timeline {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 14px;
+    color: var(--ink);
+  }
+  .conclusion-timeline .timeline { margin-bottom: 0; }
+  .conclusion-timeline .timeline::before { background: var(--border); }
+
+  @media (max-width: 400px) {
+    .estimate-grid { grid-template-columns: 1fr; }
+    .decision-question { font-size: 18px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="logo">Labor<span>Pro</span></a>
+  <a class="back-link" href="index.html">← 首頁</a>
+</header>
+
+<main>
+  <div class="step-header">
+    <div class="step-label">爭議導引 · 決策樹</div>
+    <h1 class="step-title">勞資爭議調解流程導引</h1>
+    <p class="step-sub">回答幾個問題，系統將為您推薦最適合的爭議解決途徑，並提供完整流程指引。</p>
+  </div>
+
+  <!-- 快速通道 -->
+  <div id="quickAccess" style="margin-bottom:20px;">
+    <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:0.14em;text-transform:uppercase;margin-bottom:12px;">常見情境快速通道</div>
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <button onclick="quickJump('c1')" style="display:flex;align-items:center;gap:12px;padding:14px 16px;border:1px solid #2a3e2a;border-radius:10px;background:transparent;color:var(--paper);font-family:'Noto Sans TC',sans-serif;font-size:13px;text-align:left;cursor:pointer;transition:all 0.2s;line-height:1.5;">
+        <span style="color:var(--gold);font-size:16px;flex-shrink:0;">💰</span>
+        <span>被欠薪、少付加班費、資遣費糾紛<small style="display:block;color:var(--muted);font-size:11px;margin-top:2px;">→ 地方政府勞動局調解（免費）</small></span>
+      </button>
+      <button onclick="quickJump('c2')" style="display:flex;align-items:center;gap:12px;padding:14px 16px;border:1px solid #2a3e2a;border-radius:10px;background:transparent;color:var(--paper);font-family:'Noto Sans TC',sans-serif;font-size:13px;text-align:left;cursor:pointer;transition:all 0.2s;line-height:1.5;">
+        <span style="color:var(--gold);font-size:16px;flex-shrink:0;">⚖️</span>
+        <span>大額爭議、違法解雇要求復職<small style="display:block;color:var(--muted);font-size:11px;margin-top:2px;">→ 法院勞動調解</small></span>
+      </button>
+    </div>
+  </div>
+
+  <div class="breadcrumb" id="breadcrumb"></div>
+  <div id="treeContainer"></div>
+
+  <!-- 實用資源（常駐顯示） -->
+  <div style="margin-top:24px;">
+    <div class="result-card" style="background:var(--paper);color:var(--ink);">
+      <div class="result-card-title">實用資源與聯絡方式</div>
+      <div class="checklist-item"><span class="checklist-icon">📞</span><span><strong>勞動部免費諮詢專線</strong>：1955（中英越泰印尼語服務）</span></div>
+      <div class="checklist-item"><span class="checklist-icon">🏛</span><span><strong>各縣市勞工局</strong>：臨櫃或線上申請調解，免費</span></div>
+      <div class="checklist-item"><span class="checklist-icon">⚖️</span><span><strong>法律扶助基金會</strong>：02-412-8518（符合資格者免費律師）</span></div>
+      <div class="checklist-item"><span class="checklist-icon">📱</span><span><strong>勞動部官網</strong>：mol.gov.tw（調解申請書下載）</span></div>
+      <div class="checklist-item"><span class="checklist-icon">📋</span><span><strong>司法院勞動調解</strong>：judicial.gov.tw（線上聲請）</span></div>
+    </div>
+  </div>
+
+  <!-- Persona 專區 -->
+  <div class="worker-only" style="background:#eef8f2;border:1.5px solid var(--accent);border-radius:12px;padding:16px 20px;margin-top:14px;">
+    <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:8px;">👷 勞工爭議處理建議</div>
+    <div style="font-size:12px;color:#1a3a28;line-height:1.9;">
+      · <strong>先蒐集證據再行動</strong>：薪資單、出勤紀錄、勞動契約、LINE/Email 截圖都是重要證據<br>
+      · 調解過程中<strong>不影響工作權</strong>，雇主不得因申請調解而解雇或報復（§74）<br>
+      · 勞動事件法保障：法院會<strong>減免訴訟費用</strong>，並提供強制調解前置<br>
+      · 如經濟困難，可向<strong>法律扶助基金會</strong>（02-412-8518）申請免費律師<br>
+      · 調解成立等同<strong>法院確定判決</strong>，雇主不履行可直接聲請強制執行
+    </div>
+  </div>
+
+  <div class="employer-only" style="background:#fef8e8;border:1.5px solid #c8901a;border-radius:12px;padding:16px 20px;margin-top:14px;">
+    <div style="font-size:12px;font-weight:700;color:#8a5a10;margin-bottom:8px;">🏢 雇主爭議處理建議</div>
+    <div style="font-size:12px;color:#4a3a10;line-height:1.9;">
+      · <strong>積極參與調解</strong>：缺席調解可能被視為調解不成立，直接進入訴訟程序<br>
+      · 調解前先<strong>備妥出勤紀錄與薪資計算明細</strong>，展現合規誠意<br>
+      · 勞動事件法規定雇主有<strong>舉證責任</strong>（§35、§37），出勤紀錄與薪資明細由雇主提出<br>
+      · 考慮在調解階段協商和解，訴訟成本（律師費+時間）通常高於調解讓步<br>
+      · 爭議期間<strong>嚴禁報復</strong>勞工，否則另構成獨立違法事由
+    </div>
+  </div>
+</main>
+
+<script src="js/fmt.js"></script>
+<script src="js/calc-utils.js"></script>
+<script>
+(function() {
+
+  // ─── Decision tree data ────────────────────────────────────────────
+  var TREE = {
+    q1: {
+      type: 'question',
+      question: '您的爭議類型是什麼？',
+      hint: '權利事項指已確定的法定權利（如工資、資遣費）；調整事項指待協商的勞動條件（如工時、待遇）。',
+      options: [
+        { label: '權利事項', desc: '工資、資遣費、加班費等已確定之權利', next: 'q2' },
+        { label: '調整事項', desc: '工時、待遇、工作條件之協商', next: 'q3' }
+      ]
+    },
+    q2: {
+      type: 'question',
+      question: '爭議金額是否超過 50 萬元？',
+      hint: '金額大小會影響建議的解決途徑效率。',
+      options: [
+        { label: '50萬元以下', desc: '爭議金額在50萬元（含）以下', next: 'c1' },
+        { label: '50萬元以上', desc: '爭議金額超過50萬元', next: 'c2' }
+      ]
+    },
+    q3: {
+      type: 'question',
+      question: '是否涉及團體協商？',
+      hint: '判斷是個人與雇主之間的爭議，還是工會/團體與雇主之間的爭議。',
+      options: [
+        { label: '個人爭議', desc: '個人勞工與雇主之間', next: 'c3' },
+        { label: '團體爭議', desc: '工會或勞工團體與雇主之間', next: 'c4' }
+      ]
+    },
+
+    // ─── Conclusions ─────────────────────────────────────────────────
+    c1: {
+      type: 'conclusion',
+      title: '向地方政府勞動局申請「調解」',
+      subtitle: '權利事項・50萬以下',
+      timeline: [
+        { step: 'Step 1', title: '蒐集證據', desc: '備妥薪資單、出勤紀錄、勞動契約、通訊紀錄等相關文件。', time: '1–2 週' },
+        { step: 'Step 2', title: '申請調解', desc: '向公司所在地之地方政府勞工局提出勞資爭議調解申請書。', time: '當日' },
+        { step: 'Step 3', title: '出席調解', desc: '調解委員會召開會議，雙方陳述意見，委員提出調解方案。', time: '約 2–4 週後' },
+        { step: 'Step 4', title: '執行結果', desc: '調解成立等同法院確定判決，可據以強制執行；不成立可續行訴訟。', time: '即時' }
+      ],
+      documents: [
+        '勞資爭議調解申請書',
+        '身分證影本',
+        '勞動契約或僱用證明',
+        '薪資單 / 薪轉帳戶明細',
+        '出勤紀錄（打卡紀錄）',
+        '相關通訊紀錄（LINE、Email）',
+        '其他佐證文件'
+      ],
+      cost: '免費',
+      duration: '約 2–4 週',
+      laws: '勞資爭議處理法§9–§25'
+    },
+    c2: {
+      type: 'conclusion',
+      title: '向法院提「勞動調解」',
+      subtitle: '權利事項・50萬以上',
+      timeline: [
+        { step: 'Step 1', title: '蒐集證據', desc: '備妥完整書面證據，建議委任律師協助整理訴訟資料。', time: '1–3 週' },
+        { step: 'Step 2', title: '提出聲請', desc: '向管轄法院（雇主所在地或勞務提供地）提出勞動調解聲請。', time: '當日' },
+        { step: 'Step 3', title: '法院調解', desc: '由一名法官與二名調解委員組成調解委員會，進行1–3次調解。', time: '約 3–6 週' },
+        { step: 'Step 4', title: '後續程序', desc: '調解成立即具判決效力；不成立自動進入訴訟程序（勞動事件法§31）。', time: '視情況' }
+      ],
+      documents: [
+        '勞動調解聲請書',
+        '身分證影本',
+        '勞動契約或僱用證明',
+        '薪資單 / 薪轉帳戶明細（6個月以上）',
+        '出勤紀錄',
+        '解雇通知 / 資遣通知',
+        '相關通訊與會議紀錄',
+        '計算明細表（金額試算）'
+      ],
+      cost: '聲請費約 NT$ 1,000–5,000（依金額定）',
+      duration: '約 3–8 週（調解）+ 數月（若進訴訟）',
+      laws: '勞動事件法§16、§22–§31'
+    },
+    c3: {
+      type: 'conclusion',
+      title: '向地方政府申請調解',
+      subtitle: '調整事項・個人',
+      timeline: [
+        { step: 'Step 1', title: '蒐集證據', desc: '整理與勞動條件變更相關的文件，如公告、會議紀錄等。', time: '1–2 週' },
+        { step: 'Step 2', title: '申請調解', desc: '向地方政府勞工局提出調解申請，敘明希望調整之事項。', time: '當日' },
+        { step: 'Step 3', title: '出席調解', desc: '調解委員會協助雙方溝通，尋求共識。', time: '約 2–4 週後' },
+        { step: 'Step 4', title: '執行結果', desc: '調解成立由雙方簽署協議書；不成立可評估其他途徑。', time: '即時' }
+      ],
+      documents: [
+        '勞資爭議調解申請書',
+        '身分證影本',
+        '勞動契約',
+        '公司工作規則或人事規章',
+        '變更前後勞動條件對照',
+        '相關公告或通知'
+      ],
+      cost: '免費',
+      duration: '約 2–4 週',
+      laws: '勞資爭議處理法§9–§25'
+    },
+    c4: {
+      type: 'conclusion',
+      title: '可申請仲裁',
+      subtitle: '調整事項・團體',
+      timeline: [
+        { step: 'Step 1', title: '蒐集資料', desc: '工會彙整團體協約草案、會議紀錄、會員大會決議等。', time: '2–4 週' },
+        { step: 'Step 2', title: '申請仲裁', desc: '向主管機關提出仲裁申請（勞資爭議處理法§25）。', time: '當日' },
+        { step: 'Step 3', title: '仲裁程序', desc: '仲裁委員會審理，雙方陳述意見，仲裁委員作成仲裁判斷。', time: '約 4–8 週' },
+        { step: 'Step 4', title: '執行結果', desc: '仲裁判斷對雙方具拘束力，等同團體協約效力。', time: '即時' }
+      ],
+      documents: [
+        '仲裁申請書',
+        '工會法人登記證明',
+        '會員大會或理監事會決議紀錄',
+        '團體協約草案',
+        '歷次協商紀錄',
+        '相關函文與公告'
+      ],
+      cost: '免費（仲裁費由政府負擔）',
+      duration: '約 4–8 週',
+      laws: '勞資爭議處理法§25–§44'
+    }
+  };
+
+  // ─── State ─────────────────────────────────────────────────────────
+  var history = [];   // array of node keys
+  var current = 'q1';
+
+  function render() {
+    var node = TREE[current];
+    var container = document.getElementById('treeContainer');
+    container.innerHTML = '';
+    renderBreadcrumb();
+
+    if (node.type === 'question') {
+      renderQuestion(node, container);
+    } else {
+      renderConclusion(node, container);
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function renderBreadcrumb() {
+    var bc = document.getElementById('breadcrumb');
+    bc.innerHTML = '';
+    if (history.length === 0) return;
+
+    history.forEach(function(key, idx) {
+      var node = TREE[key];
+      var label = node.type === 'question' ? node.question.substring(0, 8) + '…' : node.title.substring(0, 8) + '…';
+      // Find which option was chosen
+      if (node.type === 'question' && idx < history.length - 1) {
+        var nextKey = history[idx + 1] || current;
+        var chosen = node.options.find(function(o) { return o.next === nextKey; });
+        if (chosen) label = chosen.label;
+      }
+      var span = document.createElement('span');
+      span.className = 'breadcrumb-item';
+      span.textContent = label;
+      bc.appendChild(span);
+
+      if (idx < history.length - 1 || current !== key) {
+        var sep = document.createElement('span');
+        sep.className = 'breadcrumb-sep';
+        sep.textContent = ' → ';
+        bc.appendChild(sep);
+      }
+    });
+
+    // Current
+    var cur = TREE[current];
+    if (history.indexOf(current) === -1) {
+      var curSpan = document.createElement('span');
+      curSpan.className = 'breadcrumb-item active';
+      curSpan.textContent = cur.type === 'question' ? '目前' : '結論';
+      bc.appendChild(curSpan);
+    }
+  }
+
+  function renderQuestion(node, container) {
+    var card = document.createElement('div');
+    card.className = 'decision-card';
+
+    var backHtml = history.length > 0
+      ? '<button class="back-decision-btn" onclick="goBackTree()">← 上一步</button>'
+      : '';
+
+    var optionsHtml = node.options.map(function(opt, idx) {
+      var letter = String.fromCharCode(65 + idx); // A, B, C...
+      return '<button class="decision-option" onclick="chooseOption(\'' + opt.next + '\')">' +
+        '<span class="decision-option-letter">' + letter + '</span>' +
+        '<span class="decision-option-text"><strong>' + opt.label + '</strong><small>' + opt.desc + '</small></span>' +
+      '</button>';
+    }).join('');
+
+    card.innerHTML = backHtml +
+      '<div class="decision-question">' + node.question + '</div>' +
+      '<div class="decision-hint">' + node.hint + '</div>' +
+      '<div class="decision-options">' + optionsHtml + '</div>';
+
+    container.appendChild(card);
+  }
+
+  function renderConclusion(node, container) {
+    // Back button
+    var backBtn = document.createElement('button');
+    backBtn.className = 'back-decision-btn';
+    backBtn.textContent = '← 上一步';
+    backBtn.onclick = function() { goBackTree(); };
+    container.appendChild(backBtn);
+
+    // Header
+    var header = document.createElement('div');
+    header.className = 'conclusion-header';
+    header.innerHTML =
+      '<div class="conclusion-label">建議途徑</div>' +
+      '<div class="conclusion-title">' + node.title + '</div>';
+    container.appendChild(header);
+
+    // Timeline
+    var timelineCard = document.createElement('div');
+    timelineCard.className = 'conclusion-timeline';
+    timelineCard.innerHTML = '<div class="result-card-title">流程時間軸</div>';
+    var tl = document.createElement('div');
+    tl.className = 'timeline';
+    node.timeline.forEach(function(item, idx) {
+      var div = document.createElement('div');
+      div.className = 'timeline-item' + (idx === 0 ? ' active' : '');
+      div.innerHTML =
+        '<div class="timeline-date">' + item.step + ' · ' + item.time + '</div>' +
+        '<div class="timeline-title">' + item.title + '</div>' +
+        '<div class="timeline-desc">' + item.desc + '</div>';
+      tl.appendChild(div);
+    });
+    timelineCard.appendChild(tl);
+    container.appendChild(timelineCard);
+
+    // Documents checklist
+    var docCard = document.createElement('div');
+    docCard.className = 'action-card';
+    docCard.innerHTML = '<div class="action-card-title">所需文件 checklist</div>';
+    node.documents.forEach(function(doc) {
+      var item = document.createElement('div');
+      item.className = 'checklist-item';
+      item.innerHTML = '<span class="checklist-icon">☐</span><span>' + doc + '</span>';
+      docCard.appendChild(item);
+    });
+    container.appendChild(docCard);
+
+    // Estimates
+    var grid = document.createElement('div');
+    grid.className = 'estimate-grid';
+    grid.innerHTML =
+      '<div class="estimate-box"><div class="estimate-value">' + node.cost + '</div><div class="estimate-label">費用估算</div></div>' +
+      '<div class="estimate-box"><div class="estimate-value">' + node.duration + '</div><div class="estimate-label">時程估算</div></div>';
+    container.appendChild(grid);
+
+    // Law note
+    var law = document.createElement('div');
+    law.className = 'law-note';
+    law.innerHTML = '<strong>法律依據</strong><br>' + node.laws;
+    container.appendChild(law);
+
+    // Restart
+    var restart = document.createElement('button');
+    restart.className = 'restart-btn';
+    restart.textContent = '重新開始導引';
+    restart.onclick = function() { restartTree(); };
+    container.appendChild(restart);
+  }
+
+  window.chooseOption = function(nextKey) {
+    history.push(current);
+    current = nextKey;
+    render();
+  };
+
+  window.goBackTree = function() {
+    if (history.length > 0) {
+      current = history.pop();
+      render();
+    }
+  };
+
+  function restartTree() {
+    history = [];
+    current = 'q1';
+    document.getElementById('quickAccess').style.display = '';
+    render();
+  }
+
+  window.quickJump = function(key) {
+    history = [];
+    current = key;
+    document.getElementById('quickAccess').style.display = 'none';
+    render();
+  };
+
+  // Init
+  render();
+})();
+</script>
+<div class="disclaimer-bar"><strong>免責聲明</strong>：本平台之流程導引僅供初步參考，不構成法律意見或法律諮詢服務。實際程序請洽主管機關或專業律師。</div>
+</body>
+</html>

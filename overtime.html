@@ -9,142 +9,15 @@
 <meta name="description" content="依台灣勞基法§24、§36、§39計算加班費，涵蓋平日延長工時、休息日、國定假日及例假日，免費精確試算。">
 <meta name="keywords" content="加班費計算,勞基法加班費,平日加班,休息日加班,國定假日加班,例假日加班,勞基法第24條,勞基法第39條,台灣加班費">
 <meta name="robots" content="index, follow">
+<meta name="author" content="LaborPro">
+<meta property="og:site_name" content="LaborPro">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:type" content="website">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="js/persona.js"></script>
+<link rel="stylesheet" href="css/common.css">
 <style>
-  :root {
-    --ink: #131c13;
-    --paper: #eef5ec;
-    --gold: #c8901a;
-    --muted: #617a5e;
-    --border: #b0c8ac;
-    --soft: #d8ecd4;
-    --card: #ffffff;
-    --accent: #2a6e3e;
-  }
-
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    background: var(--ink);
-    color: var(--paper);
-    font-family: 'Noto Sans TC', sans-serif;
-    min-height: 100vh;
-    font-size: 15px;
-  }
-
-  header {
-    background: var(--ink);
-    border-bottom: 1px solid #1e2e1e;
-    padding: 18px 24px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
-
-  .logo {
-    font-family: 'Noto Serif TC', serif;
-    font-size: 18px;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    color: var(--paper);
-  }
-
-  .logo span { color: var(--gold); }
-
-  .back-link {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-    text-decoration: none;
-    letter-spacing: 0.08em;
-    transition: color 0.2s;
-  }
-
-  .back-link:hover { color: var(--gold); }
-
-  .progress-bar { height: 3px; background: #1e2e1e; }
-  .progress-fill { height: 100%; background: var(--gold); transition: width 0.4s ease; }
-
-  main {
-    max-width: 560px;
-    margin: 0 auto;
-    padding: 32px 20px 120px;
-  }
-
-  /* Step */
-  .step { display: none; }
-  .step.active { display: block; animation: fadeUp 0.3s ease both; }
-
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(12px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  .step-header {
-    margin-bottom: 28px;
-  }
-
-  .step-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    margin-bottom: 8px;
-  }
-
-  .step-title {
-    font-family: 'Noto Serif TC', serif;
-    font-size: 24px;
-    font-weight: 700;
-    color: var(--paper);
-    line-height: 1.35;
-    margin-bottom: 6px;
-  }
-
-  .step-sub {
-    font-size: 13px;
-    color: var(--muted);
-    line-height: 1.7;
-  }
-
-  /* Wizard card */
-  .wizard {
-    background: var(--paper);
-    color: var(--ink);
-    border-radius: 16px;
-    padding: 24px;
-    margin-bottom: 14px;
-  }
-
-  .wizard-section-title {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: var(--muted);
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    margin-bottom: 18px;
-    padding-bottom: 8px;
-    border-bottom: 1px solid var(--soft);
-  }
-
-  .field-group {
-    margin-bottom: 18px;
-  }
-
-  .field-group:last-child { margin-bottom: 0; }
-
-  .field-group label {
-    display: block;
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--ink);
-    margin-bottom: 8px;
-    line-height: 1.4;
-  }
+  .field-group label { line-height: 1.4; }
 
   .field-hint {
     display: block;
@@ -155,31 +28,8 @@
     font-weight: 400;
   }
 
-  input[type="number"] {
-    width: 100%;
-    padding: 12px 14px;
-    border: 1.5px solid var(--border);
-    border-radius: 10px;
-    background: var(--card);
-    font-size: 14px;
-    font-family: 'DM Mono', monospace;
-    color: var(--ink);
-    transition: border-color 0.2s;
-    -webkit-appearance: none;
-    appearance: none;
-  }
+  input[type="number"]::placeholder { color: #aac0a8; }
 
-  input[type="number"]:focus {
-    outline: none;
-    border-color: var(--accent);
-    background: #fff;
-  }
-
-  input[type="number"]::placeholder {
-    color: #aac0a8;
-  }
-
-  /* Hourly rate display */
   .hourly-display {
     display: flex;
     align-items: center;
@@ -203,7 +53,6 @@
     color: var(--accent);
   }
 
-  /* OT input rows */
   .ot-row {
     margin-bottom: 22px;
     padding-bottom: 22px;
@@ -266,60 +115,6 @@
     margin-bottom: 10px;
   }
 
-  /* Results */
-  .result-hero {
-    background: var(--ink);
-    color: var(--paper);
-    border-radius: 14px;
-    padding: 28px 24px;
-    text-align: center;
-    margin-bottom: 14px;
-  }
-
-  .result-hero-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: var(--muted);
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    margin-bottom: 10px;
-  }
-
-  .result-hero-amount {
-    font-family: 'Noto Serif TC', serif;
-    font-size: 36px;
-    font-weight: 700;
-    color: var(--gold);
-    line-height: 1.2;
-    margin-bottom: 6px;
-  }
-
-  .result-hero-sub {
-    font-size: 12px;
-    color: var(--muted);
-  }
-
-  .result-card {
-    background: var(--card);
-    border: 1.5px solid var(--border);
-    border-radius: 12px;
-    padding: 20px;
-    margin-bottom: 14px;
-    color: var(--ink);
-  }
-
-  .result-card-title {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: var(--muted);
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    margin-bottom: 14px;
-    padding-bottom: 8px;
-    border-bottom: 1px solid var(--soft);
-  }
-
-  /* Breakdown table */
   .breakdown-table {
     width: 100%;
     border-collapse: collapse;
@@ -337,17 +132,9 @@
     font-weight: 500;
   }
 
-  .breakdown-table thead th:first-child {
-    text-align: left;
-  }
-
-  .breakdown-table tbody tr {
-    border-bottom: 1px solid var(--soft);
-  }
-
-  .breakdown-table tbody tr:last-child {
-    border-bottom: none;
-  }
+  .breakdown-table thead th:first-child { text-align: left; }
+  .breakdown-table tbody tr { border-bottom: 1px solid var(--soft); }
+  .breakdown-table tbody tr:last-child { border-bottom: none; }
 
   .breakdown-table tbody td {
     padding: 10px 0;
@@ -360,38 +147,12 @@
     font-family: 'DM Mono', monospace;
   }
 
-  .breakdown-table .td-type {
-    color: var(--ink);
-    font-weight: 500;
-    line-height: 1.4;
-  }
-
-  .breakdown-table .td-sub {
-    font-size: 11px;
-    color: var(--muted);
-    margin-top: 2px;
-    line-height: 1.4;
-    font-family: 'Noto Sans TC', sans-serif;
-    font-weight: 400;
-  }
-
-  .breakdown-table .td-hours {
-    color: var(--muted);
-  }
-
-  .breakdown-table .td-rate {
-    color: var(--muted);
-    font-size: 11px;
-  }
-
-  .breakdown-table .td-amount {
-    color: var(--ink);
-    font-weight: 500;
-  }
-
-  .breakdown-table .td-zero {
-    color: #ccc;
-  }
+  .breakdown-table .td-type { color: var(--ink); font-weight: 500; line-height: 1.4; }
+  .breakdown-table .td-sub { font-size: 11px; color: var(--muted); margin-top: 2px; line-height: 1.4; font-family: 'Noto Sans TC', sans-serif; font-weight: 400; }
+  .breakdown-table .td-hours { color: var(--muted); }
+  .breakdown-table .td-rate { color: var(--muted); font-size: 11px; }
+  .breakdown-table .td-amount { color: var(--ink); font-weight: 500; }
+  .breakdown-table .td-zero { color: #ccc; }
 
   .total-row {
     margin-top: 12px;
@@ -402,11 +163,7 @@
     align-items: center;
   }
 
-  .total-row-label {
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--ink);
-  }
+  .total-row-label { font-size: 14px; font-weight: 600; color: var(--ink); }
 
   .total-row-val {
     font-family: 'Noto Serif TC', serif;
@@ -415,51 +172,8 @@
     color: var(--accent);
   }
 
-  /* Warning box */
-  .warn-box {
-    background: #fff3e8;
-    border: 1px solid #e8c882;
-    border-left: 3px solid var(--gold);
-    border-radius: 6px;
-    padding: 12px 14px;
-    font-size: 12px;
-    color: #7a5810;
-    line-height: 1.7;
-    margin-bottom: 14px;
-  }
+  .danger-box strong { display: block; font-size: 13px; margin-bottom: 6px; }
 
-  .danger-box {
-    background: #fdeaea;
-    border: 1px solid #e8b0b0;
-    border-left: 3px solid #c0392b;
-    border-radius: 8px;
-    padding: 14px 16px;
-    font-size: 12px;
-    color: #8b2020;
-    line-height: 1.75;
-    margin-bottom: 14px;
-  }
-
-  .danger-box strong {
-    display: block;
-    font-size: 13px;
-    margin-bottom: 6px;
-  }
-
-  .law-note {
-    background: var(--paper);
-    border-left: 3px solid var(--gold);
-    border-radius: 0 8px 8px 0;
-    padding: 12px 14px;
-    font-size: 12px;
-    color: var(--muted);
-    line-height: 1.75;
-    margin-bottom: 14px;
-  }
-
-  .law-note strong { color: var(--ink); }
-
-  /* Salary chip on Step 2 */
   .salary-chip {
     display: inline-flex;
     align-items: center;
@@ -471,86 +185,20 @@
     margin-bottom: 24px;
   }
 
-  .salary-chip-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-    letter-spacing: 0.08em;
-  }
-
-  .salary-chip-val {
-    font-family: 'DM Mono', monospace;
-    font-size: 13px;
-    color: var(--gold);
-    font-weight: 500;
-  }
-
-  /* Bottom nav */
-  .nav-bar {
-    position: fixed;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    background: var(--ink);
-    border-top: 1px solid #1e2e1e;
-    padding: 14px 20px;
-    display: flex;
-    gap: 10px;
-    width: 100%;
-    max-width: 560px;
-  }
-
-  .btn {
-    flex: 1;
-    padding: 14px;
-    border-radius: 10px;
-    border: none;
-    font-size: 15px;
-    font-family: 'Noto Sans TC', sans-serif;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-
-  .btn-primary {
-    background: var(--accent);
-    color: #fff;
-  }
-
-  .btn-primary:hover { background: #225c34; }
-
-  .btn-secondary {
-    background: #1e2e1e;
-    color: var(--muted);
-    flex: 0 0 auto;
-    padding: 14px 20px;
-  }
-
-  .btn-secondary:hover { color: var(--paper); }
-
-  .btn-reset {
-    background: transparent;
-    border: 1px solid #2a3e2a;
-    color: var(--muted);
-  }
-
-  .btn-reset:hover { border-color: var(--muted); color: var(--paper); }
+  .salary-chip-label { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 0.08em; }
+  .salary-chip-val { font-family: 'DM Mono', monospace; font-size: 13px; color: var(--gold); font-weight: 500; }
 
   @media (max-width: 480px) {
-    .result-hero-amount { font-size: 28px; }
     .breakdown-table thead th,
     .breakdown-table tbody td { font-size: 11px; }
   }
-
-  .disclaimer-bar{max-width:560px;margin:0 auto;padding:16px 24px 40px;font-size:11.5px;color:rgba(255,255,255,0.72);line-height:1.7;border-top:1px solid rgba(255,255,255,0.18);}
-  .disclaimer-bar strong{color:rgba(255,255,255,0.88);}
 </style>
 </head>
 <body>
 
 <header>
-  <div class="logo">Labor<span>Pro</span></div>
-  <a href="index.html" class="back-link">← 返回首頁</a>
+  <a href="index.html" class="logo">Labor<span>Pro</span></a>
+  <a class="back-link" href="index.html">← 首頁</a>
 </header>
 <div class="progress-bar">
   <div class="progress-fill" id="progressFill" style="width: 33%"></div>
@@ -700,11 +348,56 @@
       </div>
     </div>
 
+    <!-- §32 月加班上限警告 -->
+    <div class="danger-box" id="r_otCapWarn" style="display:none;">
+      <strong>⚠ 超過每月加班時數上限</strong>
+      依勞基法§32，每月延長工時不得超過 46 小時。本期加班總時數已超過法定上限，<span class="worker-only">您有權拒絕超時加班，雇主強制加班屬違法行為。</span><span class="employer-only">雇主可能面臨 2 萬至 100 萬元罰鍰（§79），且名單會被公布。</span>
+    </div>
+
+    <!-- 月加班時數追蹤 -->
+    <div class="result-card" id="r_otCapCard">
+      <div class="result-card-title">月加班時數合規檢查 — §32</div>
+      <div class="result-row">
+        <span class="result-row-label">本期加班總時數</span>
+        <span class="result-row-val" id="r_totalHours">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">法定每月上限</span>
+        <span class="result-row-val">46 小時</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">合規狀態</span>
+        <span class="result-row-val" id="r_capStatus">—</span>
+      </div>
+    </div>
+
+    <!-- Persona 專區 -->
+    <div class="worker-only" style="background:#eef8f2;border:1.5px solid var(--accent);border-radius:12px;padding:16px 20px;margin-bottom:14px;">
+      <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:8px;">👷 勞工權益提醒</div>
+      <div style="font-size:12px;color:#1a3a28;line-height:1.9;">
+        · 加班費應隨次月工資發放，雇主不得拖延或以補休取代（除勞工同意）<br>
+        · 如薪資單上加班費低於本計算結果，可向勞工局申訴<br>
+        · 保留出勤紀錄（打卡紀錄、班表照片）作為證據<br>
+        · 勞檢申訴專線：1955
+      </div>
+    </div>
+
+    <div class="employer-only" style="background:#fef8e8;border:1.5px solid #c8901a;border-radius:12px;padding:16px 20px;margin-bottom:14px;">
+      <div style="font-size:12px;font-weight:700;color:#8a5a10;margin-bottom:8px;">🏢 雇主合規提醒</div>
+      <div style="font-size:12px;color:#4a3a10;line-height:1.9;">
+        · 加班費未足額給付：罰 2 萬～100 萬（§79），累犯加重<br>
+        · 超時加班（月逾46小時）：同上罰鍰，且公布事業單位名稱<br>
+        · 出勤紀錄應保存 5 年，未置備者罰 9 萬～45 萬（§79）<br>
+        · 建議每月檢視員工加班時數，避免累計超標
+      </div>
+    </div>
+
     <!-- 法律依據 -->
     <div class="law-note">
       <strong>法律依據</strong><br>
       · <strong>勞基法§24 第1項</strong>：平日延長工時，前2小時至少1又1/3倍，再延長至少1又2/3倍<br>
       · <strong>勞基法§24 第2項</strong>：休息日出勤，以最少計酬區間（4/8/12小時）計算，費率同上<br>
+      · <strong>勞基法§32</strong>：每月延長工時不得超過46小時（經工會或勞資會議同意可至54小時，每3個月不得超過138小時）<br>
       · <strong>勞基法§36</strong>：勞工每7日應有2日休息，其中1日為例假，例假原則上不得出勤<br>
       · <strong>勞基法§39</strong>：國定假日及例假日出勤，工資加倍發給
     </div>
@@ -828,8 +521,8 @@
   function calcRestDayOT(hours, hourly) {
     if (hours <= 0) return 0;
     let billedHours;
-    if (hours <= 4)  billedHours = 4;
-    else if (hours <= 8)  billedHours = 8;
+    if (hours < 4)  billedHours = 4;
+    else if (hours < 8)  billedHours = 8;
     else billedHours = 12;
 
     const h1 = Math.min(billedHours, 2);
@@ -933,11 +626,24 @@
     appendRow('例假日', '勞基法§39 ⚠', overtimeSuspension, overtimeSuspension > 0 ? '200%' : '—', susPay, null);
 
     document.getElementById('r_subtotal').textContent = fmt(total);
+
+    // §32 monthly OT cap check
+    const totalHours = overtimeWeekday + overtimeRestDay + overtimeHoliday + overtimeSuspension;
+    document.getElementById('r_totalHours').textContent = totalHours + ' 小時';
+    const capEl = document.getElementById('r_capStatus');
+    const capWarn = document.getElementById('r_otCapWarn');
+    if (totalHours > 46) {
+      capEl.innerHTML = '<span style="color:var(--danger);font-weight:700;">⚠ 超標 ' + (totalHours - 46) + ' 小時</span>';
+      capWarn.style.display = 'block';
+    } else {
+      capEl.innerHTML = '<span style="color:var(--accent);font-weight:600;">✓ 合規</span>';
+      capWarn.style.display = 'none';
+    }
   }
 
   // Init
   showStep(1);
 </script>
-<div class="disclaimer-bar"><strong>免責聲明</strong>：本平台之計算結果僅供初步參考，不構成法律意見或法律諮詢服務。</div>
+<div class="disclaimer-bar"><strong>免責聲明</strong>：本平台之計算結果僅供初步參考，不構成法律意見或法律諮詢服務。實際案件因個案事實、適用法規及法院見解不同，結果可能有所差異，建議諮詢具執照之律師或相關法律專業人員。</div>
 </body>
 </html>

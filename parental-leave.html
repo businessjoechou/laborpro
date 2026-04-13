@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" href="favicon.svg">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>育嬰假與津貼試算｜LaborPro</title>
+<meta name="description" content="依台灣性別工作平等法、就業保險法試算育嬰留職停薪津貼、產假薪資、陪產檢假，含完整時程時間軸與金額breakdown。">
+<meta name="keywords" content="育嬰假計算,育嬰留職停薪,育嬰津貼,產假薪資,陪產檢假,就業保險法,性別工作平等法,台灣勞基法">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://laborpro.tw/parental-leave.html">
+<meta property="og:title" content="育嬰假與津貼試算｜LaborPro">
+<meta property="og:description" content="依性平法、就保法試算育嬰留停津貼與產假薪資">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://laborpro.tw/parental-leave.html">
+<meta name="author" content="LaborPro">
+<meta property="og:site_name" content="LaborPro">
+<meta property="og:locale" content="zh_TW">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="育嬰假與津貼試算｜LaborPro">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "育嬰假與津貼試算",
+  "description": "依台灣性別工作平等法、就業保險法試算育嬰留職停薪津貼與產假薪資",
+  "url": "https://laborpro.tw/parental-leave.html",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "All",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "TWD" }
+}
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="js/persona.js"></script>
+<link rel="stylesheet" href="css/common.css">
+<style>
+  .gender-toggle {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 4px;
+  }
+  .gender-btn {
+    flex: 1;
+    padding: 14px;
+    border-radius: 10px;
+    border: 1.5px solid var(--border);
+    background: var(--card);
+    font-size: 14px;
+    font-family: 'Noto Sans TC', sans-serif;
+    color: var(--muted);
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+  }
+  .gender-btn.selected {
+    border-color: var(--accent);
+    background: #eef8f2;
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .amount-card {
+    background: linear-gradient(135deg, var(--accent), #1a5a30);
+    color: #fff;
+    border-radius: 14px;
+    padding: 24px;
+    margin-bottom: 14px;
+  }
+  .amount-card-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    opacity: 0.7;
+    margin-bottom: 8px;
+  }
+  .amount-card-value {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .amount-card-sub {
+    font-size: 12px;
+    opacity: 0.7;
+    line-height: 1.6;
+  }
+  .amount-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .amount-mini {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    text-align: center;
+    color: var(--ink);
+  }
+  .amount-mini .am-val {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--accent);
+  }
+  .amount-mini .am-label {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+  .timeline-card {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 14px;
+    color: var(--ink);
+  }
+  .timeline-card .result-card-title {
+    margin-bottom: 14px;
+  }
+  @media (max-width: 480px) {
+    .amount-grid { grid-template-columns: 1fr; }
+    .amount-card-value { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="logo">Labor<span>Pro</span></a>
+  <a class="back-link" href="index.html">← 首頁</a>
+</header>
+<div class="progress-bar">
+  <div class="progress-fill" id="progressFill" style="width: 33%"></div>
+</div>
+
+<main>
+
+  <!-- Step 1 -->
+  <div class="step active" id="step1">
+    <div class="step-header">
+      <div class="step-label">Step 1 of 3 · 基本資料</div>
+      <h1 class="step-title">育嬰假與津貼試算</h1>
+      <p class="step-sub">輸入基本資料，系統將計算產假/陪產檢假時程及育嬰留停津貼。</p>
+    </div>
+
+    <div class="wizard">
+      <div class="wizard-section-title">申請人資料</div>
+      <div class="field-group">
+        <label>性別</label>
+        <div class="gender-toggle" id="genderToggle">
+          <button type="button" class="gender-btn selected" data-val="female" onclick="selectGender('female')">女性勞工</button>
+          <button type="button" class="gender-btn" data-val="male" onclick="selectGender('male')">男性勞工</button>
+        </div>
+      </div>
+      <div class="field-group">
+        <label>到職日期</label>
+        <input type="date" id="startDate">
+      </div>
+    </div>
+
+    <div class="wizard">
+      <div class="wizard-section-title">薪資與投保</div>
+      <div class="field-group">
+        <label>月薪（元）</label>
+        <input type="number" id="salary" placeholder="50000" min="0" inputmode="numeric">
+      </div>
+      <div class="field-group">
+        <label>勞保投保薪資（元） <span class="hint">不確定可留空自動查表</span></label>
+        <input type="number" id="insuredSalary" placeholder="自動依月薪查表" min="0" inputmode="numeric">
+      </div>
+    </div>
+
+    <div class="wizard">
+      <div class="wizard-section-title">預產期 / 子女出生日</div>
+      <div class="field-group">
+        <label>預產期或子女出生日</label>
+        <input type="date" id="dueDate">
+      </div>
+    </div>
+
+    <div class="warn-box">
+      ⚠ 育嬰留停津貼須就業保險年資合計滿1年，且子女滿3歲前方可申請。
+    </div>
+  </div>
+
+  <!-- Step 2 -->
+  <div class="step" id="step2">
+    <div class="step-header">
+      <div class="step-label">Step 2 of 3 · 時程規劃</div>
+      <h1 class="step-title">假別時程時間軸</h1>
+      <p class="step-sub" id="step2Sub">以下為依預產期推算的各階段時程。</p>
+    </div>
+
+    <div class="result-card">
+      <div class="result-card-title">基本資料摘要</div>
+      <div class="result-row">
+        <span class="result-row-label">性別</span>
+        <span class="result-row-val" id="r_gender">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">到職日期</span>
+        <span class="result-row-val" id="r_start">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">預產期/出生日</span>
+        <span class="result-row-val" id="r_due">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">月薪</span>
+        <span class="result-row-val" id="r_salary">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">投保薪資</span>
+        <span class="result-row-val" id="r_insured">—</span>
+      </div>
+    </div>
+
+    <!-- Timeline -->
+    <div class="timeline-card">
+      <div class="result-card-title" id="timelineTitle">時間軸</div>
+      <div class="timeline" id="timelineContainer"></div>
+    </div>
+  </div>
+
+  <!-- Step 3 -->
+  <div class="step" id="step3">
+    <div class="step-header">
+      <div class="step-label">Step 3 of 3 · 金額試算</div>
+      <h1 class="step-title">津貼與薪資試算</h1>
+      <p class="step-sub">各階段可領取的薪資與津貼金額。</p>
+    </div>
+
+    <!-- 產假薪資（女性） -->
+    <div id="maternityPaySection" style="display:none;">
+      <div class="amount-card">
+        <div class="amount-card-label">產假薪資（8週）</div>
+        <div class="amount-card-value" id="r_maternityPay">—</div>
+        <div class="amount-card-sub" id="r_maternitySub">—</div>
+      </div>
+
+      <div class="result-card">
+        <div class="result-card-title">產假薪資明細</div>
+        <div class="result-row">
+          <span class="result-row-label">產假天數</span>
+          <span class="result-row-val">56 天（8週）</span>
+        </div>
+        <div class="result-row">
+          <span class="result-row-label">薪資標準</span>
+          <span class="result-row-val" id="r_maternityStd">—</span>
+        </div>
+        <div class="result-row">
+          <span class="result-row-label">計算方式</span>
+          <span class="result-row-val" id="r_maternityCalc">—</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 陪產檢假薪資（男性） -->
+    <div id="paternityPaySection" style="display:none;">
+      <div class="result-card">
+        <div class="result-card-title">陪產檢及陪產假薪資（性平法§15）</div>
+        <div class="result-row">
+          <span class="result-row-label">天數</span>
+          <span class="result-row-val">7 天</span>
+        </div>
+        <div class="result-row">
+          <span class="result-row-label">薪資</span>
+          <span class="result-row-val"><span class="badge badge-green">全薪照給</span></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 產檢假薪資（女性） -->
+    <div id="prenatalPaySection" style="display:none;">
+      <div class="result-card">
+        <div class="result-card-title">產檢假薪資（性平法§15）</div>
+        <div class="result-row">
+          <span class="result-row-label">天數</span>
+          <span class="result-row-val">7 天</span>
+        </div>
+        <div class="result-row">
+          <span class="result-row-label">薪資</span>
+          <span class="result-row-val"><span class="badge badge-green">全薪照給</span></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 育嬰留停津貼 -->
+    <div class="amount-card">
+      <div class="amount-card-label">育嬰留停津貼（6個月）</div>
+      <div class="amount-card-value" id="r_parentalTotal">—</div>
+      <div class="amount-card-sub" id="r_parentalSub">—</div>
+    </div>
+
+    <div class="result-card">
+      <div class="result-card-title">育嬰留停津貼明細（就業保險法§19-2）</div>
+      <div class="result-row">
+        <span class="result-row-label">投保薪資</span>
+        <span class="result-row-val" id="r_insured2">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">給付比率</span>
+        <span class="result-row-val">80%</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">每月津貼</span>
+        <span class="result-row-val highlight" id="r_monthlyAllowance">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">給付月數</span>
+        <span class="result-row-val">最長 6 個月</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">6個月合計</span>
+        <span class="result-row-val gold" id="r_6monthTotal">—</span>
+      </div>
+    </div>
+
+    <div class="amount-grid">
+      <div class="amount-mini">
+        <div class="am-val" id="r_monthlyNet">—</div>
+        <div class="am-label">每月實領津貼</div>
+      </div>
+      <div class="amount-mini">
+        <div class="am-val" id="r_maxPeriod">最長 2 年</div>
+        <div class="am-label">留停最長期間</div>
+      </div>
+    </div>
+
+    <!-- 復職保障 -->
+    <div class="info-box">
+      <strong>復職保障（性平法§17）</strong><br>
+      育嬰留職停薪期滿後，雇主應使勞工回復原有工作。雇主不得拒絕勞工復職申請，違者可處 2 萬至 30 萬元罰鍰。復職後薪資不得低於留停前之水準。
+    </div>
+
+    <!-- 總估算 -->
+    <div class="result-hero">
+      <div class="result-hero-label">各項津貼與薪資合計估算</div>
+      <div class="result-hero-amount" id="r_grandTotal">—</div>
+      <div class="result-hero-sub" id="r_grandTotalSub">—</div>
+    </div>
+
+    <div class="law-note">
+      <strong>法律依據</strong><br>
+      · <strong>勞基法§50</strong>：產假8週，年資滿6個月全薪、未滿半薪<br>
+      · <strong>性平法§15</strong>：產檢假7天（女性）、陪產檢及陪產假7天（男性）<br>
+      · <strong>性平法§16</strong>：育嬰留職停薪，子女滿3歲前，最長2年<br>
+      · <strong>就業保險法§19-2</strong>：育嬰留停津貼＝投保薪資 × 80%，最長6個月<br>
+      · <strong>性平法§17</strong>：復職保障，雇主不得拒絕
+    </div>
+  </div>
+
+</main>
+
+<div class="nav-bar" id="navBar">
+  <button class="btn btn-secondary" id="btnBack" onclick="goBack()" style="display:none;">← 上一步</button>
+  <button class="btn btn-primary" id="btnNext" onclick="goNext()">開始試算 →</button>
+  <button class="btn btn-reset" id="btnReset" onclick="resetAll()" style="display:none;">重新計算</button>
+</div>
+
+<script src="js/fmt.js"></script>
+<script src="js/calc-utils.js"></script>
+<script>
+  var LP = window.LaborPro;
+  var state = { gender: 'female' };
+  var currentStep = 1;
+  var totalSteps = 3;
+
+  function selectGender(g) {
+    state.gender = g;
+    document.querySelectorAll('.gender-btn').forEach(function (b) {
+      b.classList.toggle('selected', b.getAttribute('data-val') === g);
+    });
+  }
+
+  function showStep(n) {
+    document.querySelectorAll('.step').forEach(function (s) { s.classList.remove('active'); });
+    document.getElementById('step' + n).classList.add('active');
+    document.getElementById('progressFill').style.width = (n / totalSteps * 100) + '%';
+    currentStep = n;
+
+    var btnBack = document.getElementById('btnBack');
+    var btnNext = document.getElementById('btnNext');
+    var btnReset = document.getElementById('btnReset');
+
+    if (n === 1) {
+      btnBack.style.display = 'none';
+      btnNext.style.display = 'flex';
+      btnReset.style.display = 'none';
+      btnNext.textContent = '開始試算 →';
+    } else if (n === 2) {
+      btnBack.style.display = 'block';
+      btnNext.style.display = 'flex';
+      btnReset.style.display = 'none';
+      btnNext.textContent = '查看金額 →';
+    } else {
+      btnBack.style.display = 'block';
+      btnNext.style.display = 'none';
+      btnReset.style.display = 'flex';
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function goBack() { if (currentStep > 1) showStep(currentStep - 1); }
+
+  function goNext() {
+    if (currentStep === 1) {
+      if (!validate()) return;
+      collect();
+      buildTimeline();
+      showStep(2);
+    } else if (currentStep === 2) {
+      calcAmounts();
+      showStep(3);
+    }
+  }
+
+  function resetAll() { state = { gender: state.gender }; showStep(1); }
+
+  function validate() {
+    var s = document.getElementById('startDate').value;
+    var d = document.getElementById('dueDate').value;
+    var w = parseFloat(document.getElementById('salary').value);
+    if (!s) { alert('請填寫到職日期。'); return false; }
+    if (!d) { alert('請填寫預產期或子女出生日。'); return false; }
+    if (!w || w <= 0) { alert('請輸入有效的月薪。'); return false; }
+    return true;
+  }
+
+  function collect() {
+    state.startDate = document.getElementById('startDate').value;
+    state.dueDate = document.getElementById('dueDate').value;
+    state.salary = parseFloat(document.getElementById('salary').value);
+    var insVal = parseFloat(document.getElementById('insuredSalary').value);
+    state.insuredSalary = (insVal && insVal > 0) ? insVal : LP.getLaborInsuranceBracket(state.salary);
+    state.tenureInfo = LP.calcMonths(state.startDate, state.dueDate);
+  }
+
+  function addDays(dateStr, days) {
+    var d = new Date(dateStr);
+    d.setDate(d.getDate() + days);
+    return d;
+  }
+
+  function fmtD(d) {
+    if (typeof d === 'string') d = new Date(d);
+    return d.getFullYear() + '/' + (d.getMonth() + 1) + '/' + d.getDate();
+  }
+
+  function buildTimeline() {
+    // Summary
+    document.getElementById('r_gender').textContent = state.gender === 'female' ? '女性' : '男性';
+    document.getElementById('r_start').textContent = LP.fmtDate(state.startDate);
+    document.getElementById('r_due').textContent = LP.fmtDate(state.dueDate);
+    document.getElementById('r_salary').textContent = LP.fmt(state.salary);
+    document.getElementById('r_insured').textContent = LP.fmt(state.insuredSalary);
+
+    var container = document.getElementById('timelineContainer');
+    container.innerHTML = '';
+    var due = new Date(state.dueDate);
+
+    if (state.gender === 'female') {
+      document.getElementById('timelineTitle').textContent = '女性勞工時間軸';
+      // 1. 產檢假
+      var items = [
+        { date: '預產期前', title: '產檢假（7天，全薪）', desc: '性平法§15，懷孕期間可分次請假進行產檢。', active: true },
+        { date: '視需要', title: '安胎休養（視醫囑）', desc: '勞基法§50，妊娠未滿3個月流產者給予1週產假；3個月以上未滿7個月流產者4週。' },
+        { date: fmtD(addDays(state.dueDate, -28)) + ' 起', title: '產假開始（8週/56天）', desc: '勞基法§50，分娩前後共8週。通常分娩前4週、後4週，可協商調整。', active: true },
+        { date: fmtD(addDays(state.dueDate, 28)), title: '產假結束', desc: '產假期滿，可接續申請育嬰留停。' },
+        { date: fmtD(addDays(state.dueDate, 29)) + ' 起', title: '育嬰留職停薪（最長2年）', desc: '性平法§16，子女滿3歲前可申請，留停期間可請領育嬰留停津貼（最長6個月）。', active: true },
+        { date: '留停期滿', title: '復職', desc: '性平法§17，雇主應使勞工回復原有工作，不得拒絕。' }
+      ];
+    } else {
+      document.getElementById('timelineTitle').textContent = '男性勞工時間軸';
+      var items = [
+        { date: '配偶懷孕期間至產後15日', title: '陪產檢及陪產假（7天，全薪）', desc: '性平法§15，可於配偶懷孕產檢期間及分娩後15日內請假。', active: true },
+        { date: fmtD(due) + ' 起', title: '育嬰留職停薪（最長2年）', desc: '性平法§16，子女滿3歲前可申請，留停期間可請領育嬰留停津貼（最長6個月）。', active: true }
+      ];
+    }
+
+    items.forEach(function (item) {
+      var div = document.createElement('div');
+      div.className = 'timeline-item' + (item.active ? ' active' : '');
+      div.innerHTML =
+        '<div class="timeline-date">' + item.date + '</div>' +
+        '<div class="timeline-title">' + item.title + '</div>' +
+        '<div class="timeline-desc">' + item.desc + '</div>';
+      container.appendChild(div);
+    });
+  }
+
+  function calcAmounts() {
+    var salary = state.salary;
+    var insured = state.insuredSalary;
+    var over6m = state.tenureInfo.totalMonths >= 6;
+    var grandTotal = 0;
+
+    // Show/hide sections by gender
+    var isFemale = state.gender === 'female';
+    document.getElementById('maternityPaySection').style.display = isFemale ? 'block' : 'none';
+    document.getElementById('prenatalPaySection').style.display = isFemale ? 'block' : 'none';
+    document.getElementById('paternityPaySection').style.display = isFemale ? 'none' : 'block';
+
+    if (isFemale) {
+      // 產假薪資 = 月薪 × 56/30 (roughly 8/4.33 weeks ≈ 1.85 months)
+      var maternityRate = over6m ? 1 : 0.5;
+      var maternityPay = salary * (56 / 30) * maternityRate;
+      document.getElementById('r_maternityPay').textContent = LP.fmt(maternityPay);
+      document.getElementById('r_maternitySub').textContent =
+        '月薪 ' + LP.fmt(salary) + ' × 56天/30 × ' + (over6m ? '100%' : '50%');
+      document.getElementById('r_maternityStd').textContent = over6m ? '全薪（年資滿6個月）' : '半薪（年資未滿6個月）';
+      document.getElementById('r_maternityCalc').textContent =
+        LP.fmt(salary) + ' × 56/30' + (over6m ? '' : ' × 50%');
+      grandTotal += maternityPay;
+    }
+
+    // 育嬰留停津貼
+    var monthlyAllowance = insured * 0.8;
+    var total6m = monthlyAllowance * 6;
+
+    document.getElementById('r_insured2').textContent = LP.fmt(insured);
+    document.getElementById('r_monthlyAllowance').textContent = LP.fmt(monthlyAllowance);
+    document.getElementById('r_6monthTotal').textContent = LP.fmt(total6m);
+    document.getElementById('r_monthlyNet').textContent = LP.fmt(monthlyAllowance);
+    document.getElementById('r_parentalTotal').textContent = LP.fmt(total6m);
+    document.getElementById('r_parentalSub').textContent =
+      '投保薪資 ' + LP.fmt(insured) + ' × 80% × 6個月';
+
+    grandTotal += total6m;
+
+    // Grand total
+    document.getElementById('r_grandTotal').textContent = LP.fmt(grandTotal);
+    var parts = [];
+    if (isFemale) parts.push('產假薪資');
+    parts.push('育嬰留停津貼6個月');
+    document.getElementById('r_grandTotalSub').textContent = '含 ' + parts.join(' + ');
+  }
+
+  showStep(1);
+</script>
+<div class="disclaimer-bar"><strong>免責聲明</strong>：本平台之計算結果僅供初步參考，不構成法律意見或法律諮詢服務。津貼實際核發金額以勞保局審核為準。</div>
+</body>
+</html>

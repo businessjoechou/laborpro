@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" href="favicon.svg">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>平均工資精算器｜LaborPro</title>
+<meta name="description" content="依勞基法第2條第4款精算平均工資，支援資遣、退休、職災等事由，自動排除產假、職災醫療、留停期間，免費使用。">
+<meta name="keywords" content="平均工資計算,勞基法平均工資,資遣費平均工資,退休金平均工資,勞基法第2條,日平均工資,台灣勞基法">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://laborpro.tw/avg-wage.html">
+<meta property="og:title" content="平均工資精算器｜LaborPro">
+<meta property="og:description" content="依勞基法第2條第4款精算平均工資，支援資遣、退休、職災等事由。">
+<meta property="og:type" content="website">
+<meta name="author" content="LaborPro">
+<meta property="og:site_name" content="LaborPro">
+<meta property="og:locale" content="zh_TW">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="js/persona.js"></script>
+<link rel="stylesheet" href="css/common.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "平均工資精算器",
+  "description": "依勞基法第2條第4款計算平均工資，支援排除特殊期間。",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "All",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "TWD" }
+}
+</script>
+<style>
+  .month-card {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 10px;
+    color: var(--ink);
+    transition: border-color 0.2s;
+  }
+  .month-card.excluded {
+    opacity: 0.5;
+    border-color: var(--muted);
+    background: #f5f5f0;
+  }
+  .month-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .month-card-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--accent);
+    letter-spacing: 0.06em;
+  }
+  .month-card-exclude {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--muted);
+    cursor: pointer;
+  }
+  .month-card-exclude input { width: 15px; height: 15px; accent-color: var(--gold); }
+  .month-card-fields {
+    display: flex;
+    gap: 10px;
+  }
+  .month-card-fields .field-group { flex: 1; margin-bottom: 0; }
+  .month-card-fields label { font-size: 11px; }
+  .month-card-fields input { font-size: 13px; padding: 10px; }
+  .link-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 14px;
+  }
+  .link-btn {
+    flex: 1;
+    display: block;
+    text-align: center;
+    padding: 12px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-size: 13px;
+    color: var(--accent);
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  .link-btn:hover { border-color: var(--accent); background: #eef8f2; }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="logo">Labor<span>Pro</span></a>
+  <a class="back-link" href="index.html">← 首頁</a>
+</header>
+<div class="progress-bar">
+  <div class="progress-fill" id="progressFill" style="width: 33%"></div>
+</div>
+
+<main>
+
+  <!-- Step 1: 事由選擇 -->
+  <div class="step active" id="step1">
+    <div class="step-header">
+      <div class="step-label">Step 1 of 3 &middot; 計算事由</div>
+      <h1 class="step-title">平均工資精算器</h1>
+      <p class="step-sub">依勞基法&sect;2第4款計算平均工資。用於資遣費、退休金、職災補償等計算基礎。</p>
+    </div>
+
+    <div class="wizard">
+      <div class="wizard-section-title">計算事由</div>
+      <div class="field-group">
+        <label>事由類型</label>
+        <div class="select-wrap">
+          <select id="reason">
+            <option value="severance">資遣</option>
+            <option value="retire">退休</option>
+            <option value="accident">職災補償</option>
+          </select>
+        </div>
+      </div>
+      <div class="field-group">
+        <label>事由發生日</label>
+        <input type="date" id="eventDate">
+      </div>
+    </div>
+
+    <div class="info-box">
+      平均工資 = 事由發生前6個月工資總額 &divide; 該期間總日數 &times; 30
+    </div>
+  </div>
+
+  <!-- Step 2: 輸入各月工資 -->
+  <div class="step" id="step2">
+    <div class="step-header">
+      <div class="step-label">Step 2 of 3 &middot; 各月薪資</div>
+      <h1 class="step-title">前六個月工資</h1>
+      <p class="step-sub">輸入事由發生日前6個月的工資及工作天數。如有排除期間（產假、職災醫療、留停等）請勾選。</p>
+    </div>
+
+    <div id="monthCards"></div>
+
+    <div class="warn-box">
+      &#9888; 排除期間：依勞基法&sect;2第4款但書，職災醫療、產假、留職停薪等期間之工資及日數不列入計算。
+    </div>
+  </div>
+
+  <!-- Step 3: 結果 -->
+  <div class="step" id="step3">
+    <div class="step-header">
+      <div class="step-label">Step 3 of 3 &middot; 計算結果</div>
+      <h1 class="step-title">平均工資試算結果</h1>
+      <p class="step-sub">依您輸入之資料計算平均工資。</p>
+    </div>
+
+    <div class="result-hero">
+      <div class="result-hero-label">月平均工資</div>
+      <div class="result-hero-amount" id="r_avgWage">--</div>
+      <div class="result-hero-sub" id="r_avgSub">勞基法&sect;2第4款</div>
+    </div>
+
+    <div class="result-card">
+      <div class="result-card-title">衍生數值</div>
+      <div class="result-row">
+        <span class="result-row-label">日平均工資</span>
+        <span class="result-row-val highlight" id="r_dailyAvg">--</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">時薪</span>
+        <span class="result-row-val highlight" id="r_hourlyAvg">--</span>
+      </div>
+    </div>
+
+    <div class="result-card">
+      <div class="result-card-title">六個月計算明細</div>
+      <div id="r_breakdown"></div>
+      <div class="result-row" style="border-top:1.5px solid var(--soft);margin-top:4px;padding-top:12px;">
+        <span class="result-row-label" style="font-weight:600;color:var(--ink);">有效合計</span>
+        <span class="result-row-val highlight" id="r_totalWage">--</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label" style="font-weight:600;color:var(--ink);">有效總日數</span>
+        <span class="result-row-val highlight" id="r_totalDays">--</span>
+      </div>
+    </div>
+
+    <div class="result-card" id="r_excludeCard" style="display:none;">
+      <div class="result-card-title">排除期間說明</div>
+      <div id="r_excludeText" style="font-size:12px;color:var(--muted);line-height:1.7;"></div>
+    </div>
+
+    <div class="law-note">
+      <strong>法律依據</strong><br>
+      &middot; <strong>勞基法&sect;2第4款</strong>：平均工資，謂計算事由發生之當日前六個月內所得工資總額除以該期間之總日數所得之金額。<br>
+      &middot; 工作未滿六個月者，以工作期間所得工資總額除以工作期間之總日數所得之金額。<br>
+      &middot; 但書：因職災醫療、產假或其他不可歸責期間之工資日數不列入計算。
+    </div>
+
+    <div class="link-row">
+      <a href="severance.html" class="link-btn">用此平均工資 &rarr; 計算資遣費</a>
+      <a href="retirement.html" class="link-btn">用此平均工資 &rarr; 計算退休金</a>
+    </div>
+  </div>
+
+</main>
+
+<div class="nav-bar" id="navBar">
+  <button class="btn btn-secondary" id="btnBack" onclick="goBack()" style="display:none;">&larr; 上一步</button>
+  <button class="btn btn-primary" id="btnNext" onclick="goNext()">輸入各月薪資 &rarr;</button>
+  <button class="btn btn-reset" id="btnReset" onclick="resetAll()" style="display:none;">重新計算</button>
+</div>
+
+<div class="disclaimer-bar"><strong>免責聲明</strong>：本平台之計算結果僅供初步參考，不構成法律意見或法律諮詢服務。實際案件因個案事實、適用法規及法院見解不同，結果可能有所差異，建議諮詢具執照之律師或相關法律專業人員。</div>
+
+<script src="js/fmt.js"></script>
+<script src="js/calc-utils.js"></script>
+<script>
+let currentStep = 1;
+const totalSteps = 3;
+
+function showStep(n) {
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+  document.getElementById('step' + n).classList.add('active');
+  document.getElementById('progressFill').style.width = ((n / totalSteps) * 100) + '%';
+  currentStep = n;
+
+  const btnBack = document.getElementById('btnBack');
+  const btnNext = document.getElementById('btnNext');
+  const btnReset = document.getElementById('btnReset');
+
+  if (n === 1) {
+    btnBack.style.display = 'none';
+    btnNext.style.display = 'flex';
+    btnReset.style.display = 'none';
+    btnNext.textContent = '輸入各月薪資 \u2192';
+  } else if (n === 2) {
+    btnBack.style.display = 'block';
+    btnNext.style.display = 'flex';
+    btnReset.style.display = 'none';
+    btnNext.textContent = '計算平均工資 \u2192';
+  } else {
+    btnBack.style.display = 'block';
+    btnNext.style.display = 'none';
+    btnReset.style.display = 'flex';
+  }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function goBack() { if (currentStep > 1) showStep(currentStep - 1); }
+
+function goNext() {
+  if (currentStep === 1) {
+    if (!document.getElementById('eventDate').value) { alert('請選擇事由發生日。'); return; }
+    buildMonthCards();
+    showStep(2);
+  } else if (currentStep === 2) {
+    if (!validateStep2()) return;
+    calculate();
+    showStep(3);
+  }
+}
+
+function resetAll() { showStep(1); }
+
+/* === 生成6個月卡片 === */
+function buildMonthCards() {
+  const eventDate = new Date(document.getElementById('eventDate').value);
+  const container = document.getElementById('monthCards');
+  container.innerHTML = '';
+
+  for (let i = 6; i >= 1; i--) {
+    const d = new Date(eventDate);
+    d.setMonth(d.getMonth() - i);
+    const yr = d.getFullYear();
+    const mo = d.getMonth() + 1;
+    const daysInMonth = new Date(yr, mo, 0).getDate();
+    const label = `${yr}/${String(mo).padStart(2, '0')}`;
+
+    container.innerHTML += `
+      <div class="month-card" id="mc_${i}">
+        <div class="month-card-header">
+          <span class="month-card-label">${label}</span>
+          <label class="month-card-exclude">
+            <input type="checkbox" id="ex_${i}" onchange="toggleExclude(${i})">
+            <span>排除此月</span>
+          </label>
+        </div>
+        <div class="month-card-fields">
+          <div class="field-group">
+            <label>工資金額</label>
+            <input type="number" id="wage_${i}" placeholder="0" min="0" inputmode="numeric">
+          </div>
+          <div class="field-group">
+            <label>工作天數</label>
+            <input type="number" id="days_${i}" value="${daysInMonth}" min="0" max="31" inputmode="numeric">
+          </div>
+        </div>
+      </div>
+    `;
+  }
+}
+
+function toggleExclude(i) {
+  const card = document.getElementById('mc_' + i);
+  const cb = document.getElementById('ex_' + i);
+  if (cb.checked) {
+    card.classList.add('excluded');
+  } else {
+    card.classList.remove('excluded');
+  }
+}
+
+function validateStep2() {
+  let hasValid = false;
+  for (let i = 6; i >= 1; i--) {
+    if (document.getElementById('ex_' + i).checked) continue;
+    const w = parseFloat(document.getElementById('wage_' + i).value);
+    const d = parseFloat(document.getElementById('days_' + i).value);
+    if (!w || w < 0) { alert('請填寫有效的工資金額。'); return false; }
+    if (!d || d <= 0) { alert('請填寫有效的工作天數。'); return false; }
+    hasValid = true;
+  }
+  if (!hasValid) { alert('至少需有一個月未被排除。'); return false; }
+  return true;
+}
+
+/* === 計算 === */
+function fmt(n) { return 'NT$ ' + Math.round(n).toLocaleString('zh-TW'); }
+
+function calculate() {
+  const eventDate = new Date(document.getElementById('eventDate').value);
+  const reasonLabels = { severance: '資遣', retire: '退休', accident: '職災補償' };
+  const reason = document.getElementById('reason').value;
+
+  let totalWage = 0;
+  let totalDays = 0;
+  const excludedMonths = [];
+  const breakdownHTML = [];
+
+  for (let i = 6; i >= 1; i--) {
+    const d = new Date(eventDate);
+    d.setMonth(d.getMonth() - i);
+    const label = `${d.getFullYear()}/${String(d.getMonth()+1).padStart(2,'0')}`;
+    const excluded = document.getElementById('ex_' + i).checked;
+    const wage = parseFloat(document.getElementById('wage_' + i).value) || 0;
+    const days = parseFloat(document.getElementById('days_' + i).value) || 0;
+
+    if (excluded) {
+      excludedMonths.push(label);
+      breakdownHTML.push(`<div class="result-row" style="opacity:0.45;">
+        <span class="result-row-label">${label} <span class="badge badge-gold">排除</span></span>
+        <span class="result-row-val">--</span>
+      </div>`);
+    } else {
+      totalWage += wage;
+      totalDays += days;
+      breakdownHTML.push(`<div class="result-row">
+        <span class="result-row-label">${label}（${days}日）</span>
+        <span class="result-row-val">${fmt(wage)}</span>
+      </div>`);
+    }
+  }
+
+  const avgWage = totalDays > 0 ? (totalWage / totalDays) * 30 : 0;
+  const dailyAvg = totalDays > 0 ? totalWage / totalDays : 0;
+  const hourly = dailyAvg / 8;
+
+  document.getElementById('r_avgWage').textContent = fmt(avgWage);
+  document.getElementById('r_avgSub').textContent = `${reasonLabels[reason]}事由｜勞基法\u00A72第4款`;
+  document.getElementById('r_dailyAvg').textContent = fmt(dailyAvg);
+  document.getElementById('r_hourlyAvg').textContent = fmt(hourly);
+
+  document.getElementById('r_breakdown').innerHTML = breakdownHTML.join('');
+  document.getElementById('r_totalWage').textContent = fmt(totalWage);
+  document.getElementById('r_totalDays').textContent = totalDays + ' 日';
+
+  // Excluded info
+  const exCard = document.getElementById('r_excludeCard');
+  if (excludedMonths.length > 0) {
+    exCard.style.display = 'block';
+    document.getElementById('r_excludeText').innerHTML =
+      `已排除 <strong>${excludedMonths.join('、')}</strong> 之工資及日數。<br>
+      依勞基法\u00A72第4款但書，職災醫療期間、產假期間、留職停薪期間等不可歸責之期間，其工資日數均不列入平均工資計算。`;
+  } else {
+    exCard.style.display = 'none';
+  }
+}
+
+showStep(1);
+</script>
+</body>
+</html>

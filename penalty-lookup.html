@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" href="favicon.svg">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>勞基法違規罰鍰速查｜LaborPro</title>
+<meta name="description" content="台灣勞基法常見違規態樣速查，含罰鍰金額、法條依據、風險等級，支援即時搜尋過濾，免費使用。">
+<meta name="keywords" content="勞基法罰鍰,違規罰鍰,加班費罰鍰,超時加班罰鍰,違法解雇,勞基法處罰,台灣勞基法">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://laborpro.tw/penalty-lookup.html">
+<meta property="og:title" content="勞基法違規罰鍰速查｜LaborPro">
+<meta property="og:description" content="台灣勞基法常見違規態樣速查，含罰鍰金額與法條依據。">
+<meta property="og:type" content="website">
+<meta name="author" content="LaborPro">
+<meta property="og:site_name" content="LaborPro">
+<meta property="og:locale" content="zh_TW">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="js/persona.js"></script>
+<link rel="stylesheet" href="css/common.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "勞基法違規罰鍰速查",
+  "description": "台灣勞基法常見違規態樣速查，含罰鍰金額、法條依據、風險等級。",
+  "url": "https://laborpro.tw/penalty-lookup.html",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "TWD" }
+}
+</script>
+<style>
+  .search-bar {
+    position: sticky;
+    top: 57px;
+    z-index: 50;
+    background: var(--ink);
+    padding: 14px 0 10px;
+    margin-bottom: 6px;
+  }
+  .search-input {
+    width: 100%;
+    padding: 14px 18px 14px 42px;
+    border: 1.5px solid #2a3e2a;
+    border-radius: 12px;
+    background: #1a2a1a;
+    font-size: 15px;
+    font-family: 'Noto Sans TC', sans-serif;
+    color: var(--paper);
+    transition: border-color 0.2s;
+  }
+  .search-input::placeholder { color: var(--muted); }
+  .search-input:focus { outline: none; border-color: var(--accent); background: #1e2e1e; }
+  .search-wrap {
+    position: relative;
+  }
+  .search-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+    color: var(--muted);
+    pointer-events: none;
+  }
+  .filter-tabs {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin: 10px 0 16px;
+  }
+  .filter-tab {
+    padding: 6px 12px;
+    border-radius: 20px;
+    border: 1px solid #2a3e2a;
+    background: transparent;
+    color: var(--muted);
+    font-size: 12px;
+    font-family: 'Noto Sans TC', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .filter-tab:hover { border-color: var(--accent); color: var(--paper); }
+  .filter-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .violation-card {
+    background: var(--paper);
+    color: var(--ink);
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 12px;
+    animation: fadeUp 0.2s ease both;
+  }
+  .violation-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 10px;
+    gap: 10px;
+  }
+  .violation-title {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.4;
+  }
+  .violation-badges {
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
+    flex-wrap: wrap;
+  }
+  .law-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 20px;
+    background: rgba(42,110,62,0.1);
+    color: var(--accent);
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+  }
+  .risk-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 20px;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+  }
+  .risk-high { background: rgba(139,32,32,0.1); color: #8b2020; }
+  .risk-medium { background: rgba(200,144,26,0.12); color: #8a6010; }
+  .risk-low { background: rgba(97,122,94,0.12); color: var(--muted); }
+  .violation-desc {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-bottom: 12px;
+  }
+  .violation-penalty {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--gold);
+    line-height: 1.3;
+  }
+  .violation-category {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    margin-top: 8px;
+  }
+  .no-results {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--muted);
+    font-size: 14px;
+    display: none;
+  }
+  .result-count {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    margin-bottom: 14px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="logo">Labor<span>Pro</span></a>
+  <a class="back-link" href="index.html">← 首頁</a>
+</header>
+
+<main>
+  <div class="step-header">
+    <div class="step-label">違規速查 · 勞基法罰則</div>
+    <h1 class="step-title">勞基法違規罰鍰速查</h1>
+    <p class="step-sub">搜尋或瀏覽常見勞基法違規態樣，了解罰鍰金額、法條依據與風險等級。</p>
+  </div>
+
+  <div class="search-bar">
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input type="text" class="search-input" id="searchInput" placeholder="搜尋違規態樣、法條、類別…" oninput="filterCards()">
+    </div>
+  </div>
+
+  <div class="filter-tabs" id="filterTabs">
+    <button class="filter-tab active" data-cat="all" onclick="setCategory('all', this)">全部</button>
+  </div>
+
+  <div class="result-count" id="resultCount"></div>
+  <div id="cardContainer"></div>
+  <div class="no-results" id="noResults">找不到符合的違規態樣，請調整搜尋條件。</div>
+
+  <div class="law-note" style="margin-top:8px;">
+    <strong>注意事項</strong><br>
+    · 罰鍰金額依違規情節輕重而有不同，上列為法定範圍<br>
+    · 經限期改善而未改善者，得按次連續處罰<br>
+    · 嚴重違規可能構成刑事責任（如§75強制勞動等）<br>
+    · 罰鍰裁罰標準依各地方政府而異，部分縣市有公布裁罰基準表
+  </div>
+
+  <div class="worker-only" style="background:#eef8f2;border:1.5px solid var(--accent);border-radius:12px;padding:16px 20px;margin-top:14px;">
+    <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:8px;">👷 發現雇主違規怎麼辦？</div>
+    <div style="font-size:12px;color:#1a3a28;line-height:1.9;">
+      1. <strong>蒐集證據</strong>：保留薪資單、出勤紀錄、班表截圖、LINE 對話紀錄<br>
+      2. <strong>撥打 1955</strong>：勞動部免費諮詢專線，可匿名詢問<br>
+      3. <strong>向勞工局申訴</strong>：可至各縣市勞工局臨櫃或線上申訴<br>
+      4. <strong>申請勞動檢查</strong>：勞檢會在不告知雇主的情況下到場檢查<br>
+      5. <strong>申請調解</strong>：透過勞資爭議調解委員會免費調解<br>
+      · 申訴人身份受法律保護，雇主不得因申訴而為不利處分（§74）
+    </div>
+  </div>
+
+  <div class="employer-only" style="background:#fef8e8;border:1.5px solid #c8901a;border-radius:12px;padding:16px 20px;margin-top:14px;">
+    <div style="font-size:12px;font-weight:700;color:#8a5a10;margin-bottom:8px;">🏢 雇主自我檢核建議</div>
+    <div style="font-size:12px;color:#4a3a10;line-height:1.9;">
+      1. <strong>每月檢查</strong>：加班時數是否超過46小時、工資是否高於基本工資<br>
+      2. <strong>每季檢查</strong>：勞退是否足額提撥、勞健保投保級距是否正確<br>
+      3. <strong>出勤紀錄</strong>：務必逐日記載至分鐘，保存5年（未置備罰9萬–45萬）<br>
+      4. <strong>薪資明細</strong>：每月提供書面或電子薪資各項目明細<br>
+      5. <strong>勞動檢查</strong>：勞檢不會預先通知，平時即應確保合規<br>
+      · 違規經公布將影響企業形象、政府標案資格及 ESG 評分
+    </div>
+  </div>
+</main>
+
+<script src="js/fmt.js"></script>
+<script src="js/calc-utils.js"></script>
+<script>
+(function() {
+  var VIOLATIONS = [
+    // ── 工資類 ──
+    { id: 1, title: '未給付加班費', law: '§24', penalty: '2萬–100萬', desc: '延長工時未依規定加給工資（前2小時加給1/3，後2小時加給2/3）', risk: 'high', category: '工資' },
+    { id: 2, title: '低於基本工資', law: '§21', penalty: '2萬–100萬', desc: '工資低於基本工資（2026年：月薪28,590元、時薪190元）', risk: 'high', category: '工資' },
+    { id: 3, title: '未全額直接給付工資', law: '§22', penalty: '2萬–100萬', desc: '工資未以法定通用貨幣全額直接給付勞工', risk: 'medium', category: '工資' },
+    { id: 4, title: '工資未定期給付', law: '§23', penalty: '2萬–100萬', desc: '工資未每月至少發給2次，或未提供薪資明細', risk: 'medium', category: '工資' },
+    { id: 5, title: '未提供薪資明細', law: '§23', penalty: '2萬–100萬', desc: '未以書面或電子方式提供工資各項目計算方式明細', risk: 'medium', category: '工資' },
+    { id: 6, title: '預扣勞工工資', law: '§26', penalty: '9萬–45萬', desc: '雇主不得預扣勞工工資作為違約金或賠償費用', risk: 'medium', category: '工資' },
+    { id: 7, title: '未給付特休工資', law: '§38', penalty: '2萬–100萬', desc: '年度終結或離職時，特休未休日數未折發工資', risk: 'medium', category: '工資' },
+    { id: 8, title: '國定假日出勤未加倍', law: '§39', penalty: '2萬–100萬', desc: '國定假日、例假日出勤未加倍給付工資', risk: 'high', category: '工資' },
+
+    // ── 工時類 ──
+    { id: 9, title: '超時加班', law: '§32', penalty: '2萬–100萬', desc: '每月延長工時超過46小時（經勞資會議同意可至54小時，每3個月不超過138小時）', risk: 'high', category: '工時' },
+    { id: 10, title: '正常工時超標', law: '§30', penalty: '2萬–100萬', desc: '每日正常工時超過8小時或每週超過40小時', risk: 'high', category: '工時' },
+    { id: 11, title: '未給例假及休息日', law: '§36', penalty: '2萬–100萬', desc: '每7日未有1日例假及1日休息日', risk: 'high', category: '工時' },
+    { id: 12, title: '未置備出勤紀錄', law: '§30', penalty: '9萬–45萬', desc: '未逐日記載出勤時間至分鐘，或紀錄未保存5年', risk: 'medium', category: '工時' },
+    { id: 13, title: '輪班間隔不足', law: '§34', penalty: '2萬–100萬', desc: '更換班次時未有連續11小時以上休息時間', risk: 'high', category: '工時' },
+    { id: 14, title: '女工夜間工作違規', law: '§49', penalty: '2萬–30萬', desc: '使女工於晚間10時至翌晨6時工作未經工會或勞資會議同意', risk: 'medium', category: '工時' },
+    { id: 15, title: '童工超時工作', law: '§47,§48', penalty: '2萬–30萬', desc: '使未滿16歲童工每日工作超過8小時、每週超過40小時，或使其夜間工作', risk: 'high', category: '工時' },
+
+    // ── 休假類 ──
+    { id: 16, title: '未給特別休假', law: '§38', penalty: '2萬–100萬', desc: '未依年資給予特別休假（6個月以上：3天起）', risk: 'medium', category: '休假' },
+    { id: 17, title: '未給產假', law: '§50', penalty: '2萬–30萬', desc: '女工分娩未給8週產假，或妊娠3個月以上流產未給4週', risk: 'medium', category: '休假' },
+    { id: 18, title: '未給陪產假', law: '性平法§15', penalty: '2萬–30萬', desc: '配偶分娩未給7日陪產檢及陪產假', risk: 'medium', category: '休假' },
+    { id: 19, title: '未給育嬰假', law: '性平法§16', penalty: '2萬–30萬', desc: '拒絕員工申請育嬰留職停薪', risk: 'medium', category: '休假' },
+    { id: 20, title: '產假薪資未付', law: '§50', penalty: '2萬–30萬', desc: '年資6個月以上之產假未給全薪', risk: 'medium', category: '休假' },
+    { id: 21, title: '未給公假', law: '§43', penalty: '2萬–100萬', desc: '勞工依法令規定應放假之日未給假', risk: 'low', category: '休假' },
+    { id: 22, title: '未給生理假', law: '性平法§14', penalty: '2萬–30萬', desc: '拒絕女性員工每月1日生理假', risk: 'low', category: '休假' },
+
+    // ── 解僱類 ──
+    { id: 23, title: '未給付資遣費', law: '§17', penalty: '30萬–150萬', desc: '資遣勞工未依規定給付資遣費（新制每年0.5個月、舊制每年1個月）', risk: 'high', category: '解僱' },
+    { id: 24, title: '違法解雇', law: '§11,§12', penalty: '復職＋工資補償', desc: '非法定事由解雇勞工，法院可判決復職及補發工資', risk: 'high', category: '解僱' },
+    { id: 25, title: '未給預告期間', law: '§16', penalty: '2萬–30萬', desc: '資遣未給預告期間或未付預告期間工資（3個月以上10天、1年以上20天、3年以上30天）', risk: 'medium', category: '解僱' },
+    { id: 26, title: '大量解僱未通報', law: '大量解僱§4', penalty: '10萬–50萬', desc: '達大量解僱門檻未於60日前通報主管機關及相關單位', risk: 'medium', category: '解僱' },
+    { id: 27, title: '禁止解雇期間解雇', law: '§13', penalty: '復職＋補償', desc: '勞工職災醫療期間或產假期間解雇勞工', risk: 'high', category: '解僱' },
+    { id: 28, title: '歧視性解雇', law: '性平法§11', penalty: '30萬–150萬', desc: '以懷孕、分娩、育嬰為由解雇或不利處分', risk: 'high', category: '解僱' },
+    { id: 29, title: '未開離職證明', law: '§19', penalty: '2萬–30萬', desc: '勞工請求時未發給服務證明書', risk: 'low', category: '解僱' },
+
+    // ── 保險與退休類 ──
+    { id: 30, title: '未依法投保勞保', law: '勞保§72', penalty: '依期間追繳＋罰鍰', desc: '應投保而未投保或以多報少，除追繳保費外另處罰鍰', risk: 'high', category: '保險' },
+    { id: 31, title: '未投保就業保險', law: '就保§38', penalty: '追繳＋10倍罰鍰', desc: '僱用員工5人以上未投保就業保險', risk: 'high', category: '保險' },
+    { id: 32, title: '未足額提撥勞退', law: '勞退§53', penalty: '6萬–30萬', desc: '未按月提撥不低於月工資6%至勞工退休金專戶', risk: 'medium', category: '退休' },
+    { id: 33, title: '未投保職災保險', law: '職保§46', penalty: '2萬–10萬', desc: '登記有案之雇主未為勞工投保職業災害保險', risk: 'medium', category: '保險' },
+
+    // ── 契約與程序類 ──
+    { id: 34, title: '違反競業禁止規定', law: '§9-1', penalty: '條款無效', desc: '競業禁止約定不符五項法定要件者，約定無效', risk: 'medium', category: '契約' },
+    { id: 35, title: '強制簽署定型化契約', law: '§17-1', penalty: '該條款無效', desc: '違反勞動契約不得記載事項，該部分約定無效', risk: 'medium', category: '契約' },
+    { id: 36, title: '未建立申訴制度', law: '§74', penalty: '2萬–30萬', desc: '事業單位未建立勞工申訴管道或對申訴勞工不利處分', risk: 'low', category: '程序' },
+    { id: 37, title: '妨礙勞檢', law: '§73', penalty: '3萬–15萬', desc: '拒絕、規避或阻撓勞動檢查', risk: 'medium', category: '程序' },
+    { id: 38, title: '未訂立工作規則', law: '§70', penalty: '2萬–30萬', desc: '僱用30人以上未依規定訂立工作規則報請核備', risk: 'low', category: '程序' },
+    { id: 39, title: '未召開勞資會議', law: '§83', penalty: '2萬–30萬', desc: '事業單位未依規定每3個月舉行一次勞資會議', risk: 'low', category: '程序' },
+
+    // ── 歧視與騷擾類 ──
+    { id: 40, title: '性別歧視', law: '性平法§38-1', penalty: '30萬–150萬', desc: '因性別、性傾向、婚姻等因素差別待遇', risk: 'high', category: '歧視' },
+    { id: 41, title: '職場性騷擾未處理', law: '性平法§38-1', penalty: '10萬–50萬', desc: '雇主知悉職場性騷擾情事，未採取立即有效糾正補救措施', risk: 'high', category: '歧視' },
+    { id: 42, title: '妨礙工會活動', law: '工會法§35', penalty: '3萬–30萬', desc: '對工會幹部或參與工會活動之勞工為不當勞動行為', risk: 'medium', category: '歧視' },
+    { id: 43, title: '就業歧視', law: '就服法§65', penalty: '30萬–150萬', desc: '以種族、宗教、年齡、殘障等因素歧視求職者或員工', risk: 'high', category: '歧視' }
+  ];
+
+  var currentCategory = 'all';
+
+  // Build filter tabs
+  var categories = [];
+  VIOLATIONS.forEach(function(v) {
+    if (categories.indexOf(v.category) === -1) categories.push(v.category);
+  });
+  var tabsEl = document.getElementById('filterTabs');
+  categories.forEach(function(cat) {
+    var btn = document.createElement('button');
+    btn.className = 'filter-tab';
+    btn.setAttribute('data-cat', cat);
+    btn.textContent = cat;
+    btn.onclick = function() { setCategory(cat, btn); };
+    tabsEl.appendChild(btn);
+  });
+
+  function getRiskLabel(risk) {
+    if (risk === 'high') return '高風險';
+    if (risk === 'medium') return '中風險';
+    return '低風險';
+  }
+
+  function getRiskClass(risk) {
+    if (risk === 'high') return 'risk-high';
+    if (risk === 'medium') return 'risk-medium';
+    return 'risk-low';
+  }
+
+  function renderCards(list) {
+    var container = document.getElementById('cardContainer');
+    container.innerHTML = '';
+
+    list.forEach(function(v) {
+      var card = document.createElement('div');
+      card.className = 'violation-card';
+      card.innerHTML =
+        '<div class="violation-top">' +
+          '<div class="violation-title">' + v.title + '</div>' +
+          '<div class="violation-badges">' +
+            '<span class="law-badge">' + v.law + '</span>' +
+            '<span class="risk-badge ' + getRiskClass(v.risk) + '">' + getRiskLabel(v.risk) + '</span>' +
+          '</div>' +
+        '</div>' +
+        '<div class="violation-desc">' + v.desc + '</div>' +
+        '<div class="violation-penalty">' + v.penalty + '</div>' +
+        '<div class="violation-category">' + v.category + '</div>';
+      container.appendChild(card);
+    });
+
+    document.getElementById('resultCount').textContent = '共 ' + list.length + ' 項違規態樣';
+    document.getElementById('noResults').style.display = list.length === 0 ? 'block' : 'none';
+  }
+
+  window.setCategory = function(cat, btnEl) {
+    currentCategory = cat;
+    document.querySelectorAll('.filter-tab').forEach(function(t) { t.classList.remove('active'); });
+    if (btnEl) btnEl.classList.add('active');
+    filterCards();
+  };
+
+  window.filterCards = function() {
+    var query = (document.getElementById('searchInput').value || '').toLowerCase().trim();
+
+    var filtered = VIOLATIONS.filter(function(v) {
+      var catMatch = currentCategory === 'all' || v.category === currentCategory;
+      if (!catMatch) return false;
+      if (!query) return true;
+      var text = (v.title + ' ' + v.desc + ' ' + v.category + ' ' + v.law + ' ' + v.penalty).toLowerCase();
+      return text.indexOf(query) !== -1;
+    });
+
+    renderCards(filtered);
+  };
+
+  // Init
+  renderCards(VIOLATIONS);
+})();
+</script>
+<div class="disclaimer-bar"><strong>免責聲明</strong>：本平台之資料僅供初步參考，不構成法律意見。罰鍰金額依實際違規情節及主管機關裁量而定。</div>
+</body>
+</html>
