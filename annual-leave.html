@@ -227,7 +227,7 @@
 
     document.getElementById('resultContent').innerHTML = `
       <div class="result-hero">
-        <div class="result-hero-label">未休特休折現金額</div>
+        <div class="result-hero-label"><span class="worker-only">您可請領的折現</span><span class="employer-only">應付特休折現</span></div>
         <div class="result-hero-amount">${cashOut > 0 ? fmt(cashOut) : '—'}</div>
         <div class="result-hero-sub">未休 ${unusedDays} 天 × 日薪 NT$ ${dailyWage.toLocaleString('zh-TW', {maximumFractionDigits:1})}</div>
       </div>

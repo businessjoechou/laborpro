@@ -102,6 +102,51 @@
     return brackets[brackets.length - 1]; // 最高級距
   }
 
+  /**
+   * 雇主社保成本計算
+   * @param {number} monthlySalary - 月薪
+   * @param {number} dependents - 平均眷屬人數
+   * @returns {{ laborIns, laborAccident, nhi, pension, total, bracket }}
+   */
+  function calcEmployerInsuranceCost(monthlySalary, dependents) {
+    var bracket = getLaborInsuranceBracket(monthlySalary);
+    var laborIns = Math.round(bracket * 0.12 * 0.7);
+    var laborAccident = Math.round(bracket * 0.0021);
+    var nhi = Math.round(bracket * 0.0517 * 0.6 * (1 + (dependents || 0)));
+    var pension = Math.round(monthlySalary * 0.06);
+    return {
+      laborIns: laborIns,
+      laborAccident: laborAccident,
+      nhi: nhi,
+      pension: pension,
+      total: laborIns + laborAccident + nhi + pension,
+      bracket: bracket
+    };
+  }
+
+  /**
+   * 加班費計算（雇主角度）
+   */
+  function calcOvertimeCost(monthlySalary, hours, type) {
+    var hourly = monthlySalary / 30 / 8;
+    if (type === 'weekday') {
+      var h1 = Math.min(hours, 2);
+      var h2 = Math.max(Math.min(hours - 2, 2), 0);
+      return h1 * hourly * (4/3) + h2 * hourly * (5/3);
+    }
+    if (type === 'restday') {
+      var r1 = Math.min(hours, 2);
+      var r2 = Math.max(Math.min(hours - 2, 6), 0);
+      var r3 = Math.max(hours - 8, 0);
+      return r1 * hourly * (4/3) + r2 * hourly * (5/3) + r3 * hourly * (5/3);
+    }
+    if (type === 'mixed') {
+      var wdH = hours * 0.6, rdH = hours * 0.4;
+      return calcOvertimeCost(monthlySalary, wdH, 'weekday') + calcOvertimeCost(monthlySalary, rdH, 'restday');
+    }
+    return hours * hourly * 2; // holiday
+  }
+
   window.LaborPro = window.LaborPro || {};
   window.LaborPro.calcMonths = calcMonths;
   window.LaborPro.calcSeveranceNew = calcSeveranceNew;
@@ -111,4 +156,6 @@
   window.LaborPro.getDailyRate = getDailyRate;
   window.LaborPro.getAnnualLeaveDays = getAnnualLeaveDays;
   window.LaborPro.getLaborInsuranceBracket = getLaborInsuranceBracket;
+  window.LaborPro.calcEmployerInsuranceCost = calcEmployerInsuranceCost;
+  window.LaborPro.calcOvertimeCost = calcOvertimeCost;
 })();

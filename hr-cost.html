@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" href="favicon.svg">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>人事成本計算機｜LaborPro</title>
+<meta name="description" content="精算每位員工的真實人事成本，含薪資、勞保、健保、勞退提撥、加班費，年度預算一目了然。">
+<meta name="keywords" content="人事成本,僱用成本,勞保費用,健保費用,勞退提撥,加班費成本,員工成本計算,台灣人事成本">
+<meta name="robots" content="index, follow">
+<meta name="author" content="LaborPro">
+<meta property="og:title" content="人事成本計算機｜LaborPro">
+<meta property="og:description" content="精算每位員工真實成本——薪資＋勞健保＋勞退＋加班費。">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="LaborPro">
+<meta property="og:locale" content="zh_TW">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="js/persona.js"></script>
+<link rel="stylesheet" href="css/common.css">
+<style>
+  .cost-table { width: 100%; border-collapse: collapse; }
+  .cost-table th {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-align: right;
+    padding: 0 0 10px;
+    border-bottom: 1px solid var(--soft);
+    font-weight: 500;
+  }
+  .cost-table th:first-child { text-align: left; }
+  .cost-table td {
+    padding: 10px 0;
+    font-size: 13px;
+    border-bottom: 1px solid var(--soft);
+  }
+  .cost-table td:first-child { color: var(--ink); }
+  .cost-table td:not(:first-child) {
+    text-align: right;
+    font-family: 'DM Mono', monospace;
+  }
+  .cost-table tr:last-child td { border-bottom: none; }
+  .cost-table .row-total td {
+    font-weight: 700;
+    border-top: 2px solid var(--soft);
+    color: var(--accent);
+  }
+  .td-pct { color: var(--muted); font-size: 11px; }
+
+  .insight-box {
+    background: linear-gradient(135deg, #1a2e1a, #1e3420);
+    border: 1px solid rgba(42,110,62,0.4);
+    border-radius: 14px;
+    padding: 22px;
+    margin-bottom: 14px;
+    text-align: center;
+  }
+  .insight-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: rgba(238,245,236,0.5);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .insight-value {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--gold);
+    margin-bottom: 4px;
+  }
+  .insight-sub {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .annual-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .annual-box {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    text-align: center;
+    color: var(--ink);
+  }
+  .annual-value {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--gold);
+    margin-bottom: 4px;
+  }
+  .annual-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  @media (max-width: 400px) {
+    .annual-grid { grid-template-columns: 1fr; }
+    .insight-value { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="logo">Labor<span>Pro</span></a>
+  <a class="back-link" href="index.html">← 首頁</a>
+</header>
+<div class="progress-bar">
+  <div class="progress-fill" id="progressFill" style="width: 50%"></div>
+</div>
+
+<main>
+
+  <!-- Step 1 -->
+  <div class="step active" id="step1">
+    <div class="step-header">
+      <div class="step-label">Step 1 of 2 · 薪資與人力</div>
+      <h1 class="step-title">人事成本計算機</h1>
+      <p class="step-sub">輸入員工薪資與人力規模，精算每位員工的真實僱用成本——薪資只是冰山一角。</p>
+    </div>
+
+    <div class="wizard">
+      <div class="wizard-section-title">薪資設定</div>
+      <div class="field-group">
+        <label>員工月薪（元）</label>
+        <input type="number" id="monthlySalary" placeholder="45000" min="0" inputmode="numeric">
+      </div>
+      <div class="field-group">
+        <label>其他經常性給與（元）<span class="hint">伙食津貼、交通津貼等固定發放項目</span></label>
+        <input type="number" id="allowances" placeholder="0" min="0" inputmode="numeric">
+      </div>
+    </div>
+
+    <div class="wizard">
+      <div class="wizard-section-title">人力規模</div>
+      <div class="field-group">
+        <label>員工人數</label>
+        <input type="number" id="headcount" placeholder="10" min="1" inputmode="numeric">
+      </div>
+      <div class="field-group">
+        <label>平均眷屬人數 <span class="hint">影響雇主健保負擔（0=無眷屬）</span></label>
+        <input type="number" id="dependents" placeholder="0" min="0" max="5" step="1" inputmode="numeric">
+      </div>
+    </div>
+
+    <div class="wizard">
+      <div class="wizard-section-title">加班預估</div>
+      <div class="field-group">
+        <label>平均每月加班時數</label>
+        <input type="number" id="avgOTHours" placeholder="10" min="0" max="54" step="0.5" inputmode="decimal">
+      </div>
+      <div class="field-group">
+        <label>加班型態</label>
+        <div class="select-wrap">
+          <select id="otType">
+            <option value="weekday">平日延長工時（§24 I）</option>
+            <option value="mixed" selected>混合（平日＋休息日）</option>
+            <option value="restday">主要為休息日（§24 II）</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-box">
+      * 月薪 45,000 的員工，加上勞健保、勞退、加班費，雇主每月實際支出約 55,000–60,000 元。
+    </div>
+  </div>
+
+  <!-- Step 2: Results -->
+  <div class="step" id="step2">
+    <div class="step-header">
+      <div class="step-label">Step 2 of 2 · 計算結果</div>
+      <h1 class="step-title">人事成本分析</h1>
+      <p class="step-sub">以下為每位員工的完整僱用成本，含法定義務項目。</p>
+    </div>
+
+    <!-- Hero -->
+    <div class="result-hero">
+      <div class="result-hero-label">每人每月總成本</div>
+      <div class="result-hero-amount" id="r_totalPerPerson">—</div>
+      <div class="result-hero-sub" id="r_heroSub">—</div>
+    </div>
+
+    <!-- Cost multiplier insight -->
+    <div class="insight-box">
+      <div class="insight-label">薪資成本倍數</div>
+      <div class="insight-value" id="r_multiplier">—</div>
+      <div class="insight-sub" id="r_multiplierSub">—</div>
+    </div>
+
+    <!-- Breakdown -->
+    <div class="result-card">
+      <div class="result-card-title">單人每月成本明細</div>
+      <table class="cost-table">
+        <thead>
+          <tr><th>項目</th><th>金額</th><th>佔比</th></tr>
+        </thead>
+        <tbody id="r_breakdownBody"></tbody>
+      </table>
+    </div>
+
+    <!-- Annual projection -->
+    <div class="result-card">
+      <div class="result-card-title">年度人事成本預估</div>
+      <div class="annual-grid">
+        <div class="annual-box">
+          <div class="annual-value" id="r_annualPer">—</div>
+          <div class="annual-label">單人年度</div>
+        </div>
+        <div class="annual-box">
+          <div class="annual-value" id="r_annualTotal">—</div>
+          <div class="annual-label">全公司年度</div>
+        </div>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">員工人數</span>
+        <span class="result-row-val" id="r_headcount">—</span>
+      </div>
+    </div>
+
+    <!-- Insurance detail -->
+    <div class="result-card">
+      <div class="result-card-title">社會保險雇主負擔明細</div>
+      <div class="result-row">
+        <span class="result-row-label">投保薪資級距</span>
+        <span class="result-row-val" id="r_bracket">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">勞保（普通事故 12% × 70%）</span>
+        <span class="result-row-val" id="r_laborIns">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">職災保險（~0.21% × 100%）</span>
+        <span class="result-row-val" id="r_laborAcc">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">健保（5.17% × 60% × (1+眷屬)）</span>
+        <span class="result-row-val" id="r_nhi">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">勞退提撥（薪資 × 6%）</span>
+        <span class="result-row-val" id="r_pension">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">法定負擔小計</span>
+        <span class="result-row-val highlight" id="r_insTotal">—</span>
+      </div>
+    </div>
+
+    <!-- Warnings -->
+    <div class="warn-box">
+      ⚠ <strong>注意事項</strong><br>
+      · 勞退提撥以「實際工資」計算，非投保薪資<br>
+      · 投保薪資低於實際薪資（高薪低報）將面臨追繳＋罰鍰<br>
+      · 本計算以一般行業費率估算，特殊行業職災費率可能不同
+    </div>
+
+    <!-- Law note -->
+    <div class="law-note">
+      <strong>法律依據</strong><br>
+      · <strong>勞退條例§14</strong>：雇主每月提繳不低於月工資 6%<br>
+      · <strong>勞保條例§15</strong>：雇主負擔普通事故保費 70%<br>
+      · <strong>全民健保法§27</strong>：雇主負擔保費 60%<br>
+      · <strong>勞基法§24</strong>：加班費計算標準
+    </div>
+  </div>
+
+</main>
+
+<div class="nav-bar">
+  <button class="btn btn-secondary" id="btnBack" onclick="goBack()" style="display:none;">← 上一步</button>
+  <button class="btn btn-primary" id="btnNext" onclick="goNext()">計算人事成本 →</button>
+  <button class="btn btn-reset" id="btnReset" onclick="resetAll()" style="display:none;">重新計算</button>
+</div>
+
+<script src="js/calc-utils.js"></script>
+<script src="js/fmt.js"></script>
+<script>
+  const state = {};
+  let currentStep = 1;
+  const totalSteps = 2;
+
+  function showStep(n) {
+    document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+    document.getElementById('step' + n).classList.add('active');
+    document.getElementById('progressFill').style.width = (n / totalSteps * 100) + '%';
+    currentStep = n;
+    const btnBack = document.getElementById('btnBack');
+    const btnNext = document.getElementById('btnNext');
+    const btnReset = document.getElementById('btnReset');
+    if (n === 1) {
+      btnBack.style.display = 'none'; btnNext.style.display = 'flex'; btnReset.style.display = 'none';
+    } else {
+      btnBack.style.display = 'block'; btnNext.style.display = 'none'; btnReset.style.display = 'flex';
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function goBack() { if (currentStep > 1) showStep(currentStep - 1); }
+
+  function goNext() {
+    if (currentStep === 1) {
+      const salary = parseFloat(document.getElementById('monthlySalary').value);
+      if (!salary || salary <= 0) { alert('請輸入有效的月薪金額。'); return; }
+      const hc = parseInt(document.getElementById('headcount').value) || 1;
+      if (hc < 1) { alert('員工人數至少為 1。'); return; }
+      state.salary = salary;
+      state.allowances = parseFloat(document.getElementById('allowances').value) || 0;
+      state.headcount = hc;
+      state.dependents = parseFloat(document.getElementById('dependents').value) || 0;
+      state.otHours = parseFloat(document.getElementById('avgOTHours').value) || 0;
+      state.otType = document.getElementById('otType').value;
+      calculate();
+      showStep(2);
+    }
+  }
+
+  function resetAll() {
+    document.querySelectorAll('input[type="number"]').forEach(i => i.value = '');
+    showStep(1);
+  }
+
+  function fmt(n) { return 'NT$ ' + Math.round(n).toLocaleString('zh-TW'); }
+  function pct(n, total) { return total > 0 ? (n / total * 100).toFixed(1) + '%' : '—'; }
+
+  function calculate() {
+    const { salary, allowances, headcount, dependents, otHours, otType } = state;
+    const totalWage = salary + allowances;
+    const LP = window.LaborPro;
+
+    // Insurance costs
+    const ins = LP.calcEmployerInsuranceCost(totalWage, dependents);
+
+    // OT cost
+    const otCost = otHours > 0 ? Math.round(LP.calcOvertimeCost(salary, otHours, otType)) : 0;
+
+    // Total per person
+    const perPerson = totalWage + ins.total + otCost;
+
+    // Multiplier
+    const multiplier = (perPerson / totalWage).toFixed(2);
+
+    // Hero
+    document.getElementById('r_totalPerPerson').textContent = fmt(perPerson);
+    document.getElementById('r_heroSub').textContent =
+      '月薪 ' + fmt(totalWage) + '｜法定負擔 ' + fmt(ins.total) + '｜加班費 ' + fmt(otCost);
+
+    // Multiplier
+    document.getElementById('r_multiplier').textContent = multiplier + 'x';
+    document.getElementById('r_multiplierSub').textContent =
+      '每支付 NT$1 薪資，實際成本為 NT$' + multiplier + '。法定負擔佔薪資 ' + pct(ins.total, totalWage) + '。';
+
+    // Breakdown table
+    const tbody = document.getElementById('r_breakdownBody');
+    const rows = [
+      ['月薪＋經常性給與', totalWage],
+      ['勞保費（雇主 70%）', ins.laborIns],
+      ['職災保險（雇主 100%）', ins.laborAccident],
+      ['健保費（雇主 60%）', ins.nhi],
+      ['勞退提撥（6%）', ins.pension],
+      ['加班費預估', otCost]
+    ];
+    tbody.innerHTML = rows.map(r =>
+      `<tr><td>${r[0]}</td><td>${fmt(r[1])}</td><td class="td-pct">${pct(r[1], perPerson)}</td></tr>`
+    ).join('') +
+      `<tr class="row-total"><td><strong>每人每月總成本</strong></td><td>${fmt(perPerson)}</td><td class="td-pct">100%</td></tr>`;
+
+    // Annual
+    const annualPer = perPerson * 12;
+    const annualAll = annualPer * headcount;
+    document.getElementById('r_annualPer').textContent = fmt(annualPer);
+    document.getElementById('r_annualTotal').textContent = fmt(annualAll);
+    document.getElementById('r_headcount').textContent = headcount + ' 人';
+
+    // Insurance detail
+    document.getElementById('r_bracket').textContent = fmt(ins.bracket);
+    document.getElementById('r_laborIns').textContent = fmt(ins.laborIns);
+    document.getElementById('r_laborAcc').textContent = fmt(ins.laborAccident);
+    document.getElementById('r_nhi').textContent = fmt(ins.nhi);
+    document.getElementById('r_pension').textContent = fmt(ins.pension);
+    document.getElementById('r_insTotal').textContent = fmt(ins.total);
+  }
+
+  showStep(1);
+</script>
+<div class="disclaimer-bar"><strong>免責聲明</strong>：本平台之計算結果僅供初步參考，實際費用依投保級距、行業別職災費率、個別勞動條件而異。</div>
+</body>
+</html>
