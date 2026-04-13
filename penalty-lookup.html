@@ -38,23 +38,23 @@
     position: sticky;
     top: 57px;
     z-index: 50;
-    background: var(--ink);
+    background: var(--paper);
     padding: 14px 0 10px;
     margin-bottom: 6px;
   }
   .search-input {
     width: 100%;
     padding: 14px 18px 14px 42px;
-    border: 1.5px solid #2a3e2a;
+    border: 1.5px solid var(--border);
     border-radius: 12px;
-    background: #1a2a1a;
+    background: var(--card);
     font-size: 15px;
     font-family: 'Noto Sans TC', sans-serif;
-    color: var(--paper);
+    color: var(--ink);
     transition: border-color 0.2s;
   }
   .search-input::placeholder { color: var(--muted); }
-  .search-input:focus { outline: none; border-color: var(--accent); background: #1e2e1e; }
+  .search-input:focus { outline: none; border-color: var(--accent); background: #fff; }
   .search-wrap {
     position: relative;
   }
@@ -76,7 +76,7 @@
   .filter-tab {
     padding: 6px 12px;
     border-radius: 20px;
-    border: 1px solid #2a3e2a;
+    border: 1px solid var(--border);
     background: transparent;
     color: var(--muted);
     font-size: 12px;
@@ -84,11 +84,12 @@
     cursor: pointer;
     transition: all 0.2s;
   }
-  .filter-tab:hover { border-color: var(--accent); color: var(--paper); }
+  .filter-tab:hover { border-color: var(--accent); color: var(--ink); }
   .filter-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
   .violation-card {
-    background: var(--paper);
+    background: var(--card);
     color: var(--ink);
+    border: 1.5px solid var(--border);
     border-radius: 14px;
     padding: 20px;
     margin-bottom: 12px;
