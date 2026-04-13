@@ -15,8 +15,8 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-  background: var(--ink);
-  color: var(--paper);
+  background: var(--paper);
+  color: var(--ink);
   font-family: 'Noto Sans TC', sans-serif;
   min-height: 100vh;
   font-size: 15px;
@@ -80,7 +80,7 @@ header {
 .back-link:hover { color: var(--gold); }
 
 /* ===== Progress Bar ===== */
-.progress-bar { height: 3px; background: #1e2e1e; }
+.progress-bar { height: 3px; background: var(--soft); }
 .progress-fill { height: 100%; background: var(--gold); transition: width 0.4s ease; }
 
 /* ===== Main ===== */
@@ -114,7 +114,7 @@ main {
   font-family: 'Noto Serif TC', serif;
   font-size: 24px;
   font-weight: 700;
-  color: var(--paper);
+  color: var(--ink);
   line-height: 1.35;
   margin-bottom: 6px;
 }
@@ -127,8 +127,9 @@ main {
 
 /* ===== Wizard Card ===== */
 .wizard {
-  background: var(--paper);
+  background: var(--card);
   color: var(--ink);
+  border: 1.5px solid var(--border);
   border-radius: 16px;
   padding: 24px;
   margin-bottom: 14px;
@@ -614,8 +615,8 @@ textarea:focus {
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
-  background: var(--ink);
-  border-top: 1px solid #1e2e1e;
+  background: var(--card);
+  border-top: 1.5px solid var(--border);
   padding: 14px 20px;
   display: flex;
   gap: 10px;
@@ -640,19 +641,19 @@ textarea:focus {
 .btn-primary:hover { background: #225c34; }
 
 .btn-secondary {
-  background: #1e2e1e;
+  background: var(--soft);
   color: var(--muted);
   flex: 0 0 auto;
   padding: 14px 20px;
 }
-.btn-secondary:hover { color: var(--paper); }
+.btn-secondary:hover { color: var(--ink); }
 
 .btn-reset {
   background: transparent;
-  border: 1px solid #2a3e2a;
+  border: 1px solid var(--border);
   color: var(--muted);
 }
-.btn-reset:hover { border-color: var(--muted); color: var(--paper); }
+.btn-reset:hover { border-color: var(--ink); color: var(--ink); }
 
 .btn-print {
   background: transparent;
