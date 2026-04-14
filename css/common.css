@@ -702,11 +702,106 @@ textarea:focus {
 
 /* ===== Print ===== */
 @media print {
-  header, .nav-bar, .progress-bar, .disclaimer-bar { display: none; }
-  main { padding: 0; max-width: 100%; }
+  /* 重設 CSS 變數為列印友善值 */
+  :root {
+    --ink: #ffffff;
+    --ink-2: #f5f5f5;
+    --paper: #1a1a1a;
+    --gold: #8b6914;
+    --muted: #555555;
+    --muted-2: #888888;
+    --border: #cccccc;
+    --border-2: #dddddd;
+    --card: #ffffff;
+    --accent: #1a5c2e;
+    --danger: #8b2020;
+  }
+
+  /* 隱藏非內容元素 */
+  header, .nav-bar, .progress-bar, .disclaimer-bar,
+  #themeToggle, .case-law-panel, .persona-bar, .persona-badge,
+  .search-bar, .tab-bar, .hero-footer, .badge,
+  button, .btn, .nav-bar-spacer { display: none !important; }
+
+  /* 基本版面 */
+  body {
+    background: #fff !important;
+    color: #1a1a1a !important;
+    font-size: 12px;
+    line-height: 1.6;
+    padding: 0;
+    margin: 0;
+  }
+  main {
+    padding: 0 !important;
+    max-width: 100% !important;
+  }
+
+  /* 顯示所有步驟 */
   .step { display: block !important; }
-  .result-hero, .result-card, .action-card { break-inside: avoid; }
-  body { background: #fff; color: #000; }
+
+  /* 結果區塊 */
+  .result-hero {
+    background: #f5f5f5 !important;
+    color: #1a1a1a !important;
+    border: 1px solid #ccc;
+    break-inside: avoid;
+  }
+  .result-hero-amount {
+    color: #8b6914 !important;
+  }
+  .result-hero-label, .result-hero-sub {
+    color: #555 !important;
+  }
+  .result-card, .action-card, .info-card, .warn-box, .success-box, .danger-box {
+    break-inside: avoid;
+    border: 1px solid #ccc;
+    background: #fff !important;
+  }
+
+  /* 表格 */
+  .breakdown-table { width: 100%; }
+  .breakdown-table th, .breakdown-table td {
+    color: #1a1a1a !important;
+    border-bottom: 1px solid #ddd;
+  }
+
+  /* 法律依據區塊保留 */
+  .law-note {
+    border: 1px solid #ccc;
+    padding: 12px;
+    break-inside: avoid;
+    color: #333 !important;
+  }
+
+  /* 分頁控制 */
+  h1, h2, .step-title, .result-card-title, .wizard-section-title {
+    break-after: avoid;
+    color: #1a1a1a !important;
+  }
+
+  /* 連結不顯示底線 */
+  a { text-decoration: none !important; color: #1a1a1a !important; }
+
+  /* 總計區塊 — 深色底改淺色底 */
+  .total-claim-box, .settle-total-box, .conclusion-header,
+  [class*="total-box"], [class*="grand-total"] {
+    background: #f0f0f0 !important;
+    color: #1a1a1a !important;
+    border: 2px solid #8b6914;
+  }
+  .total-claim-box *, .settle-total-box *, .conclusion-header * {
+    color: #1a1a1a !important;
+  }
+  .total-claim-amount, .total-claim-label {
+    color: #1a1a1a !important;
+  }
+  .total-claim-amount {
+    color: #8b6914 !important;
+  }
+
+  /* 隱藏互動元素 */
+  input, select, .field-group { border: 1px solid #ccc; }
 }
 
 /* ===== Persona Bar ===== */
