@@ -427,7 +427,7 @@
         <span class="result-row-val danger" id="r_totalDeduct">—</span>
       </div>
       <p style="font-size:11px;color:var(--muted);margin-top:10px;line-height:1.6;">
-        註：勞保費率以12%計算（含就保1%），勞工自付20%；健保費率以5.17%計算，勞工自付30%。實際金額依投保級距而定。
+        註：勞保按日計算（費率12%含就保1%，勞工自付20%）；健保以月為單位，月中離職不扣當月健保（由下個投保單位負責），月底最後一天離職才扣整月。實際金額依投保級距而定。
       </p>
     </div>
   </div>
@@ -699,12 +699,20 @@
 
     // 勞健保扣繳
     var insuredSalary = LP.getLaborInsuranceBracket(state.salary);
+    var endD2 = new Date(state.endDate);
+    var lastDayOfMonth = new Date(endD2.getFullYear(), endD2.getMonth() + 1, 0).getDate();
+    var isLastDay = (dayOfMonth === lastDayOfMonth);
+
     // 勞保：費率12%（含就保1%），勞工自付20%，按日計算
     var laborInsMonth = insuredSalary * 0.12 * 0.2;
     var laborIns = laborInsMonth / 30 * dayOfMonth;
-    // 健保：費率5.17%，勞工自付30%
+
+    // 健保：以「月」為單位，看月底最後一天在哪個投保單位
+    // 月中離職 → 原公司不扣當月健保（由下個投保單位負責）
+    // 月底最後一天離職 → 原公司扣整月健保
     var healthInsMonth = insuredSalary * 0.0517 * 0.3;
-    var healthIns = healthInsMonth / 30 * dayOfMonth;
+    var healthIns = isLastDay ? healthInsMonth : 0;
+
     state.laborIns = laborIns;
     state.healthIns = healthIns;
 
