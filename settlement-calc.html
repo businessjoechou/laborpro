@@ -615,10 +615,18 @@
 
     // 本月未付工資
     var endD = new Date(state.endDate);
+    var startD = new Date(state.startDate);
     var dayOfMonth = endD.getDate();
-    var unpaidWage = daily * dayOfMonth;
+    // 同月到職離職：只算實際工作天數
+    var workedDays;
+    if (startD.getFullYear() === endD.getFullYear() && startD.getMonth() === endD.getMonth()) {
+      workedDays = dayOfMonth - startD.getDate() + 1;
+    } else {
+      workedDays = dayOfMonth;
+    }
+    var unpaidWage = daily * workedDays;
     state.unpaidWage = unpaidWage;
-    document.getElementById('r_workedDays').textContent = dayOfMonth + ' 天';
+    document.getElementById('r_workedDays').textContent = workedDays + ' 天';
     document.getElementById('r_unpaidWage').textContent = LP.fmt(unpaidWage);
 
     // 特休折現

@@ -1099,6 +1099,12 @@ const ALL_TOOLS = {
       worker: '被炒魷魚合法嗎？§11、§12、§14解雇合法性判斷，權益請求評估',
       employer: '解雇員工前必看！§11、§12、§14合法性自檢，降低訴訟風險'
     }},
+  'notice-calc': { href: 'notice-calc.html', badge: 'new',
+    name: { all: '離職預告期計算' },
+    desc: {
+      worker: '離職要提前幾天講？依§15準用§16計算預告天數及最早離職日',
+      employer: '資遣預告期間及預告工資計算，依§16自動試算天數與金額'
+    }},
   'settlement-calc': { href: 'settlement-calc.html',
     name: { all: '離職結算檢查表' },
     desc: {
@@ -1227,7 +1233,7 @@ const TABS = [
     id: 'severance',
     label: '資遣與補償',
     subtitle: '資遣費、預告工資、不當解雇、離職結算一次搞定。',
-    tools: ['severance', 'wrongful-dismissal', 'annual-leave', 'settlement-calc', 'dismissal-checklist']
+    tools: ['severance', 'wrongful-dismissal', 'notice-calc', 'annual-leave', 'settlement-calc', 'dismissal-checklist']
   },
   {
     id: 'wage',

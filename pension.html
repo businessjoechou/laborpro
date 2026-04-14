@@ -398,7 +398,10 @@
   function monthsBetween(startStr, endStr) {
     const s = new Date(startStr);
     const e = new Date(endStr);
-    return (e.getFullYear() - s.getFullYear()) * 12 + (e.getMonth() - s.getMonth());
+    var months = (e.getFullYear() - s.getFullYear()) * 12 + (e.getMonth() - s.getMonth());
+    // 日期未滿整月時扣回一個月
+    if (e.getDate() < s.getDate()) months--;
+    return Math.max(months, 0);
   }
 
   function fmt(n) {

@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" href="favicon.svg">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>離職預告期計算機｜LaborPro</title>
+<meta name="description" content="依勞基法§15、§16計算勞工自願離職預告期間天數及最早可離職日期，支援雇主資遣預告期間及預告工資試算。免費使用，立即試算。">
+<meta name="keywords" content="離職預告期,預告期間計算,勞基法第15條,勞基法第16條,離職天數,預告工資,台灣勞基法">
+<meta name="robots" content="index, follow">
+<meta name="author" content="LaborPro">
+<meta property="og:title" content="離職預告期計算機｜LaborPro">
+<meta property="og:description" content="依勞基法§15、§16計算離職預告期間天數及最早可離職日期，免費使用。">
+<meta property="og:site_name" content="LaborPro">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://laborpro.choulegal.com/choulegal-icon.svg">
+<meta property="og:image:width" content="400">
+<meta property="og:image:height" content="400">
+<link rel="canonical" href="https://laborpro.choulegal.com/notice-calc.html">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="js/supabase-config.js"></script>
+<script src="js/persona.js"></script>
+<script type="module" src="js/auth-bar.js"></script>
+<link rel="stylesheet" href="css/common.css">
+<script src="js/animations.js" defer></script>
+<style>
+  .type-selector {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .type-btn {
+    flex: 1;
+    padding: 14px 10px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    background: var(--paper);
+    font-family: 'Noto Serif TC', serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--muted);
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+  }
+  .type-btn.active {
+    border-color: var(--accent);
+    background: #e6f0e6;
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .type-btn small {
+    display: block;
+    font-size: 11px;
+    font-weight: 400;
+    margin-top: 4px;
+    opacity: 0.7;
+  }
+  .notice-tier-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    margin-top: 4px;
+  }
+  .notice-tier-table th {
+    background: var(--soft);
+    padding: 8px 10px;
+    text-align: left;
+    font-family: 'Noto Serif TC', serif;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    font-weight: 500;
+  }
+  .notice-tier-table td {
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--soft);
+    color: var(--ink);
+  }
+  .notice-tier-table tr:last-child td { border-bottom: none; }
+  .notice-tier-table tr.highlight td {
+    background: #e6f0e6;
+    font-weight: 600;
+    color: var(--accent);
+  }
+  .date-result-box {
+    background: var(--accent);
+    color: #fff;
+    border-radius: 14px;
+    padding: 22px 24px;
+    margin-bottom: 14px;
+    text-align: center;
+  }
+  .date-result-label {
+    font-size: 12px;
+    opacity: 0.8;
+    margin-bottom: 6px;
+    font-family: 'Noto Serif TC', serif;
+    letter-spacing: 0.1em;
+  }
+  .date-result-value {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 28px;
+    font-weight: 700;
+  }
+  .date-result-sub {
+    font-size: 12px;
+    opacity: 0.7;
+    margin-top: 6px;
+  }
+  .employer-notice-card {
+    background: #fef8e8;
+    border: 1.5px solid #e8c882;
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 14px;
+  }
+  .employer-notice-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: #8a5a10;
+    margin-bottom: 8px;
+  }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "離職預告期計算機｜LaborPro",
+  "description": "依勞基法§15、§16計算離職預告期間天數及最早可離職日期",
+  "url": "https://laborpro.choulegal.com/notice-calc.html",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "TWD"
+  },
+  "provider": {
+    "@type": "Organization",
+    "name": "周全法律科技 ChouLegal",
+    "url": "https://choulegal.com"
+  }
+}
+</script>
+</head>
+<body>
+
+<header>
+  <a href="index.html" style="text-decoration:none;color:inherit">
+    <div class="parent-brand"><img class="cl-icon" src="choulegal-icon.svg" alt="周全法律科技">周全 <span>ChouLegal</span></div>
+    <div class="logo">Labor<span>Pro</span></div>
+  </a>
+  <a class="back-link" href="index.html">← 首頁</a>
+</header>
+<div class="progress-bar">
+  <div class="progress-fill" id="progressFill" style="width: 50%"></div>
+</div>
+
+<main>
+
+  <!-- Step 1 -->
+  <div class="step active" id="step1">
+    <div class="step-header">
+      <div class="step-label">Step 1 of 2 · 基本資料</div>
+      <h1 class="step-title">離職預告期計算</h1>
+      <p class="step-sub">依勞基法§15準用§16規定，計算自願離職應遵守之預告期間天數及最早可離職日。</p>
+    </div>
+
+    <div class="wizard">
+      <div class="wizard-section-title">離職類型</div>
+      <div class="type-selector">
+        <div class="type-btn active" id="typeResign" onclick="selectType('resign')">
+          勞工自願離職<small>§15 準用 §16</small>
+        </div>
+        <div class="type-btn" id="typeLayoff" onclick="selectType('layoff')">
+          雇主資遣解僱<small>§16 預告期間</small>
+        </div>
+      </div>
+      <div class="info-box" id="infoResign">
+        依勞基法§15第2項，不定期契約勞工終止契約時，應準用§16第1項規定之預告期間。
+      </div>
+      <div class="info-box" id="infoLayoff" style="display:none;">
+        依勞基法§16，雇主依§11或§13但書終止契約者，應於一定期間前預告勞工。未給預告者，應給付預告期間工資。
+      </div>
+    </div>
+
+    <div class="wizard">
+      <div class="wizard-section-title">服務年資</div>
+      <div class="field-group">
+        <label>到職日期</label>
+        <input type="date" id="startDate">
+      </div>
+      <div class="field-group">
+        <label id="labelEndDate">預計離職日期</label>
+        <input type="date" id="endDate">
+      </div>
+    </div>
+
+    <div class="wizard" id="salarySection" style="display:none;">
+      <div class="wizard-section-title">薪資資料（計算預告工資）</div>
+      <div class="field-group">
+        <label>平均工資（月薪）<span style="font-weight:400;color:var(--muted);font-size:12px;margin-left:6px;">離職前6個月平均</span></label>
+        <input type="number" id="avgWage" placeholder="50000" min="0" inputmode="numeric">
+      </div>
+    </div>
+
+    <div class="warn-box">
+      ⚠ 勞工依§14（雇主違法）終止契約者，不受預告期間限制，可立即離職。
+    </div>
+  </div>
+
+  <!-- Step 2 — Results -->
+  <div class="step" id="step2">
+    <div class="step-header">
+      <div class="step-label">Step 2 of 2 · 計算結果</div>
+      <h1 class="step-title" id="resultTitle">離職預告期試算結果</h1>
+      <p class="step-sub" id="resultSub">以下為依勞基法§15準用§16計算之預告期間。</p>
+    </div>
+
+    <!-- 預告天數 hero -->
+    <div class="result-hero">
+      <div class="result-hero-label" id="r_heroLabel">應遵守預告期間</div>
+      <div class="result-hero-amount" id="r_noticeDays">—</div>
+      <div class="result-hero-sub" id="r_noticeTier">—</div>
+    </div>
+
+    <!-- 最早離職日 -->
+    <div class="date-result-box" id="dateResultBox">
+      <div class="date-result-label" id="r_dateLabel">最早可離職日</div>
+      <div class="date-result-value" id="r_earliestDate">—</div>
+      <div class="date-result-sub" id="r_dateSub">—</div>
+    </div>
+
+    <!-- 預告工資 (雇主資遣時顯示) -->
+    <div class="employer-notice-card" id="noticeWageCard" style="display:none;">
+      <div class="employer-notice-title">預告工資（§16第3項）</div>
+      <div class="result-row">
+        <span class="result-row-label">日薪（月薪 ÷ 30）</span>
+        <span class="result-row-val" id="r_dailyWage">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">預告工資金額</span>
+        <span class="result-row-val highlight" id="r_noticeWage">—</span>
+      </div>
+      <div style="font-size:12px;color:#8a6010;margin-top:10px;line-height:1.7;">
+        雇主未依規定期間預告而終止契約者，應給付預告期間之工資。
+      </div>
+    </div>
+
+    <!-- 年資摘要 -->
+    <div class="result-card">
+      <div class="result-card-title">年資明細</div>
+      <div class="result-row">
+        <span class="result-row-label">到職日期</span>
+        <span class="result-row-val" id="r_startDate">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label" id="r_endDateLabel">預計離職日期</span>
+        <span class="result-row-val" id="r_endDate">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">服務年資</span>
+        <span class="result-row-val highlight" id="r_tenure">—</span>
+      </div>
+    </div>
+
+    <!-- 預告期間對照表 -->
+    <div class="result-card">
+      <div class="result-card-title">預告期間對照表｜§16</div>
+      <table class="notice-tier-table">
+        <thead><tr>
+          <th>年資</th>
+          <th style="text-align:right">預告天數</th>
+          <th></th>
+        </tr></thead>
+        <tbody id="tierTableBody"></tbody>
+      </table>
+    </div>
+
+    <!-- Persona 提示 -->
+    <div class="worker-only" style="background:#eef8f2;border:1.5px solid var(--accent);border-radius:12px;padding:16px 20px;margin-bottom:14px;">
+      <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:8px;">勞工注意事項</div>
+      <div style="font-size:12px;color:#1a3a28;line-height:1.9;">
+        · 預告期間自<strong>通知雇主之翌日</strong>起算，不含通知當天<br>
+        · 預告期間內，勞工每星期可有<strong>2日外出謀職假</strong>，工資照給（§16 II）<br>
+        · 雇主如有違反勞動法令情形（§14），勞工可<strong>不經預告立即離職</strong><br>
+        · 定期契約期滿離職，<strong>不需預告</strong><br>
+        · 建議以<strong>書面</strong>（存證信函、Email）方式提出離職，保留證據<br>
+        · 勞動部諮詢專線：<strong>1955</strong>
+      </div>
+    </div>
+
+    <div class="employer-only" style="background:#fef8e8;border:1.5px solid #c8901a;border-radius:12px;padding:16px 20px;margin-bottom:14px;">
+      <div style="font-size:12px;font-weight:700;color:#8a5a10;margin-bottom:8px;">雇主注意事項</div>
+      <div style="font-size:12px;color:#4a3a10;line-height:1.9;">
+        · 未依§16規定預告即終止契約者，應給付<strong>預告期間工資</strong>（§16 III）<br>
+        · 預告期間內應給予勞工每週<strong>2日謀職假</strong>，工資照給（§16 II）<br>
+        · 資遣須於<strong>10日前</strong>通報當地主管機關及公立就服機構（就服法§33）<br>
+        · 違反預告期間規定，罰<strong>2萬至30萬</strong>（§79）<br>
+        · 預告期間之計算，依<strong>日曆天數</strong>計算（含例假日）
+      </div>
+    </div>
+
+    <!-- 法律依據 -->
+    <div class="law-note">
+      <strong>法律依據</strong><br>
+      · <strong>勞基法§15</strong>：不定期契約勞工終止契約之預告，準用§16第1項規定<br>
+      · <strong>勞基法§16第1項</strong>：繼續工作3個月以上1年未滿者10日前預告；1年以上3年未滿者20日前預告；3年以上者30日前預告<br>
+      · <strong>勞基法§16第2項</strong>：預告期間內勞工每星期得請2日謀職假，工資照給<br>
+      · <strong>勞基法§16第3項</strong>：雇主未依期間預告而終止契約者，應給付預告期間工資<br>
+      · <strong>勞基法§14</strong>：雇主有違法情形時，勞工得不經預告終止契約
+    </div>
+  </div>
+
+</main>
+
+<!-- Nav bar -->
+<div class="nav-bar" id="navBar">
+  <button class="btn btn-secondary" id="btnBack" onclick="goBack()" style="display:none;">← 上一步</button>
+  <button class="btn btn-primary" id="btnNext" onclick="goNext()">計算預告期 →</button>
+  <button class="btn btn-reset" id="btnReset" onclick="resetAll()" style="display:none;">重新計算</button>
+</div>
+
+<script>
+  var state = { type: 'resign' };
+  var currentStep = 1;
+  var totalSteps = 2;
+
+  var tiers = [
+    { min: 0,   max: 3,   days: 0,  label: '未滿3個月' },
+    { min: 3,   max: 12,  days: 10, label: '3個月以上未滿1年' },
+    { min: 12,  max: 36,  days: 20, label: '1年以上未滿3年' },
+    { min: 36,  max: Infinity, days: 30, label: '3年以上' }
+  ];
+
+  function selectType(type) {
+    state.type = type;
+    document.getElementById('typeResign').classList.toggle('active', type === 'resign');
+    document.getElementById('typeLayoff').classList.toggle('active', type === 'layoff');
+    document.getElementById('infoResign').style.display = type === 'resign' ? 'block' : 'none';
+    document.getElementById('infoLayoff').style.display = type === 'layoff' ? 'block' : 'none';
+    document.getElementById('salarySection').style.display = type === 'layoff' ? 'block' : 'none';
+    document.getElementById('labelEndDate').textContent =
+      type === 'resign' ? '預計離職日期' : '預計資遣日期';
+  }
+
+  function showStep(n) {
+    document.querySelectorAll('.step').forEach(function (s) { s.classList.remove('active'); });
+    document.getElementById('step' + n).classList.add('active');
+    document.getElementById('progressFill').style.width = (n / totalSteps * 100) + '%';
+    currentStep = n;
+
+    document.getElementById('btnBack').style.display  = n > 1 ? 'block' : 'none';
+    document.getElementById('btnNext').style.display   = n === 1 ? 'flex' : 'none';
+    document.getElementById('btnReset').style.display  = n === 2 ? 'flex' : 'none';
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function goBack() { if (currentStep > 1) showStep(1); }
+  function goNext() {
+    if (currentStep === 1) {
+      if (!validate()) return;
+      calculate();
+      showStep(2);
+    }
+  }
+  function resetAll() { showStep(1); }
+
+  function validate() {
+    var start = document.getElementById('startDate').value;
+    var end = document.getElementById('endDate').value;
+    if (!start) { alert('請填寫到職日期。'); return false; }
+    if (!end) { alert('請填寫預計離職日期。'); return false; }
+    if (new Date(start) >= new Date(end)) { alert('離職日期須晚於到職日期。'); return false; }
+    if (state.type === 'layoff') {
+      var wage = parseFloat(document.getElementById('avgWage').value);
+      if (!wage || wage <= 0) { alert('請輸入有效的平均工資。'); return false; }
+    }
+    return true;
+  }
+
+  function calcMonths(from, to) {
+    var d1 = new Date(from), d2 = new Date(to);
+    var years  = d2.getFullYear() - d1.getFullYear();
+    var months = d2.getMonth()    - d1.getMonth();
+    var days   = d2.getDate()     - d1.getDate();
+    if (days < 0) { months--; days += new Date(d2.getFullYear(), d2.getMonth(), 0).getDate(); }
+    if (months < 0) { years--; months += 12; }
+    var totalMonths = years * 12 + months + days / 30;
+    return { years: years, months: months, days: days, totalMonths: totalMonths };
+  }
+
+  function fmtTenure(y, m, d) {
+    var parts = [];
+    if (y > 0) parts.push(y + ' 年');
+    if (m > 0) parts.push(m + ' 個月');
+    if (d > 0) parts.push(d + ' 天');
+    return parts.length ? parts.join(' ') : '未滿1個月';
+  }
+
+  function fmtDate(dateStr) {
+    var d = new Date(dateStr);
+    return d.getFullYear() + '/' + (d.getMonth() + 1) + '/' + d.getDate();
+  }
+
+  function fmt(n) {
+    return 'NT$ ' + Math.round(n).toLocaleString('zh-TW');
+  }
+
+  function addDays(dateStr, days) {
+    var d = new Date(dateStr);
+    d.setDate(d.getDate() + days);
+    return d;
+  }
+
+  function getNoticeTier(totalMonths) {
+    for (var i = tiers.length - 1; i >= 0; i--) {
+      if (totalMonths >= tiers[i].min) return tiers[i];
+    }
+    return tiers[0];
+  }
+
+  function calculate() {
+    var startDate = document.getElementById('startDate').value;
+    var endDate = document.getElementById('endDate').value;
+    var info = calcMonths(startDate, endDate);
+    var tier = getNoticeTier(info.totalMonths);
+    var isResign = state.type === 'resign';
+
+    // Title & subtitle
+    if (isResign) {
+      document.getElementById('resultTitle').textContent = '離職預告期試算結果';
+      document.getElementById('resultSub').textContent = '依勞基法§15準用§16第1項規定之預告期間。';
+      document.getElementById('r_heroLabel').textContent = '應遵守預告期間';
+      document.getElementById('r_dateLabel').textContent = '最早可離職日';
+    } else {
+      document.getElementById('resultTitle').textContent = '資遣預告期試算結果';
+      document.getElementById('resultSub').textContent = '依勞基法§16規定之雇主預告期間及預告工資。';
+      document.getElementById('r_heroLabel').textContent = '雇主應遵守預告期間';
+      document.getElementById('r_dateLabel').textContent = '最早可資遣日';
+    }
+
+    // Notice days
+    if (tier.days === 0) {
+      document.getElementById('r_noticeDays').textContent = '無需預告';
+    } else {
+      document.getElementById('r_noticeDays').textContent = tier.days + ' 天';
+    }
+    document.getElementById('r_noticeTier').textContent = tier.label;
+
+    // Earliest date: today + notice days + 1 (翌日起算)
+    var today = new Date();
+    today.setHours(0, 0, 0, 0);
+    var earliest = addDays(today.toISOString().split('T')[0], tier.days + 1);
+    var targetDate = new Date(endDate);
+
+    if (tier.days === 0) {
+      document.getElementById('r_earliestDate').textContent = '隨時可離職';
+      document.getElementById('r_dateSub').textContent = '年資未滿3個月，無預告期間限制';
+    } else {
+      document.getElementById('r_earliestDate').textContent =
+        earliest.getFullYear() + '/' + (earliest.getMonth() + 1) + '/' + earliest.getDate();
+
+      if (targetDate >= earliest) {
+        document.getElementById('r_dateSub').textContent =
+          '若今日提出' + (isResign ? '離職' : '資遣通知') + '，最早 ' +
+          earliest.getFullYear() + '/' + (earliest.getMonth() + 1) + '/' + earliest.getDate() +
+          ' 生效（預告期 ' + tier.days + ' 天，翌日起算）';
+      } else {
+        var needNotifyBy = addDays(endDate, -(tier.days + 1));
+        document.getElementById('r_dateSub').textContent =
+          '若要在 ' + fmtDate(endDate) + ' 離職，須最晚於 ' +
+          needNotifyBy.getFullYear() + '/' + (needNotifyBy.getMonth() + 1) + '/' + needNotifyBy.getDate() +
+          ' 前提出通知';
+      }
+    }
+
+    // Notice wage (layoff only)
+    var noticeWageCard = document.getElementById('noticeWageCard');
+    if (!isResign && tier.days > 0) {
+      var wage = parseFloat(document.getElementById('avgWage').value);
+      var dailyWage = wage / 30;
+      var noticeWage = dailyWage * tier.days;
+      noticeWageCard.style.display = 'block';
+      document.getElementById('r_dailyWage').textContent = fmt(dailyWage);
+      document.getElementById('r_noticeWage').textContent = fmt(noticeWage);
+    } else {
+      noticeWageCard.style.display = 'none';
+    }
+
+    // Summary
+    document.getElementById('r_startDate').textContent = fmtDate(startDate);
+    document.getElementById('r_endDate').textContent = fmtDate(endDate);
+    document.getElementById('r_endDateLabel').textContent =
+      isResign ? '預計離職日期' : '預計資遣日期';
+    document.getElementById('r_tenure').textContent =
+      fmtTenure(info.years, info.months, info.days);
+
+    // Tier table
+    var tbody = document.getElementById('tierTableBody');
+    tbody.innerHTML = '';
+    for (var i = 0; i < tiers.length; i++) {
+      var t = tiers[i];
+      var isCurrent = info.totalMonths >= t.min && info.totalMonths < t.max;
+      var tr = document.createElement('tr');
+      if (isCurrent) tr.className = 'highlight';
+      tr.innerHTML =
+        '<td>' + t.label + '</td>' +
+        '<td style="font-family:\'Noto Serif TC\',monospace;text-align:right">' +
+          (t.days > 0 ? t.days + ' 天' : '免預告') +
+        '</td>' +
+        '<td style="font-size:11px;color:var(--accent)">' +
+          (isCurrent ? '← 目前' : '') +
+        '</td>';
+      tbody.appendChild(tr);
+    }
+  }
+
+  showStep(1);
+</script>
+<div class="disclaimer-bar"><strong>免責聲明</strong>：本平台之計算結果僅供初步參考，不構成法律意見或法律諮詢服務。實際案件因個案事實、適用法規及法院見解不同，結果可能有所差異，建議諮詢具執照之律師或相關法律專業人員。</div>
+</body>
+</html>

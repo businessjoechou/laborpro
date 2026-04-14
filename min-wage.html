@@ -319,7 +319,7 @@
               <td id="r_weeklyHoursDisplay">—</td>
             </tr>
             <tr>
-              <td class="td-label">換算時薪（月薪÷4.333÷每週工時）</td>
+              <td class="td-label">換算時薪（月薪÷4.33÷每週工時）</td>
               <td id="r_impliedHourly">—</td>
             </tr>
           </tbody>
@@ -367,7 +367,7 @@
           </tbody>
         </table>
         <div class="vs-row">
-          <span>月薪換算（× 40hr × 4.333週）</span>
+          <span>月薪換算（× 40hr × 4.33週）</span>
           <strong id="r_impliedMonthly">—</strong>
         </div>
       </div>
@@ -514,7 +514,7 @@
 
       const h = s.hourlySalary;
       const gap = h - MIN_HOURLY;
-      const impliedMonthly = h * s.weeklyHours * 4.333;
+      const impliedMonthly = h * s.weeklyHours * (52 / 12);
 
       document.getElementById('r_yourHourly').textContent      = fmt(h);
       document.getElementById('r_hourlyGap').textContent       = gap >= 0 ? fmt(gap) : fmt(gap) + ' (不足)';
@@ -573,7 +573,7 @@
       }
 
       // Hourly cross-check
-      const impliedHourly = s.baseSalary / 4.333 / s.weeklyHours;
+      const impliedHourly = s.baseSalary / (52 / 12) / s.weeklyHours;
       document.getElementById('r_weeklyHoursDisplay').textContent = s.weeklyHours + ' 小時';
       document.getElementById('r_impliedHourly').textContent      = '$' + impliedHourly.toFixed(2);
 

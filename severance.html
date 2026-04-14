@@ -438,7 +438,11 @@
     let years  = d2.getFullYear() - d1.getFullYear();
     let months = d2.getMonth()    - d1.getMonth();
     let days   = d2.getDate()     - d1.getDate();
-    if (days < 0)   { months--; days += 30; }
+    if (days < 0) {
+      months--;
+      var prev = new Date(d2.getFullYear(), d2.getMonth(), 0);
+      days += prev.getDate();
+    }
     if (months < 0) { years--;  months += 12; }
     const totalMonths = years * 12 + months + days / 30;
     return { years, months, days, totalMonths };

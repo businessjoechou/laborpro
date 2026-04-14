@@ -244,7 +244,7 @@
     <div class="law-note">
       <strong>加班費計算標準（勞基法§24）</strong><br>
       · <strong>平日加班</strong>：前2小時 × 1⅓ 倍，後2小時 × 1⅔ 倍<br>
-      · <strong>休息日加班</strong>：前2小時 × 1⅓ 倍，後6小時 × 1⅔ 倍（最低以4/8/12小時計酬）<br>
+      · <strong>休息日加班</strong>：前2小時 × 1⅓ 倍，第3小時起 × 1⅔ 倍（2018修法後依實際時數核實計算）<br>
       · <strong>國定假日加班</strong>：全部 × 2 倍<br>
       · <strong>例假日加班</strong>：全部 × 2 倍（僅天災等特殊原因始得為之）
     </div>
@@ -297,16 +297,15 @@
         break;
       }
       case 'restday': {
-        // 休息日：前2hr × 4/3，後6hr × 5/3，最低4/8/12計酬
-        var billableHours = hours;
-        if (hours < 4) billableHours = 4;
-        else if (hours < 8) billableHours = 8;
-        else if (hours < 12) billableHours = 12;
-
-        var r1 = Math.min(billableHours, 2);
-        var r2 = Math.max(billableHours - 2, 0);
+        // 休息日：依實際時數核實計算（2018修法後不再以4/8/12分級計酬）
+        // 前2hr × 4/3，第3hr起 × 5/3
+        var r1 = Math.min(hours, 2);
+        var r2 = Math.max(hours - 2, 0);
         pay = r1 * hourlyRate * (4/3) + r2 * hourlyRate * (5/3);
-        detail = '實際' + hours + 'h → 計酬' + billableHours + 'h';
+        var parts = [];
+        if (r1 > 0) parts.push(r1 + 'h×1.33');
+        if (r2 > 0) parts.push(r2 + 'h×1.67');
+        detail = parts.join(' + ');
         break;
       }
       case 'holiday': {
