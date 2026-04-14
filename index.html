@@ -606,14 +606,106 @@
   .disclaimer-bar .dot { opacity: 0.2; font-size: 12px; }
 
   /* ─────────── Animation ─────────── */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(16px); }
-    to { opacity: 1; transform: translateY(0); }
+  @keyframes heroFadeSlideUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
   }
-  .hero-title { animation: fadeUp 0.5s ease both; }
-  .hero-sub { animation: fadeUp 0.5s 0.08s ease both; }
-  .persona-bar { animation: fadeUp 0.5s 0.12s ease both; }
-  .search-bar { animation: fadeUp 0.5s 0.18s ease both; }
+  @keyframes heroSearchIn {
+    from { opacity: 0; transform: scale(0.97) translateY(12px); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
+  }
+  @keyframes badgePulseIndex {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%      { opacity: 0.8; transform: scale(1.06); }
+  }
+
+  .eyebrow       { animation: heroFadeSlideUp 600ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+  .hero-title     { animation: heroFadeSlideUp 600ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+  .hero-sub       { animation: heroFadeSlideUp 600ms 200ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+  .persona-bar    { animation: heroFadeSlideUp 600ms 300ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+  .search-bar     { animation: heroSearchIn 600ms 400ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+
+  /* ─── Tool Card Hover Effects ─── */
+  .tool-card {
+    transition: all 250ms ease;
+    will-change: transform, box-shadow, border-color;
+  }
+  .tool-card:hover,
+  .tool-card.reveal-card.revealed:hover {
+    border-color: var(--gold);
+    background: rgba(200, 144, 26, 0.04);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(200, 144, 26, 0.2);
+  }
+  .tool-card:active,
+  .tool-card.reveal-card.revealed:active {
+    transform: translateY(-1px);
+    transition-duration: 80ms;
+  }
+
+  /* Featured card hover lift */
+  .featured-card {
+    transition: all 250ms ease;
+    will-change: transform, box-shadow;
+  }
+  .featured-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  }
+  .featured-card:active {
+    transform: translateY(-1px);
+    transition-duration: 80ms;
+  }
+
+  /* Badge pulse for HOT badges */
+  .tool-badge.hot,
+  .featured-badge.hot {
+    animation: badgePulseIndex 2.5s ease-in-out infinite;
+  }
+
+  /* ─── Scroll Reveal for tool cards ─── */
+  .tool-card.reveal-card {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 600ms cubic-bezier(0.16, 1, 0.3, 1), transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .tool-card.reveal-card.revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ─── Featured strip scroll reveal ─── */
+  .featured-card.reveal-card {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 600ms cubic-bezier(0.16, 1, 0.3, 1), transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .featured-card.reveal-card.revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ─── Persona Crossfade ─── */
+  .persona-crossfade-out {
+    opacity: 0;
+    transition: opacity 250ms ease;
+  }
+  .persona-crossfade-in {
+    animation: heroFadeSlideUp 400ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  /* ─── Reduced Motion ─── */
+  @media (prefers-reduced-motion: reduce) {
+    .eyebrow, .hero-title, .hero-sub, .persona-bar, .search-bar,
+    .tool-badge.hot, .featured-badge.hot {
+      animation: none !important;
+    }
+    .tool-card, .featured-card, .tool-card.reveal-card, .featured-card.reveal-card {
+      opacity: 1 !important;
+      transform: none !important;
+      transition: none !important;
+    }
+  }
 
   /* ─────────── Desktop ─────────── */
   @media (min-width: 720px) {
@@ -1242,11 +1334,70 @@ function renderTabs() {
     .filter(k => ALL_TOOLS[k] && (!ALL_TOOLS[k].persona || ALL_TOOLS[k].persona === P))
     .map(k => renderToolCard(k, ALL_TOOLS[k]))
     .join('');
+
+  // Staggered scroll-reveal for tool cards
+  revealToolCards();
 }
 
 function switchTab(i) {
   activeTab = i;
   renderTabs();
+}
+
+// ─── Scroll Reveal Observer for Tool Cards ───
+function revealToolCards() {
+  var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var cards = document.querySelectorAll('#toolsContainer .tool-card');
+  cards.forEach(function(card, idx) {
+    card.classList.add('reveal-card');
+    if (prefersReduced) {
+      card.classList.add('revealed');
+      return;
+    }
+    card.style.transitionDelay = (idx * 80) + 'ms';
+  });
+  if (prefersReduced) return;
+  if (!('IntersectionObserver' in window)) {
+    cards.forEach(function(c) { c.classList.add('revealed'); });
+    return;
+  }
+  var obs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('revealed');
+        obs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.05, rootMargin: '0px 0px -20px 0px' });
+  cards.forEach(function(c) { obs.observe(c); });
+}
+
+// ─── Scroll Reveal for Featured Cards ───
+function revealFeaturedCards() {
+  var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var cards = document.querySelectorAll('#featuredStrip .featured-card');
+  cards.forEach(function(card, idx) {
+    card.classList.add('reveal-card');
+    if (prefersReduced) {
+      card.classList.add('revealed');
+      return;
+    }
+    card.style.transitionDelay = (idx * 100) + 'ms';
+  });
+  if (prefersReduced) return;
+  if (!('IntersectionObserver' in window)) {
+    cards.forEach(function(c) { c.classList.add('revealed'); });
+    return;
+  }
+  var obs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('revealed');
+        obs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.05 });
+  cards.forEach(function(c) { obs.observe(c); });
 }
 
 function renderSearch(query) {
@@ -1308,6 +1459,7 @@ function renderPersonaBadge() {
 renderPersonaBadge();
 renderFeatured();
 renderTabs();
+revealFeaturedCards();
 
 document.getElementById('toolSearch').addEventListener('input', function () {
   const q = this.value.trim();

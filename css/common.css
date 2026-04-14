@@ -81,7 +81,7 @@ header {
 
 /* ===== Progress Bar ===== */
 .progress-bar { height: 3px; background: var(--soft); }
-.progress-fill { height: 100%; background: var(--gold); transition: width 0.4s ease; }
+/* .progress-fill transition handled in Animations section below */
 
 /* ===== Main ===== */
 main {
@@ -91,13 +91,7 @@ main {
 }
 
 /* ===== Step / Wizard ===== */
-.step { display: none; }
-.step.active { display: block; animation: fadeUp 0.3s ease both; }
-
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(12px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
+/* Step display & animation handled in Animations section below */
 
 .step-header { margin-bottom: 28px; }
 
@@ -178,9 +172,9 @@ textarea {
   font-size: 14px;
   font-family: 'Noto Sans TC', sans-serif;
   color: var(--ink);
-  transition: border-color 0.2s;
   -webkit-appearance: none;
   appearance: none;
+  /* transition handled in Animations section */
 }
 
 input[type="date"],
@@ -188,14 +182,13 @@ input[type="number"] {
   font-family: 'DM Mono', monospace;
 }
 
+/* Focus styles handled in Animations section below */
 input[type="date"]:focus,
 input[type="number"]:focus,
 input[type="text"]:focus,
 select:focus,
 textarea:focus {
   outline: none;
-  border-color: var(--accent);
-  background: #fff;
 }
 
 .select-wrap { position: relative; }
@@ -802,6 +795,12 @@ textarea:focus {
 
   /* 隱藏互動元素 */
   input, select, .field-group { border: 1px solid #ccc; }
+
+  /* 確保動畫元素在列印時可見 */
+  .scroll-reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }
 
 /* ===== Persona Bar ===== */
@@ -933,4 +932,223 @@ textarea:focus {
   margin-top: 6px;
   letter-spacing: 0.06em;
   font-weight: 600;
+}
+
+/* ===== Animations & Micro-interactions ===== */
+
+/* --- Custom easing variables --- */
+:root {
+  --ease-entrance: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-entrance: 600ms;
+  --dur-hover: 250ms;
+}
+
+/* --- Step Wizard Transitions --- */
+.step {
+  display: none;
+}
+.step.active {
+  display: block;
+  animation: stepFadeIn var(--dur-entrance) var(--ease-entrance) both;
+}
+.step.step-exit-left {
+  animation: stepFadeOutLeft 350ms ease both;
+  pointer-events: none;
+}
+.step.step-enter-right {
+  animation: stepFadeInRight var(--dur-entrance) var(--ease-entrance) both;
+}
+
+@keyframes stepFadeOutLeft {
+  from { opacity: 1; transform: translateX(0); }
+  to   { opacity: 0; transform: translateX(-30px); }
+}
+
+@keyframes stepFadeInRight {
+  from { opacity: 0; transform: translateX(30px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes stepFadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Progress Bar Smooth Transition --- */
+.progress-fill {
+  height: 100%;
+  background: var(--gold);
+  transition: width var(--dur-entrance) var(--ease-entrance);
+  will-change: width;
+}
+
+/* --- Button Micro-interactions --- */
+.btn {
+  transition: all var(--dur-hover) ease;
+  will-change: transform, box-shadow;
+}
+
+.btn-primary {
+  animation: btnSubtlePulse 3s ease-in-out infinite;
+}
+
+@keyframes btnSubtlePulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(42, 110, 62, 0); }
+  50%      { box-shadow: 0 0 0 4px rgba(42, 110, 62, 0.12); }
+}
+
+.btn-primary:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 16px rgba(42, 110, 62, 0.25);
+  filter: brightness(1.08);
+  animation: none;
+}
+
+.btn-primary:active {
+  transform: scale(0.98);
+  box-shadow: 0 1px 4px rgba(42, 110, 62, 0.15);
+  transition-duration: 80ms;
+}
+
+.btn-secondary:hover {
+  transform: scale(1.02);
+}
+
+.btn-secondary:active {
+  transform: scale(0.98);
+  transition-duration: 80ms;
+}
+
+.btn-reset:hover {
+  transform: scale(1.02);
+}
+
+.btn-reset:active {
+  transform: scale(0.98);
+  transition-duration: 80ms;
+}
+
+.btn-print:hover {
+  transform: scale(1.02);
+}
+
+.btn-print:active {
+  transform: scale(0.98);
+  transition-duration: 80ms;
+}
+
+/* --- Input Focus Effects --- */
+input[type="date"],
+input[type="number"],
+input[type="text"],
+select,
+textarea {
+  transition: border-color var(--dur-hover) ease, box-shadow var(--dur-hover) ease, background var(--dur-hover) ease;
+}
+
+input[type="date"]:focus,
+input[type="number"]:focus,
+input[type="text"]:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(200, 144, 26, 0.15);
+  background: #fff;
+}
+
+.field-group label {
+  transition: color var(--dur-hover) ease;
+}
+
+.field-group:focus-within label {
+  color: var(--gold);
+}
+
+/* --- Scroll Reveal --- */
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity var(--dur-entrance) var(--ease-entrance),
+    transform var(--dur-entrance) var(--ease-entrance);
+  will-change: opacity, transform;
+}
+
+.scroll-reveal.scroll-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* --- Badge Pulse Animation --- */
+.badge-gold,
+.tool-badge.hot,
+.featured-badge.hot {
+  animation: badgePulse 2.5s ease-in-out infinite;
+}
+
+@keyframes badgePulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.7; }
+}
+
+/* --- Check Row Transitions --- */
+.check-row {
+  transition: all var(--dur-hover) ease, transform 150ms ease;
+}
+
+.check-row:active {
+  transform: scale(0.98);
+}
+
+/* --- Result Hero Amount Counter (placeholder glow while counting) --- */
+.result-hero-amount {
+  transition: opacity 300ms ease;
+}
+
+/* --- Score Bar Fill Animation --- */
+.score-bar-fill {
+  transition: width 800ms var(--ease-entrance);
+  will-change: width;
+}
+
+/* --- FAQ Smooth Toggle --- */
+.faq-a {
+  overflow: hidden;
+  transition: max-height 350ms var(--ease-entrance), opacity 250ms ease;
+}
+
+/* --- Persona Crossfade (for pages that switch persona content) --- */
+.persona-crossfade {
+  transition: opacity 300ms ease;
+}
+
+.persona-crossfade.fading {
+  opacity: 0;
+}
+
+/* ===== Reduced Motion ===== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .scroll-reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .btn-primary {
+    animation: none !important;
+  }
+
+  .badge-gold,
+  .tool-badge.hot,
+  .featured-badge.hot {
+    animation: none !important;
+  }
 }
