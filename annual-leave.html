@@ -34,28 +34,28 @@
   label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 8px; color: var(--ink); }
   .label-sub { font-size: 11px; color: var(--muted); font-weight: 400; margin-left: 6px; }
   .input-prefix { display: flex; align-items: center; }
-  .prefix-label { background: var(--soft); border: 1.5px solid var(--border); border-right: none; border-radius: 8px 0 0 8px; padding: 12px; font-family: 'DM Mono', monospace; font-size: 12px; color: var(--muted); white-space: nowrap; }
-  input[type="number"], input[type="date"] { flex: 1; padding: 12px 14px; border: 1.5px solid var(--border); border-radius: 8px; background: var(--paper); font-size: 15px; font-family: 'DM Mono', monospace; color: var(--ink); -webkit-appearance: none; }
+  .prefix-label { background: var(--soft); border: 1.5px solid var(--border); border-right: none; border-radius: 8px 0 0 8px; padding: 12px; font-family: 'Noto Serif TC', serif; font-size: 12px; color: var(--muted); white-space: nowrap; }
+  input[type="number"], input[type="date"] { flex: 1; padding: 12px 14px; border: 1.5px solid var(--border); border-radius: 8px; background: var(--paper); font-size: 15px; font-family: 'Noto Serif TC', serif; color: var(--ink); -webkit-appearance: none; }
   .input-prefix input[type="number"] { border-radius: 0 8px 8px 0; }
   input:focus { outline: none; border-color: var(--gold); }
   .info-box { background: #e6f0e6; border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 6px; padding: 12px 14px; font-size: 12px; color: var(--accent); line-height: 1.7; margin-bottom: 14px; }
   .warn-box { background: #fdf3e7; border: 1px solid #e8c882; border-left: 3px solid var(--gold); border-radius: 6px; padding: 12px 14px; font-size: 12px; color: #7a5a10; line-height: 1.7; margin-bottom: 14px; }
   .law-note { border-left: 3px solid var(--gold); padding-left: 12px; font-size: 12px; color: var(--muted); line-height: 1.7; margin-top: 10px; background: transparent; }
   .result-hero { background: var(--ink); color: var(--paper); border-radius: 12px; padding: 24px 20px; margin-bottom: 14px; text-align: center; }
-  .result-hero-label { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 8px; }
+  .result-hero-label { font-family: 'Noto Serif TC', serif; font-size: 10px; color: var(--muted); letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 8px; }
   .result-hero-amount { font-family: 'Noto Serif TC', serif; font-size: 36px; font-weight: 700; color: var(--gold); margin-bottom: 6px; }
   .result-hero-sub { font-size: 13px; color: var(--muted); }
   .breakdown-card { background: var(--card); border: 1.5px solid var(--border); border-radius: 12px; overflow: hidden; margin-bottom: 14px; }
-  .breakdown-header { background: var(--soft); padding: 12px 16px; font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 0.14em; text-transform: uppercase; }
+  .breakdown-header { background: var(--soft); padding: 12px 16px; font-family: 'Noto Serif TC', serif; font-size: 10px; color: var(--muted); letter-spacing: 0.14em; text-transform: uppercase; }
   .breakdown-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; border-bottom: 1px solid var(--soft); gap: 12px; }
   .breakdown-row:last-child { border-bottom: none; }
   .breakdown-label { font-size: 13px; color: var(--ink); }
-  .breakdown-value { font-family: 'DM Mono', monospace; font-size: 13px; font-weight: 500; color: var(--accent); }
+  .breakdown-value { font-family: 'Noto Serif TC', serif; font-size: 13px; font-weight: 500; color: var(--accent); }
   .breakdown-row.total { background: var(--soft); }
   .breakdown-row.total .breakdown-label { font-weight: 600; }
   .breakdown-row.total .breakdown-value { font-size: 15px; color: var(--ink); font-weight: 700; }
   .milestone-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 4px; }
-  .milestone-table th { background: var(--soft); padding: 8px 10px; text-align: left; font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.1em; color: var(--muted); font-weight: 500; }
+  .milestone-table th { background: var(--soft); padding: 8px 10px; text-align: left; font-family: 'Noto Serif TC', serif; font-size: 10px; letter-spacing: 0.1em; color: var(--muted); font-weight: 500; }
   .milestone-table td { padding: 8px 10px; border-bottom: 1px solid var(--soft); color: var(--ink); }
   .milestone-table tr:last-child td { border-bottom: none; }
   .milestone-table tr.highlight td { background: #e6f0e6; font-weight: 600; color: var(--accent); }
@@ -252,7 +252,7 @@
       const isCurrent = totalMonths >= m.months && (milestones.indexOf(m) === milestones.length - 1 || totalMonths < milestones[milestones.indexOf(m) + 1].months);
       return `<tr class="${isCurrent ? 'highlight' : ''}">
         <td>${m.label}</td>
-        <td style="font-family:'DM Mono',monospace;text-align:right">${m.days > 0 ? m.days + ' 天' : '—'}</td>
+        <td style="font-family:'Noto Serif TC',monospace;text-align:right">${m.days > 0 ? m.days + ' 天' : '—'}</td>
         ${isCurrent ? '<td style="font-size:11px;color:var(--accent)">← 目前</td>' : '<td></td>'}
       </tr>`;
     }).join('');

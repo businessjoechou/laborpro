@@ -54,14 +54,14 @@
     margin-bottom: 10px;
   }
   .q-item-num {
-    font-family: 'DM Mono', monospace;
+    font-family: 'Noto Serif TC', serif;
     font-size: 11px;
     color: var(--muted);
     margin-right: 6px;
   }
   .q-item-critical {
     display: inline-block;
-    font-family: 'DM Mono', monospace;
+    font-family: 'Noto Serif TC', serif;
     font-size: 9px;
     padding: 1px 6px;
     border-radius: 10px;
@@ -123,7 +123,7 @@
     color: var(--ink);
   }
   .cat-count {
-    font-family: 'DM Mono', monospace;
+    font-family: 'Noto Serif TC', serif;
     font-size: 11px;
     color: var(--muted);
   }
@@ -185,7 +185,7 @@
     margin-bottom: 20px;
   }
   .employer-info-title {
-    font-family: 'DM Mono', monospace;
+    font-family: 'Noto Serif TC', serif;
     font-size: 10px;
     color: var(--gold);
     letter-spacing: 0.14em;
@@ -295,7 +295,7 @@
       <div class="score-bar">
         <div class="score-bar-fill" id="scoreBarFill" style="width:0%;background:var(--accent);"></div>
       </div>
-      <div style="display:flex;justify-content:space-between;margin-top:6px;font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;">
+      <div style="display:flex;justify-content:space-between;margin-top:6px;font-size:10px;color:var(--muted);font-family:'Noto Serif TC',monospace;">
         <span>嚴重風險 0</span><span>低風險 100</span>
       </div>
     </div>
@@ -720,11 +720,11 @@ function evaluate() {
 
     var itemsHtml = '';
     cr.items.forEach(function(item) {
-      var critTag = item.critical ? ' <span style="font-family:\'DM Mono\',monospace;font-size:9px;color:var(--danger);">CRITICAL</span>' : '';
+      var critTag = item.critical ? ' <span style="font-family:\'Noto Serif TC\',monospace;font-size:9px;color:var(--danger);">CRITICAL</span>' : '';
       itemsHtml += '<div class="check-item">' +
         '<span class="check-icon" style="color:' + item.color + ';">' + item.icon + '</span>' +
         '<span style="flex:1;">' + item.text + critTag + '</span>' +
-        '<span style="font-size:11px;font-family:\'DM Mono\',monospace;color:' + item.color + ';flex-shrink:0;">' +
+        '<span style="font-size:11px;font-family:\'Noto Serif TC\',monospace;color:' + item.color + ';flex-shrink:0;">' +
         (item.status === 'pass' ? 'Pass' : item.status === 'fail' ? 'Fail' : 'Warn') +
         '</span></div>';
     });

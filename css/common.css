@@ -51,7 +51,7 @@ header {
   display: flex;
   align-items: center;
   gap: 5px;
-  font-family: 'DM Mono', monospace;
+  font-family: 'Noto Serif TC', serif;
   font-size: 10px;
   color: rgba(255, 255, 255, 0.45);
   letter-spacing: 0.14em;
@@ -69,7 +69,7 @@ header {
 }
 
 .back-link {
-  font-family: 'DM Mono', monospace;
+  font-family: 'Noto Serif TC', serif;
   font-size: 11px;
   color: var(--muted);
   text-decoration: none;
@@ -96,7 +96,7 @@ main {
 .step-header { margin-bottom: 28px; }
 
 .step-label {
-  font-family: 'DM Mono', monospace;
+  font-family: 'Noto Serif TC', serif;
   font-size: 11px;
   color: var(--muted);
   letter-spacing: 0.14em;
@@ -130,7 +130,7 @@ main {
 }
 
 .wizard-section-title {
-  font-family: 'DM Mono', monospace;
+  font-family: 'Noto Serif TC', serif;
   font-size: 10px;
   color: var(--muted);
   letter-spacing: 0.16em;
@@ -179,7 +179,7 @@ textarea {
 
 input[type="date"],
 input[type="number"] {
-  font-family: 'DM Mono', monospace;
+  font-family: 'Noto Serif TC', serif;
 }
 
 /* Focus styles handled in Animations section below */
@@ -245,7 +245,7 @@ textarea:focus {
 }
 
 .result-hero-label {
-  font-family: 'DM Mono', monospace;
+  font-family: 'Noto Serif TC', serif;
   font-size: 10px;
   color: var(--muted);
   letter-spacing: 0.16em;
@@ -278,7 +278,7 @@ textarea:focus {
 }
 
 .result-card-title {
-  font-family: 'DM Mono', monospace;
+  font-family: 'Noto Serif TC', serif;
   font-size: 10px;
   color: var(--muted);
   letter-spacing: 0.14em;
@@ -306,7 +306,7 @@ textarea:focus {
 }
 
 .result-row-val {
-  font-family: 'DM Mono', monospace;
+  font-family: 'Noto Serif TC', serif;
   font-size: 13px;
   font-weight: 500;
   color: var(--ink);
@@ -376,7 +376,7 @@ textarea:focus {
 }
 
 .score-label {
-  font-family: 'DM Mono', monospace;
+  font-family: 'Noto Serif TC', serif;
   font-size: 10px;
   color: var(--muted);
   letter-spacing: 0.14em;
@@ -409,7 +409,7 @@ textarea:focus {
 }
 
 .notice-card-title {
-  font-family: 'DM Mono', monospace;
+  font-family: 'Noto Serif TC', serif;
   font-size: 10px;
   color: #8a6010;
   letter-spacing: 0.14em;
@@ -478,7 +478,7 @@ textarea:focus {
 }
 
 .action-card-title {
-  font-family: 'DM Mono', monospace;
+  font-family: 'Noto Serif TC', serif;
   font-size: 10px;
   color: var(--accent);
   letter-spacing: 0.14em;
@@ -500,7 +500,7 @@ textarea:focus {
 .action-item:last-child { border-bottom: none; }
 
 .action-num {
-  font-family: 'DM Mono', monospace;
+  font-family: 'Noto Serif TC', serif;
   font-weight: 700;
   color: var(--accent);
   font-size: 12px;
@@ -548,7 +548,7 @@ textarea:focus {
 }
 
 .timeline-date {
-  font-family: 'DM Mono', monospace;
+  font-family: 'Noto Serif TC', serif;
   font-size: 11px;
   color: var(--muted);
   margin-bottom: 4px;
@@ -576,7 +576,7 @@ textarea:focus {
 }
 
 .data-table th {
-  font-family: 'DM Mono', monospace;
+  font-family: 'Noto Serif TC', serif;
   font-size: 10px;
   color: var(--muted);
   letter-spacing: 0.1em;
@@ -674,7 +674,7 @@ textarea:focus {
 /* ===== Badge / Tag ===== */
 .badge {
   display: inline-block;
-  font-family: 'DM Mono', monospace;
+  font-family: 'Noto Serif TC', serif;
   font-size: 10px;
   padding: 3px 8px;
   border-radius: 20px;
@@ -906,7 +906,7 @@ textarea:focus {
 }
 
 .persona-badge {
-  font-family: 'DM Mono', monospace;
+  font-family: 'Noto Serif TC', serif;
   font-size: 11px;
   letter-spacing: 0.1em;
   padding: 5px 12px;
@@ -918,7 +918,7 @@ textarea:focus {
 .persona-switch {
   background: none;
   border: none;
-  font-family: 'DM Mono', monospace;
+  font-family: 'Noto Serif TC', serif;
   font-size: 11px;
   color: var(--muted);
   letter-spacing: 0.08em;
@@ -996,7 +996,7 @@ textarea:focus {
 .cl-item:first-child { border-top: none; }
 
 .cl-case-no {
-  font-family: 'DM Mono', monospace;
+  font-family: 'Noto Serif TC', serif;
   font-size: 11px;
   color: var(--gold);
   letter-spacing: 0.08em;
@@ -1005,7 +1005,7 @@ textarea:focus {
 }
 
 .cl-amount {
-  font-family: 'DM Mono', monospace;
+  font-family: 'Noto Serif TC', serif;
   font-size: 15px;
   color: var(--gold);
   font-weight: 700;
@@ -1019,7 +1019,7 @@ textarea:focus {
 }
 
 .cl-law {
-  font-family: 'DM Mono', monospace;
+  font-family: 'Noto Serif TC', serif;
   font-size: 11px;
   color: var(--accent);
   margin-top: 6px;

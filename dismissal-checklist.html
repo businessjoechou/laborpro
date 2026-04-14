@@ -62,7 +62,7 @@
   }
   .type-card-tag {
     display: inline-block;
-    font-family: 'DM Mono', monospace;
+    font-family: 'Noto Serif TC', serif;
     font-size: 10px;
     padding: 2px 8px;
     border-radius: 20px;
@@ -84,7 +84,7 @@
     margin-bottom: 10px;
   }
   .q-item-num {
-    font-family: 'DM Mono', monospace;
+    font-family: 'Noto Serif TC', serif;
     font-size: 11px;
     color: var(--muted);
     margin-right: 6px;
@@ -144,7 +144,7 @@
     line-height: 1;
   }
   .score-ring-label {
-    font-family: 'DM Mono', monospace;
+    font-family: 'Noto Serif TC', serif;
     font-size: 10px;
     letter-spacing: 0.1em;
     margin-top: 2px;
@@ -229,7 +229,7 @@
       <div class="score-bar">
         <div class="score-bar-fill" id="scoreBarFill" style="width:0%;"></div>
       </div>
-      <div style="display:flex;justify-content:space-between;margin-top:6px;font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;">
+      <div style="display:flex;justify-content:space-between;margin-top:6px;font-size:10px;color:var(--muted);font-family:'Noto Serif TC',monospace;">
         <span>高風險 0</span><span>低風險 100</span>
       </div>
     </div>
@@ -477,7 +477,7 @@ function evaluate() {
       <div class="check-item">
         <span class="check-icon" style="color:${c.color};">${c.icon}</span>
         <span style="flex:1;">${c.num}. ${c.text}</span>
-        <span style="font-size:11px;font-family:'DM Mono',monospace;color:${c.color};flex-shrink:0;">
+        <span style="font-size:11px;font-family:'Noto Serif TC',monospace;color:${c.color};flex-shrink:0;">
           ${c.status === 'pass' ? 'Pass' : c.status === 'fail' ? 'Fail' : 'Warn'}${c.critical ? ' *' : ''}
         </span>
       </div>
