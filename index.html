@@ -5,7 +5,7 @@
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="apple-touch-icon" href="favicon.svg">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LaborPro｜台灣勞基法計算機</title>
+<title>LaborPro｜中華民國勞基法權益計算平台</title>
 <meta name="description" content="台灣最專業的勞基法權益計算平台，免費提供資遣費、加班費、特休未休折現、職災補償、不當解雇分析等 20+ 個計算工具，依中華民國勞動基準法設計。">
 <meta name="keywords" content="資遣費計算,加班費計算,特休計算,職災補償,不當解雇,勞基法,預告工資,勞退新制,舊制資遣費,台灣勞工">
 <meta name="robots" content="index, follow">
@@ -78,14 +78,17 @@
   .parent-brand {
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 7px;
     font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: rgba(255, 255, 255, 0.45);
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.55);
     letter-spacing: 0.14em;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
+    text-decoration: none;
+    transition: color 0.2s;
   }
-  .parent-brand .cl-icon { width: 16px; height: 16px; border-radius: 3px; }
+  .parent-brand:hover { color: rgba(255, 255, 255, 0.85); }
+  .parent-brand .cl-icon { width: 20px; height: 20px; border-radius: 4px; }
   .parent-brand span {
     text-transform: uppercase;
     letter-spacing: 0.18em;
@@ -610,16 +613,195 @@
     .faq-section { max-width: 780px; padding: 0 32px 80px; }
     .disclaimer-bar { max-width: 780px; padding: 16px 32px 72px; }
   }
+
+  /* ─────────── Light Mode ─────────── */
+  [data-theme="light"] {
+    --ink: #f6faf4;
+    --ink-2: #edf2ea;
+    --paper: #1a1e1a;
+    --gold: #a87414;
+    --gold-soft: #b88e2e;
+    --muted: #5e7a5a;
+    --muted-2: #98ac94;
+    --border: #ccd8c8;
+    --border-2: #bac8b6;
+    --card: #ffffff;
+    --accent: #1e7a38;
+    --danger: #a82828;
+    --badge-new: #1e7a38;
+    --badge-hot: #a87414;
+  }
+
+  [data-theme="light"] .parent-brand {
+    color: rgba(0, 0, 0, 0.5);
+  }
+  [data-theme="light"] .parent-brand:hover {
+    color: rgba(0, 0, 0, 0.75);
+  }
+  [data-theme="light"] .tag {
+    border-color: #a8b8a6;
+  }
+
+  [data-theme="light"] .persona-badge.worker {
+    background: rgba(30, 122, 56, 0.1);
+    color: #1e7a38;
+    border-color: rgba(30, 122, 56, 0.3);
+  }
+  [data-theme="light"] .persona-badge.employer {
+    background: rgba(168, 116, 20, 0.1);
+    color: #a87414;
+    border-color: rgba(168, 116, 20, 0.3);
+  }
+
+  [data-theme="light"] .search-bar input {
+    background: rgba(0, 0, 0, 0.03);
+  }
+  [data-theme="light"] .search-bar input::placeholder {
+    color: #98ac94;
+  }
+  [data-theme="light"] .search-bar input:focus {
+    background: rgba(30, 122, 56, 0.04);
+  }
+
+  [data-theme="light"] .featured-card.style-green {
+    background: linear-gradient(135deg, #edf8ef 0%, #ffffff 100%);
+    border-color: rgba(30, 122, 56, 0.25);
+  }
+  [data-theme="light"] .featured-card.style-gold {
+    background: linear-gradient(135deg, #faf5ea 0%, #ffffff 100%);
+    border-color: rgba(168, 116, 20, 0.25);
+  }
+  [data-theme="light"] .featured-card.style-red {
+    background: linear-gradient(135deg, #faf0f0 0%, #ffffff 100%);
+    border-color: rgba(168, 32, 32, 0.25);
+  }
+
+  [data-theme="light"] .featured-badge.new {
+    background: rgba(30, 122, 56, 0.1);
+    color: #1e7a38;
+    border-color: rgba(30, 122, 56, 0.3);
+  }
+  [data-theme="light"] .featured-badge.hot {
+    background: rgba(168, 116, 20, 0.1);
+    color: var(--gold);
+    border-color: rgba(168, 116, 20, 0.3);
+  }
+  [data-theme="light"] .featured-badge.alert {
+    background: rgba(168, 32, 32, 0.1);
+    color: #a82828;
+    border-color: rgba(168, 32, 32, 0.3);
+  }
+
+  [data-theme="light"] .tab-btn.active {
+    background: var(--gold);
+    color: #fff;
+    border-color: var(--gold);
+  }
+
+  [data-theme="light"] .tool-card.featured {
+    background: linear-gradient(135deg, #f0f8f0 0%, #ffffff 100%);
+    border-color: rgba(30, 122, 56, 0.25);
+  }
+  [data-theme="light"] .tool-badge.new {
+    background: rgba(30, 122, 56, 0.1);
+    color: #1e7a38;
+    border-color: rgba(30, 122, 56, 0.3);
+  }
+  [data-theme="light"] .tool-badge.hot {
+    background: rgba(168, 116, 20, 0.1);
+    color: var(--gold);
+    border-color: rgba(168, 116, 20, 0.3);
+  }
+
+  [data-theme="light"] .search-chip {
+    background: rgba(30, 122, 56, 0.06);
+    border-color: rgba(30, 122, 56, 0.2);
+  }
+
+  [data-theme="light"] .hero-footer {
+    color: rgba(26, 30, 26, 0.3);
+  }
+  [data-theme="light"] .hero-footer a { color: rgba(26, 30, 26, 0.3); }
+
+  [data-theme="light"] .disclaimer-bar {
+    color: rgba(0, 0, 0, 0.5);
+    border-top-color: rgba(0, 0, 0, 0.1);
+  }
+  [data-theme="light"] .disclaimer-bar strong { color: rgba(0, 0, 0, 0.7); }
+
+  /* ─── Theme Toggle Button ─── */
+  #themeToggle {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: rgba(128,128,128,0.12);
+    color: var(--paper);
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, border-color 0.2s, transform 0.2s;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    line-height: 1;
+    padding: 0;
+    flex-shrink: 0;
+  }
+  #themeToggle:hover {
+    background: rgba(128,128,128,0.22);
+    border-color: var(--gold);
+    transform: scale(1.08);
+  }
+
+  /* ─── Theme Transition ─── */
+  html.theme-transitioning,
+  html.theme-transitioning *,
+  html.theme-transitioning *::before,
+  html.theme-transitioning *::after {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease !important;
+  }
 </style>
 </head>
 <body>
+<script>
+(function(){
+  var html = document.documentElement;
+  var stored = localStorage.getItem('theme');
+  var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  var theme = stored || (prefersDark ? 'dark' : 'light');
+  if (theme === 'light') html.setAttribute('data-theme', 'light');
+
+  function updateIcon(t) {
+    var btn = document.getElementById('themeToggle');
+    if (btn) btn.textContent = t === 'light' ? '\u263E' : '\u2600';
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    var btn = document.getElementById('themeToggle');
+    if (!btn) return;
+    updateIcon(theme);
+    btn.addEventListener('click', function() {
+      html.classList.add('theme-transitioning');
+      var current = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      if (current === 'light') html.setAttribute('data-theme', 'light');
+      else html.removeAttribute('data-theme');
+      localStorage.setItem('theme', current);
+      updateIcon(current);
+      setTimeout(function(){ html.classList.remove('theme-transitioning'); }, 350);
+    });
+  });
+})();
+</script>
 
 <div class="hero">
   <div class="hero-top">
     <div>
-      <div class="parent-brand"><img class="cl-icon" src="choulegal-icon.svg" alt="">周全 <span>ChouLegal</span></div>
+      <a href="https://choulegal.com" class="parent-brand" target="_blank" rel="noopener"><img class="cl-icon" src="choulegal-icon.svg" alt="">周全 <span>ChouLegal</span></a>
       <a href="/" class="logo">Labor<span>Pro</span><span class="tag">v1.0</span></a>
     </div>
+    <button id="themeToggle" aria-label="切換深色/淺色模式"></button>
   </div>
 
   <span class="eyebrow">中華民國勞基法 · 勞動權益</span>
