@@ -188,6 +188,16 @@
         <label>預產期或子女出生日</label>
         <input type="date" id="dueDate">
       </div>
+      <div class="field-group" id="maternityModeGroup" style="display:none;">
+        <label>產假分配方式</label>
+        <select id="maternityMode">
+          <option value="4-4">產前 4 週 + 產後 4 週（預設）</option>
+          <option value="0-8">全部從生產當日起算（產前 0 週 + 產後 8 週）</option>
+          <option value="2-6">產前 2 週 + 產後 6 週</option>
+          <option value="1-7">產前 1 週 + 產後 7 週</option>
+        </select>
+        <span class="field-hint">依勞基法§50，產假共 8 週，產前產後分配可由勞雇協商。</span>
+      </div>
     </div>
 
     <div class="warn-box">
@@ -383,6 +393,8 @@
     document.querySelectorAll('.gender-btn').forEach(function (b) {
       b.classList.toggle('selected', b.getAttribute('data-val') === g);
     });
+    // 只有女性顯示產假分配選項
+    document.getElementById('maternityModeGroup').style.display = (g === 'female') ? '' : 'none';
   }
 
   function showStep(n) {
@@ -446,6 +458,11 @@
     var insVal = parseFloat(document.getElementById('insuredSalary').value);
     state.insuredSalary = (insVal && insVal > 0) ? insVal : LP.getLaborInsuranceBracket(state.salary);
     state.tenureInfo = LP.calcMonths(state.startDate, state.dueDate);
+    // 產假分配模式
+    var mode = document.getElementById('maternityMode').value || '4-4';
+    var parts = mode.split('-');
+    state.maternityPreWeeks = parseInt(parts[0]);
+    state.maternityPostWeeks = parseInt(parts[1]);
   }
 
   function addDays(dateStr, days) {
@@ -477,9 +494,9 @@
       var items = [
         { date: '預產期前', title: '產檢假（7天，全薪）', desc: '性平法§15，懷孕期間可分次請假進行產檢。', active: true },
         { date: '視需要', title: '安胎休養（視醫囑）', desc: '勞基法§50，妊娠未滿3個月流產者給予1週產假；3個月以上未滿7個月流產者4週。' },
-        { date: fmtD(addDays(state.dueDate, -28)) + ' 起', title: '產假開始（8週/56天）', desc: '勞基法§50，分娩前後共8週。通常分娩前4週、後4週，可協商調整。', active: true },
-        { date: fmtD(addDays(state.dueDate, 28)), title: '產假結束', desc: '產假期滿，可接續申請育嬰留停。' },
-        { date: fmtD(addDays(state.dueDate, 29)) + ' 起', title: '育嬰留職停薪（最長2年）', desc: '性平法§16，子女滿3歲前可申請，留停期間可請領育嬰留停津貼（最長6個月）。', active: true },
+        { date: fmtD(addDays(state.dueDate, -(state.maternityPreWeeks * 7))) + ' 起', title: '產假開始（8週/56天，產前' + state.maternityPreWeeks + '週＋產後' + state.maternityPostWeeks + '週）', desc: '勞基法§50，分娩前後共8週，產前產後分配可由勞雇協商。', active: true },
+        { date: fmtD(addDays(state.dueDate, state.maternityPostWeeks * 7)), title: '產假結束', desc: '產假期滿，可接續申請育嬰留停。' },
+        { date: fmtD(addDays(state.dueDate, state.maternityPostWeeks * 7 + 1)) + ' 起', title: '育嬰留職停薪（最長2年）', desc: '性平法§16，子女滿3歲前可申請，留停期間可請領育嬰留停津貼（最長6個月）。', active: true },
         { date: '留停期滿', title: '復職', desc: '性平法§17，雇主應使勞工回復原有工作，不得拒絕。' }
       ];
     } else {
