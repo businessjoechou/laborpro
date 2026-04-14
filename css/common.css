@@ -827,9 +827,8 @@ textarea:focus {
 
 .cl-summary {
   font-size: 13px;
-  color: var(--paper);
+  color: var(--muted);
   line-height: 1.7;
-  opacity: 0.85;
 }
 
 .cl-law {
