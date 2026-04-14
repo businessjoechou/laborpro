@@ -754,12 +754,12 @@ textarea:focus {
 
 /* ===== Case Law Panel ===== */
 .case-law-panel {
-  margin-top: 10px;
-  margin-bottom: 14px;
-  border: 1.5px solid rgba(30, 46, 30, 0.6);
+  margin-top: 16px;
+  margin-bottom: 18px;
+  border: 1.5px solid var(--gold);
   border-radius: 12px;
   overflow: hidden;
-  background: var(--ink);
+  background: var(--card, var(--ink));
 }
 
 .cl-toggle {
@@ -767,22 +767,23 @@ textarea:focus {
   align-items: center;
   gap: 8px;
   width: 100%;
-  padding: 14px 18px;
+  padding: 16px 18px;
   background: transparent;
   border: none;
   cursor: pointer;
-  font-family: 'DM Mono', monospace;
-  font-size: 11px;
-  color: var(--muted);
-  letter-spacing: 0.1em;
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gold);
+  letter-spacing: 0.06em;
   text-align: left;
   transition: color 0.2s;
 }
 
-.cl-toggle:hover { color: var(--gold); }
+.cl-toggle:hover { color: var(--paper); }
 
 .cl-toggle-icon {
-  font-size: 9px;
+  font-size: 10px;
   transition: transform 0.25s;
   display: inline-block;
 }

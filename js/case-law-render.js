@@ -38,10 +38,10 @@
 
     var panelId = 'caseLawPanel_' + category;
     var panelHtml =
-      '<div class="case-law-panel" id="' + panelId + '">' +
+      '<div class="case-law-panel cl-open" id="' + panelId + '">' +
         '<button class="cl-toggle" onclick="this.parentElement.classList.toggle(\'cl-open\')">' +
           '<span class="cl-toggle-icon">\u25B6</span>' +
-          '<span>\u76F8\u95DC\u5224\u4F8B\u53C3\u8003 (' + top.length + ' \u5247)</span>' +
+          '<span>\u2696\uFE0F \u76F8\u95DC\u5224\u4F8B\u53C3\u8003 (' + top.length + ' \u5247)</span>' +
         '</button>' +
         '<div class="cl-body">' + casesHtml + '</div>' +
       '</div>';
