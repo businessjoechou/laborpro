@@ -4,6 +4,11 @@
 <meta charset="UTF-8">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="apple-touch-icon" href="favicon.svg">
+<link rel="manifest" href="/manifest.json">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="LaborPro">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LaborPro｜中華民國勞基法權益計算平台</title>
 <meta name="description" content="台灣最專業的勞基法權益計算平台，免費提供資遣費、加班費、特休未休折現、職災補償、不當解雇分析等 20+ 個計算工具，依中華民國勞動基準法設計。">
@@ -16,6 +21,9 @@
 <meta property="og:url" content="https://laborpro.vercel.app/">
 <meta property="og:site_name" content="LaborPro">
 <meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://laborpro.choulegal.com/choulegal-icon.svg">
+<meta property="og:image:width" content="400">
+<meta property="og:image:height" content="400">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="LaborPro｜台灣勞基法計算機">
 <link rel="canonical" href="https://laborpro.vercel.app/">
@@ -593,6 +601,9 @@
     border-top: 1px solid rgba(255, 255, 255, 0.12);
   }
   .disclaimer-bar strong { color: rgba(255, 255, 255, 0.8); }
+  .disclaimer-bar a { color: rgba(255, 255, 255, 0.5); font-size: 12px; text-decoration: underline; }
+  .disclaimer-bar .copyright { color: rgba(255, 255, 255, 0.3); font-size: 12px; }
+  .disclaimer-bar .dot { opacity: 0.2; font-size: 12px; }
 
   /* ─────────── Animation ─────────── */
   @keyframes fadeUp {
@@ -728,6 +739,9 @@
     border-top-color: rgba(0, 0, 0, 0.1);
   }
   [data-theme="light"] .disclaimer-bar strong { color: rgba(0, 0, 0, 0.7); }
+  [data-theme="light"] .disclaimer-bar a { color: rgba(0, 0, 0, 0.45); }
+  [data-theme="light"] .disclaimer-bar .copyright { color: rgba(0, 0, 0, 0.3); }
+  [data-theme="light"] .disclaimer-bar .dot { opacity: 0.15; }
 
   /* ─── Theme Toggle Button ─── */
   #themeToggle {
@@ -798,7 +812,7 @@
 <div class="hero">
   <div class="hero-top">
     <div>
-      <a href="https://choulegal.com" class="parent-brand" target="_blank" rel="noopener"><img class="cl-icon" src="choulegal-icon.svg" alt="">周全 <span>ChouLegal</span></a>
+      <a href="https://choulegal.com" class="parent-brand" target="_blank" rel="noopener" aria-label="周全法律科技 ChouLegal 官網"><img class="cl-icon" src="choulegal-icon.svg" alt="周全法律科技">周全 <span>ChouLegal</span></a>
       <a href="/" class="logo">Labor<span>Pro</span><span class="tag">v1.0</span></a>
     </div>
     <button id="themeToggle" aria-label="切換深色/淺色模式"></button>
@@ -914,7 +928,7 @@
 }
 </script>
 
-<div class="disclaimer-bar"><strong>免責聲明</strong>：本平台之計算結果僅供初步參考，不構成法律意見或法律諮詢服務。實際案件因個案事實、適用法規及法院見解不同，結果可能有所差異，建議諮詢具執照之律師或相關法律專業人員。<div style="margin-top:10px;display:flex;gap:16px;justify-content:center;flex-wrap:wrap;"><a href="privacy.html" style="color:rgba(255,255,255,0.5);font-size:12px;text-decoration:underline;">隱私權政策</a><span style="opacity:0.2;font-size:12px;">·</span><a href="terms.html" style="color:rgba(255,255,255,0.5);font-size:12px;text-decoration:underline;">使用者條款</a><span style="opacity:0.2;font-size:12px;">·</span><span style="color:rgba(255,255,255,0.3);font-size:12px;">© 2026 LaborPro</span></div></div>
+<div class="disclaimer-bar"><strong>免責聲明</strong>：本平台之計算結果僅供初步參考，不構成法律意見或法律諮詢服務。實際案件因個案事實、適用法規及法院見解不同，結果可能有所差異，建議諮詢具執照之律師或相關法律專業人員。<div style="margin-top:10px;display:flex;gap:16px;justify-content:center;flex-wrap:wrap;"><a href="privacy.html">隱私權政策</a><span class="dot">·</span><a href="terms.html">使用者條款</a><span class="dot">·</span><span class="copyright">© 2026 LaborPro</span></div></div>
 
 <script>
 // ═══════════════════════════════════════════════════════════

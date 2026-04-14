@@ -1,0 +1,28 @@
+{
+  "name": "LaborPro — 中華民國勞基法權益計算平台",
+  "short_name": "LaborPro",
+  "description": "台灣最專業的勞基法權益計算平台，免費提供資遣費、加班費、特休、職災補償等計算工具",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f8f6f2",
+  "theme_color": "#2a6e3e",
+  "lang": "zh-TW",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/choulegal-icon.svg",
+      "sizes": "400x400",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["legal", "utilities", "finance"],
+  "prefer_related_applications": false
+}
