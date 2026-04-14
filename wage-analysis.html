@@ -5,13 +5,13 @@
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="apple-touch-icon" href="favicon.svg">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>工資認定分析器｜LaborPro</title>
-<meta name="description" content="依勞基法第2條第3款「經常性給與」認定工資項目，自動計算工資總額、時薪、日薪，標示爭議項目，免費使用。">
-<meta name="keywords" content="工資認定,經常性給與,勞基法第2條,薪資結構分析,工資計算,時薪計算,日薪計算,台灣勞基法">
+<title>薪資認定分析器｜LaborPro</title>
+<meta name="description" content="依勞基法第2條第3款「經常性給與」認定薪資項目，自動計算薪資總額、時薪、日薪，標示爭議項目，免費使用。">
+<meta name="keywords" content="薪資認定,經常性給與,勞基法第2條,薪資結構分析,薪資計算,時薪計算,日薪計算,台灣勞基法">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://laborpro.choulegal.com/wage-analysis.html">
-<meta property="og:title" content="工資認定分析器｜LaborPro">
-<meta property="og:description" content="依勞基法第2條第3款認定工資項目，自動計算工資總額、時薪、日薪。">
+<meta property="og:title" content="薪資認定分析器｜LaborPro">
+<meta property="og:description" content="依勞基法第2條第3款認定薪資項目，自動計算薪資總額、時薪、日薪。">
 <meta property="og:type" content="website">
 <meta name="author" content="LaborPro">
 <meta property="og:site_name" content="LaborPro">
@@ -29,8 +29,8 @@
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "工資認定分析器",
-  "description": "依勞基法第2條第3款「經常性給與」認定各薪資項目是否屬於工資，計算工資總額、時薪、日薪。",
+  "name": "薪資認定分析器",
+  "description": "依勞基法第2條第3款「經常性給與」認定各薪資項目是否屬於薪資，計算薪資總額、時薪、日薪。",
   "applicationCategory": "FinanceApplication",
   "operatingSystem": "All",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "TWD" }
@@ -146,8 +146,8 @@
   <div class="step active" id="step1">
     <div class="step-header">
       <div class="step-label">Step 1 of 3 &middot; 輸入薪資項目</div>
-      <h1 class="step-title">工資認定分析器</h1>
-      <p class="step-sub">依勞基法&sect;2第3款「經常性給與」判定各薪資項目是否屬於工資，自動計算工資總額、日薪及時薪。</p>
+      <h1 class="step-title">薪資認定分析器</h1>
+      <p class="step-sub">依勞基法&sect;2第3款「經常性給與」判定各薪資項目是否屬於薪資，自動計算薪資總額、日薪及時薪。</p>
     </div>
 
     <div class="wizard">
@@ -159,16 +159,16 @@
     </div>
 
     <div class="warn-box">
-      &#9888; 工資認定須依個案判斷，本工具依一般實務通說提供初步分析，建議諮詢勞動局或專業律師。
+      &#9888; 薪資認定須依個案判斷，本工具依一般實務通說提供初步分析，建議諮詢勞動局或專業律師。
     </div>
   </div>
 
   <!-- Step 2: 判定結果 -->
   <div class="step" id="step2">
     <div class="step-header">
-      <div class="step-label">Step 2 of 3 &middot; 工資判定</div>
+      <div class="step-label">Step 2 of 3 &middot; 薪資判定</div>
       <h1 class="step-title">各項認定結果</h1>
-      <p class="step-sub">依勞基法&sect;2第3款及施行細則&sect;10，判定各薪資項目是否為「工資」。</p>
+      <p class="step-sub">依勞基法&sect;2第3款及施行細則&sect;10，判定各薪資項目是否為「薪資」。</p>
     </div>
 
     <div class="wizard" id="analysisCard">
@@ -186,12 +186,12 @@
   <div class="step" id="step3">
     <div class="step-header">
       <div class="step-label">Step 3 of 3 &middot; 計算結果</div>
-      <h1 class="step-title">工資總額試算</h1>
-      <p class="step-sub">依認定結果計算工資總額及衍生數值。</p>
+      <h1 class="step-title">薪資總額試算</h1>
+      <p class="step-sub">依認定結果計算薪資總額及衍生數值。</p>
     </div>
 
     <div class="result-hero">
-      <div class="result-hero-label">經認定之工資總額（月）</div>
+      <div class="result-hero-label">經認定之薪資總額（月）</div>
       <div class="result-hero-amount" id="r_wageTotal">--</div>
       <div class="result-hero-sub" id="r_wageSub">依勞基法&sect;2&sect;III 經常性給與</div>
     </div>
@@ -209,12 +209,12 @@
     </div>
 
     <div class="result-card" id="r_wageItems">
-      <div class="result-card-title">工資項目</div>
+      <div class="result-card-title">薪資項目</div>
       <div id="r_wageList"></div>
     </div>
 
     <div class="result-card" id="r_nonWageItems" style="display:none;">
-      <div class="result-card-title">非工資項目</div>
+      <div class="result-card-title">非薪資項目</div>
       <div id="r_nonWageList"></div>
     </div>
 
@@ -225,7 +225,7 @@
 
     <div class="law-note">
       <strong>法律依據</strong><br>
-      &middot; <strong>勞基法&sect;2第3款</strong>：工資謂勞工因工作而獲得之報酬，包括工資、薪金及按計時、計日、計月、計件以現金或實物等方式給付之獎金、津貼及其他任何名義之經常性給與均屬之。<br>
+      &middot; <strong>勞基法&sect;2第3款</strong>：薪資謂勞工因工作而獲得之報酬，包括薪資、薪金及按計時、計日、計月、計件以現金或實物等方式給付之獎金、津貼及其他任何名義之經常性給與均屬之。<br>
       &middot; <strong>勞基法施行細則&sect;10</strong>：非經常性給與之例示，如年終獎金、差旅費等。
     </div>
   </div>
@@ -245,15 +245,15 @@
 <script>
 /* === 薪資項目定義 === */
 const ITEMS = [
-  { name: '底薪',     isWage: true,  note: '勞務對價，屬工資' },
-  { name: '全勤獎金', isWage: 'warn', note: '實務多認定為工資（最高法院判決），但具爭議' },
-  { name: '伙食津貼', isWage: true,  note: '固定按月發放，屬工資（每月2,400元以下免稅但仍為工資）' },
-  { name: '交通補助', isWage: 'depends', note: '固定按月發放→工資；實報實銷→非工資', defaultWage: true },
-  { name: '職務加給', isWage: true,  note: '因職務而固定支領，屬工資' },
-  { name: '績效獎金', isWage: 'warn', note: '按月或按季固定發→可能是工資；不固定→非工資' },
-  { name: '年終獎金', isWage: false, note: '恩惠性給與，通常非工資（施行細則§10）' },
-  { name: '加班費',   isWage: 'special', note: '非經常性工資，但依法另計（§24）' },
-  { name: '差旅費',   isWage: false, note: '實支實付，非工資（施行細則§10）' },
+  { name: '底薪',     isWage: true,  note: '勞務對價，屬薪資' },
+  { name: '全勤獎金', isWage: 'warn', note: '實務多認定為薪資（最高法院判決），但具爭議' },
+  { name: '伙食津貼', isWage: true,  note: '固定按月發放，屬薪資（每月2,400元以下免稅但仍為薪資）' },
+  { name: '交通補助', isWage: 'depends', note: '固定按月發放→薪資；實報實銷→非薪資', defaultWage: true },
+  { name: '職務加給', isWage: true,  note: '因職務而固定支領，屬薪資' },
+  { name: '績效獎金', isWage: 'warn', note: '按月或按季固定發→可能是薪資；不固定→非薪資' },
+  { name: '年終獎金', isWage: false, note: '恩惠性給與，通常非薪資（施行細則§10）' },
+  { name: '加班費',   isWage: 'special', note: '非經常性薪資，但依法另計（§24）' },
+  { name: '差旅費',   isWage: false, note: '實支實付，非薪資（施行細則§10）' },
   { name: '其他',     isWage: 'depends', note: '依是否為「經常性給與」個案判斷', defaultWage: false }
 ];
 
@@ -380,13 +380,13 @@ function analyzeItems(rows) {
   analyzedRows = rows.map(r => {
     let status, tag, reason;
     const d = r.def;
-    if (!d) { status = r.regular ? 'yes' : 'no'; tag = r.regular ? '工資' : '非工資'; reason = '依經常性判定'; }
-    else if (d.isWage === true) { status = 'yes'; tag = '工資'; reason = d.note; }
-    else if (d.isWage === false) { status = 'no'; tag = '非工資'; reason = d.note; }
+    if (!d) { status = r.regular ? 'yes' : 'no'; tag = r.regular ? '薪資' : '非薪資'; reason = '依經常性判定'; }
+    else if (d.isWage === true) { status = 'yes'; tag = '薪資'; reason = d.note; }
+    else if (d.isWage === false) { status = 'no'; tag = '非薪資'; reason = d.note; }
     else if (d.isWage === 'special') { status = 'no'; tag = '另計'; reason = d.note; }
     else if (d.isWage === 'warn') { status = 'warn'; tag = '爭議'; reason = d.note; }
-    else if (d.isWage === 'depends') { status = r.regular ? 'yes' : 'no'; tag = r.regular ? '工資' : '非工資'; reason = d.note; }
-    else { status = r.regular ? 'yes' : 'no'; tag = r.regular ? '工資' : '非工資'; reason = '依經常性判定'; }
+    else if (d.isWage === 'depends') { status = r.regular ? 'yes' : 'no'; tag = r.regular ? '薪資' : '非薪資'; reason = d.note; }
+    else { status = r.regular ? 'yes' : 'no'; tag = r.regular ? '薪資' : '非薪資'; reason = '依經常性判定'; }
     return { ...r, status, tag, reason };
   });
 
@@ -410,7 +410,7 @@ function analyzeItems(rows) {
   if (warns.length > 0) {
     warnCard.style.display = 'block';
     document.getElementById('warnItemsText').textContent =
-      warns.map(w => w.name).join('、') + ' 為實務上常見爭議項目，建議保留發放紀錄以供舉證。本工具將爭議項目「暫列入」工資總額計算。';
+      warns.map(w => w.name).join('、') + ' 為實務上常見爭議項目，建議保留發放紀錄以供舉證。本工具將爭議項目「暫列入」薪資總額計算。';
   } else {
     warnCard.style.display = 'none';
   }

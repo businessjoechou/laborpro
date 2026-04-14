@@ -6,8 +6,8 @@
 <link rel="apple-touch-icon" href="favicon.svg">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>離職結算檢查表｜LaborPro</title>
-<meta name="description" content="依台灣勞基法逐項計算離職時應領與應扣款項，含未付工資、特休折現、資遣費、預告工資、勞健保扣繳，支援資遣、自願離職、退休等5種離職類型。">
-<meta name="keywords" content="離職結算,離職應領款項,資遣費計算,特休未休折現,預告工資,勞保自付額,健保自付額,台灣勞基法離職">
+<meta name="description" content="依台灣勞基法逐項計算離職時應領與應扣款項，含未付薪資、特休折現、資遣費、預告薪資、勞健保扣繳，支援資遣、自願離職、退休等5種離職類型。">
+<meta name="keywords" content="離職結算,離職應領款項,資遣費計算,特休未休折現,預告薪資,勞保自付額,健保自付額,台灣勞基法離職">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://laborpro.choulegal.com/settlement-calc.html">
 <meta property="og:title" content="離職結算檢查表｜LaborPro">
@@ -202,7 +202,7 @@
             <input type="radio" name="sepType" value="layoff" checked>
             <div class="type-option-text">
               <div class="type-option-title">資遣（雇主解雇）</div>
-              <div class="type-option-desc">勞基法§11、§13但書，含資遣費及預告工資</div>
+              <div class="type-option-desc">勞基法§11、§13但書，含資遣費及預告薪資</div>
             </div>
           </label>
           <label class="type-option" onclick="selectType('voluntary')">
@@ -279,7 +279,7 @@
     </div>
 
     <div class="warn-box">
-      ⚠ 本計算機提供參考試算，實際結算金額應依勞動契約及工資認定為準。
+      ⚠ 本計算機提供參考試算，實際結算金額應依勞動契約及薪資認定為準。
     </div>
   </div>
 
@@ -324,13 +324,13 @@
     <div class="section-divider"><span>應領項目</span></div>
 
     <div class="result-card">
-      <div class="result-card-title">本月未付工資</div>
+      <div class="result-card-title">本月未付薪資</div>
       <div class="result-row">
         <span class="result-row-label">離職當月工作天數</span>
         <span class="result-row-val" id="r_workedDays">—</span>
       </div>
       <div class="result-row">
-        <span class="result-row-label">本月未付工資</span>
+        <span class="result-row-label">本月未付薪資</span>
         <span class="result-row-val highlight" id="r_unpaidWage">—</span>
       </div>
     </div>
@@ -368,15 +368,15 @@
       </div>
     </div>
 
-    <!-- 預告工資（條件顯示） -->
+    <!-- 預告薪資（條件顯示） -->
     <div class="result-card" id="noticeCard" style="display:none;">
-      <div class="result-card-title">預告工資（勞基法§16）</div>
+      <div class="result-card-title">預告薪資（勞基法§16）</div>
       <div class="result-row">
         <span class="result-row-label">預告期間</span>
         <span class="result-row-val" id="r_noticeDays">—</span>
       </div>
       <div class="result-row">
-        <span class="result-row-label">預告工資</span>
+        <span class="result-row-label">預告薪資</span>
         <span class="result-row-val highlight" id="r_noticeAmount">—</span>
       </div>
     </div>
@@ -486,8 +486,8 @@
 
     <div class="law-note">
       <strong>法律依據</strong><br>
-      · <strong>勞基法§38</strong>：特休未休應折發工資<br>
-      · <strong>勞基法§16</strong>：預告期間及預告工資<br>
+      · <strong>勞基法§38</strong>：特休未休應折發薪資<br>
+      · <strong>勞基法§16</strong>：預告期間及預告薪資<br>
       · <strong>勞基法§17、勞退條例§12</strong>：資遣費計算<br>
       · <strong>勞基法§55</strong>：退休金計算<br>
       · <strong>就業服務法§33</strong>：非自願離職證明
@@ -613,7 +613,7 @@
     document.getElementById('r_salary').textContent = LP.fmt(state.salary);
     document.getElementById('r_daily').textContent = LP.fmt(daily);
 
-    // 本月未付工資
+    // 本月未付薪資
     var endD = new Date(state.endDate);
     var startD = new Date(state.startDate);
     var dayOfMonth = endD.getDate();
@@ -663,7 +663,7 @@
       sevCard.style.display = 'none';
     }
 
-    // 預告工資（layoff only, assume not yet paid）
+    // 預告薪資（layoff only, assume not yet paid）
     var noticeCard = document.getElementById('noticeCard');
     state.noticePay = 0;
     if (state.sepType === 'layoff') {
@@ -734,13 +734,13 @@
   function buildSummary() {
     // 應領
     var addItems = [];
-    addItems.push({ label: '本月未付工資', amount: state.unpaidWage });
+    addItems.push({ label: '本月未付薪資', amount: state.unpaidWage });
     addItems.push({ label: '特休未休折現', amount: state.leaveCash });
     if (state.severancePay > 0) {
       addItems.push({ label: state.sepType === 'retire' ? '退休金' : '資遣費', amount: state.severancePay });
     }
     if (state.noticePay > 0) {
-      addItems.push({ label: '預告工資', amount: state.noticePay });
+      addItems.push({ label: '預告薪資', amount: state.noticePay });
     }
     addItems.push({ label: '年終獎金比例', amount: state.bonusAmount });
     if (state.overtimePay > 0) {

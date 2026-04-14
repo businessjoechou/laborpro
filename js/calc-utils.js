@@ -30,7 +30,7 @@
 
   /**
    * 新制資遣費（勞退條例§12）
-   * 每滿1年 = 0.5個月平均工資，上限6個月
+   * 每滿1年 = 0.5個月平均薪資，上限6個月
    */
   function calcSeveranceNew(totalMonths, avgWage) {
     var raw = totalMonths / 12 * 0.5;
@@ -39,7 +39,7 @@
 
   /**
    * 舊制資遣費（勞基法§17）
-   * 每滿1年 = 1個月平均工資，不足1年按比例，無上限
+   * 每滿1年 = 1個月平均薪資，不足1年按比例，無上限
    */
   function calcSeveranceOld(totalMonths, avgWage) {
     var raw = totalMonths / 12;

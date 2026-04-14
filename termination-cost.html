@@ -6,18 +6,18 @@
 <link rel="apple-touch-icon" href="favicon.svg">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>解僱成本估算機｜LaborPro</title>
-<meta name="description" content="雇主解僱成本試算：一鍵估算資遣費、預告工資、特休折現，並比較合法解僱與違法解僱的總成本差異，避免不必要的罰鍰與訴訟風險。">
+<meta name="description" content="雇主解僱成本試算：一鍵估算資遣費、預告薪資、特休折現，並比較合法解僱與違法解僱的總成本差異，避免不必要的罰鍰與訴訟風險。">
 <link rel="canonical" href="https://laborpro.choulegal.com/termination-cost.html">
 <meta property="og:title" content="解僱成本估算機｜LaborPro">
-<meta property="og:description" content="雇主解僱成本試算：一鍵估算資遣費、預告工資、特休折現，並比較合法解僱與違法解僱的總成本差異，避免不必要的罰鍰與訴訟風險。">
-<meta name="keywords" content="解僱成本,資遣費計算,預告工資,特休折現,違法解僱罰鍰,勞基法§17,勞基法§12,勞基法§78,雇主合規,台灣勞基法">
+<meta property="og:description" content="雇主解僱成本試算：一鍵估算資遣費、預告薪資、特休折現，並比較合法解僱與違法解僱的總成本差異，避免不必要的罰鍰與訴訟風險。">
+<meta name="keywords" content="解僱成本,資遣費計算,預告薪資,特休折現,違法解僱罰鍰,勞基法§17,勞基法§12,勞基法§78,雇主合規,台灣勞基法">
 <meta name="robots" content="index, follow">
 <meta name="author" content="LaborPro">
 <meta property="og:site_name" content="LaborPro">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:type" content="website">
 <meta property="og:title" content="解僱成本估算機｜LaborPro">
-<meta property="og:description" content="合法 vs 違法解僱成本比較，一目了然。資遣費＋預告工資＋特休折現完整試算。">
+<meta property="og:description" content="合法 vs 違法解僱成本比較，一目了然。資遣費＋預告薪資＋特休折現完整試算。">
 <meta property="og:image" content="https://laborpro.choulegal.com/choulegal-icon.svg">
 <meta property="og:image:width" content="400">
 <meta property="og:image:height" content="400">
@@ -157,7 +157,7 @@
   "@context": "https://schema.org",
   "@type": "WebApplication",
   "name": "解僱成本估算機｜LaborPro",
-  "description": "雇主解僱成本試算：一鍵估算資遣費、預告工資、特休折現，並比較合法解僱與違法解僱的總成本差異，避免不必要的罰鍰與訴訟風險。",
+  "description": "雇主解僱成本試算：一鍵估算資遣費、預告薪資、特休折現，並比較合法解僱與違法解僱的總成本差異，避免不必要的罰鍰與訴訟風險。",
   "url": "https://laborpro.choulegal.com/termination-cost.html",
   "applicationCategory": "FinanceApplication",
   "operatingSystem": "Web",
@@ -194,12 +194,12 @@
     <div class="step-header">
       <div class="step-label">Step 1 of 2 · 輸入資料</div>
       <h1 class="step-title">解僱成本估算機</h1>
-      <p class="step-sub">輸入員工資料與解僱條件，系統將估算合法解僱總成本，並比較違法解僱的風險曝險。</p>
+      <p class="step-sub">輸入員薪資料與解僱條件，系統將估算合法解僱總成本，並比較違法解僱的風險曝險。</p>
     </div>
 
-    <!-- 員工資料 -->
+    <!-- 員薪資料 -->
     <div class="wizard">
-      <div class="wizard-section-title">員工資料</div>
+      <div class="wizard-section-title">員薪資料</div>
 
       <div class="field-group">
         <label>到職日期</label>
@@ -212,7 +212,7 @@
       </div>
 
       <div class="field-group">
-        <label>平均工資（月薪）<span class="hint">離職前6個月平均</span></label>
+        <label>平均薪資（月薪）<span class="hint">離職前6個月平均</span></label>
         <input type="number" id="avgWage" placeholder="45000" min="0" inputmode="numeric">
       </div>
 
@@ -297,7 +297,7 @@
         <span class="result-row-val" id="r_severance">—</span>
       </div>
       <div class="result-row">
-        <span class="result-row-label">預告工資</span>
+        <span class="result-row-label">預告薪資</span>
         <span class="result-row-val" id="r_noticePay">—</span>
       </div>
       <div class="result-row">
@@ -332,7 +332,7 @@
           <span class="compare-row-val" id="r_cmpFine">—</span>
         </div>
         <div class="compare-row">
-          <span class="compare-row-label">復職＋訴訟期間工資</span>
+          <span class="compare-row-label">復職＋訴訟期間薪資</span>
           <span class="compare-row-val" id="r_cmpBackPay">—</span>
         </div>
         <div class="compare-row">
@@ -388,14 +388,14 @@
 
     <!-- §12 special note -->
     <div class="info-box" id="r_disciplinaryNote" style="display:none;">
-      依勞基法§12懲戒解雇，雇主無需給付資遣費及預告工資。但仍須給付未休特休折現，並確保解僱事由確實符合§12各款規定，否則仍有被認定違法解僱之風險。
+      依勞基法§12懲戒解雇，雇主無需給付資遣費及預告薪資。但仍須給付未休特休折現，並確保解僱事由確實符合§12各款規定，否則仍有被認定違法解僱之風險。
     </div>
 
     <!-- Law Note -->
     <div class="law-note">
       <strong>法律依據</strong><br>
-      · <strong>勞基法§17</strong>：舊制資遣費，每滿1年給付1個月平均工資<br>
-      · <strong>勞退條例§12</strong>：新制資遣費，每滿1年給付0.5個月平均工資，上限6個月<br>
+      · <strong>勞基法§17</strong>：舊制資遣費，每滿1年給付1個月平均薪資<br>
+      · <strong>勞退條例§12</strong>：新制資遣費，每滿1年給付0.5個月平均薪資，上限6個月<br>
       · <strong>勞基法§16</strong>：預告期間；3個月以上未滿1年10日，1年以上未滿3年20日，3年以上30日<br>
       · <strong>勞基法§12</strong>：懲戒解雇事由（重大違規），雇主無需預告及給付資遣費<br>
       · <strong>勞基法§78</strong>：違反§17資遣費規定，處30萬至150萬元罰鍰<br>
@@ -488,7 +488,7 @@
     if (!start)                          { alert('請填寫到職日期。');           return false; }
     if (!end)                            { alert('請填寫預計解僱日期。');       return false; }
     if (new Date(start) >= new Date(end)){ alert('解僱日期須晚於到職日期。');   return false; }
-    if (!wage || wage <= 0)              { alert('請輸入有效的平均工資。');     return false; }
+    if (!wage || wage <= 0)              { alert('請輸入有效的平均薪資。');     return false; }
 
     var regime = document.getElementById('regime').value;
     if (regime === 'both') {

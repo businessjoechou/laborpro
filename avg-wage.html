@@ -5,13 +5,13 @@
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="apple-touch-icon" href="favicon.svg">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>平均工資精算器｜LaborPro</title>
-<meta name="description" content="依勞基法第2條第4款精算平均工資，支援資遣、退休、職災等事由，自動排除產假、職災醫療、留停期間，免費使用。">
-<meta name="keywords" content="平均工資計算,勞基法平均工資,資遣費平均工資,退休金平均工資,勞基法第2條,日平均工資,台灣勞基法">
+<title>平均薪資精算器｜LaborPro</title>
+<meta name="description" content="依勞基法第2條第4款精算平均薪資，支援資遣、退休、職災等事由，自動排除產假、職災醫療、留停期間，免費使用。">
+<meta name="keywords" content="平均薪資計算,勞基法平均薪資,資遣費平均薪資,退休金平均薪資,勞基法第2條,日平均薪資,台灣勞基法">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://laborpro.choulegal.com/avg-wage.html">
-<meta property="og:title" content="平均工資精算器｜LaborPro">
-<meta property="og:description" content="依勞基法第2條第4款精算平均工資，支援資遣、退休、職災等事由。">
+<meta property="og:title" content="平均薪資精算器｜LaborPro">
+<meta property="og:description" content="依勞基法第2條第4款精算平均薪資，支援資遣、退休、職災等事由。">
 <meta property="og:type" content="website">
 <meta name="author" content="LaborPro">
 <meta property="og:site_name" content="LaborPro">
@@ -29,8 +29,8 @@
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "平均工資精算器",
-  "description": "依勞基法第2條第4款計算平均工資，支援排除特殊期間。",
+  "name": "平均薪資精算器",
+  "description": "依勞基法第2條第4款計算平均薪資，支援排除特殊期間。",
   "applicationCategory": "FinanceApplication",
   "operatingSystem": "All",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "TWD" }
@@ -119,8 +119,8 @@
   <div class="step active" id="step1">
     <div class="step-header">
       <div class="step-label">Step 1 of 3 &middot; 計算事由</div>
-      <h1 class="step-title">平均工資精算器</h1>
-      <p class="step-sub">依勞基法&sect;2第4款計算平均工資。用於資遣費、退休金、職災補償等計算基礎。</p>
+      <h1 class="step-title">平均薪資精算器</h1>
+      <p class="step-sub">依勞基法&sect;2第4款計算平均薪資。用於資遣費、退休金、職災補償等計算基礎。</p>
     </div>
 
     <div class="wizard">
@@ -142,22 +142,22 @@
     </div>
 
     <div class="info-box">
-      平均工資 = 事由發生前6個月工資總額 &divide; 該期間總日數 &times; 30
+      平均薪資 = 事由發生前6個月薪資總額 &divide; 該期間總日數 &times; 30
     </div>
   </div>
 
-  <!-- Step 2: 輸入各月工資 -->
+  <!-- Step 2: 輸入各月薪資 -->
   <div class="step" id="step2">
     <div class="step-header">
       <div class="step-label">Step 2 of 3 &middot; 各月薪資</div>
-      <h1 class="step-title">前六個月工資</h1>
-      <p class="step-sub">輸入事由發生日前6個月的工資及工作天數。如有排除期間（產假、職災醫療、留停等）請勾選。</p>
+      <h1 class="step-title">前六個月薪資</h1>
+      <p class="step-sub">輸入事由發生日前6個月的薪資及工作天數。如有排除期間（產假、職災醫療、留停等）請勾選。</p>
     </div>
 
     <div id="monthCards"></div>
 
     <div class="warn-box">
-      &#9888; 排除期間：依勞基法&sect;2第4款但書，職災醫療、產假、留職停薪等期間之工資及日數不列入計算。
+      &#9888; 排除期間：依勞基法&sect;2第4款但書，職災醫療、產假、留職停薪等期間之薪資及日數不列入計算。
     </div>
   </div>
 
@@ -165,12 +165,12 @@
   <div class="step" id="step3">
     <div class="step-header">
       <div class="step-label">Step 3 of 3 &middot; 計算結果</div>
-      <h1 class="step-title">平均工資試算結果</h1>
-      <p class="step-sub">依您輸入之資料計算平均工資。</p>
+      <h1 class="step-title">平均薪資試算結果</h1>
+      <p class="step-sub">依您輸入之資料計算平均薪資。</p>
     </div>
 
     <div class="result-hero">
-      <div class="result-hero-label">月平均工資</div>
+      <div class="result-hero-label">月平均薪資</div>
       <div class="result-hero-amount" id="r_avgWage">--</div>
       <div class="result-hero-sub" id="r_avgSub">勞基法&sect;2第4款</div>
     </div>
@@ -178,7 +178,7 @@
     <div class="result-card">
       <div class="result-card-title">衍生數值</div>
       <div class="result-row">
-        <span class="result-row-label">日平均工資</span>
+        <span class="result-row-label">日平均薪資</span>
         <span class="result-row-val highlight" id="r_dailyAvg">--</span>
       </div>
       <div class="result-row">
@@ -207,14 +207,14 @@
 
     <div class="law-note">
       <strong>法律依據</strong><br>
-      &middot; <strong>勞基法&sect;2第4款</strong>：平均工資，謂計算事由發生之當日前六個月內所得工資總額除以該期間之總日數所得之金額。<br>
-      &middot; 工作未滿六個月者，以工作期間所得工資總額除以工作期間之總日數所得之金額。<br>
-      &middot; 但書：因職災醫療、產假或其他不可歸責期間之工資日數不列入計算。
+      &middot; <strong>勞基法&sect;2第4款</strong>：平均薪資，謂計算事由發生之當日前六個月內所得薪資總額除以該期間之總日數所得之金額。<br>
+      &middot; 工作未滿六個月者，以工作期間所得薪資總額除以工作期間之總日數所得之金額。<br>
+      &middot; 但書：因職災醫療、產假或其他不可歸責期間之薪資日數不列入計算。
     </div>
 
     <div class="link-row">
-      <a href="severance.html" class="link-btn">用此平均工資 &rarr; 計算資遣費</a>
-      <a href="retirement.html" class="link-btn">用此平均工資 &rarr; 計算退休金</a>
+      <a href="severance.html" class="link-btn">用此平均薪資 &rarr; 計算資遣費</a>
+      <a href="retirement.html" class="link-btn">用此平均薪資 &rarr; 計算退休金</a>
     </div>
   </div>
 
@@ -253,7 +253,7 @@ function showStep(n) {
     btnBack.style.display = 'block';
     btnNext.style.display = 'flex';
     btnReset.style.display = 'none';
-    btnNext.textContent = '計算平均工資 \u2192';
+    btnNext.textContent = '計算平均薪資 \u2192';
   } else {
     btnBack.style.display = 'block';
     btnNext.style.display = 'none';
@@ -303,7 +303,7 @@ function buildMonthCards() {
         </div>
         <div class="month-card-fields">
           <div class="field-group">
-            <label>工資金額</label>
+            <label>薪資金額</label>
             <input type="number" id="wage_${i}" placeholder="0" min="0" inputmode="numeric">
           </div>
           <div class="field-group">
@@ -332,7 +332,7 @@ function validateStep2() {
     if (document.getElementById('ex_' + i).checked) continue;
     const w = parseFloat(document.getElementById('wage_' + i).value);
     const d = parseFloat(document.getElementById('days_' + i).value);
-    if (!w || w < 0) { alert('請填寫有效的工資金額。'); return false; }
+    if (!w || w < 0) { alert('請填寫有效的薪資金額。'); return false; }
     if (!d || d <= 0) { alert('請填寫有效的工作天數。'); return false; }
     hasValid = true;
   }
@@ -395,8 +395,8 @@ function calculate() {
   if (excludedMonths.length > 0) {
     exCard.style.display = 'block';
     document.getElementById('r_excludeText').innerHTML =
-      `已排除 <strong>${excludedMonths.join('、')}</strong> 之工資及日數。<br>
-      依勞基法\u00A72第4款但書，職災醫療期間、產假期間、留職停薪期間等不可歸責之期間，其工資日數均不列入平均工資計算。`;
+      `已排除 <strong>${excludedMonths.join('、')}</strong> 之薪資及日數。<br>
+      依勞基法\u00A72第4款但書，職災醫療期間、產假期間、留職停薪期間等不可歸責之期間，其薪資日數均不列入平均薪資計算。`;
   } else {
     exCard.style.display = 'none';
   }

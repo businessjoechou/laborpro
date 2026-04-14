@@ -5,9 +5,9 @@
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>職災補償試算｜LaborPro</title>
-<meta name="description" content="依勞基法§59計算職業災害補償，涵蓋醫療費、工資補償、失能補償及死亡補償四大項目，含失能等級對照表。免費使用，立即試算。">
+<meta name="description" content="依勞基法§59計算職業災害補償，涵蓋醫療費、薪資補償、失能補償及死亡補償四大項目，含失能等級對照表。免費使用，立即試算。">
 <meta property="og:title" content="職災補償試算｜LaborPro">
-<meta property="og:description" content="依勞基法§59計算職業災害醫療、工資、失能、死亡補償金額，含雇主無過失責任說明。">
+<meta property="og:description" content="依勞基法§59計算職業災害醫療、薪資、失能、死亡補償金額，含雇主無過失責任說明。">
 <meta name="robots" content="index, follow">
 <meta name="author" content="LaborPro">
 <meta property="og:site_name" content="LaborPro">
@@ -75,7 +75,7 @@
   "@context": "https://schema.org",
   "@type": "WebApplication",
   "name": "職災補償試算｜LaborPro",
-  "description": "依勞基法§59計算職業災害醫療、工資、失能、死亡補償金額，含雇主無過失責任說明。",
+  "description": "依勞基法§59計算職業災害醫療、薪資、失能、死亡補償金額，含雇主無過失責任說明。",
   "url": "https://laborpro.choulegal.com/work-injury.html",
   "applicationCategory": "FinanceApplication",
   "operatingSystem": "Web",
@@ -120,7 +120,7 @@
         <label>補償類型</label>
         <select id="injuryType" onchange="state.injuryType = this.value">
           <option value="medical">醫療補償（§59第1款）</option>
-          <option value="wage">工資補償（§59第2款，停工期間）</option>
+          <option value="wage">薪資補償（§59第2款，停工期間）</option>
           <option value="disability">失能補償（§59第3款）</option>
           <option value="death">死亡補償（§59第4款）</option>
           <option value="combined">複合（多項合計）</option>
@@ -132,7 +132,7 @@
           <span class="prefix-label">NT$</span>
           <input type="number" id="dailyWage" placeholder="0" min="0" inputmode="numeric" oninput="state.dailyWage = +this.value">
         </div>
-        <div class="law-note" style="margin-top:8px">原領工資依事故發生前六個月平均薪資計算；如受傷前已連續工作未滿六個月者，按實際工作期間之平均薪資計算。</div>
+        <div class="law-note" style="margin-top:8px">原領薪資依事故發生前六個月平均薪資計算；如受傷前已連續工作未滿六個月者，按實際工作期間之平均薪資計算。</div>
       </div>
     </div>
   </div>
@@ -158,9 +158,9 @@
       </div>
     </div>
 
-    <!-- 停工工資補償 -->
+    <!-- 停工薪資補償 -->
     <div class="card section-card" id="wageSection">
-      <div class="section-title">停工工資補償｜§59第2款</div>
+      <div class="section-title">停工薪資補償｜§59第2款</div>
       <div class="field-group">
         <label>停工天數（日）</label>
         <div class="input-prefix">
@@ -170,7 +170,7 @@
         <div id="wageCalcPreview" style="margin-top:8px;font-size:12px;color:var(--muted)"></div>
       </div>
       <div class="law-note">
-        §59第2款：勞工在醫療中不能工作時，雇主應按原領工資補償；工資補償與職業災害勞工保護法或勞工保險給付可互相抵充（§60）。
+        §59第2款：勞工在醫療中不能工作時，雇主應按原領薪資補償；薪資補償與職業災害勞工保護法或勞工保險給付可互相抵充（§60）。
       </div>
     </div>
 
@@ -198,7 +198,7 @@
         <div id="disabilityPreview" style="margin-top:8px;font-size:12px;color:var(--muted)"></div>
       </div>
       <div class="law-note">
-        §59第3款：勞工遭遇職業傷害或罹患職業病，經治療終止後，如身體遺存殘廢，應按其平均工資及殘廢程度，一次給予失能補償。
+        §59第3款：勞工遭遇職業傷害或罹患職業病，經治療終止後，如身體遺存殘廢，應按其平均薪資及殘廢程度，一次給予失能補償。
       </div>
     </div>
 
@@ -217,7 +217,7 @@
         <div class="static-value" id="deathCompText">—（請先在步驟一輸入日薪）</div>
       </div>
       <div class="law-note">
-        §59第4款：勞工因遭遇職業災害死亡時，雇主除給予喪葬費五個月平均工資外，應一次給予其遺屬四十個月平均工資之死亡補償。
+        §59第4款：勞工因遭遇職業災害死亡時，雇主除給予喪葬費五個月平均薪資外，應一次給予其遺屬四十個月平均薪資之死亡補償。
       </div>
     </div>
 
@@ -288,7 +288,7 @@
     if (state.dailyWage > 0) {
       const monthly = state.dailyWage * 30;
       const deathComp = monthly * 40;
-      el.textContent = `5個月平均工資喪葬費 + 40個月平均工資死亡補償 ≈ 死亡補償部分 ${fmt(deathComp)}`;
+      el.textContent = `5個月平均薪資喪葬費 + 40個月平均薪資死亡補償 ≈ 死亡補償部分 ${fmt(deathComp)}`;
     } else {
       el.textContent = '—（請先在步驟一輸入日薪）';
     }
@@ -368,7 +368,7 @@
     }
     if (visible.includes('wageSection')) {
       const v = (state.shutdownDays || 0) * dw;
-      items.push({ label: `停工工資補償（§59第2款）`, value: v, note: `${state.shutdownDays || 0} 天 × 日薪 NT$ ${dw.toLocaleString('zh-TW')}` });
+      items.push({ label: `停工薪資補償（§59第2款）`, value: v, note: `${state.shutdownDays || 0} 天 × 日薪 NT$ ${dw.toLocaleString('zh-TW')}` });
       total += v;
     }
     if (visible.includes('disabilitySection')) {
@@ -382,16 +382,16 @@
       const funeralComp = monthly * 5;
       const deathComp = monthly * 40;
       const funeral = state.funeralSubsidy || 0;
-      items.push({ label: '喪葬費（§59第4款，5個月平均工資）', value: funeralComp, note: `月薪 NT$ ${monthly.toLocaleString('zh-TW')} × 5 個月` });
+      items.push({ label: '喪葬費（§59第4款，5個月平均薪資）', value: funeralComp, note: `月薪 NT$ ${monthly.toLocaleString('zh-TW')} × 5 個月` });
       if (funeral > 0 && funeral !== funeralComp) {
-        items.push({ label: '　→ 實際喪葬費用（雇主補償差額）', value: Math.max(funeral - funeralComp, 0), note: '若實際喪葬費超過5個月工資，依實補足' });
+        items.push({ label: '　→ 實際喪葬費用（雇主補償差額）', value: Math.max(funeral - funeralComp, 0), note: '若實際喪葬費超過5個月薪資，依實補足' });
       }
-      items.push({ label: '死亡補償（§59第4款，40個月平均工資）', value: deathComp, note: `月薪 NT$ ${monthly.toLocaleString('zh-TW')} × 40 個月` });
+      items.push({ label: '死亡補償（§59第4款，40個月平均薪資）', value: deathComp, note: `月薪 NT$ ${monthly.toLocaleString('zh-TW')} × 40 個月` });
       total += funeralComp + deathComp;
     }
 
     const typeLabel = {
-      medical: '醫療補償', wage: '工資補償', disability: '失能補償',
+      medical: '醫療補償', wage: '薪資補償', disability: '失能補償',
       death: '死亡補償', combined: '複合補償（多項合計）'
     };
 

@@ -245,7 +245,7 @@
     <!-- 法律後果 -->
     <div class="danger-box" id="r_consequence" style="display:none;">
       <strong>違法解雇之法律後果</strong><br>
-      依勞基法&sect;14，勞工得不經預告終止契約並請求資遣費。另得向法院請求確認僱傭關係存在（復職）及請求工資損害賠償。雇主可能面臨行政罰鍰及民事賠償責任。
+      依勞基法&sect;14，勞工得不經預告終止契約並請求資遣費。另得向法院請求確認僱傭關係存在（復職）及請求薪資損害賠償。雇主可能面臨行政罰鍰及民事賠償責任。
     </div>
 
     <!-- 行動建議 -->
@@ -498,7 +498,7 @@ function evaluate() {
     const failItems = checks.filter(c => c.status === 'fail');
     failItems.forEach(f => {
       if (f.num === 1 && selectedType === 'A') actions.push('補發書面資遣通知，載明解雇事由及法律依據。');
-      if (f.num === 2 && selectedType === 'A') actions.push('確認是否已履行預告期間，不足者應給付預告工資。');
+      if (f.num === 2 && selectedType === 'A') actions.push('確認是否已履行預告期間，不足者應給付預告薪資。');
       if (f.num === 3 && selectedType === 'A') actions.push('應先嘗試調職安置，留存調職紀錄做為「最後手段」之證明。');
       if (f.num === 7 && selectedType === 'A') actions.push('依法給付資遣費，否則勞工得依§14終止契約另行請求。');
       if (f.num === 8 && selectedType === 'A') actions.push('應主動開立非自願離職證明，供勞工申請失業給付。');

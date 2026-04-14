@@ -5,9 +5,9 @@
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>不當解雇分析｜LaborPro</title>
-<meta name="description" content="依勞基法§11、§12、§14分析解雇合法性，計算資遣費、預告工資，並提供不服解雇之行動建議。">
+<meta name="description" content="依勞基法§11、§12、§14分析解雇合法性，計算資遣費、預告薪資，並提供不服解雇之行動建議。">
 <meta property="og:title" content="不當解雇分析｜LaborPro">
-<meta property="og:description" content="依勞基法§11、§12、§14分析解雇合法性，計算資遣費、預告工資，並提供不服解雇之行動建議。">
+<meta property="og:description" content="依勞基法§11、§12、§14分析解雇合法性，計算資遣費、預告薪資，並提供不服解雇之行動建議。">
 <meta name="robots" content="index, follow">
 <meta name="author" content="LaborPro">
 <meta property="og:site_name" content="LaborPro">
@@ -87,7 +87,7 @@
   "@context": "https://schema.org",
   "@type": "WebApplication",
   "name": "不當解雇分析｜LaborPro",
-  "description": "依勞基法§11、§12、§14分析解雇合法性，計算資遣費、預告工資，並提供不服解雇之行動建議。",
+  "description": "依勞基法§11、§12、§14分析解雇合法性，計算資遣費、預告薪資，並提供不服解雇之行動建議。",
   "url": "https://laborpro.choulegal.com/wrongful-dismissal.html",
   "applicationCategory": "FinanceApplication",
   "operatingSystem": "Web",
@@ -141,12 +141,12 @@
         </div>
       </div>
       <div class="field-group">
-        <label>平均工資（月薪，元）</label>
+        <label>平均薪資（月薪，元）</label>
         <div class="input-prefix">
           <span class="prefix-label">NT$</span>
           <input type="number" id="avgWage" placeholder="0" min="0" inputmode="numeric" oninput="state.avgWage = +this.value">
         </div>
-        <div class="law-note" style="margin-top:8px">平均工資以事由發生前六個月薪資總額除以該期間總日數計算；此處以月薪近似試算。</div>
+        <div class="law-note" style="margin-top:8px">平均薪資以事由發生前六個月薪資總額除以該期間總日數計算；此處以月薪近似試算。</div>
       </div>
     </div>
   </div>
@@ -206,7 +206,7 @@
     worker_notice: [
       { id: 'g14_1', text: '雇主於訂立勞動契約時為虛偽意思表示', legal: true },
       { id: 'g14_2', text: '雇主、家屬對勞工實施暴力', legal: true },
-      { id: 'g14_3', text: '雇主不依契約給付工資', legal: true },
+      { id: 'g14_3', text: '雇主不依契約給付薪資', legal: true },
       { id: 'g14_4', text: '雇主違反勞動契約或勞工法令，致損害勞工權益', legal: true },
       { id: 'g14_5', text: '雇主要求勞工從事危害勞工健康安全之工作', legal: true },
       { id: 'g14_other', text: '其他（一般自請離職，無§14事由，通常無法請資遣費）', legal: false, danger: false }
@@ -283,7 +283,7 @@
   function goNext() {
     if (currentStep === 1) {
       if (state.workMonths <= 0) { alert('請輸入年資（月）'); return; }
-      if (state.avgWage <= 0) { alert('請輸入平均工資'); return; }
+      if (state.avgWage <= 0) { alert('請輸入平均薪資'); return; }
       currentStep = 2;
       renderGrounds();
       showStep(2);
@@ -351,7 +351,7 @@
         legalityText = '未符合§11法定事由，解雇可能違法';
         legalityBadgeClass = 'badge-red';
         severanceEligible = false;
-        severanceNote = '解雇若屬違法，勞工得請求回復原職，或依法請求相當於3個月工資以內之損害賠償。';
+        severanceNote = '解雇若屬違法，勞工得請求回復原職，或依法請求相當於3個月薪資以內之損害賠償。';
       } else {
         legalityLevel = 'HIGH';
         legalityText = '符合§11法定事由，解雇合法可能性高';
@@ -366,7 +366,7 @@
         legalityText = '未符合§12重大事由，不預告終止可能違法';
         legalityBadgeClass = 'badge-red';
         severanceEligible = false;
-        severanceNote = '解雇若屬違法，勞工得請求回復原職，或依法請求相當於3個月工資以內之損害賠償。';
+        severanceNote = '解雇若屬違法，勞工得請求回復原職，或依法請求相當於3個月薪資以內之損害賠償。';
       } else {
         legalityLevel = 'MEDIUM';
         legalityText = '具備§12事由，但尚需確認30日除斥期間及事證是否充分';
@@ -461,7 +461,7 @@
         <div class="breakdown-row">
           <div class="breakdown-label">
             違法解雇損害賠償（替代方案）
-            <div style="font-size:11px;color:var(--muted);margin-top:2px">回復原職 或 最高3個月工資之損害賠償</div>
+            <div style="font-size:11px;color:var(--muted);margin-top:2px">回復原職 或 最高3個月薪資之損害賠償</div>
           </div>
           <div class="breakdown-value" style="color:var(--danger)">${fmt(wage * 3)} 上限</div>
         </div>` : ''}
@@ -469,7 +469,7 @@
 
       ${noticeApplicable ? `
       <div class="breakdown-card">
-        <div class="breakdown-header">預告工資試算｜§16</div>
+        <div class="breakdown-header">預告薪資試算｜§16</div>
         <div class="breakdown-row">
           <div class="breakdown-label">
             年資 ${months} 個月，預告期間
@@ -481,7 +481,7 @@
         </div>
         ${noticeDays > 0 ? `
         <div class="breakdown-row total">
-          <div class="breakdown-label">預告工資（若未依規定預告）</div>
+          <div class="breakdown-label">預告薪資（若未依規定預告）</div>
           <div class="breakdown-value">${fmt(noticeWage)}</div>
         </div>` : ''}
       </div>` : ''}
@@ -508,7 +508,7 @@
         ${legalityLevel === 'LOW' ? `
         <div class="action-item">
           <div class="action-num">${severanceEligible ? '04' : '03'}</div>
-          <div class="action-text">解雇若被認定為違法，可請求法院判決僱傭關係繼續存在，並請求雇主補發資遣期間之工資。</div>
+          <div class="action-text">解雇若被認定為違法，可請求法院判決僱傭關係繼續存在，並請求雇主補發資遣期間之薪資。</div>
         </div>` : ''}
         <div class="action-item">
           <div class="action-num">${legalityLevel === 'LOW' ? (severanceEligible ? '05' : '04') : (severanceEligible ? '04' : '03')}</div>
@@ -521,8 +521,8 @@
           <strong>§11</strong>：雇主預告終止須符合法定五款事由之一。<br>
           <strong>§12</strong>：雇主不預告終止須具重大事由，且應於30日除斥期間內為之。<br>
           <strong>§14</strong>：勞工因雇主有可歸責事由，得不經預告終止契約並請求資遣費。<br>
-          <strong>§16</strong>：依年資分段規定預告期間，未踐行預告者應給付預告工資。<br>
-          <strong>§17</strong>：舊制資遣費，每滿1年給付1個月平均工資，最高6個月。
+          <strong>§16</strong>：依年資分段規定預告期間，未踐行預告者應給付預告薪資。<br>
+          <strong>§17</strong>：舊制資遣費，每滿1年給付1個月平均薪資，最高6個月。
         </div>
       </div>
     `;

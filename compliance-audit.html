@@ -6,7 +6,7 @@
 <link rel="apple-touch-icon" href="favicon.svg">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>勞基法合規自檢｜LaborPro</title>
-<meta name="description" content="雇主勞基法合規自檢工具：涵蓋工時、工資、勞健保、假別、解僱、職安、勞動契約七大面向，即時評估風險等級與罰鍰曝險，免費使用。">
+<meta name="description" content="雇主勞基法合規自檢工具：涵蓋工時、薪資、勞健保、假別、解僱、職安、勞動契約七大面向，即時評估風險等級與罰鍰曝險，免費使用。">
 <meta name="keywords" content="勞基法合規,雇主自檢,勞動檢查,工時管理,加班費,勞健保,勞工退休金,特休,資遣,職業安全,勞動契約,罰鍰,台灣勞基法">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://laborpro.choulegal.com/compliance-audit.html">
@@ -32,7 +32,7 @@
   "@context": "https://schema.org",
   "@type": "WebApplication",
   "name": "勞基法合規自檢",
-  "description": "雇主勞基法合規自檢工具，涵蓋工時、工資、勞健保、假別、解僱、職安、勞動契約七大面向。",
+  "description": "雇主勞基法合規自檢工具，涵蓋工時、薪資、勞健保、假別、解僱、職安、勞動契約七大面向。",
   "applicationCategory": "BusinessApplication",
   "operatingSystem": "All",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "TWD" }
@@ -324,7 +324,7 @@
 
     <div class="law-note">
       <strong>法律依據</strong><br>
-      &middot; <strong>勞基法</strong>：工時（&sect;30）、加班（&sect;32、&sect;24）、工資（&sect;21、&sect;23）、特休（&sect;38）、資遣（&sect;11、&sect;16）、產假（&sect;50）。<br>
+      &middot; <strong>勞基法</strong>：工時（&sect;30）、加班（&sect;32、&sect;24）、薪資（&sect;21、&sect;23）、特休（&sect;38）、資遣（&sect;11、&sect;16）、產假（&sect;50）。<br>
       &middot; <strong>勞工保險條例</strong>：投保（&sect;6、&sect;11、&sect;14）。<br>
       &middot; <strong>勞工退休金條例</strong>：提繳（&sect;14）、資遣費（&sect;12）。<br>
       &middot; <strong>職業安全衛生法</strong>：安全衛生人員（&sect;23）、安全檢查（&sect;6）、職災通報（&sect;37）。<br>
@@ -366,13 +366,13 @@ const CATEGORIES = [
   },
   {
     id: 'B',
-    name: '工資與加班費',
+    name: '薪資與加班費',
     icon: '\uD83D\uDCB0',
     iconBg: '#fff8e8',
     questions: [
       { id:'b1', text:'加班費依法定倍率計算？', ref:'\u00A724', weight:15, critical:true, penalty:'2\u842C-100\u842C', penaltyMin:20000 },
-      { id:'b2', text:'所有員工達基本工資？', ref:'\u00A721', weight:15, critical:true, penalty:'2\u842C-100\u842C', penaltyMin:20000 },
-      { id:'b3', text:'工資每月至少發放 2 次？', ref:'\u00A723', weight:10, critical:false, penalty:'2\u842C-100\u842C', penaltyMin:20000 },
+      { id:'b2', text:'所有員工達基本薪資？', ref:'\u00A721', weight:15, critical:true, penalty:'2\u842C-100\u842C', penaltyMin:20000 },
+      { id:'b3', text:'薪資每月至少發放 2 次？', ref:'\u00A723', weight:10, critical:false, penalty:'2\u842C-100\u842C', penaltyMin:20000 },
       { id:'b4', text:'有發放薪資明細？', ref:'\u00A723', weight:8, critical:false, penalty:'2\u842C-100\u842C', penaltyMin:20000 }
     ]
   },

@@ -234,7 +234,7 @@
   <div class="employer-only" style="background:#fef8e8;border:1.5px solid #c8901a;border-radius:12px;padding:16px 20px;margin-top:14px;">
     <div style="font-size:12px;font-weight:700;color:#8a5a10;margin-bottom:8px;">雇主自我檢核建議</div>
     <div style="font-size:12px;color:#4a3a10;line-height:1.9;">
-      1. <strong>每月檢查</strong>：加班時數是否超過46小時、工資是否高於基本工資<br>
+      1. <strong>每月檢查</strong>：加班時數是否超過46小時、薪資是否高於基本薪資<br>
       2. <strong>每季檢查</strong>：勞退是否足額提撥、勞健保投保級距是否正確<br>
       3. <strong>出勤紀錄</strong>：務必逐日記載至分鐘，保存5年（未置備罰9萬–45萬）<br>
       4. <strong>薪資明細</strong>：每月提供書面或電子薪資各項目明細<br>
@@ -249,15 +249,15 @@
 <script>
 (function() {
   var VIOLATIONS = [
-    // ── 工資類 ──
-    { id: 1, title: '未給付加班費', law: '§24', penalty: '2萬–100萬', desc: '延長工時未依規定加給工資（前2小時加給1/3，後2小時加給2/3）', risk: 'high', category: '工資' },
-    { id: 2, title: '低於基本工資', law: '§21', penalty: '2萬–100萬', desc: '工資低於基本工資（2026年：月薪29,500元、時薪196元）', risk: 'high', category: '工資' },
-    { id: 3, title: '未全額直接給付工資', law: '§22', penalty: '2萬–100萬', desc: '工資未以法定通用貨幣全額直接給付勞工', risk: 'medium', category: '工資' },
-    { id: 4, title: '工資未定期給付', law: '§23', penalty: '2萬–100萬', desc: '工資未每月至少發給2次，或未提供薪資明細', risk: 'medium', category: '工資' },
-    { id: 5, title: '未提供薪資明細', law: '§23', penalty: '2萬–100萬', desc: '未以書面或電子方式提供工資各項目計算方式明細', risk: 'medium', category: '工資' },
-    { id: 6, title: '預扣勞工工資', law: '§26', penalty: '9萬–45萬', desc: '雇主不得預扣勞工工資作為違約金或賠償費用', risk: 'medium', category: '工資' },
-    { id: 7, title: '未給付特休工資', law: '§38', penalty: '2萬–100萬', desc: '年度終結或離職時，特休未休日數未折發工資', risk: 'medium', category: '工資' },
-    { id: 8, title: '國定假日出勤未加倍', law: '§39', penalty: '2萬–100萬', desc: '國定假日、例假日出勤未加倍給付工資', risk: 'high', category: '工資' },
+    // ── 薪資類 ──
+    { id: 1, title: '未給付加班費', law: '§24', penalty: '2萬–100萬', desc: '延長工時未依規定加給薪資（前2小時加給1/3，後2小時加給2/3）', risk: 'high', category: '薪資' },
+    { id: 2, title: '低於基本薪資', law: '§21', penalty: '2萬–100萬', desc: '薪資低於基本薪資（2026年：月薪29,500元、時薪196元）', risk: 'high', category: '薪資' },
+    { id: 3, title: '未全額直接給付薪資', law: '§22', penalty: '2萬–100萬', desc: '薪資未以法定通用貨幣全額直接給付勞工', risk: 'medium', category: '薪資' },
+    { id: 4, title: '薪資未定期給付', law: '§23', penalty: '2萬–100萬', desc: '薪資未每月至少發給2次，或未提供薪資明細', risk: 'medium', category: '薪資' },
+    { id: 5, title: '未提供薪資明細', law: '§23', penalty: '2萬–100萬', desc: '未以書面或電子方式提供薪資各項目計算方式明細', risk: 'medium', category: '薪資' },
+    { id: 6, title: '預扣勞工薪資', law: '§26', penalty: '9萬–45萬', desc: '雇主不得預扣勞工薪資作為違約金或賠償費用', risk: 'medium', category: '薪資' },
+    { id: 7, title: '未給付特休薪資', law: '§38', penalty: '2萬–100萬', desc: '年度終結或離職時，特休未休日數未折發薪資', risk: 'medium', category: '薪資' },
+    { id: 8, title: '國定假日出勤未加倍', law: '§39', penalty: '2萬–100萬', desc: '國定假日、例假日出勤未加倍給付薪資', risk: 'high', category: '薪資' },
 
     // ── 工時類 ──
     { id: 9, title: '超時加班', law: '§32', penalty: '2萬–100萬', desc: '每月延長工時超過46小時（經勞資會議同意可至54小時，每3個月不超過138小時）', risk: 'high', category: '工時' },
@@ -279,8 +279,8 @@
 
     // ── 解僱類 ──
     { id: 23, title: '未給付資遣費', law: '§17', penalty: '30萬–150萬', desc: '資遣勞工未依規定給付資遣費（新制每年0.5個月、舊制每年1個月）', risk: 'high', category: '解僱' },
-    { id: 24, title: '違法解雇', law: '§11,§12', penalty: '復職＋工資補償', desc: '非法定事由解雇勞工，法院可判決復職及補發工資', risk: 'high', category: '解僱' },
-    { id: 25, title: '未給預告期間', law: '§16', penalty: '2萬–30萬', desc: '資遣未給預告期間或未付預告期間工資（3個月以上10天、1年以上20天、3年以上30天）', risk: 'medium', category: '解僱' },
+    { id: 24, title: '違法解雇', law: '§11,§12', penalty: '復職＋薪資補償', desc: '非法定事由解雇勞工，法院可判決復職及補發薪資', risk: 'high', category: '解僱' },
+    { id: 25, title: '未給預告期間', law: '§16', penalty: '2萬–30萬', desc: '資遣未給預告期間或未付預告期間薪資（3個月以上10天、1年以上20天、3年以上30天）', risk: 'medium', category: '解僱' },
     { id: 26, title: '大量解僱未通報', law: '大量解僱§4', penalty: '10萬–50萬', desc: '達大量解僱門檻未於60日前通報主管機關及相關單位', risk: 'medium', category: '解僱' },
     { id: 27, title: '禁止解雇期間解雇', law: '§13', penalty: '復職＋補償', desc: '勞工職災醫療期間或產假期間解雇勞工', risk: 'high', category: '解僱' },
     { id: 28, title: '歧視性解雇', law: '性平法§11', penalty: '30萬–150萬', desc: '以懷孕、分娩、育嬰為由解雇或不利處分', risk: 'high', category: '解僱' },
@@ -289,7 +289,7 @@
     // ── 保險與退休類 ──
     { id: 30, title: '未依法投保勞保', law: '勞保§72', penalty: '依期間追繳＋罰鍰', desc: '應投保而未投保或以多報少，除追繳保費外另處罰鍰', risk: 'high', category: '保險' },
     { id: 31, title: '未投保就業保險', law: '就保§38', penalty: '追繳＋10倍罰鍰', desc: '僱用員工5人以上未投保就業保險', risk: 'high', category: '保險' },
-    { id: 32, title: '未足額提撥勞退', law: '勞退§53', penalty: '6萬–30萬', desc: '未按月提撥不低於月工資6%至勞工退休金專戶', risk: 'medium', category: '退休' },
+    { id: 32, title: '未足額提撥勞退', law: '勞退§53', penalty: '6萬–30萬', desc: '未按月提撥不低於月薪資6%至勞工退休金專戶', risk: 'medium', category: '退休' },
     { id: 33, title: '未投保職災保險', law: '職保§46', penalty: '2萬–10萬', desc: '登記有案之雇主未為勞工投保職業災害保險', risk: 'medium', category: '保險' },
 
     // ── 契約與程序類 ──

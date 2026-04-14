@@ -6,8 +6,8 @@
 <link rel="apple-touch-icon" href="favicon.svg">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>離職預告期計算機｜LaborPro</title>
-<meta name="description" content="依勞基法§15、§16計算勞工自願離職預告期間天數及最早可離職日期，支援雇主資遣預告期間及預告工資試算。免費使用，立即試算。">
-<meta name="keywords" content="離職預告期,預告期間計算,勞基法第15條,勞基法第16條,離職天數,預告工資,台灣勞基法">
+<meta name="description" content="依勞基法§15、§16計算勞工自願離職預告期間天數及最早可離職日期，支援雇主資遣預告期間及預告薪資試算。免費使用，立即試算。">
+<meta name="keywords" content="離職預告期,預告期間計算,勞基法第15條,勞基法第16條,離職天數,預告薪資,台灣勞基法">
 <meta name="robots" content="index, follow">
 <meta name="author" content="LaborPro">
 <meta property="og:title" content="離職預告期計算機｜LaborPro">
@@ -183,7 +183,7 @@
         依勞基法§15第2項，不定期契約勞工終止契約時，應準用§16第1項規定之預告期間。
       </div>
       <div class="info-box" id="infoLayoff" style="display:none;">
-        依勞基法§16，雇主依§11或§13但書終止契約者，應於一定期間前預告勞工。未給預告者，應給付預告期間工資。
+        依勞基法§16，雇主依§11或§13但書終止契約者，應於一定期間前預告勞工。未給預告者，應給付預告期間薪資。
       </div>
     </div>
 
@@ -200,9 +200,9 @@
     </div>
 
     <div class="wizard" id="salarySection" style="display:none;">
-      <div class="wizard-section-title">薪資資料（計算預告工資）</div>
+      <div class="wizard-section-title">薪資資料（計算預告薪資）</div>
       <div class="field-group">
-        <label>平均工資（月薪）<span style="font-weight:400;color:var(--muted);font-size:12px;margin-left:6px;">離職前6個月平均</span></label>
+        <label>平均薪資（月薪）<span style="font-weight:400;color:var(--muted);font-size:12px;margin-left:6px;">離職前6個月平均</span></label>
         <input type="number" id="avgWage" placeholder="50000" min="0" inputmode="numeric">
       </div>
     </div>
@@ -234,19 +234,19 @@
       <div class="date-result-sub" id="r_dateSub">—</div>
     </div>
 
-    <!-- 預告工資 (雇主資遣時顯示) -->
+    <!-- 預告薪資 (雇主資遣時顯示) -->
     <div class="employer-notice-card" id="noticeWageCard" style="display:none;">
-      <div class="employer-notice-title">預告工資（§16第3項）</div>
+      <div class="employer-notice-title">預告薪資（§16第3項）</div>
       <div class="result-row">
         <span class="result-row-label">日薪（月薪 ÷ 30）</span>
         <span class="result-row-val" id="r_dailyWage">—</span>
       </div>
       <div class="result-row">
-        <span class="result-row-label">預告工資金額</span>
+        <span class="result-row-label">預告薪資金額</span>
         <span class="result-row-val highlight" id="r_noticeWage">—</span>
       </div>
       <div style="font-size:12px;color:#8a6010;margin-top:10px;line-height:1.7;">
-        雇主未依規定期間預告而終止契約者，應給付預告期間之工資。
+        雇主未依規定期間預告而終止契約者，應給付預告期間之薪資。
       </div>
     </div>
 
@@ -285,7 +285,7 @@
       <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:8px;">勞工注意事項</div>
       <div style="font-size:12px;color:#1a3a28;line-height:1.9;">
         · 預告期間自<strong>通知雇主之翌日</strong>起算，不含通知當天<br>
-        · 預告期間內，勞工每星期可有<strong>2日外出謀職假</strong>，工資照給（§16 II）<br>
+        · 預告期間內，勞工每星期可有<strong>2日外出謀職假</strong>，薪資照給（§16 II）<br>
         · 雇主如有違反勞動法令情形（§14），勞工可<strong>不經預告立即離職</strong><br>
         · 定期契約期滿離職，<strong>不需預告</strong><br>
         · 建議以<strong>書面</strong>（存證信函、Email）方式提出離職，保留證據<br>
@@ -296,8 +296,8 @@
     <div class="employer-only" style="background:#fef8e8;border:1.5px solid #c8901a;border-radius:12px;padding:16px 20px;margin-bottom:14px;">
       <div style="font-size:12px;font-weight:700;color:#8a5a10;margin-bottom:8px;">雇主注意事項</div>
       <div style="font-size:12px;color:#4a3a10;line-height:1.9;">
-        · 未依§16規定預告即終止契約者，應給付<strong>預告期間工資</strong>（§16 III）<br>
-        · 預告期間內應給予勞工每週<strong>2日謀職假</strong>，工資照給（§16 II）<br>
+        · 未依§16規定預告即終止契約者，應給付<strong>預告期間薪資</strong>（§16 III）<br>
+        · 預告期間內應給予勞工每週<strong>2日謀職假</strong>，薪資照給（§16 II）<br>
         · 資遣須於<strong>10日前</strong>通報當地主管機關及公立就服機構（就服法§33）<br>
         · 違反預告期間規定，罰<strong>2萬至30萬</strong>（§79）<br>
         · 預告期間之計算，依<strong>日曆天數</strong>計算（含例假日）
@@ -309,8 +309,8 @@
       <strong>法律依據</strong><br>
       · <strong>勞基法§15</strong>：不定期契約勞工終止契約之預告，準用§16第1項規定<br>
       · <strong>勞基法§16第1項</strong>：繼續工作3個月以上1年未滿者10日前預告；1年以上3年未滿者20日前預告；3年以上者30日前預告<br>
-      · <strong>勞基法§16第2項</strong>：預告期間內勞工每星期得請2日謀職假，工資照給<br>
-      · <strong>勞基法§16第3項</strong>：雇主未依期間預告而終止契約者，應給付預告期間工資<br>
+      · <strong>勞基法§16第2項</strong>：預告期間內勞工每星期得請2日謀職假，薪資照給<br>
+      · <strong>勞基法§16第3項</strong>：雇主未依期間預告而終止契約者，應給付預告期間薪資<br>
       · <strong>勞基法§14</strong>：雇主有違法情形時，勞工得不經預告終止契約
     </div>
   </div>
@@ -378,7 +378,7 @@
     if (new Date(start) >= new Date(end)) { alert('離職日期須晚於到職日期。'); return false; }
     if (state.type === 'layoff') {
       var wage = parseFloat(document.getElementById('avgWage').value);
-      if (!wage || wage <= 0) { alert('請輸入有效的平均工資。'); return false; }
+      if (!wage || wage <= 0) { alert('請輸入有效的平均薪資。'); return false; }
     }
     return true;
   }
@@ -439,7 +439,7 @@
       document.getElementById('r_dateLabel').textContent = '最早可離職日';
     } else {
       document.getElementById('resultTitle').textContent = '資遣預告期試算結果';
-      document.getElementById('resultSub').textContent = '依勞基法§16規定之雇主預告期間及預告工資。';
+      document.getElementById('resultSub').textContent = '依勞基法§16規定之雇主預告期間及預告薪資。';
       document.getElementById('r_heroLabel').textContent = '雇主應遵守預告期間';
       document.getElementById('r_dateLabel').textContent = '最早可資遣日';
     }

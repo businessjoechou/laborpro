@@ -6,11 +6,11 @@
 <link rel="apple-touch-icon" href="favicon.svg">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>資遣費計算機｜LaborPro</title>
-<meta name="description" content="依勞基法§17（舊制）與勞工退休金條例§12（新制）精準計算資遣費與預告工資，含年資試算、新舊制對照。免費使用，立即試算。">
+<meta name="description" content="依勞基法§17（舊制）與勞工退休金條例§12（新制）精準計算資遣費與預告薪資，含年資試算、新舊制對照。免費使用，立即試算。">
 <link rel="canonical" href="https://laborpro.choulegal.com/severance.html">
 <meta property="og:title" content="資遣費計算機｜LaborPro">
-<meta property="og:description" content="依台灣勞基法§17、勞退條例§12計算資遣費，支援新制、舊制及兩制並計，自動計算預告工資，免費使用。">
-<meta name="keywords" content="資遣費計算,勞基法資遣費,新制資遣費,舊制資遣費,勞退條例第12條,勞基法第17條,預告工資,台灣勞基法">
+<meta property="og:description" content="依台灣勞基法§17、勞退條例§12計算資遣費，支援新制、舊制及兩制並計，自動計算預告薪資，免費使用。">
+<meta name="keywords" content="資遣費計算,勞基法資遣費,新制資遣費,舊制資遣費,勞退條例第12條,勞基法第17條,預告薪資,台灣勞基法">
 <meta name="robots" content="index, follow">
 <meta name="author" content="LaborPro">
 <meta property="og:site_name" content="LaborPro">
@@ -110,7 +110,7 @@
   "@context": "https://schema.org",
   "@type": "WebApplication",
   "name": "資遣費計算機｜LaborPro",
-  "description": "依台灣勞基法§17、勞退條例§12計算資遣費，支援新制、舊制及兩制並計，自動計算預告工資，免費使用。",
+  "description": "依台灣勞基法§17、勞退條例§12計算資遣費，支援新制、舊制及兩制並計，自動計算預告薪資，免費使用。",
   "url": "https://laborpro.choulegal.com/severance.html",
   "applicationCategory": "FinanceApplication",
   "operatingSystem": "Web",
@@ -147,7 +147,7 @@
     <div class="step-header">
       <div class="step-label">Step 1 of 2 · 基本資料</div>
       <h1 class="step-title">資遣費計算機</h1>
-      <p class="step-sub">依勞基法§17（舊制）與勞工退休金條例§12（新制）計算應領資遣費及預告工資。</p>
+      <p class="step-sub">依勞基法§17（舊制）與勞工退休金條例§12（新制）計算應領資遣費及預告薪資。</p>
     </div>
 
     <div class="wizard">
@@ -188,12 +188,12 @@
       <div class="wizard-section-title">薪資資料</div>
 
       <div class="field-group">
-        <label>平均工資（月薪）<span class="hint" style="font-weight:400;color:var(--muted);font-size:12px;margin-left:6px;">離職前6個月平均</span></label>
+        <label>平均薪資（月薪）<span class="hint" style="font-weight:400;color:var(--muted);font-size:12px;margin-left:6px;">離職前6個月平均</span></label>
         <input type="number" id="avgWage" placeholder="50000" min="0" inputmode="numeric">
       </div>
 
       <div class="field-group">
-        <label>雇主是否已給付預告工資？</label>
+        <label>雇主是否已給付預告薪資？</label>
         <div class="select-wrap">
           <select id="noticePaid">
             <option value="否">否（尚未給付）</option>
@@ -204,7 +204,7 @@
     </div>
 
     <div class="warn-box">
-      ⚠ 本計算機提供參考試算，實際資遣費須依個別勞動契約及工資認定，建議諮詢勞動局或專業律師。
+      ⚠ 本計算機提供參考試算，實際資遣費須依個別勞動契約及薪資認定，建議諮詢勞動局或專業律師。
     </div>
   </div>
 
@@ -232,7 +232,7 @@
         <span class="result-row-val highlight" id="r_tenure">—</span>
       </div>
       <div class="result-row">
-        <span class="result-row-label">平均工資</span>
+        <span class="result-row-label">平均薪資</span>
         <span class="result-row-val" id="r_avgWage">—</span>
       </div>
     </div>
@@ -269,17 +269,17 @@
       </div>
     </div>
 
-    <!-- 預告工資 -->
+    <!-- 預告薪資 -->
     <div id="r_noticeSection">
       <!-- 未給付 -->
       <div class="notice-card" id="r_noticeUnpaid" style="display:none;">
-        <div class="notice-card-title">預告工資（§16）— 尚未給付</div>
+        <div class="notice-card-title">預告薪資（§16）— 尚未給付</div>
         <div class="result-row">
           <span class="result-row-label">預告期間</span>
           <span class="result-row-val" id="r_noticeDays">—</span>
         </div>
         <div class="result-row">
-          <span class="result-row-label">預告工資金額</span>
+          <span class="result-row-label">預告薪資金額</span>
           <span class="result-row-val highlight" id="r_noticeAmount">—</span>
         </div>
         <p style="font-size:12px;color:#8a6010;margin-top:12px;line-height:1.7;">雇主應另行給付，勞工可依法請求。</p>
@@ -287,7 +287,7 @@
       <!-- 已給付 -->
       <div class="notice-paid-card" id="r_noticePaid" style="display:none;">
         <div class="notice-paid-icon">✓</div>
-        <div class="notice-paid-text">雇主已給付預告工資，無需額外請求。</div>
+        <div class="notice-paid-text">雇主已給付預告薪資，無需額外請求。</div>
       </div>
     </div>
 
@@ -320,7 +320,7 @@
         · 資遣須於<strong>10日前</strong>通報當地主管機關及公立就服機構（就服法§33）<br>
         · 未通報資遣：罰<strong>3萬至15萬</strong>（就服法§68）<br>
         · 達大量解僱門檻（同一事業單位60日內資遣）須提前60日通報<br>
-        · 資遣費計算應以<strong>平均工資</strong>為基礎，包含加班費在內之經常性給與<br>
+        · 資遣費計算應以<strong>平均薪資</strong>為基礎，包含加班費在內之經常性給與<br>
         · 建議保留完整年資計算文件，以備勞動檢查
       </div>
     </div>
@@ -328,8 +328,8 @@
     <!-- 法律依據 -->
     <div class="law-note">
       <strong>法律依據</strong><br>
-      · <strong>勞基法§17</strong>：舊制資遣費，每滿1年給付1個月平均工資<br>
-      · <strong>勞退條例§12</strong>：新制資遣費，每滿1年給付0.5個月平均工資，最高6個月；未滿1年依比例計算<br>
+      · <strong>勞基法§17</strong>：舊制資遣費，每滿1年給付1個月平均薪資<br>
+      · <strong>勞退條例§12</strong>：新制資遣費，每滿1年給付0.5個月平均薪資，最高6個月；未滿1年依比例計算<br>
       · <strong>勞基法§16</strong>：預告期間；3個月以上未滿1年者10日，1年以上未滿3年者20日，3年以上者30日<br>
       · <strong>勞基法§78</strong>：違反§17資遣費規定，處30萬至150萬元罰鍰<br>
       · <strong>就服法§33</strong>：資遣10日前通報義務
@@ -410,7 +410,7 @@
     if (!start) { alert('請填寫到職日期。'); return false; }
     if (!end)   { alert('請填寫離職日期。'); return false; }
     if (new Date(start) >= new Date(end)) { alert('離職日期須晚於到職日期。'); return false; }
-    if (!wage || wage <= 0) { alert('請輸入有效的平均工資。'); return false; }
+    if (!wage || wage <= 0) { alert('請輸入有效的平均薪資。'); return false; }
 
     const regime = document.getElementById('regime').value;
     if (regime === 'both') {
@@ -455,7 +455,7 @@
   }
 
   function calcSeveranceOld(totalMonths, avgWage) {
-    // §17 勞基法: 每滿1年 = 1個月平均工資，不足1年按比例（無上限）
+    // §17 勞基法: 每滿1年 = 1個月平均薪資，不足1年按比例（無上限）
     const raw = totalMonths / 12;
     return raw * avgWage;
   }
@@ -561,7 +561,7 @@
     document.getElementById('r_totalClaim').textContent = fmt(total);
     document.getElementById('r_totalClaimNote').textContent =
       noticePaid === '否' && notice.days > 0
-        ? '含資遣費 + 預告工資'
+        ? '含資遣費 + 預告薪資'
         : '資遣費';
   }
 

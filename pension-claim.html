@@ -182,7 +182,7 @@
       <div class="wizard-section-title">薪資資料</div>
 
       <div class="field-group">
-        <label>月平均工資（元）<span class="hint" style="font-weight:400;color:var(--muted);font-size:12px;margin-left:6px;">退休前6個月平均</span></label>
+        <label>月平均薪資（元）<span class="hint" style="font-weight:400;color:var(--muted);font-size:12px;margin-left:6px;">退休前6個月平均</span></label>
         <input type="number" id="avgWage" placeholder="50000" min="0" inputmode="numeric">
         <span class="field-hint">舊制以此計算退休金基數金額；新制作為參考。</span>
       </div>
@@ -367,7 +367,7 @@
           <span class="result-row-val highlight" id="r_oldTotalUnits">—</span>
         </div>
         <div class="result-row">
-          <span class="result-row-label">基數金額（月平均工資）</span>
+          <span class="result-row-label">基數金額（月平均薪資）</span>
           <span class="result-row-val" id="r_oldUnitWage">—</span>
         </div>
         <div class="result-row">
@@ -381,7 +381,7 @@
         前15年：min(年資, 15) × 2 基數<br>
         超過15年：max(年資 - 15, 0) × 1 基數<br>
         合計基數上限：45 基數<br>
-        退休金 = 基數 × 月平均工資<br>
+        退休金 = 基數 × 月平均薪資<br>
         <span id="r_formulaDetail">—</span>
       </div>
     </div>
@@ -495,7 +495,7 @@
     const wage   = parseFloat(document.getElementById('avgWage').value);
 
     if (!wage || wage <= 0) {
-      alert('請輸入有效的月平均工資。');
+      alert('請輸入有效的月平均薪資。');
       return false;
     }
 
