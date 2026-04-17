@@ -648,16 +648,23 @@
       document.getElementById('r_regime').textContent =
         isNew ? '新制（勞退條例§12）' : '舊制（勞基法§17）';
 
+      // 以 core 為單一真實來源（LaborPro.calcSeveranceNew/Old，傳入 totalMonths，回傳金額）
+      //   新制（勞退條例§12）：年資/2，最高 6 個月
+      //   舊制（勞基法§17）：年資 × 1 個月，無上限
+      var baseMonths, amount;
       if (isNew) {
-        var base = info.totalMonths / 12 * 0.5;
-        base = Math.min(base, 6);
-        state.severancePay = base * state.salary;
-        document.getElementById('r_sevBase').textContent = base.toFixed(2) + ' 個月';
+        baseMonths = Math.min(info.totalMonths / 12 * 0.5, 6);
+        amount = (window.LaborPro && typeof LaborPro.calcSeveranceNew === 'function')
+          ? LaborPro.calcSeveranceNew(info.totalMonths, state.salary)
+          : baseMonths * state.salary;
       } else {
-        var base = info.totalMonths / 12;
-        state.severancePay = base * state.salary;
-        document.getElementById('r_sevBase').textContent = base.toFixed(2) + ' 個月';
+        baseMonths = info.totalMonths / 12;
+        amount = (window.LaborPro && typeof LaborPro.calcSeveranceOld === 'function')
+          ? LaborPro.calcSeveranceOld(info.totalMonths, state.salary)
+          : baseMonths * state.salary;
       }
+      state.severancePay = amount;
+      document.getElementById('r_sevBase').textContent = baseMonths.toFixed(2) + ' 個月';
       document.getElementById('r_sevAmount').textContent = LP.fmt(state.severancePay);
     } else {
       sevCard.style.display = 'none';
@@ -708,19 +715,25 @@
     if (state.nonCompete > 0) document.getElementById('r_nonCompete').textContent = LP.fmt(state.nonCompete);
 
     // 勞健保扣繳
+    //   離職月最後一日判定：new Date(y, m+1, 0) 回傳該月最後日，JavaScript Date
+    //   建構子在 day=0 會自動往前一個月最後日，已正確處理 2/28、2/29（閏年）、4/30 等邊界。
+    //   健保扣繳原則（健保法§27）：月底最後一天離職者，原單位扣整月健保；
+    //   月中離職則由下一個投保單位承接整月。
     var insuredSalary = LP.getLaborInsuranceBracket(state.salary);
     var endD2 = new Date(state.endDate);
     var lastDayOfMonth = new Date(endD2.getFullYear(), endD2.getMonth() + 1, 0).getDate();
     var isLastDay = (dayOfMonth === lastDayOfMonth);
 
-    // 勞保：費率12%（含就保1%），勞工自付20%，按日計算
-    var laborInsMonth = insuredSalary * 0.12 * 0.2;
+    // 勞保：費率 12.5%（普通 11.5% + 就保 1%），勞工自付 20%，按日計算
+    //   以 window.LaborPro.LABOR_RATES_2026 為單一真實來源
+    var _R = (window.LaborPro && window.LaborPro.LABOR_RATES_2026) || { labor: 0.125, laborEmployee: 0.20, nhi: 0.0517, nhiEmployee: 0.30 };
+    var laborInsMonth = insuredSalary * _R.labor * _R.laborEmployee;
     var laborIns = laborInsMonth / 30 * dayOfMonth;
 
     // 健保：以「月」為單位，看月底最後一天在哪個投保單位
     // 月中離職 → 原公司不扣當月健保（由下個投保單位負責）
     // 月底最後一天離職 → 原公司扣整月健保
-    var healthInsMonth = insuredSalary * 0.0517 * 0.3;
+    var healthInsMonth = insuredSalary * _R.nhi * _R.nhiEmployee;
     var healthIns = isLastDay ? healthInsMonth : 0;
 
     state.laborIns = laborIns;

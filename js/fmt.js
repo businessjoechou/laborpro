@@ -27,7 +27,8 @@
 
   function fmtDate(dateStr) {
     if (!dateStr) return '—';
-    var d = new Date(dateStr);
+    var parse = (window.LaborPro && window.LaborPro.parseDateTW) || function (s) { return new Date(s); };
+    var d = parse(dateStr);
     return d.getFullYear() + '/' + (d.getMonth() + 1) + '/' + d.getDate();
   }
 

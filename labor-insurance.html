@@ -243,13 +243,14 @@
         <span class="result-row-val highlight" id="r_bracket">—</span>
       </div>
       <div class="result-row">
-        <span class="result-row-label">健保投保金額</span>
+        <span class="result-row-label">健保投保金額 <span id="r_nhiNote" style="font-size:10px;color:var(--muted);font-weight:normal"></span></span>
         <span class="result-row-val" id="r_nhiBracket">—</span>
       </div>
     </div>
 
     <div class="info-box">
-      投保薪資級距依勞動部公告標準，您的月薪會被歸入最接近的上一級。若月薪超過最高級距 45,800 元，則以 45,800 元計算。
+      勞保投保薪資級距依勞動部公告標準，月薪超過最高級距 45,800 元者，以 45,800 元計算。<br>
+      <strong>健保投保金額分級表與勞保不同（健保 58 級，最高 313,000 元）</strong>，本工具之健保試算於月薪 ≤ 45,800 元時準確；高薪族群實際健保保費應以衛福部健保分級表為準，本頁計算可能低估。
     </div>
   </div>
 
@@ -344,11 +345,13 @@
   var totalSteps = 3;
   var state = {};
 
-  // Rates (2026)
-  var LABOR_ORDINARY_RATE = 0.12;   // 含就保1%
-  var LABOR_ACCIDENT_RATE = 0.0021;
-  var NHI_RATE = 0.0517;
-  var RETIRE_EMPLOYER_RATE = 0.06;
+  // Rates (2026) — 以 core 為單一真實來源（window.LaborPro.LABOR_RATES_2026）
+  //   勞保 12.5% = 普通事故 11.5% + 就保 1%（勞動保 2 字第 1140091863 號令，115/01/01 施行）
+  var _LP_RATES = (window.LaborPro && window.LaborPro.LABOR_RATES_2026) || {};
+  var LABOR_ORDINARY_RATE  = _LP_RATES.labor    != null ? _LP_RATES.labor    : 0.125;
+  var LABOR_ACCIDENT_RATE  = _LP_RATES.accident != null ? _LP_RATES.accident : 0.0021;
+  var NHI_RATE             = _LP_RATES.nhi      != null ? _LP_RATES.nhi      : 0.0517;
+  var RETIRE_EMPLOYER_RATE = _LP_RATES.pension  != null ? _LP_RATES.pension  : 0.06;
 
   function showStep(n) {
     document.querySelectorAll('.step').forEach(function(s) { s.classList.remove('active'); });
@@ -420,6 +423,10 @@
     document.getElementById('r_salary').textContent = fmt(state.salary);
     document.getElementById('r_bracket').textContent = fmt(state.bracket);
     document.getElementById('r_nhiBracket').textContent = fmt(state.nhiBracket);
+    // 月薪 > 45,800 時健保以勞保最高級近似，UI 顯示警示
+    document.getElementById('r_nhiNote').textContent = (state.salary > 45800)
+      ? '（⚠️ 月薪逾 45,800，健保實際級距應參衛福部 58 級表，本估算可能偏低）'
+      : '';
   }
 
   function calculate() {

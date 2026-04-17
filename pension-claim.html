@@ -572,11 +572,16 @@
     return parts.length ? parts.join(' ') : '未滿1個月';
   }
 
-  // 平均餘命月數簡表（依勞動部公告簡化）
+  // 平均餘命月數 — 統一以 core 的 LaborPro.getLifeMonths 為單一真實來源
+  // （避免多處硬編版本漂移；core 註解已標記資訊缺口 TODO 需要版本化）
   function getLifeMonths(age) {
-    if (age <= 60) return 288; // 24年
-    if (age <= 65) return 228; // 19年
-    return 168;                // 14年
+    if (window.LaborPro && typeof window.LaborPro.getLifeMonths === 'function') {
+      return window.LaborPro.getLifeMonths(age);
+    }
+    // Fallback（core 未載入）：與 core 同表
+    if (age <= 60) return 288;
+    if (age <= 65) return 228;
+    return 168;
   }
 
   // ─── Main calculation ─────────────────────────────────────────────────────

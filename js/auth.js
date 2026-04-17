@@ -6,37 +6,61 @@ export const supabase = createClient(window.SUPABASE_URL, window.SUPABASE_ANON_K
 });
 
 export async function getUser() {
-  const { data: { user } } = await supabase.auth.getUser();
-  return user;
+  try {
+    const { data: { user } } = await supabase.auth.getUser();
+    return user;
+  } catch (err) {
+    console.error('getUser failed:', err);
+    return null;
+  }
 }
 
 export async function getProfile() {
-  const user = await getUser();
-  if (!user) return null;
-  const { data } = await supabase
-    .from('profiles')
-    .select('*')
-    .eq('id', user.id)
-    .single();
-  return data || null;
+  try {
+    const user = await getUser();
+    if (!user) return null;
+    const { data } = await supabase
+      .from('profiles')
+      .select('*')
+      .eq('id', user.id)
+      .single();
+    return data || null;
+  } catch (err) {
+    console.error('getProfile failed:', err);
+    return null;
+  }
 }
 
 export async function signInWithApple() {
-  await supabase.auth.signInWithOAuth({
-    provider: 'apple',
-    options: { redirectTo: window.location.origin + '/account.html' }
-  });
+  try {
+    await supabase.auth.signInWithOAuth({
+      provider: 'apple',
+      options: { redirectTo: window.location.origin + '/account.html' }
+    });
+  } catch (err) {
+    console.error('signInWithApple failed:', err);
+    return err;
+  }
 }
 
 export async function signInWithEmail(email) {
-  const { error } = await supabase.auth.signInWithOtp({
-    email,
-    options: { emailRedirectTo: window.location.origin + '/account.html' }
-  });
-  return error;
+  try {
+    const { error } = await supabase.auth.signInWithOtp({
+      email,
+      options: { emailRedirectTo: window.location.origin + '/account.html' }
+    });
+    return error;
+  } catch (err) {
+    console.error('signInWithEmail failed:', err);
+    return err;
+  }
 }
 
 export async function signOut() {
-  await supabase.auth.signOut();
-  window.location.reload();
+  try {
+    await supabase.auth.signOut();
+    window.location.reload();
+  } catch (err) {
+    console.error('signOut failed:', err);
+  }
 }

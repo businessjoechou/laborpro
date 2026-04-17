@@ -37,6 +37,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="js/supabase-config.js"></script>
 <script src="js/persona.js"></script>
+<script src="js/date-utils.js"></script>
+<script src="js/calc-utils.js"></script>
 <script type="module" src="js/auth-bar.js"></script>
 <link rel="stylesheet" href="css/common.css">
 <script src="js/animations.js" defer></script>
@@ -466,16 +468,17 @@
   const totalSteps = 3;
 
   // ─── 勞保投保級距 (2026) ──────────────────────────────────────────
-  const LABOR_INS_BRACKETS = [
-    27470, 28800, 30300, 31800, 33300, 34800, 36300, 38200, 40100, 42000, 43900, 45800
-  ];
-  const LABOR_INS_WORKER_RATE = 0.12 * 0.20; // 12% total, worker pays 20% = 2.4%
+  // 來源：window.LaborPro.LABOR_INSURANCE_BRACKETS_2026（11 級 29,500-45,800，
+  //   勞動保 2 字第 1140091863 號令，115/01/01 施行）
+  const LABOR_INS_BRACKETS = (window.LaborPro && window.LaborPro.LABOR_INSURANCE_BRACKETS_2026)
+    || [29500, 30300, 31800, 33300, 34800, 36300, 38200, 40100, 42000, 43900, 45800];
+  // 勞保費率 12.5% = 普通事故 11.5% + 就保 1%；勞工自付 20%
+  const _LP_RATES = (window.LaborPro && window.LaborPro.LABOR_RATES_2026) || { labor: 0.125, laborEmployee: 0.20, nhi: 0.0517, nhiEmployee: 0.30 };
+  const LABOR_INS_WORKER_RATE = _LP_RATES.labor * _LP_RATES.laborEmployee; // 12.5% * 20% = 2.5%
 
-  // 健保投保級距 (同勞保級距，簡化版)
-  const HEALTH_INS_BRACKETS = [
-    27470, 28800, 30300, 31800, 33300, 34800, 36300, 38200, 40100, 42000, 43900, 45800
-  ];
-  const HEALTH_INS_WORKER_RATE = 0.0517 * 0.30; // 5.17% total, worker pays 30% ≈ 1.551%
+  // 健保投保級距：本頁簡化同勞保級距（實務上健保 58 級表更細，高薪誤差見 calc-utils.js 備註）
+  const HEALTH_INS_BRACKETS = LABOR_INS_BRACKETS.slice();
+  const HEALTH_INS_WORKER_RATE = _LP_RATES.nhi * _LP_RATES.nhiEmployee; // 5.17% * 30% ≈ 1.551%
 
   function findBracket(salary, brackets) {
     // Find the bracket that the salary falls into
