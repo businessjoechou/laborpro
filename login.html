@@ -3,9 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" href="favicon.svg">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>登入｜LaborPro — 周全法律科技</title>
 <meta name="robots" content="noindex, nofollow">
+<link rel="canonical" href="https://laborpro.choulegal.com/login.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="js/supabase-config.js"></script>
 <style>
@@ -31,27 +35,21 @@
   }
   .login-wrap { width: 100%; max-width: 400px; }
   .login-header { text-align: center; margin-bottom: 40px; }
-  .brand-parent {
-    font-family: 'Noto Serif TC', serif;
-    font-size: 11px;
-    color: rgba(255,255,255,0.4);
-    letter-spacing: 0.14em;
-    margin-bottom: 6px;
-  }
   .logo {
     font-family: 'Noto Serif TC', serif;
     font-size: 22px;
-    font-weight: 600;
-    letter-spacing: 0.02em;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    margin-bottom: 6px;
   }
   .logo em { color: var(--gold); font-style: normal; }
-  .page-sub { font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 3px; font-family: 'Noto Serif TC', serif; letter-spacing: 0.06em; }
   .login-title {
     font-family: 'Noto Serif TC', serif;
     font-size: 24px;
     font-weight: 700;
     margin-bottom: 8px;
     margin-top: 20px;
+    line-height: 1.4;
   }
   .login-subtitle { font-size: 13px; color: rgba(238,245,236,0.55); line-height: 1.6; }
   .login-card {
@@ -61,35 +59,7 @@
     padding: 28px 24px;
     margin-bottom: 20px;
   }
-  .btn-apple-signin {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    width: 100%;
-    padding: 13px 20px;
-    background: transparent;
-    border: 1.5px solid rgba(238,245,236,0.3);
-    border-radius: 10px;
-    color: var(--paper);
-    font-family: 'Noto Sans TC', sans-serif;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  .btn-apple-signin:hover { background: rgba(42,110,62,0.1); border-color: var(--accent); }
-  .divider {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin: 20px 0;
-    color: rgba(238,245,236,0.25);
-    font-family: 'Noto Serif TC', serif;
-    font-size: 11px;
-  }
-  .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: rgba(238,245,236,0.12); }
-  .email-label { display: block; font-size: 12px; color: rgba(238,245,236,0.5); margin-bottom: 8px; }
+  .email-label { display: block; font-size: 12px; color: rgba(238,245,236,0.5); margin-bottom: 8px; letter-spacing: 0.04em; }
   .email-input-row { display: flex; flex-wrap: wrap; gap: 8px; }
   .email-input {
     flex: 1;
@@ -174,16 +144,16 @@
     line-height: 1.7;
   }
   .login-note a { color: rgba(238,245,236,0.35); }
+  .disclaimer-bar{max-width:560px;margin:0 auto;padding:16px 24px 72px;font-size:11.5px;color:rgba(255,255,255,0.35);line-height:1.7;border-top:1px solid rgba(255,255,255,0.08);text-align:center;}
+  .disclaimer-bar strong{color:rgba(255,255,255,0.55);}
 </style>
 </head>
 <body>
 
 <div class="login-wrap">
   <div class="login-header">
-    <a href="index.html" style="text-decoration:none;color:inherit">
-      <div class="brand-parent">周全 CHOULEGAL</div>
+    <a href="index.html" style="text-decoration:none;color:inherit;display:inline-block;">
       <div class="logo">Labor<em>Pro</em></div>
-      <div class="page-sub">登入 / 註冊</div>
     </a>
     <h1 class="login-title">登入 / 建立帳號</h1>
     <p class="login-subtitle">使用周全法律科技帳號，免費登入</p>
@@ -212,6 +182,17 @@
   </p>
 </div>
 
+<div class="disclaimer-bar">
+  <strong>免責聲明</strong>：本平台之計算結果僅供初步參考，不構成法律意見或法律諮詢服務。
+  <div style="margin-top:8px;display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+    <a href="privacy.html" style="color:rgba(255,255,255,0.4);font-size:11px;text-decoration:underline;">隱私權政策</a>
+    <span style="opacity:0.2;font-size:11px;">·</span>
+    <a href="terms.html" style="color:rgba(255,255,255,0.4);font-size:11px;text-decoration:underline;">使用者條款</a>
+    <span style="opacity:0.2;font-size:11px;">·</span>
+    <span style="color:rgba(255,255,255,0.25);font-size:11px;">© 2026 LaborPro</span>
+  </div>
+</div>
+
 <script type="module">
   import { signInWithEmail, supabase } from './js/auth.js';
 
@@ -225,8 +206,6 @@
     const { data: { user } } = await supabase.auth.getUser();
     if (user) window.location.href = '/account.html';
   })();
-    }
-  });
 
   document.getElementById('btn-email-send').addEventListener('click', async () => {
     const emailInput = document.getElementById('email-input');
