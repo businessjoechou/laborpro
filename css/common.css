@@ -738,7 +738,7 @@ textarea:focus {
 
   /* ── 頁尾 ── */
   body::after {
-    content: "本文件由 LaborPro（laborpro.choulegal.com）產出，僅供參考，不構成法律意見。";
+    content: "本文件由 LaborPro（labor.choulegal.com）產出，僅供參考，不構成法律意見。";
     display: block;
     font-size: 9px;
     color: #999 !important;

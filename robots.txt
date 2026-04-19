@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /landing.html
 
-Sitemap: https://laborpro.choulegal.com/sitemap.xml
+Sitemap: https://labor.choulegal.com/sitemap.xml
