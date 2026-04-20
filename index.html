@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
+<script src="js/ga.js" defer></script>
 <meta charset="UTF-8">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="apple-touch-icon" href="favicon.svg">
@@ -15,8 +16,8 @@
 <meta name="keywords" content="資遣費計算,加班費計算,特休計算,職災補償,不當解雇,勞基法,預告薪資,勞退新制,舊制資遣費,台灣勞工">
 <meta name="robots" content="index, follow">
 <meta name="author" content="LaborPro">
-<meta property="og:title" content="LaborPro｜台灣勞基法計算機">
-<meta property="og:description" content="免費計算資遣費、加班費、特休折現、職災補償。依台灣勞基法設計，快速精確試算。">
+<meta property="og:title" content="LaborPro｜中華民國勞基法權益計算平台">
+<meta property="og:description" content="免費計算資遣費、加班費、特休折現、職災補償。依中華民國勞動基準法設計，快速精確試算。">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://labor.choulegal.com/">
 <meta property="og:site_name" content="LaborPro">
@@ -25,7 +26,7 @@
 <meta property="og:image:width" content="400">
 <meta property="og:image:height" content="400">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="LaborPro｜台灣勞基法計算機">
+<meta name="twitter:title" content="LaborPro｜中華民國勞基法權益計算平台">
 <link rel="canonical" href="https://labor.choulegal.com/">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="js/supabase-config.js"></script>
@@ -300,9 +301,18 @@
     margin: 0 -24px 40px;
     padding-left: 24px;
     padding-right: 24px;
-    scrollbar-width: none;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(160, 180, 160, 0.45) transparent;
   }
-  .featured-strip::-webkit-scrollbar { display: none; }
+  .featured-strip::-webkit-scrollbar { height: 8px; }
+  .featured-strip::-webkit-scrollbar-track { background: transparent; }
+  .featured-strip::-webkit-scrollbar-thumb {
+    background: rgba(160, 180, 160, 0.45);
+    border-radius: 4px;
+  }
+  .featured-strip::-webkit-scrollbar-thumb:hover {
+    background: rgba(160, 180, 160, 0.8);
+  }
 
   .featured-card {
     flex: 0 0 280px;
@@ -957,14 +967,14 @@
   <!-- Persona Bar -->
   <div class="persona-bar">
     <div class="persona-badge" id="personaBadge"></div>
-    <button class="persona-switch" onclick="localStorage.removeItem('lp_persona');window.location.href='landing.html'">切換身份</button>
+    <button class="persona-switch" aria-label="切換勞工／雇主身份" onclick="localStorage.removeItem('lp_persona');window.location.href='landing.html'">切換身份</button>
   </div>
 
   <!-- Search -->
   <div class="search-bar">
     <span class="search-icon">⌕</span>
-    <input type="text" id="toolSearch" placeholder="搜尋工具（例：資遣費、加班、職災、特休）" autocomplete="off">
-    <button class="search-clear" id="searchClear" onclick="clearSearch()">&times;</button>
+    <input type="text" id="toolSearch" aria-label="搜尋勞基法計算工具" placeholder="搜尋工具（例：資遣費、加班、職災、特休）" autocomplete="off">
+    <button class="search-clear" id="searchClear" aria-label="清除搜尋" onclick="clearSearch()">&times;</button>
   </div>
 
   <!-- Featured -->
@@ -1001,32 +1011,32 @@
   <div class="faq-heading">常見問題 FAQ</div>
 
   <div class="faq-item">
-    <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">資遣費新制和舊制有什麼差別？<svg class="faq-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="4,6 8,10 12,6"/></svg></div>
+    <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">資遣費新制和舊制有什麼差別？<svg class="faq-chevron" aria-hidden="true" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="4,6 8,10 12,6"/></svg></div>
     <div class="faq-a">舊制依勞基法§17計算，每滿1年給付1個月平均薪資，最高6個月；新制依勞工退休金條例§12，每滿1年給付0.5個月平均薪資，同樣上限6個月。2005年7月1日勞退新制施行後到職者適用新制；之前到職者依年資比例兩制並計。可使用<a href="severance.html">資遣費計算機</a>快速試算。</div>
   </div>
 
   <div class="faq-item">
-    <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">加班費怎麼計算？<svg class="faq-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="4,6 8,10 12,6"/></svg></div>
+    <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">加班費怎麼計算？<svg class="faq-chevron" aria-hidden="true" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="4,6 8,10 12,6"/></svg></div>
     <div class="faq-a">依勞基法§24，平日延長工時第1至2小時加給1/3（即時薪x4/3），第3至4小時加給2/3（即時薪x5/3）。休息日出勤前2小時亦為x4/3，之後為x5/3，且工作未滿4小時以4小時計、滿4小時未滿8小時以8小時計。國定假日出勤依§39應加倍給付。可使用<a href="overtime.html">加班費計算機</a>精確試算。</div>
   </div>
 
   <div class="faq-item">
-    <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">特別休假未休可以請求折現嗎？<svg class="faq-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="4,6 8,10 12,6"/></svg></div>
+    <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">特別休假未休可以請求折現嗎？<svg class="faq-chevron" aria-hidden="true" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="4,6 8,10 12,6"/></svg></div>
     <div class="faq-a">依勞基法§38第4項，年度終結或契約終止時，雇主應將勞工未休畢的特別休假日數折算薪資給付，不得片面取消。折現金額以月薪除以30計算日薪，再乘以未休天數。可使用<a href="annual-leave.html">特休未休折現工具</a>依年資自動計算應休天數及折現金額。</div>
   </div>
 
   <div class="faq-item">
-    <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">被資遣時雇主需要提前多久通知？<svg class="faq-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="4,6 8,10 12,6"/></svg></div>
+    <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">被資遣時雇主需要提前多久通知？<svg class="faq-chevron" aria-hidden="true" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="4,6 8,10 12,6"/></svg></div>
     <div class="faq-a">依勞基法§16，工作3個月以上未滿1年者，預告期間10天；1年以上未滿3年者，20天；3年以上者，30天。未給預告即解雇者，雇主應給付預告期間薪資。可使用<a href="severance.html">資遣費計算機</a>一併試算預告薪資。</div>
   </div>
 
   <div class="faq-item">
-    <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">職災發生後勞工有哪些補償？<svg class="faq-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="4,6 8,10 12,6"/></svg></div>
+    <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">職災發生後勞工有哪些補償？<svg class="faq-chevron" aria-hidden="true" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="4,6 8,10 12,6"/></svg></div>
     <div class="faq-a">依勞基法§59，雇主應補償四大項目：(1)醫療費用全額補償、(2)醫療期間原領薪資補償、(3)失能補償（依等級40至1,200日平均薪資）、(4)死亡補償（5個月平均薪資喪葬費+40個月平均薪資死亡補償）。可使用<a href="work-injury.html">職災補償試算</a>計算各項金額。</div>
   </div>
 
   <div class="faq-item">
-    <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">勞退新制雇主每月要提撥多少？<svg class="faq-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="4,6 8,10 12,6"/></svg></div>
+    <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">勞退新制雇主每月要提撥多少？<svg class="faq-chevron" aria-hidden="true" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="4,6 8,10 12,6"/></svg></div>
     <div class="faq-a">依勞工退休金條例§14，雇主每月應提繳不低於勞工月薪資6%至勞工個人退休金專戶。勞工可自願另行提繳最高6%，享有薪資所得稅優惠。可使用<a href="pension.html">勞退提撥試算</a>預估退休帳戶累積金額與月退休金。</div>
   </div>
 </section>
@@ -1521,6 +1531,16 @@ document.getElementById('toolSearch').addEventListener('input', function () {
   } else {
     clearSearch();
   }
+});
+
+// 滑鼠滾輪 → 水平滾動（解決桌機卡片列只能拖的問題；觸控/觸控板水平手勢照常）
+document.querySelectorAll('.featured-strip').forEach(function(strip){
+  strip.addEventListener('wheel', function(e){
+    if (Math.abs(e.deltaX) > 0) return;
+    if (!e.deltaY) return;
+    e.preventDefault();
+    strip.scrollLeft += e.deltaY;
+  }, { passive: false });
 });
 </script>
 </body>
