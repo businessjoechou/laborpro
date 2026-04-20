@@ -3,7 +3,7 @@
  * 取代各 HTML 頁面重複的 5 行 gtag snippet
  */
 (function () {
-  var id = 'G-NV2MPCZCTQ';
+  var id = 'G-1CQSZXDBGR';
   var s = document.createElement('script');
   s.async = true;
   s.src = 'https://www.googletagmanager.com/gtag/js?id=' + id;

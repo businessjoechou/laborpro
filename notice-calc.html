@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
+<script src="js/ga.js" defer></script>
 <meta charset="UTF-8">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="apple-touch-icon" href="favicon.svg">
@@ -390,8 +391,10 @@
     var days   = d2.getDate()     - d1.getDate();
     if (days < 0) { months--; days += new Date(d2.getFullYear(), d2.getMonth(), 0).getDate(); }
     if (months < 0) { years--; months += 12; }
-    var totalMonths = years * 12 + months + days / 30;
-    return { years: years, months: months, days: days, totalMonths: totalMonths };
+    // fullCalendarMonths：整月曆月數，供 §16 門檻比較用
+    var fullCalendarMonths = years * 12 + months;
+    var totalMonths = fullCalendarMonths + days / 30;
+    return { years: years, months: months, days: days, totalMonths: totalMonths, fullCalendarMonths: fullCalendarMonths };
   }
 
   function fmtTenure(y, m, d) {
@@ -428,7 +431,7 @@
     var startDate = document.getElementById('startDate').value;
     var endDate = document.getElementById('endDate').value;
     var info = calcMonths(startDate, endDate);
-    var tier = getNoticeTier(info.totalMonths);
+    var tier = getNoticeTier(info.fullCalendarMonths);
     var isResign = state.type === 'resign';
 
     // Title & subtitle
@@ -505,7 +508,7 @@
     tbody.innerHTML = '';
     for (var i = 0; i < tiers.length; i++) {
       var t = tiers[i];
-      var isCurrent = info.totalMonths >= t.min && info.totalMonths < t.max;
+      var isCurrent = info.fullCalendarMonths >= t.min && info.fullCalendarMonths < t.max;
       var tr = document.createElement('tr');
       if (isCurrent) tr.className = 'highlight';
       tr.innerHTML =

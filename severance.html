@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
+<script src="js/ga.js" defer></script>
 <meta charset="UTF-8">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="apple-touch-icon" href="favicon.svg">
@@ -444,8 +445,10 @@
       days += prev.getDate();
     }
     if (months < 0) { years--;  months += 12; }
-    const totalMonths = years * 12 + months + days / 30;
-    return { years, months, days, totalMonths };
+    // fullCalendarMonths：月曆整月（供 §16 預告期間等門檻比較）；totalMonths 為含 days/30 之比例值（供 §12/§17 資遣費按比例計算）
+    const fullCalendarMonths = years * 12 + months;
+    const totalMonths = fullCalendarMonths + days / 30;
+    return { years, months, days, totalMonths, fullCalendarMonths };
   }
 
   function calcSeveranceNew(totalMonths, avgWage) {
@@ -497,7 +500,7 @@
       fmtTenure(totalInfo.years, totalInfo.months, totalInfo.days);
 
     // Notice
-    const notice = calcNotice(totalInfo.totalMonths, avgWage);
+    const notice = calcNotice(totalInfo.fullCalendarMonths, avgWage);
 
     // ── Regime logic ──
     if (regime === 'new') {

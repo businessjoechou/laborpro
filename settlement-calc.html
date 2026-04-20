@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
+<script src="js/ga.js" defer></script>
 <meta charset="UTF-8">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="apple-touch-icon" href="favicon.svg">
@@ -597,7 +598,7 @@
   function calcDetails() {
     var info = LP.calcMonths(state.startDate, state.endDate);
     var daily = LP.getDailyRate(state.salary);
-    var annualDays = LP.getAnnualLeaveDays(info.totalMonths);
+    var annualDays = LP.getAnnualLeaveDays(info.fullCalendarMonths);
     var unusedDays = state.unusedLeaveManual !== null ? state.unusedLeaveManual : annualDays;
 
     state.info = info;
@@ -675,7 +676,7 @@
     state.noticePay = 0;
     if (state.sepType === 'layoff') {
       noticeCard.style.display = 'block';
-      var notice = LP.calcNotice(info.totalMonths, state.salary);
+      var notice = LP.calcNotice(info.fullCalendarMonths, state.salary);
       state.noticePay = notice.amount;
       document.getElementById('r_noticeDays').textContent = notice.label;
       document.getElementById('r_noticeAmount').textContent = LP.fmt(notice.amount);

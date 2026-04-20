@@ -47,12 +47,18 @@
     // 向下相容：舊 callers 預期的 totalMonths（非實際月曆月份，而是 serviceYears × 12）
     //   新 callers 建議直接用 serviceYears；日後版本可能棄用 totalMonths 欄位
     var totalMonths = serviceYears * 12;
+    // fullCalendarMonths：以月曆整月計（years*12 + months，day-of-month 未滿回補 -1）。
+    //   適用於門檻型條文（§38 特休、§16 預告期間）之「滿 X 個月」判斷，
+    //   避免 totalDays/365*12 換算於邊界日造成 ±3 天偏差。
+    //   proportional 型計算（§17 資遣費按比例）請改用 totalMonths / serviceYears。
+    var fullCalendarMonths = years * 12 + months;
 
     return {
       years: years, months: months, days: days,
       totalMonths: totalMonths,
       totalDays: totalDays,
       serviceYears: serviceYears,
+      fullCalendarMonths: fullCalendarMonths,
     };
   }
 
@@ -75,14 +81,15 @@
   }
 
   /**
-   * 預告期間（勞基法§16）
+   * 預告期間（勞基法§16）— 門檻型，應傳入整數月曆月（calcMonths 之 fullCalendarMonths）。
+   * 傳入 serviceYears × 12 之 totalMonths 亦可運作，但邊界日（如滿 3 個月前後）會有 ±3 天偏差。
    * @returns {{ days, amount, label }}
    */
-  function calcNotice(totalMonths, avgWage) {
-    if (totalMonths < 3)  return { days: 0,  amount: 0,                   label: '未滿3個月，無需預告' };
-    if (totalMonths < 12) return { days: 10, amount: avgWage / 30 * 10,   label: '3個月以上未滿1年：10日' };
-    if (totalMonths < 36) return { days: 20, amount: avgWage / 30 * 20,   label: '1年以上未滿3年：20日' };
-    return                       { days: 30, amount: avgWage / 30 * 30,   label: '3年以上：30日' };
+  function calcNotice(calendarMonths, avgWage) {
+    if (calendarMonths < 3)  return { days: 0,  amount: 0,                   label: '未滿3個月，無需預告' };
+    if (calendarMonths < 12) return { days: 10, amount: avgWage / 30 * 10,   label: '3個月以上未滿1年：10日' };
+    if (calendarMonths < 36) return { days: 20, amount: avgWage / 30 * 20,   label: '1年以上未滿3年：20日' };
+    return                          { days: 30, amount: avgWage / 30 * 30,   label: '3年以上：30日' };
   }
 
   /**
@@ -160,23 +167,21 @@
   }
 
   /**
-   * 特休天數查表（勞基法§38）
-   *
-   * 門檻換算：年資「滿 X 個月」採「工作自到職日起滿 X × 30 日」，亦即本函式
-   * 之 totalMonths 係以「自然日 / 30」概念之整體估算；臨界點之精確計算請
-   * 輔以勞動部令 105.9.10 勞動條 3 字第 1050132270 號函釋之個案判斷。
+   * 特休天數查表（勞基法§38）— 門檻型，應傳入整數月曆月（calcMonths 之 fullCalendarMonths）。
+   * 法條原文以「繼續工作滿六個月以上一年未滿者」等月曆整月為門檻，故此處比較僅對整數月有意義。
+   * 若傳入 totalMonths（serviceYears × 12）亦可運作，但邊界日（第 175-185 天）會有 ±3 天偏差。
    *   <6 月：無特休；<12 月：3 日；<24 月：7 日；<36 月：10 日
    *   <60 月：14 日；<120 月：15 日；10 年後每滿 1 年 +1 日，上限 30 日
    */
-  function getAnnualLeaveDays(totalMonths) {
-    if (totalMonths < 6) return 0;
-    if (totalMonths < 12) return 3;
-    if (totalMonths < 24) return 7;
-    if (totalMonths < 36) return 10;
-    if (totalMonths < 60) return 14;
-    if (totalMonths < 120) return 15;
+  function getAnnualLeaveDays(calendarMonths) {
+    if (calendarMonths < 6) return 0;
+    if (calendarMonths < 12) return 3;
+    if (calendarMonths < 24) return 7;
+    if (calendarMonths < 36) return 10;
+    if (calendarMonths < 60) return 14;
+    if (calendarMonths < 120) return 15;
 
-    var fullYears = Math.floor(totalMonths / 12);
+    var fullYears = Math.floor(calendarMonths / 12);
     return Math.min(15 + (fullYears - 10), 30);
   }
 
@@ -233,19 +238,47 @@
   }
 
   /**
+   * 2026 健保投保金額分級表（58 級，自 115/01/01 施行）
+   *   法源：全民健保法§20、§21、§22 及其附表；衛生福利部 114/12/12 公告
+   *   第 1 級 29,500 配合基本工資；最高第 58 級 313,000（自 113 年起沿用）
+   * @see https://www.nhi.gov.tw/ch/cp-19421-f9533-2569-1.html
+   */
+  var NHI_BRACKETS_2026 = [
+    29500, 30300, 31800, 33300, 34800, 36300, 38200, 40100, 42000, 43900,
+    45800, 48200, 50600, 53000, 55400, 57800, 60800, 63800, 66800, 69800,
+    72800, 76500, 80200, 83900, 87600, 92100, 96600, 101100, 105600, 110100,
+    115500, 120900, 126300, 131700, 137100, 142500, 147900, 150000, 156400, 162800,
+    169200, 175600, 182000, 189500, 197000, 204500, 212000, 219500, 228200, 236900,
+    245600, 254300, 263000, 273000, 283000, 293000, 303000, 313000
+  ];
+
+  /**
+   * 健保投保金額級距查表（2026，58 級）。與勞保分級表不同：勞保僅 11 級、上限 45,800。
+   * @param {number} monthlySalary 實際月薪
+   * @returns {number} 對應之健保月投保金額
+   */
+  function getNhiBracket(monthlySalary) {
+    var brackets = NHI_BRACKETS_2026;
+    for (var i = 0; i < brackets.length; i++) {
+      if (monthlySalary <= brackets[i]) return brackets[i];
+    }
+    return brackets[brackets.length - 1]; // 超過 313,000 亦以最高級計
+  }
+
+  /**
    * 雇主社保成本計算（2026 版）
    *
-   * 注意：
-   * - 健保投保金額分級表與勞保分級表不同（健保有 58 級、最高 313,000）。
-   *   本函式目前以勞保級距近似健保投保金額，**僅在月薪 ≤ 45,800 時準確**；
-   *   高薪情境應改用獨立的健保分級查表。TODO：另建 `getNhiBracket()`。
+   * 勞保與健保分別用自己的級距表：
+   * - 勞保：LABOR_INSURANCE_BRACKETS_2026（11 級，上限 45,800）
+   * - 健保：NHI_BRACKETS_2026（58 級，上限 313,000）
    *
    * @param {number} monthlySalary 月薪（實際薪資）
    * @param {number} dependents    眷屬人數（會投保在本員工名下者）；若為 null 則套用平均 0.58 人
-   * @returns {{ laborIns, laborAccident, nhi, pension, total, bracket }}
+   * @returns {{ laborIns, laborAccident, nhi, pension, total, bracket, nhiBracket }}
    */
   function calcEmployerInsuranceCost(monthlySalary, dependents) {
     var bracket = getLaborInsuranceBracket(monthlySalary);
+    var nhiBracket = getNhiBracket(monthlySalary);
     var R = LABOR_RATES_2026;
     var depCount = (dependents == null) ? R.nhiAvgDependents : dependents;
 
@@ -253,7 +286,7 @@
     var laborAccident = Math.round(bracket * R.accident);
     // 健保本人 + 眷屬：實務上眷屬以平均 0.58 人計；超過 3 口者以 3 口封頂（健保法§27）
     var effectiveDep = Math.min(depCount, 3);
-    var nhi = Math.round(bracket * R.nhi * R.nhiEmployer * (1 + effectiveDep));
+    var nhi = Math.round(nhiBracket * R.nhi * R.nhiEmployer * (1 + effectiveDep));
     var pension = Math.round(monthlySalary * R.pension);
     return {
       laborIns: laborIns,
@@ -261,7 +294,8 @@
       nhi: nhi,
       pension: pension,
       total: laborIns + laborAccident + nhi + pension,
-      bracket: bracket
+      bracket: bracket,
+      nhiBracket: nhiBracket
     };
   }
 
@@ -307,9 +341,11 @@
   window.LaborPro.getDailyRate = getDailyRate;
   window.LaborPro.getAnnualLeaveDays = getAnnualLeaveDays;
   window.LaborPro.getLaborInsuranceBracket = getLaborInsuranceBracket;
+  window.LaborPro.getNhiBracket = getNhiBracket;
   window.LaborPro.calcEmployerInsuranceCost = calcEmployerInsuranceCost;
   window.LaborPro.calcOvertimeCost = calcOvertimeCost;
   // 2026 年常數（供其他模組重用，避免散落硬編碼）
   window.LaborPro.LABOR_INSURANCE_BRACKETS_2026 = LABOR_INSURANCE_BRACKETS_2026;
+  window.LaborPro.NHI_BRACKETS_2026 = NHI_BRACKETS_2026;
   window.LaborPro.LABOR_RATES_2026 = LABOR_RATES_2026;
 })();

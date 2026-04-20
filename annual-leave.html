@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
+<script src="js/ga.js" defer></script>
 <meta charset="UTF-8">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
@@ -198,6 +199,11 @@
     { label: '滿24年以上', months: 288, days: 30 },
   ];
 
+  /**
+   * 計算月曆整月數（勞基法 §38 特休「繼續工作滿六個月以上」之門檻判斷用）
+   * 例：2025-01-15 → 2025-07-14 = 5 個月；2025-01-15 → 2025-07-15 = 6 個月
+   * 回傳整數；不含不足一月之日數（已在 fullYears/remainMonths 之外以 days 另行顯示）
+   */
   function diffMonths(start, end) {
     const s = new Date(start);
     const e = new Date(end);
@@ -206,7 +212,7 @@
     var days = e.getDate() - s.getDate();
     if (days < 0) months--;
     if (months < 0) { years--; months += 12; }
-    return years * 12 + months + (days < 0 ? (days + new Date(e.getFullYear(), e.getMonth(), 0).getDate()) / 30 : days / 30);
+    return years * 12 + months;
   }
 
   function fmt(n) { return 'NT$ ' + Math.round(n).toLocaleString('zh-TW'); }

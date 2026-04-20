@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
+<script src="js/ga.js" defer></script>
 <meta charset="UTF-8">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="apple-touch-icon" href="favicon.svg">
@@ -540,14 +541,14 @@
     }
 
     // ── Notice pay ──
-    var notice = LP.calcNotice(tenure.totalMonths, s.avgWage);
+    var notice = LP.calcNotice(tenure.fullCalendarMonths, s.avgWage);
     var noticePay = 0;
     if (!isDisciplinary && s.noticePaid === 'no') {
       noticePay = notice.amount;
     }
 
     // ── Leave cash out ──
-    var leaveDays = s.unusedLeave !== null ? s.unusedLeave : LP.getAnnualLeaveDays(tenure.totalMonths);
+    var leaveDays = s.unusedLeave !== null ? s.unusedLeave : LP.getAnnualLeaveDays(tenure.fullCalendarMonths);
     var leaveCash = leaveDays * (s.avgWage / 30);
 
     // ── Legal total ──

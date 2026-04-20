@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
+<script src="js/ga.js" defer></script>
 <meta charset="UTF-8">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="apple-touch-icon" href="favicon.svg">
@@ -490,7 +491,7 @@
   function calculate() {
     var info = LP.calcMonths(state.startDate, state.baseDate);
     var daily = LP.getDailyRate(state.salary);
-    var annualDays = LP.getAnnualLeaveDays(info.totalMonths);
+    var annualDays = LP.getAnnualLeaveDays(info.fullCalendarMonths);
 
     // Step 2 summary
     document.getElementById('r_start').textContent = LP.fmtDate(state.startDate);
@@ -510,7 +511,7 @@
     document.getElementById('r_personalDeduct').textContent = LP.fmt(daily);
 
     // Maternity pay standard
-    var over6m = info.totalMonths >= 6;
+    var over6m = info.fullCalendarMonths >= 6;
     document.getElementById('r_maternitySalary').textContent = over6m ? '全薪（年資已滿6個月）' : '半薪（年資未滿6個月）';
 
     // Physio leave deduction

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
+<script src="js/ga.js" defer></script>
 <meta charset="UTF-8">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="apple-touch-icon" href="favicon.svg">
@@ -523,7 +524,7 @@
   function calcAmounts() {
     var salary = state.salary;
     var insured = state.insuredSalary;
-    var over6m = state.tenureInfo.totalMonths >= 6;
+    var over6m = state.tenureInfo.fullCalendarMonths >= 6;
     var grandTotal = 0;
 
     // Show/hide sections by gender
