@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="apple-touch-icon" href="favicon.svg">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>勞保費用與給付試算｜LaborPro</title>
 <meta name="description" content="試算勞保、健保、勞退每月費用，比較老年給付一次請領與月退休金方案，自動對應投保級距，免費使用。">
 <meta name="keywords" content="勞保費用,健保費用,勞退提撥,投保級距,老年給付,月退休金,一次請領,勞保試算,台灣勞基法">
@@ -280,29 +280,75 @@
       <div class="result-hero-sub" id="r_employerNote">—</div>
     </div>
 
-    <!-- 老年給付比較 -->
+    <!-- 老年給付比較（§58 + §58-2） -->
     <div class="result-card">
-      <div class="result-card-title">老年給付試算</div>
+      <div class="result-card-title">老年給付試算（§58）</div>
       <div class="result-row">
-        <span class="result-row-label">投保薪資</span>
+        <span class="result-row-label">投保薪資（§58-1 最高 60 個月平均）</span>
         <span class="result-row-val" id="r_pensionBracket">—</span>
       </div>
       <div class="result-row">
         <span class="result-row-label">投保年資</span>
         <span class="result-row-val" id="r_pensionYears">—</span>
       </div>
+      <div class="result-row">
+        <span class="result-row-label">法定請領年齡（§58）</span>
+        <span class="result-row-val" id="r_legalAge">—</span>
+      </div>
     </div>
 
+    <!-- 一次請領（舊制保留，§58-I 但書） -->
     <div class="compare-grid">
       <div class="compare-card" id="lumpSumCard">
-        <div class="compare-card-label">一次請領</div>
+        <div class="compare-card-label">一次請領（舊制保留，§58-I 但書）</div>
         <div class="compare-card-amount" id="r_lumpSum">—</div>
         <div class="compare-card-sub" id="r_lumpSumSub">—</div>
       </div>
       <div class="compare-card" id="monthlyCard">
-        <div class="compare-card-label">月退休金</div>
+        <div class="compare-card-label">月退年金（擇優 A/B 式）</div>
         <div class="compare-card-amount" id="r_monthlyPension">—</div>
         <div class="compare-card-sub" id="r_monthlySub">—</div>
+      </div>
+    </div>
+
+    <!-- A/B 式擇優明細 -->
+    <div class="result-card" id="pensionFormulaCard">
+      <div class="result-card-title">月退年金 A/B 式擇優（§58-I 第 1 款）</div>
+      <div class="result-row">
+        <span class="result-row-label">A 式（保障舊制）：平均投保薪資 × 年資 × 0.775% + 3,000</span>
+        <span class="result-row-val" id="r_formulaA">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">B 式：平均投保薪資 × 年資 × 1.55%</span>
+        <span class="result-row-val" id="r_formulaB">—</span>
+      </div>
+      <div class="result-row" style="border-top:1px solid var(--border);padding-top:8px;margin-top:8px">
+        <span class="result-row-label"><strong>擇優採用</strong></span>
+        <span class="result-row-val highlight" id="r_formulaBest">—</span>
+      </div>
+    </div>
+
+    <!-- 展延 / 減給選項（§58-2） -->
+    <div class="result-card" id="pensionAdjustCard">
+      <div class="result-card-title">展延／減給年金（§58-2）</div>
+      <div class="law-note" style="font-size:12px;line-height:1.6;margin-bottom:10px">
+        §58-2：達法定請領年齡後，<strong>每延後一年加給 4%，最多加給 20%</strong>（展延）；<strong>每提前一年減給 4%，最多減給 20%</strong>（提前請領需保險年資合計滿 15 年）。
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">展延 +1 年（+4%）</span>
+        <span class="result-row-val" id="r_defer1">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">展延 +5 年（+20% 上限）</span>
+        <span class="result-row-val" id="r_defer5">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">提前 -1 年（-4%）</span>
+        <span class="result-row-val" id="r_early1">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">提前 -5 年（-20% 下限）</span>
+        <span class="result-row-val" id="r_early5">—</span>
       </div>
     </div>
 
@@ -481,13 +527,38 @@
     document.getElementById('r_workerTotal').textContent = fmt(totalWorker);
     document.getElementById('r_employerNote').textContent = '雇主每月負擔 ' + fmt(totalEmployer);
 
-    // 老年給付
+    // === 老年給付（§58 + §58-2）=========================
     var years = state.insuredYears;
     document.getElementById('r_pensionBracket').textContent = fmt(b);
     document.getElementById('r_pensionYears').textContent = years + ' 年';
 
-    // 一次請領：投保薪資 × 給付月數（最高45個月）
-    // 前15年每年1個月，第16年起每年2個月
+    // 法定請領年齡（§58-V）：自 97/7/17 修法起分階段調升
+    //   民國 46 年以前出生：60 歲
+    //   民國 47 年出生：61 歲
+    //   民國 48 年出生：62 歲
+    //   民國 49 年出生：63 歲
+    //   民國 50 年出生：64 歲
+    //   民國 51 年以後出生：65 歲（自 2026/01/01 起全面適用）
+    var birthYearROC = state.birthYear; // 民國年
+    var legalAge;
+    var legalAgeNote;
+    if (birthYearROC <= 46) {
+      legalAge = 60; legalAgeNote = '民國 46 年以前出生';
+    } else if (birthYearROC === 47) {
+      legalAge = 61; legalAgeNote = '民國 47 年出生';
+    } else if (birthYearROC === 48) {
+      legalAge = 62; legalAgeNote = '民國 48 年出生';
+    } else if (birthYearROC === 49) {
+      legalAge = 63; legalAgeNote = '民國 49 年出生';
+    } else if (birthYearROC === 50) {
+      legalAge = 64; legalAgeNote = '民國 50 年出生';
+    } else {
+      legalAge = 65; legalAgeNote = '民國 51 年以後出生（自 2026/01/01 起全面 65 歲）';
+    }
+    document.getElementById('r_legalAge').textContent = legalAge + ' 歲（' + legalAgeNote + '，§58-V 分階段調升規定）';
+
+    // 一次請領（§58-I 但書舊制保留）：保險年資合計未滿 15 年、或 97 年修法前已有年資者
+    // 給付月數：前 15 年每年 1 個月，第 16 年起每年 2 個月，最高 45 個月
     var lumpMonths;
     if (years <= 15) {
       lumpMonths = years;
@@ -497,32 +568,52 @@
     lumpMonths = Math.min(lumpMonths, 45);
     var lumpSum = b * lumpMonths;
 
-    // 月退休金：投保薪資 × 年資 × 1.55%
-    var monthlyPension = b * years * 0.0155;
+    // 月退年金擇優（§58-I 第 1 款）
+    // A 式：平均投保薪資 × 年資 × 0.775% + 3,000（保障舊制勞工；短年資者較有利）
+    // B 式：平均投保薪資 × 年資 × 1.55%（長年資者較有利）
+    // 實務採擇優原則（取數字較高者）
+    var formulaA = b * years * 0.00775 + 3000;
+    var formulaB = b * years * 0.0155;
+    var monthlyPension = Math.max(formulaA, formulaB);
+    var bestFormulaLabel = formulaA >= formulaB ? 'A 式' : 'B 式';
+
+    // 展延 / 減給（§58-2）：每年 ±4%、上限 ±20%
+    var defer1 = Math.round(monthlyPension * 1.04);
+    var defer5 = Math.round(monthlyPension * 1.20);
+    var early1 = Math.round(monthlyPension * 0.96);
+    var early5 = Math.round(monthlyPension * 0.80);
 
     document.getElementById('r_lumpSum').textContent = fmt(lumpSum);
-    document.getElementById('r_lumpSumSub').textContent = '投保薪資 × ' + lumpMonths + ' 個月';
+    document.getElementById('r_lumpSumSub').textContent = '投保薪資 × ' + lumpMonths + ' 個月（§58-I 但書舊制保留）';
     document.getElementById('r_monthlyPension').textContent = fmt(monthlyPension) + '/月';
-    document.getElementById('r_monthlySub').textContent = '每月領取至終身';
+    document.getElementById('r_monthlySub').textContent = '擇優採 ' + bestFormulaLabel + '（每月領取至終身）';
 
-    // 損益兩平
+    document.getElementById('r_formulaA').textContent = fmt(Math.round(formulaA)) + '/月';
+    document.getElementById('r_formulaB').textContent = fmt(Math.round(formulaB)) + '/月';
+    document.getElementById('r_formulaBest').textContent = bestFormulaLabel + '：' + fmt(Math.round(monthlyPension)) + '/月';
+
+    document.getElementById('r_defer1').textContent = fmt(defer1) + '/月';
+    document.getElementById('r_defer5').textContent = fmt(defer5) + '/月';
+    document.getElementById('r_early1').textContent = fmt(early1) + '/月';
+    document.getElementById('r_early5').textContent = fmt(early5) + '/月';
+
+    // 損益兩平（一次 vs 月退）
     var breakevenMonths = monthlyPension > 0 ? lumpSum / monthlyPension : 0;
     var breakevenYears = Math.round(breakevenMonths / 12 * 10) / 10;
-
     document.getElementById('r_breakeven').textContent = breakevenYears + ' 年';
 
-    // 退休年齡 (假設65歲退休)
-    var retireAge = 65;
-    var breakevenAge = retireAge + breakevenYears;
+    var breakevenAge = legalAge + breakevenYears;
     document.getElementById('r_breakevenAge').textContent = Math.round(breakevenAge * 10) / 10 + ' 歲';
 
-    // Mark recommended
+    // 擇優提示（保險年資滿 15 年才能月退；不滿 15 年僅能一次請領）
     var lumpCard = document.getElementById('lumpSumCard');
     var monthCard = document.getElementById('monthlyCard');
     lumpCard.classList.remove('recommended');
     monthCard.classList.remove('recommended');
-    // 一般建議月退（若預期壽命超過兩平年齡）
-    if (breakevenYears < 20) {
+    if (years < 15) {
+      lumpCard.classList.add('recommended');
+      document.getElementById('r_monthlySub').textContent = '⚠️ 保險年資不滿 15 年，依§58 規定僅能一次請領，不得領月退年金';
+    } else if (breakevenYears < 20) {
       monthCard.classList.add('recommended');
     }
   }

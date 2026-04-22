@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="apple-touch-icon" href="favicon.svg">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>資遣費計算機｜LaborPro</title>
 <meta name="description" content="依勞基法§17（舊制）與勞工退休金條例§12（新制）精準計算資遣費與預告薪資，含年資試算、新舊制對照。免費使用，立即試算。">
 <link rel="canonical" href="https://labor.choulegal.com/severance.html">
@@ -204,6 +204,22 @@
       </div>
     </div>
 
+    <!-- §20 改組轉讓情境 -->
+    <div class="wizard">
+      <div class="wizard-section-title">§20 事業改組／轉讓情境（選填）</div>
+      <div class="field-group">
+        <label>本案是否屬事業單位改組或轉讓？</label>
+        <div class="select-wrap">
+          <select id="reorgCase" onchange="onReorgChange()">
+            <option value="no">否，一般資遣案件</option>
+            <option value="kept">是，本人屬「新雇主商定留用」者</option>
+            <option value="notKept">是，本人屬「未留用」者（新雇主未接收）</option>
+          </select>
+        </div>
+        <div id="reorgGuidance" style="font-size:12px;color:var(--muted);margin-top:8px;line-height:1.7;padding:10px 12px;background:#fef7e0;border-left:3px solid var(--gold);border-radius:4px;display:none"></div>
+      </div>
+    </div>
+
     <div class="warn-box">
       ⚠ 本計算機提供參考試算，實際資遣費須依個別勞動契約及薪資認定，建議諮詢勞動局或專業律師。
     </div>
@@ -329,8 +345,10 @@
     <!-- 法律依據 -->
     <div class="law-note">
       <strong>法律依據</strong><br>
-      · <strong>勞基法§17</strong>：舊制資遣費，每滿1年給付1個月平均薪資<br>
-      · <strong>勞退條例§12</strong>：新制資遣費，每滿1年給付0.5個月平均薪資，最高6個月；未滿1年依比例計算<br>
+      · <strong>勞基法§17</strong>：舊制資遣費，每滿 1 年給付 1 個月平均工資<br>
+      · <strong>勞退條例§12</strong>：新制資遣費，每滿 1 年給付 0.5 個月平均工資，最高 6 個月；未滿 1 年依比例計算<br>
+      · <strong>勞基法§20</strong>：事業單位改組或轉讓時，新舊雇主「商定留用」之勞工，其年資由新雇主繼續承認（免發資遣費）；「未留用」者由舊雇主依§16 預告、§17 發給資遣費<br>
+      · <strong>勞基法施行細則§8</strong>：資遣費應於終止勞動契約後 <strong>30 日內</strong>給付；逾期依§78 處 30~150 萬元罰鍰<br>
       · <strong>勞基法§16</strong>：預告期間；3個月以上未滿1年者10日，1年以上未滿3年者20日，3年以上者30日<br>
       · <strong>勞基法§78</strong>：違反§17資遣費規定，處30萬至150萬元罰鍰<br>
       · <strong>就服法§33</strong>：資遣10日前通報義務
@@ -400,6 +418,22 @@
       g.classList.add('visible');
     } else {
       g.classList.remove('visible');
+    }
+  }
+
+  // §20 改組轉讓情境判斷：留用 vs 未留用 vs 一般
+  function onReorgChange() {
+    const v = document.getElementById('reorgCase').value;
+    const box = document.getElementById('reorgGuidance');
+    if (v === 'no') {
+      box.style.display = 'none';
+      return;
+    }
+    box.style.display = 'block';
+    if (v === 'kept') {
+      box.innerHTML = '⚖️ <strong>§20 留用情境</strong>：新舊雇主已商定留用者，<strong>年資由新雇主繼續承認</strong>（年資接續，不中斷）；舊雇主<strong>無需</strong>發給資遣費。本試算結果若顯示應領資遣費，僅用於參考（若離職則為日後新雇主資遣時之基準）。重要提醒：若留用條件（薪資、職務）實質降低，勞工仍得主張依§14 被迫離職並請求資遣費。';
+    } else if (v === 'notKept') {
+      box.innerHTML = '⚖️ <strong>§20 未留用情境</strong>：新雇主未接收本人者，<strong>舊雇主應依勞基法§16 預告、§17 發給資遣費</strong>（本試算金額即為舊雇主應付之資遣費）。若為新制勞工，依勞退條例§12 計算；舊制適用§17。';
     }
   }
 

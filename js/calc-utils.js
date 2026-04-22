@@ -187,15 +187,82 @@
 
   /**
    * 勞工保險投保薪資分級表（2026 版，自 115/01/01 施行）
-   * 勞動部勞動保 2 字第 1140091863 號令修正，全時勞工共 11 級
+   * 勞動部公告修正，全時勞工共 11 級（下限 29,500 = 基本工資，上限 45,800）
    * @see https://www.bli.gov.tw/0005475.html
    *
-   * 部分工時（Part-time）最低投保薪資有獨立下限，本表僅涵蓋全時勞工。
+   * ⚠️ 注意：勞保（11 級上限 45,800）、勞退（62 級上限 150,000）、職災保險
+   *          （獨立分級上限 72,800）、健保（58 級上限 313,000）四個制度分級表
+   *          **不同**，必須各自查表；若全部套用勞保 11 級會導致：
+   *          (a) 高薪員工勞退雇主成本高估；(b) 高薪員工職災保費低估
    */
   var LABOR_INSURANCE_BRACKETS_2026 = [
     29500, 30300, 31800, 33300, 34800, 36300,
     38200, 40100, 42000, 43900, 45800
   ];
+
+  /**
+   * 勞工退休金月提繳工資分級表（2026 版，自 115/01/01 施行）
+   * 勞退條例§14，共 62 級；下限 1,500（部分工時）、第 1 組（1-11 級）適用部工，
+   * 第 12 級起（15,840）為全時勞工常見區間；上限 150,000
+   * 資料來源：勞動部勞工保險局 2026/01/01 公告
+   * @see https://www.bli.gov.tw/0013083.html
+   *
+   * 查表規則：找 >= monthlySalary 的最小級距值；若 monthlySalary > 150,000 以最高級 150,000 封頂。
+   */
+  var PENSION_BRACKETS_2026 = [
+    1500, 3000, 4500, 6000, 7500, 8700, 9900, 11100, 12540, 13500,
+    15840, 16500, 17280, 17880, 19047, 20008, 21009, 22000, 23100, 24000,
+    25250, 26400, 27600, 28590, 29500, 30300, 31800, 33300, 34800, 36300,
+    38200, 40100, 42000, 43900, 45800, 48200, 50600, 53000, 55400, 57800,
+    60800, 63800, 66800, 69800, 72800, 76500, 80200, 83900, 87600, 92100,
+    96600, 101100, 105600, 110100, 115500, 120900, 126300, 131700, 137100, 142500,
+    147900, 150000
+  ];
+
+  /**
+   * 勞工職業災害保險投保薪資分級表（2026 版，自 115/01/01 施行）
+   * 職災保險法§16，21 級；下限 29,500（= 基本工資），上限 72,800
+   * 結構上為勞退分級表第 25-45 級子集（29,500 至 72,800）
+   * 自 2022/05/01 起獨立於勞保分級表之外；先前版本誤用勞保 11 級表
+   * （上限 45,800）會導致月薪 46,000~72,800 員工職災保費低估。
+   * @see https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=N0050031
+   */
+  var WORK_INJURY_BRACKETS_2026 = [
+    29500, 30300, 31800, 33300, 34800, 36300,
+    38200, 40100, 42000, 43900, 45800, 48200,
+    50600, 53000, 55400, 57800, 60800, 63800,
+    66800, 69800, 72800
+  ];
+
+  /**
+   * 勞退月提繳工資查表
+   * @param {number} monthlySalary 實際月薪
+   * @returns {number} 對應之月提繳工資（依 62 級分級）
+   */
+  function getPensionBracket(monthlySalary) {
+    if (!monthlySalary || monthlySalary <= 0) return PENSION_BRACKETS_2026[0];
+    var brackets = PENSION_BRACKETS_2026;
+    for (var i = 0; i < brackets.length; i++) {
+      if (monthlySalary <= brackets[i]) return brackets[i];
+    }
+    return brackets[brackets.length - 1]; // 超過 150,000 以最高級計
+  }
+
+  /**
+   * 職災保險投保薪資查表
+   * @param {number} monthlySalary 實際月薪
+   * @returns {number} 對應之月投保薪資（依 21 級分級）
+   */
+  function getWorkInjuryBracket(monthlySalary) {
+    if (!monthlySalary || monthlySalary < WORK_INJURY_BRACKETS_2026[0]) {
+      return WORK_INJURY_BRACKETS_2026[0]; // 低於 29,500 以下限計
+    }
+    var brackets = WORK_INJURY_BRACKETS_2026;
+    for (var i = 0; i < brackets.length; i++) {
+      if (monthlySalary <= brackets[i]) return brackets[i];
+    }
+    return brackets[brackets.length - 1]; // 超過 72,800 以最高級計
+  }
 
   /**
    * 2026 年社保費率（驗證來源：勞動部、衛福部 114 年底公告）
@@ -279,15 +346,21 @@
   function calcEmployerInsuranceCost(monthlySalary, dependents) {
     var bracket = getLaborInsuranceBracket(monthlySalary);
     var nhiBracket = getNhiBracket(monthlySalary);
+    // 勞退分級：62 級完整分級表（勞退條例§14）
+    var pensionBracket = getPensionBracket(monthlySalary);
+    // 職災分級：21 級完整分級表（職災保險法§16）
+    var workInjuryBracket = getWorkInjuryBracket(monthlySalary);
     var R = LABOR_RATES_2026;
     var depCount = (dependents == null) ? R.nhiAvgDependents : dependents;
 
     var laborIns = Math.round(bracket * R.labor * R.laborEmployer);
-    var laborAccident = Math.round(bracket * R.accident);
+    // 職災保險使用獨立分級表（非勞保 11 級）
+    var laborAccident = Math.round(workInjuryBracket * R.accident);
     // 健保本人 + 眷屬：實務上眷屬以平均 0.58 人計；超過 3 口者以 3 口封頂（健保法§27）
     var effectiveDep = Math.min(depCount, 3);
     var nhi = Math.round(nhiBracket * R.nhi * R.nhiEmployer * (1 + effectiveDep));
-    var pension = Math.round(monthlySalary * R.pension);
+    // 勞退使用獨立分級表（上限 150,000）
+    var pension = Math.round(pensionBracket * R.pension);
     return {
       laborIns: laborIns,
       laborAccident: laborAccident,
@@ -295,7 +368,9 @@
       pension: pension,
       total: laborIns + laborAccident + nhi + pension,
       bracket: bracket,
-      nhiBracket: nhiBracket
+      nhiBracket: nhiBracket,
+      pensionBracket: pensionBracket,
+      workInjuryBracket: workInjuryBracket
     };
   }
 
@@ -342,10 +417,14 @@
   window.LaborPro.getAnnualLeaveDays = getAnnualLeaveDays;
   window.LaborPro.getLaborInsuranceBracket = getLaborInsuranceBracket;
   window.LaborPro.getNhiBracket = getNhiBracket;
+  window.LaborPro.getPensionBracket = getPensionBracket;
+  window.LaborPro.getWorkInjuryBracket = getWorkInjuryBracket;
   window.LaborPro.calcEmployerInsuranceCost = calcEmployerInsuranceCost;
   window.LaborPro.calcOvertimeCost = calcOvertimeCost;
   // 2026 年常數（供其他模組重用，避免散落硬編碼）
   window.LaborPro.LABOR_INSURANCE_BRACKETS_2026 = LABOR_INSURANCE_BRACKETS_2026;
   window.LaborPro.NHI_BRACKETS_2026 = NHI_BRACKETS_2026;
+  window.LaborPro.PENSION_BRACKETS_2026 = PENSION_BRACKETS_2026;
+  window.LaborPro.WORK_INJURY_BRACKETS_2026 = WORK_INJURY_BRACKETS_2026;
   window.LaborPro.LABOR_RATES_2026 = LABOR_RATES_2026;
 })();
