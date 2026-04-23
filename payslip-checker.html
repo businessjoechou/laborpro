@@ -477,8 +477,10 @@
   const _LP_RATES = (window.LaborPro && window.LaborPro.LABOR_RATES_2026) || { labor: 0.125, laborEmployee: 0.20, nhi: 0.0517, nhiEmployee: 0.30 };
   const LABOR_INS_WORKER_RATE = _LP_RATES.labor * _LP_RATES.laborEmployee; // 12.5% * 20% = 2.5%
 
-  // 健保投保級距：本頁簡化同勞保級距（實務上健保 58 級表更細，高薪誤差見 calc-utils.js 備註）
-  const HEALTH_INS_BRACKETS = LABOR_INS_BRACKETS.slice();
+  // 健保投保級距（2026，58 級，上限 313,000）
+  // 來源：window.LaborPro.NHI_BRACKETS_2026（健保法施行細則分級表）
+  const HEALTH_INS_BRACKETS = (window.LaborPro && window.LaborPro.NHI_BRACKETS_2026)
+    || [29500, 30300, 31800, 33300, 34800, 36300, 38200, 40100, 42000, 43900, 45800, 48200, 50600, 53000, 55400, 57800, 60800, 63800, 66800, 69800, 72800, 76500, 80200, 83900, 87600, 92100, 96600, 101100, 105600, 110100, 115500, 120900, 126300, 131700, 137100, 142500, 147900, 150000, 156400, 162800, 169200, 175600, 182000, 189500, 197000, 204500, 212000, 219500, 228200, 236900, 245600, 254300, 263000, 273000, 283000, 293000, 303000, 313000];
   const HEALTH_INS_WORKER_RATE = _LP_RATES.nhi * _LP_RATES.nhiEmployee; // 5.17% * 30% ≈ 1.551%
 
   function findBracket(salary, brackets) {
