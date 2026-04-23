@@ -202,6 +202,7 @@
         <label>加班型態</label>
         <div class="select-wrap">
           <select id="otType">
+            <option value="none">無加班</option>
             <option value="weekday">平日延長工時（§24 I）</option>
             <option value="mixed" selected>混合（平日＋休息日）</option>
             <option value="restday">主要為休息日（§24 II）</option>
@@ -381,7 +382,7 @@
     const ins = LP.calcEmployerInsuranceCost(totalWage, dependents);
 
     // OT cost
-    const otCost = otHours > 0 ? Math.round(LP.calcOvertimeCost(salary, otHours, otType)) : 0;
+    const otCost = (otType === 'none' || otHours <= 0) ? 0 : Math.round(LP.calcOvertimeCost(salary, otHours, otType));
 
     // Total per person
     const perPerson = totalWage + ins.total + otCost;
