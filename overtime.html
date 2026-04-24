@@ -545,12 +545,15 @@
 
   // ─── Calculation logic ─────────────────────────────────────────────────────
 
-  // 平日延長 §24-1
+  // 平日延長 §24 第 1 項
+  // 前 2hr × 4/3；第 3-4hr × 5/3；逾 4hr 仍須照付（與 overtime-detail.html 口徑一致）
+  // §32 僅規定雇主不得使勞工延長工時逾 4 小時、1 月累計逾 46 小時，違反屬行政責任；工資計算仍須給付
   function calcWeekdayOT(hours, hourly) {
     if (hours <= 0) return 0;
     const h1 = Math.min(hours, 2);
     const h2 = Math.max(0, Math.min(hours - 2, 2));
-    return h1 * hourly * (4 / 3) + h2 * hourly * (5 / 3);
+    const extra = Math.max(0, hours - 4);
+    return h1 * hourly * (4 / 3) + h2 * hourly * (5 / 3) + extra * hourly * (5 / 3);
   }
 
   // 休息日 §24-2（2018修法後核實計算，不再做1算4）

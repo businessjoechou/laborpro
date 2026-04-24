@@ -159,6 +159,12 @@
         <input type="number" id="annualReturn" placeholder="2" min="0" max="20" step="0.1" inputmode="decimal">
         <span class="field-hint">勞動部歷年平均約 2–3%。保守估算可填 2，樂觀估算可填 3。</span>
       </div>
+
+      <div class="field-group">
+        <label>預計請領月退之年齡</label>
+        <input type="number" id="claimAge" placeholder="65" min="60" max="75" value="65" inputmode="numeric">
+        <span class="field-hint">月退金＝帳戶總額 ÷ 平均餘命月數（60 歲 288 月 / 65 歲 228 月 / 65 歲以上 168 月；單一真實來源為 LaborPro.getLifeMonths）。</span>
+      </div>
     </div>
 
     <div class="warn-box">
@@ -388,6 +394,7 @@
   function collectStep1() {
     state.startDate     = document.getElementById('startDate').value;
     state.retireDate    = document.getElementById('retireDate').value;
+    state.claimAge      = parseInt(document.getElementById('claimAge').value) || 65;
     state.monthlySalary = parseFloat(document.getElementById('monthlySalary').value);
     state.voluntaryRate = parseFloat(document.getElementById('voluntaryRate').value) || 0;
     state.annualReturn  = parseFloat(document.getElementById('annualReturn').value);
@@ -419,6 +426,17 @@
 
   // ─── Core calculation ──────────────────────────────────────────────────────
 
+  // 平均餘命月數 — 與 pension-claim.html 共用 LaborPro.getLifeMonths 單一真實來源
+  function getLifeMonths(age) {
+    if (window.LaborPro && typeof window.LaborPro.getLifeMonths === 'function') {
+      return window.LaborPro.getLifeMonths(age);
+    }
+    // Fallback（core 未載入）：與 core 同表
+    if (age <= 60) return 288;
+    if (age <= 65) return 228;
+    return 168;
+  }
+
   function calcPension(st) {
     const months = monthsBetween(st.startDate, st.retireDate);
     const employerMonthly = st.monthlySalary * 0.06;
@@ -433,13 +451,17 @@
       fv = totalMonthly * ((Math.pow(1 + r, months) - 1) / r);
     }
 
+    const lifeMonths = getLifeMonths(st.claimAge || 65);
+
     return {
       months,
       employerTotal:    employerMonthly * months,
       workerTotal:      workerMonthly * months,
       totalNoReturn:    totalMonthly * months,
       totalWithReturn:  fv,
-      monthlyPension:   fv / (25 * 12),
+      monthlyPension:   fv / lifeMonths,
+      lifeMonths,
+      claimAge:         st.claimAge || 65,
       employerMonthly,
       workerMonthly,
       totalMonthly

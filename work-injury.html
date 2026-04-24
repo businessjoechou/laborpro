@@ -242,20 +242,21 @@
       <div class="field-group">
         <label>失能等級</label>
         <select id="disabilityGrade" onchange="state.disabilityGrade = +this.value; updateDisabilityPreview()">
-          <option value="1">第1–2級（1,200 日）</option>
-          <option value="3">第3級（1,000 日）</option>
-          <option value="4">第4級（840 日）</option>
-          <option value="5">第5級（740 日）</option>
-          <option value="6">第6級（620 日）</option>
-          <option value="7">第7級（540 日）</option>
-          <option value="8">第8級（440 日）</option>
-          <option value="9">第9級（360 日）</option>
-          <option value="10">第10級（280 日）</option>
-          <option value="11">第11級（200 日）</option>
-          <option value="12">第12級（160 日）</option>
-          <option value="13">第13級（120 日）</option>
-          <option value="14">第14級（80 日）</option>
-          <option value="15">第15級（40 日）</option>
+          <option value="1">第1級（1,200 日）</option>
+          <option value="2">第2級（1,000 日）</option>
+          <option value="3">第3級（840 日）</option>
+          <option value="4">第4級（740 日）</option>
+          <option value="5">第5級（640 日）</option>
+          <option value="6">第6級（540 日）</option>
+          <option value="7">第7級（440 日）</option>
+          <option value="8">第8級（360 日）</option>
+          <option value="9">第9級（280 日）</option>
+          <option value="10">第10級（220 日）</option>
+          <option value="11">第11級（160 日）</option>
+          <option value="12">第12級（100 日）</option>
+          <option value="13">第13級（60 日）</option>
+          <option value="14">第14級（40 日）</option>
+          <option value="15">第15級（30 日）</option>
         </select>
         <div id="disabilityPreview" style="margin-top:8px;font-size:12px;color:var(--muted)"></div>
       </div>
@@ -371,13 +372,15 @@
     combined:   ['medicalSection', 'wageSection', 'disabilitySection', 'deathSection']
   };
 
+  // 勞工保險失能給付標準 §5（111/3/30 最新修正）— 全國法規資料庫驗證
+  // 原表第 2 級被併入第 1 級（錯），且第 3-15 級日數全部上移一階（錯）— 此次全面對齊官方
   const gradedays = {
-    1: 1200, 3: 1000, 4: 840, 5: 740, 6: 620, 7: 540,
-    8: 440, 9: 360, 10: 280, 11: 200, 12: 160, 13: 120, 14: 80, 15: 40
+    1: 1200, 2: 1000, 3: 840, 4: 740, 5: 640, 6: 540, 7: 440,
+    8: 360, 9: 280, 10: 220, 11: 160, 12: 100, 13: 60, 14: 40, 15: 30
   };
 
   const gradeLabel = {
-    1: '第1–2級', 3: '第3級', 4: '第4級', 5: '第5級', 6: '第6級', 7: '第7級',
+    1: '第1級', 2: '第2級', 3: '第3級', 4: '第4級', 5: '第5級', 6: '第6級', 7: '第7級',
     8: '第8級', 9: '第9級', 10: '第10級', 11: '第11級', 12: '第12級',
     13: '第13級', 14: '第14級', 15: '第15級'
   };
