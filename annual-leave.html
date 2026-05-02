@@ -67,25 +67,56 @@
   .btn-print { background: var(--accent); color: #fff; flex: 2; }
 </style>
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "特休未休折現計算機｜LaborPro",
-  "description": "依勞基法§38計算特別休假天數及未休折現金額，自動依年資試算應有特休天數。",
-  "url": "https://labor.choulegal.com/annual-leave.html",
-  "applicationCategory": "FinanceApplication",
-  "operatingSystem": "Web",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "TWD"
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "特休未休折現計算機",
+    "alternateName": "特別休假試算工具｜LaborPro",
+    "description": "依勞基法§38計算特別休假天數及未休折現金額，涵蓋 6 個月至 30 年以上年資對照，自動換算每日薪資。免費使用。",
+    "url": "https://labor.choulegal.com/annual-leave.html",
+    "applicationCategory": "FinanceApplication",
+    "applicationSubCategory": "勞動法計算工具",
+    "operatingSystem": "Web",
+    "browserRequirements": "Requires JavaScript",
+    "inLanguage": "zh-TW",
+    "isAccessibleForFree": true,
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "TWD"
+    },
+    "featureList": [
+      "勞基法§38 特別休假天數試算",
+      "年資對照（6 個月至 30 年以上）",
+      "未休折現金額試算",
+      "每日薪資自動換算"
+    ],
+    "provider": {
+      "@type": "Organization",
+      "name": "周全法律科技 ChouLegal",
+      "url": "https://choulegal.com"
+    }
   },
-  "provider": {
-    "@type": "Organization",
-    "name": "周全法律科技 ChouLegal",
-    "url": "https://choulegal.com"
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "LaborPro 首頁",
+        "item": "https://labor.choulegal.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "特休未休折現計算機",
+        "item": "https://labor.choulegal.com/annual-leave.html"
+      }
+    ]
   }
-}
+]
 </script>
 </head>
 <body>
