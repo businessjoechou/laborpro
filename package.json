@@ -1,0 +1,12 @@
+{
+  "name": "laborpro",
+  "version": "1.0.0",
+  "description": "LaborPro — 中華民國勞基法計算機",
+  "private": true,
+  "scripts": {
+    "build:core": "node scripts/build-core-bundle.mjs"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.0"
+  }
+}

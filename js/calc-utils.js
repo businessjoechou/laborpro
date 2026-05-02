@@ -14,6 +14,28 @@
  */
 (function () {
 
+  // === Single source of truth：monorepo @choulegal/core-labor ===
+  // 若 HTML 在本檔之前載入 js/_generated/core-labor.bundle.js，
+  // window.LC_CORE 會帶來 monorepo 的最新計算函式；本檔 alias 後 early return，
+  // 跳過下方 legacy fallback 實作。
+  // 重生 bundle：`npm run build:core`
+  if (typeof window !== 'undefined' && window.LC_CORE) {
+    window.LaborPro = window.LaborPro || {};
+    Object.assign(window.LaborPro, window.LC_CORE);
+    window.LaborPro._source = 'monorepo-bundle';
+    window.LaborPro._coreVersion = window.LC_CORE.version || 'unknown';
+    return;
+  }
+
+  // === Legacy fallback（LC_CORE 未載入時） ===
+  // 此段邏輯已被 monorepo @choulegal/core-labor 取代。法規異動時 monorepo 是
+  // 真理，本段只在 bundle 載入失敗時保 best-effort 服務不中斷。請勿在此段加新
+  // 功能；新功能加在 monorepo 並重跑 build:core。
+  if (typeof window !== 'undefined') {
+    window.LaborPro = window.LaborPro || {};
+    window.LaborPro._source = 'legacy-fallback';
+  }
+
   /**
    * 計算兩個日期之間的年月日差距
    *
