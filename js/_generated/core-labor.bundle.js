@@ -794,7 +794,7 @@ var LC_CORE = (() => {
     const hourly = monthlySalary / 30 / 8;
     if (type === "weekday") {
       const h1 = Math.min(hours, 2);
-      const h2 = Math.max(Math.min(hours - 2, 2), 0);
+      const h2 = Math.max(hours - 2, 0);
       return h1 * hourly * (4 / 3) + h2 * hourly * (5 / 3);
     }
     if (type === "restday") {

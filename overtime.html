@@ -27,6 +27,8 @@
 <script src="js/case-law-data.js"></script>
 <script src="js/case-law-render.js"></script>
 <link rel="stylesheet" href="css/common.css">
+<script src="js/_generated/core-labor.bundle.js"></script>
+<script src="js/calc-utils.js"></script>
 <script src="js/animations.js" defer></script>
 <style>
   .field-group label { line-height: 1.4; }
@@ -548,26 +550,22 @@
   // 平日延長 §24 第 1 項
   // 前 2hr × 4/3；第 3-4hr × 5/3；逾 4hr 仍須照付（與 overtime-detail.html 口徑一致）
   // §32 僅規定雇主不得使勞工延長工時逾 4 小時、1 月累計逾 46 小時，違反屬行政責任；工資計算仍須給付
+  // §24 平日延長工時 / §24-2 休息日 / §39 國定例假
+  // Source of truth: monorepo @choulegal/core-labor.calcOvertimeCost
+  // API：(monthlySalary, hours, type) → cost；type ∈ 'weekday'|'restday'|'holiday'|'mixed'
+  // 法源解讀：§24 無 cap，§32 是工時上限不是費率上限，超時部分仍以 5/3 計（民眾版視角）
+  // 法條變動時改 monorepo `packages/core-labor/src/overtime.js` 並重跑 npm run build:core
   function calcWeekdayOT(hours, hourly) {
     if (hours <= 0) return 0;
-    const h1 = Math.min(hours, 2);
-    const h2 = Math.max(0, Math.min(hours - 2, 2));
-    const extra = Math.max(0, hours - 4);
-    return h1 * hourly * (4 / 3) + h2 * hourly * (5 / 3) + extra * hourly * (5 / 3);
+    return window.LaborPro.calcOvertimeCost(hourly * 30 * 8, hours, 'weekday');
   }
-
-  // 休息日 §24-2（2018修法後核實計算，不再做1算4）
   function calcRestDayOT(hours, hourly) {
     if (hours <= 0) return 0;
-    const h1 = Math.min(hours, 2);
-    const h2 = Math.max(0, hours - 2);
-    return h1 * hourly * (4 / 3) + h2 * hourly * (5 / 3);
+    return window.LaborPro.calcOvertimeCost(hourly * 30 * 8, hours, 'restday');
   }
-
-  // 國定假日 / 例假日 §39: 加倍 (×2)
   function calcHolidayOT(hours, hourly) {
     if (hours <= 0) return 0;
-    return hours * hourly * 2;
+    return window.LaborPro.calcOvertimeCost(hourly * 30 * 8, hours, 'holiday');
   }
 
   function fmt(n) {
