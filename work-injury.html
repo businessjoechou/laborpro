@@ -92,6 +92,45 @@
   }
 }
 </script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "LaborPro 首頁", "item": "https://labor.choulegal.com/"},
+    {"@type": "ListItem", "position": 2, "name": "職災補償試算", "item": "https://labor.choulegal.com/work-injury.html"}
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "如何試算職業災害補償金額",
+  "description": "三步驟依勞基法§59 試算職業災害四款補償（醫療／工資／失能／死亡），含原領工資與平均工資分流計算。",
+  "step": [
+    {"@type": "HowToStep", "position": 1, "name": "選擇補償類型並輸入工資", "text": "選擇醫療補償（§59 第 1 款）、工資補償（第 2 款）、失能補償（第 3 款）、死亡補償（第 4 款）或複合補償。簡易模式輸入月薪（系統以月薪 ÷ 30 估算原領日薪與平均日工資）；進階模式可分別輸入§59-2 用之原領日薪與§59-3／4 用之平均工資（依§2 第 4 款由前 6 個月工資總額除以總日數計算）。"},
+    {"@type": "HowToStep", "position": 2, "name": "輸入補償明細", "text": "依所選類型輸入：醫療費（§59-1 全額補償必要醫療費）、停工天數（§59-2 按原領工資補償；醫療屆滿 2 年未癒得依但書一次給付 40 個月平均工資免除責任）、失能等級（§59-3 依勞保失能給付標準表第 1–15 級補償日數，1,200/1,000/840…30 日）、喪葬費（§59-4 喪葬費 5 個月 + 死亡 40 個月平均工資）。"},
+    {"@type": "HowToStep", "position": 3, "name": "查看補償試算結果", "text": "結果顯示各款補償明細與合計。注意：勞基法§59 為雇主無過失責任；勞保或職業災害保險給付得抵充雇主§59 補償（§60）；如雇主有過失，勞工得另依民法§184 請求侵權行為損害賠償，不受§59 上限限制。"}
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type": "Question", "name": "什麼情況才算職業災害？", "acceptedAnswer": {"@type": "Answer", "text": "依勞工職業災害保險及保護法§27 與職業安全衛生法之認定，職業災害指勞工因執行職務（業務遂行性）並與職務有相當因果關係（業務起因性）而致傷害、疾病、失能或死亡。常見類型包括：①工作場所內之意外傷害；②上下班途中合理路徑之通勤事故；③執行業務出差時發生之事故；④長期從事特定工作所致之職業病（依公告之職業病種類表）。雇主依勞基法§59 應負無過失補償責任，不論雇主有無過失均須補償。"}},
+    {"@type": "Question", "name": "雇主依§59 有哪四款補償責任？", "acceptedAnswer": {"@type": "Answer", "text": "勞基法§59 規定雇主四款補償責任：①醫療補償（第 1 款）：必要醫療費用全額補償；②工資補償（第 2 款）：醫療中不能工作時，按原領工資補償，醫療屆滿 2 年未能痊癒者得依但書一次給付 40 個月平均工資免責；③失能補償（第 3 款）：經治療終止後遺存失能者，按平均工資及失能程度日數一次給付（依勞保失能給付標準表第 1–15 級，1,200 至 30 日）；④死亡補償（第 4 款）：喪葬費 5 個月平均工資 + 遺屬補償 40 個月平均工資。"}},
+    {"@type": "Question", "name": "原領工資和平均工資有什麼不同？", "acceptedAnswer": {"@type": "Answer", "text": "兩者計算基礎不同：①原領工資（§59-2 工資補償用）：事故前一日正常工時所得，月薪者為前 1 個月正常工時所得 ÷ 30；②平均工資（§59-3 失能、§59-4 死亡用，依§2 第 4 款定義）：事故發生前 6 個月工資總額 ÷ 該期間總日數。若員工近 6 個月有請假扣薪、非經常性獎金或工資變動，兩者數字會不同，不可混為月薪。本工具進階模式可分別輸入。"}},
+    {"@type": "Question", "name": "勞保給付可以抵扣雇主補償嗎？", "acceptedAnswer": {"@type": "Answer", "text": "可以。依勞基法§60：雇主依§59 規定給付之補償金額，得抵充就同一事故所生損害之賠償金額。實務運作上，勞保／勞工職業災害保險給付（醫療、傷病、失能、死亡給付）得由雇主主張抵扣其§59 補償責任。但抵扣以同一事故、同一性質之給付為限，且不得抵扣勞工依民法另行請求之過失侵權損害賠償。"}},
+    {"@type": "Question", "name": "失能等級怎麼判定？補償日數是多少？", "acceptedAnswer": {"@type": "Answer", "text": "失能等級依勞工保險失能給付標準表（§5）認定，分為第 1 至第 15 級。對應補償日數：第 1 級 1,200 日、第 2 級 1,000 日、第 3 級 840 日、第 4 級 740 日、第 5 級 640 日、第 6 級 540 日、第 7 級 440 日、第 8 級 360 日、第 9 級 280 日、第 10 級 220 日、第 11 級 160 日、第 12 級 100 日、第 13 級 60 日、第 14 級 40 日、第 15 級 30 日。雇主依§59-3 應按平均日工資 × 對應日數一次給付。失能等級由保險人核定，必要時得另經醫療機構鑑定。"}},
+    {"@type": "Question", "name": "雇主除了§59 補償，還要負民事賠償責任嗎？", "acceptedAnswer": {"@type": "Answer", "text": "視雇主有無過失而定。勞基法§59 為「無過失補償責任」，無論雇主有無過失均須補償；但若雇主對職災有過失（例如違反職業安全衛生法、未提供必要安全設備、未實施安全衛生教育訓練等），勞工得另依民法§184 第 2 項（違反保護他人之法律推定有過失）或§483-1（雇用人預防危害義務）請求侵權行為損害賠償，包括§193 勞動能力減損、§195 慰撫金等，且不受§59 補償上限限制。雇主已給付之§59 補償可依§60 主張抵充。"}},
+    {"@type": "Question", "name": "醫療超過 2 年還沒好，雇主可以停付工資嗎？", "acceptedAnswer": {"@type": "Answer", "text": "可以選擇一次給付以免除工資補償責任。依勞基法§59 第 2 款但書：醫療期間屆滿 2 年仍未能痊癒，經指定之醫院診斷，審定為喪失原有工作能力，且不合第 3 款之失能給付標準者，雇主得一次給付 40 個月之平均工資後，免除此項工資補償責任。但雇主仍須繼續負§59 第 1 款醫療費用補償責任，且日後若失能成立，仍應依第 3 款給付失能補償。"}},
+    {"@type": "Question", "name": "職災勞工可以被解雇嗎？", "acceptedAnswer": {"@type": "Answer", "text": "原則上不可以。依勞基法§13：勞工在第 50 條規定之停止工作期間（產假）或第 59 條規定之醫療期間，雇主不得終止契約。但雇主因天災、事變或其他不可抗力致事業不能繼續，經報主管機關核定者，不在此限。雇主違反§13 解雇職災勞工者，解雇無效，勞工得依勞動事件法請求確認僱傭關係存在並回復原職。請於收到解雇通知起 30 日內申請勞資爭議調解。"}}
+  ]
+}
+</script>
 </head>
 <body>
 
@@ -293,6 +332,53 @@
     <p class="subtitle">以下為依勞基法§59計算之職業災害補償金額試算。</p>
     <div id="resultContent"></div>
   </div>
+
+  <!-- HowTo — visible step list for HowTo schema -->
+  <section style="max-width:700px;margin:32px auto 24px;padding:0 4px">
+    <div style="font-family:'Noto Serif TC',serif;font-size:11px;color:var(--muted);letter-spacing:0.16em;text-transform:uppercase;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border)">使用步驟</div>
+    <ol style="padding-left:20px;color:var(--ink);font-size:13px;line-height:1.9">
+      <li><strong>選擇補償類型並輸入工資：</strong>醫療（&sect;59-1）／工資（&sect;59-2）／失能（&sect;59-3）／死亡（&sect;59-4）／複合。簡易模式輸入月薪；進階模式分別輸入&sect;59-2 用之原領日薪與&sect;59-3／4 用之平均工資（&sect;2 第 4 款定義）。</li>
+      <li><strong>輸入補償明細：</strong>醫療費（全額補償）、停工天數（按原領工資；&sect;59-2 但書醫療屆滿 2 年未癒得一次給付 40 個月平均工資免責）、失能等級（依勞保失能給付標準表 1–15 級對應 1,200 至 30 日）、喪葬費（&sect;59-4 喪葬 5 個月 + 死亡 40 個月平均工資）。</li>
+      <li><strong>查看補償試算結果：</strong>顯示各款明細與合計。&sect;59 為無過失責任；勞保／職災保險得依&sect;60 抵充；雇主有過失時勞工得另依民法&sect;184 請求侵權行為損害賠償。</li>
+    </ol>
+  </section>
+
+  <!-- FAQ — visible content for FAQPage schema -->
+  <section style="max-width:700px;margin:0 auto 32px;padding:0 4px">
+    <div style="font-family:'Noto Serif TC',serif;font-size:11px;color:var(--muted);letter-spacing:0.16em;text-transform:uppercase;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border)">常見問題</div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">什麼情況才算職業災害？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">職業災害指勞工因執行職務（業務遂行性）並與職務有相當因果關係（業務起因性）而致傷害、疾病、失能或死亡。常見類型：工作場所意外、上下班通勤事故、出差事故、職業病。雇主依勞基法&sect;59 應負無過失補償責任。</div>
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">雇主依&sect;59 有哪四款補償責任？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">①醫療補償：必要醫療費全額；②工資補償：醫療中不能工作按原領工資補償，醫療屆滿 2 年未癒得一次給付 40 個月平均工資免責；③失能補償：經治療終止後遺存失能者，按平均工資及失能程度日數一次給付（依勞保失能給付標準表第 1–15 級）；④死亡補償：喪葬費 5 個月 + 遺屬補償 40 個月平均工資。</div>
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">原領工資和平均工資有什麼不同？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">①原領工資（&sect;59-2 工資補償用）：事故前一日正常工時所得，月薪者為前 1 個月正常工時所得 ÷ 30；②平均工資（&sect;59-3／4 失能與死亡用，&sect;2 第 4 款）：事故前 6 個月工資總額 ÷ 該期間總日數。若近 6 個月有請假扣薪或非經常性獎金，兩者數字會不同，不可混為月薪。</div>
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">勞保給付可以抵扣雇主補償嗎？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">可以。依勞基法&sect;60，雇主依&sect;59 給付之補償金額，得抵充就同一事故所生損害之賠償。勞保／勞工職業災害保險給付（醫療、傷病、失能、死亡）得抵扣&sect;59 補償責任，但不得抵扣勞工另依民法請求之過失侵權損害賠償。</div>
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">失能等級怎麼判定？補償日數是多少？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">失能等級依勞工保險失能給付標準表（&sect;5）認定，分為第 1–15 級，補償日數依序為 1,200／1,000／840／740／640／540／440／360／280／220／160／100／60／40／30 日。雇主依&sect;59-3 應按平均日工資 × 對應日數一次給付。失能等級由保險人核定，必要時得另經醫療機構鑑定。</div>
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">雇主除了&sect;59 補償，還要負民事賠償責任嗎？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">視雇主有無過失而定。&sect;59 為無過失補償責任；若雇主對職災有過失（違反職業安全衛生法、未提供必要安全設備等），勞工得另依民法&sect;184 第 2 項或&sect;483-1（雇用人預防危害義務）請求侵權行為損害賠償（含&sect;193 勞動能力減損、&sect;195 慰撫金），不受&sect;59 上限限制。雇主已給付之&sect;59 補償可依&sect;60 主張抵充。</div>
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">醫療超過 2 年還沒好，雇主可以停付工資嗎？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">可以選擇一次給付以免除工資補償責任。依&sect;59 第 2 款但書：醫療期間屆滿 2 年仍未能痊癒，經指定之醫院診斷審定喪失原有工作能力，且不合第 3 款失能給付標準者，雇主得一次給付 40 個月平均工資後，免除工資補償責任。但仍須繼續負&sect;59-1 醫療費補償，日後若失能成立仍應依第 3 款給付。</div>
+    </div>
+    <div style="padding:14px 0">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">職災勞工可以被解雇嗎？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">原則上不可以。依勞基法&sect;13，勞工在&sect;59 規定之醫療期間，雇主不得終止契約。但因天災、事變或其他不可抗力致事業不能繼續，經報主管機關核定者不在此限。雇主違反&sect;13 解雇職災勞工者，解雇無效，勞工得依勞動事件法請求確認僱傭關係存在。請於 30 日內申請勞資爭議調解。</div>
+    </div>
+  </section>
 
 </main>
 
