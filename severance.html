@@ -27,6 +27,8 @@
 <script src="js/case-law-data.js"></script>
 <script src="js/case-law-render.js"></script>
 <link rel="stylesheet" href="css/common.css">
+<script src="js/_generated/core-labor.bundle.js"></script>
+<script src="js/calc-utils.js"></script>
 <script src="js/animations.js" defer></script>
 <style>
   .extra-field {
@@ -468,42 +470,17 @@
 
   // ─── Calculation helpers ───────────────────────────────────────────────────
 
-  function calcMonths(from, to) {
-    const d1 = new Date(from), d2 = new Date(to);
-    let years  = d2.getFullYear() - d1.getFullYear();
-    let months = d2.getMonth()    - d1.getMonth();
-    let days   = d2.getDate()     - d1.getDate();
-    if (days < 0) {
-      months--;
-      var prev = new Date(d2.getFullYear(), d2.getMonth(), 0);
-      days += prev.getDate();
-    }
-    if (months < 0) { years--;  months += 12; }
-    // fullCalendarMonths：月曆整月（供 §16 預告期間等門檻比較）；totalMonths 為含 days/30 之比例值（供 §12/§17 資遣費按比例計算）
-    const fullCalendarMonths = years * 12 + months;
-    const totalMonths = fullCalendarMonths + days / 30;
-    return { years, months, days, totalMonths, fullCalendarMonths };
-  }
+  // calcMonths 改用 monorepo「以日計」精確版（totalDays/365，最高法院 100 台上 1546）
+  // 取代原 inline 的 days/30 月曆月公式，邊界日結果可能 ±0.14%
+  const calcMonths = window.LaborPro.calcMonths;
 
-  function calcSeveranceNew(totalMonths, avgWage) {
-    // §12 勞退條例: 每滿1年 = 0.5個月, 上限6個月
-    const raw = (totalMonths / 12) * 0.5;
-    return Math.min(raw, 6) * avgWage;
-  }
-
-  function calcSeveranceOld(totalMonths, avgWage) {
-    // §17 勞基法: 每滿1年 = 1個月平均薪資，不足1年按比例（無上限）
-    const raw = totalMonths / 12;
-    return raw * avgWage;
-  }
-
-  function calcNotice(totalMonths, avgWage) {
-    // §16 預告期間
-    if (totalMonths < 3)  return { days: 0,  amount: 0,                    label: '未滿3個月，無需預告' };
-    if (totalMonths < 12) return { days: 10, amount: avgWage / 30 * 10,    label: '3個月以上未滿1年：10日' };
-    if (totalMonths < 36) return { days: 20, amount: avgWage / 30 * 20,    label: '1年以上未滿3年：20日' };
-    return                       { days: 30, amount: avgWage / 30 * 30,    label: '3年以上：30日' };
-  }
+  // §12 勞退條例（新制資遣費）/ §17 勞基法（舊制）/ §16 預告期間
+  // Source of truth: monorepo @choulegal/core-labor（透過 window.LaborPro）
+  // 法條變動時改 monorepo `packages/core-labor/src/severance.js` 並重跑 npm run build:core
+  // calcMonths 暫保留 inline（與 monorepo 邏輯邊界日有 ±0.14% 差，待真理判定後切換）
+  const calcSeveranceNew = window.LaborPro.calcSeveranceNew;
+  const calcSeveranceOld = window.LaborPro.calcSeveranceOld;
+  const calcNotice       = window.LaborPro.calcNotice;
 
   function fmt(n) {
     return 'NT$ ' + Math.round(n).toLocaleString('zh-TW');
