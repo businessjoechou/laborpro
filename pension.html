@@ -101,6 +101,44 @@
   }
 }
 </script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "LaborPro 首頁", "item": "https://labor.choulegal.com/"},
+    {"@type": "ListItem", "position": 2, "name": "勞退提撥試算", "item": "https://labor.choulegal.com/pension.html"}
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "如何使用勞退提撥試算工具",
+  "description": "輸入提撥期間、月投保薪資與自願提撥率，工具依勞工退休金條例§6、§14、§24 計算退休帳戶累積金額及月退休金。",
+  "step": [
+    {"@type": "HowToStep", "position": 1, "name": "填入提撥期間", "text": "輸入「開始提撥日（到職日）」與「預計退休日」。依§6，雇主應自勞工到職之日起為其提繳退休金；依§24，年滿 60 歲得申請退休金。"},
+    {"@type": "HowToStep", "position": 2, "name": "輸入薪資與提撥設定", "text": "填入月投保薪資、勞工自願提撥率（0–6%）、預估年報酬率（建議 2–3%，對應勞動部歷年平均）及預計請領月退之年齡。"},
+    {"@type": "HowToStep", "position": 3, "name": "查看帳戶總額與月退金試算", "text": "工具依雇主強制提撥 6% + 勞工自願提撥（最高 6%）按月複利累積，得出退休帳戶總額；月退金 = 帳戶總額 ÷ 平均餘命月數（依勞保局 113/4/1 公告：60 歲 276 月、65 歲 228 月、70 歲 192 月）。"}
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type": "Question", "name": "勞退新制與勞保老年給付有什麼不同？", "acceptedAnswer": {"@type": "Answer", "text": "兩者是不同制度。勞工退休金（勞退新制，依勞工退休金條例）為個人專戶制，雇主每月提繳工資 6% 至勞工個人專戶，勞工 60 歲後可申請領取；勞保老年給付（依勞工保險條例§58）為社會保險，由全體被保險人共同分擔保費，達法定請領年齡且符合年資要件後依公式給付。兩者可同時請領。"}},
+    {"@type": "Question", "name": "雇主每月一定要為勞工提繳 6% 嗎？", "acceptedAnswer": {"@type": "Answer", "text": "是。依勞工退休金條例§14 第 1 項，雇主每月負擔之勞工退休金提繳率，不得低於勞工每月工資 6%。提繳工資由雇主依勞工退休金月提繳工資分級表申報，未依法提繳將依本條例罰則章規定處罰。"}},
+    {"@type": "Question", "name": "勞工自願提撥的好處是什麼？", "acceptedAnswer": {"@type": "Answer", "text": "依勞工退休金條例§14 第 3 項，勞工得在每月工資 6% 範圍內自願另行提繳。自願提繳金額不計入提繳年度薪資所得課稅，等同享有所得稅遞延效果，且自願提繳部分一併存入個人退休金專戶累積收益，退休時連同雇主提繳款一併領取。"}},
+    {"@type": "Question", "name": "勞退新制幾歲可以開始領？", "acceptedAnswer": {"@type": "Answer", "text": "依勞工退休金條例§24，勞工年滿 60 歲，得依規定請領退休金；工作年資滿 15 年以上者得選擇月退休金或一次退休金，工作年資未滿 15 年者應請領一次退休金。年滿 60 歲後仍受僱者，雇主仍應繼續為其提繳。"}},
+    {"@type": "Question", "name": "月退休金的金額怎麼算？", "acceptedAnswer": {"@type": "Answer", "text": "依勞工退休金條例§23，月退休金以個人退休金專戶累積本金及收益，依年金生命表平均餘命及利率等基礎計算定期發給。本工具以勞保局 113/4/1 公告之「月退休金平均餘命表」近似計算（60 歲 276 月、65 歲 228 月、70 歲 192 月），實際月退金額以勞保局核定為準。"}},
+    {"@type": "Question", "name": "勞退基金的投資報酬率約是多少？", "acceptedAnswer": {"@type": "Answer", "text": "勞退基金的實際收益率每年浮動，由勞動部勞動基金運用局公布。依勞工退休金條例§23 第 2 項，個人專戶之累積收益不得低於以當地銀行 2 年定期存款利率計算之收益（保證收益機制）。本工具預設 2% 為保守估算、3% 為樂觀估算，實際以勞退基金當期績效為準，不保證固定報酬率。"}},
+    {"@type": "Question", "name": "領取方式可以選一次領還是月領？", "acceptedAnswer": {"@type": "Answer", "text": "依勞工退休金條例§24，工作年資滿 15 年以上者，得選擇請領月退休金或一次退休金；工作年資未滿 15 年者，應請領一次退休金。月退休金按月領取至身故為止；一次退休金為帳戶餘額一次領回。本工具於結果頁同時呈現兩種試算，協助規劃領取策略。"}}
+  ]
+}
+</script>
 </head>
 <body>
 
@@ -287,6 +325,48 @@
   </div>
 
 </main>
+
+<!-- HowTo + FAQ — visible content for HowTo / FAQPage schema -->
+<section style="max-width:480px;margin:32px auto 16px;padding:0 24px">
+  <div style="font-family:'Noto Serif TC',serif;font-size:11px;color:var(--muted);letter-spacing:0.16em;text-transform:uppercase;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border)">使用步驟</div>
+  <ol style="padding-left:20px;color:var(--ink);font-size:13px;line-height:1.9">
+    <li><strong>填入提撥期間：</strong>輸入「開始提撥日（到職日）」與「預計退休日」。依&sect;6，雇主應自勞工到職之日起為其提繳退休金；依&sect;24，年滿 60 歲得申請退休金。</li>
+    <li><strong>輸入薪資與提撥設定：</strong>填入月投保薪資、勞工自願提撥率（0–6%）、預估年報酬率（建議 2–3%）與預計請領月退之年齡。</li>
+    <li><strong>查看帳戶總額與月退金試算：</strong>工具依雇主強制提撥 6% + 勞工自願提撥（最高 6%）按月複利累積，得出退休帳戶總額；月退金 = 帳戶總額 ÷ 平均餘命月數（依勞保局 113/4/1 公告：60 歲 276 月、65 歲 228 月、70 歲 192 月）。</li>
+  </ol>
+</section>
+
+<section style="max-width:480px;margin:0 auto 32px;padding:0 24px">
+  <div style="font-family:'Noto Serif TC',serif;font-size:11px;color:var(--muted);letter-spacing:0.16em;text-transform:uppercase;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border)">常見問題</div>
+  <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+    <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">勞退新制與勞保老年給付有什麼不同？</div>
+    <div style="font-size:13px;color:var(--muted);line-height:1.8">兩者是不同制度。勞工退休金（勞退新制，依勞工退休金條例）為個人專戶制，雇主每月提繳工資 6% 至勞工個人專戶，勞工 60 歲後可申請領取；勞保老年給付（依勞工保險條例&sect;58）為社會保險，由全體被保險人共同分擔保費，達法定請領年齡且符合年資要件後依公式給付。兩者可同時請領。</div>
+  </div>
+  <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+    <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">雇主每月一定要為勞工提繳 6% 嗎？</div>
+    <div style="font-size:13px;color:var(--muted);line-height:1.8">是。依勞工退休金條例&sect;14 第 1 項，雇主每月負擔之勞工退休金提繳率，不得低於勞工每月工資 6%。提繳工資由雇主依勞工退休金月提繳工資分級表申報，未依法提繳將依本條例罰則章規定處罰。</div>
+  </div>
+  <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+    <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">勞工自願提撥的好處是什麼？</div>
+    <div style="font-size:13px;color:var(--muted);line-height:1.8">依勞工退休金條例&sect;14 第 3 項，勞工得在每月工資 6% 範圍內自願另行提繳。自願提繳金額不計入提繳年度薪資所得課稅，等同享有所得稅遞延效果，且自願提繳部分一併存入個人退休金專戶累積收益，退休時連同雇主提繳款一併領取。</div>
+  </div>
+  <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+    <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">勞退新制幾歲可以開始領？</div>
+    <div style="font-size:13px;color:var(--muted);line-height:1.8">依勞工退休金條例&sect;24，勞工年滿 60 歲，得依規定請領退休金；工作年資滿 15 年以上者得選擇月退休金或一次退休金，工作年資未滿 15 年者應請領一次退休金。年滿 60 歲後仍受僱者，雇主仍應繼續為其提繳。</div>
+  </div>
+  <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+    <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">月退休金的金額怎麼算？</div>
+    <div style="font-size:13px;color:var(--muted);line-height:1.8">依勞工退休金條例&sect;23，月退休金以個人退休金專戶累積本金及收益，依年金生命表平均餘命及利率等基礎計算定期發給。本工具以勞保局 113/4/1 公告之「月退休金平均餘命表」近似計算（60 歲 276 月、65 歲 228 月、70 歲 192 月），實際月退金額以勞保局核定為準。</div>
+  </div>
+  <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+    <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">勞退基金的投資報酬率約是多少？</div>
+    <div style="font-size:13px;color:var(--muted);line-height:1.8">勞退基金的實際收益率每年浮動，由勞動部勞動基金運用局公布。依勞工退休金條例&sect;23 第 2 項，個人專戶之累積收益不得低於以當地銀行 2 年定期存款利率計算之收益（保證收益機制）。本工具預設 2% 為保守估算、3% 為樂觀估算，實際以勞退基金當期績效為準，不保證固定報酬率。</div>
+  </div>
+  <div style="padding:14px 0">
+    <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">領取方式可以選一次領還是月領？</div>
+    <div style="font-size:13px;color:var(--muted);line-height:1.8">依勞工退休金條例&sect;24，工作年資滿 15 年以上者，得選擇請領月退休金或一次退休金；工作年資未滿 15 年者，應請領一次退休金。月退休金按月領取至身故為止；一次退休金為帳戶餘額一次領回。本工具於結果頁同時呈現兩種試算，協助規劃領取策略。</div>
+  </div>
+</section>
 
 <!-- Nav bar -->
 <div class="nav-bar">
