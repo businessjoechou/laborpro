@@ -37,6 +37,45 @@
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "TWD" }
 }
 </script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "LaborPro 首頁", "item": "https://labor.choulegal.com/"},
+    {"@type": "ListItem", "position": 2, "name": "平均薪資精算器", "item": "https://labor.choulegal.com/avg-wage.html"}
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "如何計算平均工資（勞基法§2 第 4 款）",
+  "description": "依勞基法§2 第 4 款計算平均工資，支援排除職災醫療、產假、留職停薪等不可歸責期間。",
+  "step": [
+    {"@type": "HowToStep", "position": 1, "name": "選擇計算事由與事由發生日", "text": "選擇資遣（§17）、退休（§55）或職災補償（§59）等事由，並輸入事由發生日。系統將自動推算事由發生之當日前 6 個月期間。"},
+    {"@type": "HowToStep", "position": 2, "name": "輸入前 6 個月各月工資與工作日數", "text": "依勞基法§2 第 3 款，工資指因工作所獲報酬之經常性給與（含獎金、津貼、加班費）。應排除非經常性給與（如年終獎金、紅利、補助費等§2 但書項目）。"},
+    {"@type": "HowToStep", "position": 3, "name": "勾選排除期間（職災、產假、留停）", "text": "依勞基法§2 第 4 款但書及施行細則§2，職業災害醫療期間、產假期間、留職停薪等不可歸責於勞工之期間，其工資及日數均不列入計算，避免拉低平均工資。"},
+    {"@type": "HowToStep", "position": 4, "name": "查看平均工資與衍生數值", "text": "系統算出日平均工資（前 6 個月工資總額 ÷ 期間總日數）、月平均工資（× 30）及時薪（÷ 8）。可作為資遣費、退休金、職災補償等計算基礎。"}
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type": "Question", "name": "「平均工資」的法定定義是什麼？", "acceptedAnswer": {"@type": "Answer", "text": "依勞基法§2 第 4 款：「平均工資：謂計算事由發生之當日前 6 個月內所得工資總額除以該期間之總日數所得之金額。工作未滿 6 個月者，謂工作期間所得工資總額除以工作期間之總日數所得之金額。工資按工作日數、時數或論件計算者，其依上述方式計算之平均工資，如低於該期內工資總額除以實際工作日數所得金額 60% 者，以 60% 計。」此即所謂「日平均工資」。實務上計算月平均工資時，再以日平均工資 × 30 換算。"}},
+    {"@type": "Question", "name": "為什麼不是用「前 3 個月」？聽說有人這樣算。", "acceptedAnswer": {"@type": "Answer", "text": "勞基法§2 第 4 款明文規定為「前 6 個月」，不是 3 個月。3 個月為其他制度的計算基礎（例如某些保險或所得稅扣繳的查驗期），常被混淆。請以勞基法 6 個月為準。資遣費（§17）、退休金（§55、勞退條例§12）、職災補償（§59）、預告期間工資（§16）等均以此「前 6 個月平均工資」為計算基礎。"}},
+    {"@type": "Question", "name": "獎金、加班費、年終要算進工資嗎？", "acceptedAnswer": {"@type": "Answer", "text": "依勞基法§2 第 3 款，「工資」指勞工因工作而獲得之報酬，包括工資、薪金及按計時、計日、計月、計件以現金或實物等方式給付之獎金、津貼及其他任何名義之經常性給與均屬之。重點在「經常性」：（1）應計入：本薪、固定津貼（伙食、交通、職務）、加班費、全勤獎金、依績效計算之經常性獎金、輪班加給。（2）不計入（§2 但書 / 施行細則§10）：年終獎金、節金、紅利、競賽獎金、不休假獎金、慰勞金、結婚生育補助、職災補償、退休金、各種補助費等非經常性給與。"}},
+    {"@type": "Question", "name": "職災醫療、產假、留停期間要不要列入計算？", "acceptedAnswer": {"@type": "Answer", "text": "不列入。依勞基法施行細則§2，下列各款期間之工資及日數均不列入平均工資之計算：（1）發生計算事由之當日；（2）因職業災害尚在醫療中者；（3）依§50 第 2 項減半發給工資者（產假期間）；（4）雇主因天災、事變或其他不可抗力而不能繼續其事業，致勞工未能工作者；（5）依勞工請假規則請普通傷病假者；（6）依性別平等工作法請生理假、產假、家庭照顧假、育嬰留職停薪、安胎休養等假者；（7）留職停薪者。本工具於各月卡片提供「排除此月」勾選功能。"}},
+    {"@type": "Question", "name": "工作未滿 6 個月怎麼算？", "acceptedAnswer": {"@type": "Answer", "text": "依勞基法§2 第 4 款後段，工作未滿 6 個月者，平均工資為「工作期間所得工資總額除以工作期間之總日數」。例如工作 4 個月發生資遣事由，即以這 4 個月之工資總額除以實際工作日數計算。本工具支援此情形：可在前幾個月卡片勾選「排除」（如該月份在到職前），系統會自動只計算實際工作期間。"}},
+    {"@type": "Question", "name": "按件計酬、計時工資的勞工，平均工資會被低估嗎？", "acceptedAnswer": {"@type": "Answer", "text": "勞基法§2 第 4 款已有保護機制：「工資按工作日數、時數或論件計算者，其依上述方式計算之平均工資，如低於該期內工資總額除以實際工作日數所得金額 60% 者，以 60% 計。」即「日平均工資 ≥ (期內工資總額 ÷ 實際工作日數) × 60%」之保障下限。例如某月只工作 10 天但薪資較高，避免因日數攤分（÷ 30）而過度稀釋。本工具未自動套用此 60% 保障下限，按件計酬勞工建議與執業律師確認最有利之計算方式。"}},
+    {"@type": "Question", "name": "舊制退休金的「平均工資」也是這樣算嗎？", "acceptedAnswer": {"@type": "Answer", "text": "舊制退休金（勞基法§55）有特別規定：依§55 第 2 項，退休金之給與標準，其平均工資之計算「謂計算事由發生之當日前 6 個月內所得工資總額除以該期間之總日數所得之金額」（與§2 第 4 款相同），但若工資係按月給付者，當期所得之工資除以 30 所得之金額（即「月平均工資 ÷ 30」之保障下限）。新制退休金（勞退條例）則採個人專戶制，按月提撥，無「平均工資」概念，請領時以個人退休金專戶累計本息一次或月退休金，與舊制計算方式不同。"}}
+  ]
+}
+</script>
 <style>
   .month-card {
     background: var(--card);
@@ -218,6 +257,50 @@
       <a href="retirement.html" class="link-btn">用此平均薪資 &rarr; 計算退休金</a>
     </div>
   </div>
+
+  <!-- HowTo — visible step list for HowTo schema -->
+  <section style="margin:32px auto 24px;padding:0 4px;max-width:680px">
+    <div style="font-family:'Noto Serif TC',serif;font-size:11px;color:var(--muted);letter-spacing:0.16em;text-transform:uppercase;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border)">使用步驟</div>
+    <ol style="padding-left:20px;color:var(--ink);font-size:13px;line-height:1.9">
+      <li><strong>選擇計算事由與事由發生日：</strong>資遣（§17）、退休（§55）、職災補償（§59）。系統自動推算「事由發生當日前 6 個月」期間。</li>
+      <li><strong>輸入前 6 個月各月工資與工作日數：</strong>工資依§2 第 3 款定義（經常性給與），排除年終、紅利等§2 但書非經常性給與。</li>
+      <li><strong>勾選排除期間：</strong>依§2 第 4 款但書及細則§2，職災醫療、產假、留職停薪等不可歸責期間之工資及日數均不列入，避免拉低平均。</li>
+      <li><strong>查看平均工資與衍生數值：</strong>日平均工資（前 6 個月工資總額 ÷ 期間總日數）、月平均（× 30）、時薪（÷ 8）。可作資遣費、退休金、職災補償計算基礎。</li>
+    </ol>
+  </section>
+
+  <!-- FAQ — visible content for FAQPage schema -->
+  <section style="margin:0 auto 32px;padding:0 4px;max-width:680px">
+    <div style="font-family:'Noto Serif TC',serif;font-size:11px;color:var(--muted);letter-spacing:0.16em;text-transform:uppercase;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border)">常見問題</div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">「平均工資」的法定定義是什麼？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">依勞基法§2 第 4 款：「平均工資：謂計算事由發生之當日前 6 個月內所得工資總額除以該期間之總日數所得之金額。」此即所謂「日平均工資」。實務上計算月平均工資時，再以日平均工資 × 30 換算。資遣費、退休金、職災補償、預告期間工資均以此為計算基礎。</div>
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">為什麼是「前 6 個月」不是「前 3 個月」？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">勞基法§2 第 4 款明文規定為「前 6 個月」，不是 3 個月。3 個月為其他制度的計算基礎（例如某些保險或所得稅扣繳的查驗期），常被混淆。請以勞基法 6 個月為準。資遣費（§17）、退休金（§55、勞退條例§12）、職災補償（§59）、預告期間工資（§16）等均以此「前 6 個月平均工資」為計算基礎。</div>
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">獎金、加班費、年終要算進工資嗎？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">依勞基法§2 第 3 款，工資指勞工因工作而獲得之報酬，包括按計時、計日、計月、計件以現金或實物等方式給付之獎金、津貼及其他任何名義之經常性給與。應計入：本薪、固定津貼（伙食、交通、職務）、加班費、全勤獎金、依績效計算之經常性獎金。不計入（§2 但書 / 細則§10）：年終獎金、節金、紅利、競賽獎金、不休假獎金、慰勞金、結婚生育補助、職災補償、退休金等非經常性給與。</div>
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">職災醫療、產假、留停期間要不要列入計算？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">不列入。依勞基法施行細則§2，下列各款期間之工資及日數均不列入平均工資之計算：發生計算事由之當日；因職業災害尚在醫療中者；依§50 第 2 項減半發給工資者（產假）；雇主因天災、事變或其他不可抗力致勞工未能工作者；依勞工請假規則請普通傷病假者；依性別平等工作法請生理假、產假、家庭照顧假、育嬰留職停薪、安胎休養等假者；留職停薪者。本工具於各月卡片提供「排除此月」勾選功能。</div>
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">工作未滿 6 個月怎麼算？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">依勞基法§2 第 4 款後段，工作未滿 6 個月者，平均工資為「工作期間所得工資總額除以工作期間之總日數」。例如工作 4 個月發生資遣事由，即以這 4 個月之工資總額除以實際工作日數計算。本工具支援此情形：可在前幾個月卡片勾選「排除」（如該月份在到職前），系統會自動只計算實際工作期間。</div>
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">按件計酬、計時工資的勞工會不會被低估？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">勞基法§2 第 4 款已有保護機制：「工資按工作日數、時數或論件計算者，其依上述方式計算之平均工資，如低於該期內工資總額除以實際工作日數所得金額 60% 者，以 60% 計。」即「日平均工資 ≥ (期內工資總額 ÷ 實際工作日數) × 60%」之保障下限，避免因日數攤分過度稀釋。本工具未自動套用此 60% 保障下限，按件計酬勞工建議諮詢律師確認最有利計算方式。</div>
+    </div>
+    <div style="padding:14px 0">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">舊制退休金的「平均工資」也是這樣算嗎？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">舊制退休金（勞基法§55）平均工資計算原則同§2 第 4 款（前 6 個月工資總額 ÷ 期間總日數），但若工資按月給付者，§55 第 2 項另設保障下限。新制退休金（勞退條例）則採個人專戶制，按月提撥（雇主提繳率不低於月提繳工資 6%），請領時以個人退休金專戶累計本息一次或月退休金，無「平均工資」概念。新舊制計算方式完全不同。</div>
+    </div>
+  </section>
 
 </main>
 
