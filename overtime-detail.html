@@ -38,6 +38,46 @@
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "TWD" }
 }
 </script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "LaborPro 首頁", "item": "https://labor.choulegal.com/"},
+    {"@type": "ListItem", "position": 2, "name": "加班費逐筆結算", "item": "https://labor.choulegal.com/overtime-detail.html"}
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "如何依勞基法§24 計算加班費",
+  "description": "依勞動基準法§24（延長工時加班費）、§32（月加班上限 46 小時）、§39（國定假日工資加倍）、§40（例假出勤限制）逐筆計算每筆加班費並彙總月度總額。",
+  "step": [
+    {"@type": "HowToStep", "position": 1, "name": "輸入月薪", "text": "輸入勞工月薪，系統自動換算每小時工資（月薪 ÷ 30 ÷ 8）。此為平日每小時工資額，作為加班費計算之基礎。實際個案如有伙食津貼、職務加給等經常性給與，依勞基法§2 第 3 款應計入工資。"},
+    {"@type": "HowToStep", "position": 2, "name": "新增加班記錄", "text": "點擊「新增加班記錄」，逐筆輸入加班日期、加班類型（平日／休息日／國定假日／例假日）、加班時數。可重複新增多筆，系統即時計算每筆金額。"},
+    {"@type": "HowToStep", "position": 3, "name": "依類型套用倍率", "text": "系統依勞基法§24 套用倍率：平日延長前 2 小時加給 3 分之 1 以上（×4/3），再延長 2 小時加給 3 分之 2 以上（×5/3）；休息日（§24 II）依實際時數核實計算（前 2 小時 ×4/3、第 3 小時起 ×5/3）；國定假日（§39）加倍發給工資（×2，即原工資外另加給 1 倍）；例假日（§40）原則上不得出勤，僅天災事變等特殊情形得出勤並加倍工資並補休。"},
+    {"@type": "HowToStep", "position": 4, "name": "檢查月加班時數上限", "text": "依勞基法§32 II，雇主延長勞工之工作時間連同正常工作時間，1 日不得超過 12 小時；延長之工作時間，1 個月不得超過 46 小時（經工會同意得延長為 54 小時，每 3 個月不得超過 138 小時）。系統會於累計超過 46 小時時提示違反風險，違反者依§79 處 2 萬至 100 萬罰鍰。"},
+    {"@type": "HowToStep", "position": 5, "name": "彙總月度加班費", "text": "系統按類型分組（平日／休息日／國定假日／例假日）顯示時數與金額，並計算月加班費總額。雇主應依勞基法§23 與工資一併發給並提供工資明細。"}
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type": "Question", "name": "平日加班費的倍率到底是 1.33 倍還是 1.34 倍？", "acceptedAnswer": {"@type": "Answer", "text": "勞動基準法§24 第 1 項第 1 款規定：「延長工作時間在 2 小時以內者，按平日每小時工資額加給 3 分之 1 以上。」也就是「平日工資 × (1 + 1/3) = 平日工資 × 4/3 ≈ 1.3333」。實務上常以 1.33 或 1.34 倍表示，但本工具以「4/3」分數運算避免捨入誤差，最終金額才四捨五入。同條第 2 款：「再延長工作時間在 2 小時以內者，按平日每小時工資額加給 3 分之 2 以上。」也就是 ×5/3 ≈ 1.6667。坊間常見「1.33／1.67 倍」之簡化說法皆屬於此分數的近似值。"}},
+    {"@type": "Question", "name": "休息日加班費怎麼算？2018 年法規有改嗎？", "acceptedAnswer": {"@type": "Answer", "text": "有。原勞基法§24 II 規定休息日加班「做 1 給 4、做 5 給 8、做 9 給 12」（以 4／8／12 小時為計算單位），即俗稱「做 1 給 4」制。2018 年 3 月 1 日修法後刪除該分級計給規定，改為依實際時數核實計給：(1) 工作 2 小時以內者，加給 3 分之 1 以上（×4/3）；(2) 工作 2 小時後者，加給 3 分之 2 以上（×5/3）。本工具採新法計算。休息日加班時數，依勞基法§32 III，計入§32 II 所定之延長工作時間總時數。"}},
+    {"@type": "Question", "name": "國定假日加班是 1.34 倍還是 2 倍？", "acceptedAnswer": {"@type": "Answer", "text": "是 2 倍（不是 1.34 倍）。依勞基法§39：「第 36 條所定之例假、休息日、第 37 條所定之休假及第 38 條所定之特別休假，工資應由雇主照給。雇主經徵得勞工同意於休假日工作者，工資應加倍發給。」國定假日（§37）出勤的工資為「原本就應給的 1 倍工資 + 加倍給的 1 倍工資 = 2 倍工資」。許多人誤以為與平日加班一樣是 1.34 倍，事實上國定假日整日（8 小時內）一律 ×2 倍工資。8 小時以上之延長工時部分，再依§24 加成計算。"}},
+    {"@type": "Question", "name": "例假日（週日）可以加班嗎？", "acceptedAnswer": {"@type": "Answer", "text": "原則上不可以。依勞基法§40 第 1 項：「因天災、事變或突發事件，雇主認有繼續工作之必要時，得停止第 36 條所定勞工之例假、第 37 條所定之休假及第 38 條所定之特別休假。但停止假期之工資，應加倍發給，並應於事後補假休息。」也就是說例假日只有在天災、事變或突發事件等特殊情況下才能要求出勤，且須加倍發給工資並補假。雇主違反§36 例假規定者，依§79 處 2 萬至 100 萬罰鍰。本工具於選擇「例假日」加班類型時會顯示違法風險標示。"}},
+    {"@type": "Question", "name": "補休（§32-1）怎麼換算？跟加班費發放有什麼不同？", "acceptedAnswer": {"@type": "Answer", "text": "依勞基法§32-1 第 1 項：「雇主依第 32 條第 1 項及第 2 項規定使勞工延長工作時間，或使勞工於第 36 條所定休息日工作後，依勞工意願選擇補休並經雇主同意者，應依勞工工作之時間計算補休時數。」補休採「1:1」換算（加班 1 小時補休 1 小時），不是按加班費倍率（×4/3、×5/3、×2）換算。同條第 2 項規定，補休期限由勞雇雙方協商，但補休期限屆期或契約終止未補休之時數，仍應依§24 規定之加班費標準折算工資發給。也就是說，補休是「先抵時數、未休再折錢」。"}},
+    {"@type": "Question", "name": "月加班時數上限是 46 小時還是 54 小時？", "acceptedAnswer": {"@type": "Answer", "text": "原則 46 小時，例外可放寬到 54 小時。依勞基法§32 第 2 項：「延長之工作時間，1 個月不得超過 46 小時。」§32 第 3 項：「雇主經工會同意，如事業單位無工會者，經勞資會議同意後，前項第 2 款延長工作時間，1 個月不得超過 54 小時，每 3 個月不得超過 138 小時。」也就是經工會（或勞資會議）同意可放寬月上限到 54 小時，但每 3 個月仍受 138 小時總量管制。違反者依§79 處 2 萬至 100 萬元罰鍰。本工具於累計超過 46 小時時顯示警示。"}},
+    {"@type": "Question", "name": "雇主沒給加班費怎麼辦？怎麼舉證？", "acceptedAnswer": {"@type": "Answer", "text": "依勞基法§24 雇主有給付加班費之法定義務，違反者依§79 第 1 項處 2 萬至 100 萬元罰鍰。勞工得採取下列途徑：(1) 依勞動事件法§3 至勞動部地方勞工局（處）申請勞資爭議調解；(2) 申請勞動檢查（勞動基準法§72）；(3) 提起勞動事件法之勞動訴訟。舉證部分，依勞動事件法§38：「出勤紀錄內記載之勞工出勤時間，推定勞工於該時間內經雇主同意而執行職務。」也就是出勤紀錄是核心證據。雇主依勞基法§30 第 5 項應記載出勤至分鐘為止並保存 5 年。蒐證建議：保留打卡紀錄、LINE 工作群組記錄、加班簽到表、會議紀錄等。"}}
+  ]
+}
+</script>
 <style>
   .salary-bar {
     background: var(--paper);
@@ -250,6 +290,51 @@
       · <strong>例假日加班</strong>：全部 × 2 倍（僅天災等特殊原因始得為之）
     </div>
   </div>
+
+  <!-- HowTo — visible step list for HowTo schema -->
+  <section style="max-width:700px;margin:32px auto 16px;padding:0 4px">
+    <div style="font-family:'Noto Serif TC',serif;font-size:11px;color:var(--muted);letter-spacing:0.16em;text-transform:uppercase;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border)">使用步驟</div>
+    <ol style="padding-left:20px;color:var(--ink);font-size:13px;line-height:1.9">
+      <li><strong>輸入月薪：</strong>系統自動換算每小時工資（月薪 ÷ 30 ÷ 8）。如有伙食津貼、職務加給等經常性給與，依勞基法§2 第 3 款應計入工資。</li>
+      <li><strong>新增加班記錄：</strong>逐筆輸入加班日期、加班類型（平日／休息日／國定假日／例假日）、加班時數。可重複新增多筆。</li>
+      <li><strong>依類型套用倍率：</strong>平日（§24 I）前 2 小時 ×4/3、再 2 小時 ×5/3；休息日（§24 II）前 2 小時 ×4/3、第 3 小時起 ×5/3；國定假日（§39）×2 倍；例假日（§40）原則禁止出勤，僅天災事變等特殊情形得出勤並加倍工資並補休。</li>
+      <li><strong>檢查月加班上限：</strong>依§32 II，1 日不得超過 12 小時；1 個月不得超過 46 小時（經工會或勞資會議同意得延長為 54 小時，每 3 個月不得超過 138 小時）。違反者依§79 處 2 萬至 100 萬罰鍰。</li>
+      <li><strong>彙總月度加班費：</strong>系統按類型分組顯示時數與金額，雇主應依§23 與工資一併發給並提供工資明細。</li>
+    </ol>
+  </section>
+
+  <!-- FAQ — visible content for FAQPage schema -->
+  <section style="max-width:700px;margin:0 auto 32px;padding:0 4px">
+    <div style="font-family:'Noto Serif TC',serif;font-size:11px;color:var(--muted);letter-spacing:0.16em;text-transform:uppercase;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border)">常見問題</div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">平日加班費的倍率到底是 1.33 倍還是 1.34 倍？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">勞基法§24 I 第 1 款規定加給「3 分之 1 以上」，即 ×4/3 ≈ 1.3333；坊間 1.33 與 1.34 皆為近似值。本工具以 4/3 分數運算避免捨入誤差，最終金額才四捨五入。第 2 款「再延長 2 小時加給 3 分之 2 以上」即 ×5/3 ≈ 1.6667。</div>
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">休息日加班費怎麼算？2018 年法規有改嗎？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">2018/03/01 修法刪除「做 1 給 4、做 5 給 8、做 9 給 12」分級計給，改依實際時數核實計給：前 2 小時 ×4/3、第 3 小時起 ×5/3。本工具採新法計算。休息日加班時數依§32 III 計入§32 II 延長工作時間總時數。</div>
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">國定假日加班是 1.34 倍還是 2 倍？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">2 倍。依勞基法§39，國定假日（§37）出勤工資為「原本應給的 1 倍 + 加倍給的 1 倍 = 2 倍」。8 小時內一律 ×2，8 小時以上之延長工時部分再依§24 加成。</div>
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">例假日（週日）可以加班嗎？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">原則不可。依勞基法§40，僅天災、事變或突發事件且雇主認有繼續工作之必要時，才得停止例假；且應加倍發給工資並事後補假。雇主違反§36 例假規定者依§79 處 2 萬至 100 萬罰鍰。</div>
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">補休（§32-1）跟加班費發放有什麼不同？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">依§32-1 I，加班後得依勞工意願選擇補休並經雇主同意者，採「1:1」換算（加班 1 小時補休 1 小時），不是按加班費倍率換算。同條 II 規定，補休期限屆期或契約終止未補休之時數，仍應依§24 加班費標準折算工資發給。也就是「先抵時數、未休再折錢」。</div>
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">月加班時數上限是 46 還是 54 小時？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">原則 46 小時。經工會（無工會者經勞資會議）同意得放寬至 54 小時，但每 3 個月不得超過 138 小時（§32 II、III）。違反者依§79 處 2 萬至 100 萬元罰鍰。</div>
+    </div>
+    <div style="padding:14px 0">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">雇主沒給加班費怎麼辦？怎麼舉證？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">勞工得 (1) 申請勞資爭議調解；(2) 申請勞動檢查（§72）；(3) 提起勞動訴訟。依勞動事件法§38：「出勤紀錄內記載之勞工出勤時間，推定勞工於該時間內經雇主同意而執行職務。」雇主依§30 V 應記載出勤至分鐘為止並保存 5 年。蒐證建議保留打卡紀錄、LINE 工作群組、加班簽到表等。</div>
+    </div>
+  </section>
 </main>
 
 <script src="js/fmt.js"></script>
