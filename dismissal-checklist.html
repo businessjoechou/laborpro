@@ -37,6 +37,45 @@
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "TWD" }
 }
 </script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "LaborPro 首頁", "item": "https://labor.choulegal.com/"},
+    {"@type": "ListItem", "position": 2, "name": "資遣合法性檢查", "item": "https://labor.choulegal.com/dismissal-checklist.html"}
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "如何使用資遣合法性檢查工具評估解雇風險",
+  "description": "依勞基法§11經濟性解雇與§12懲戒解雇逐項檢核，產出合法性風險評分與行動建議。",
+  "step": [
+    {"@type": "HowToStep", "position": 1, "name": "選擇解雇類型", "text": "判斷本次解雇是經濟性解雇（§11，因歇業、虧損、業務緊縮、不可抗力、業務性質變更致無適當工作可安置等 5 款事由）或懲戒解雇（§12，因勞工虛偽意思表示、暴行重大侮辱、刑罰確定、嚴重違規、洩密、曠職等 6 款事由）。兩者法律要件與舉證責任完全不同。"},
+    {"@type": "HowToStep", "position": 2, "name": "回答檢核問卷", "text": "經濟性解雇 10 題（含書面通知、預告期間、調職安置「最後手段原則」、保護期間等）；懲戒解雇 8 題（含 30 日除斥期間、行為重大性、比例原則、陳述機會等）。每題答「是／否／不確定」，關鍵題以星號標示。"},
+    {"@type": "HowToStep", "position": 3, "name": "查看風險評分與檢核結果", "text": "系統依各題權重計算 0–100 分風險評分：≤30 高風險（極可能違法）、31–60 中風險（部分要件不符）、>60 低風險（要件大致符合）。逐題顯示 Pass/Fail/Warn，星號標示之關鍵要件 Fail 將大幅提高違法認定機率。"},
+    {"@type": "HowToStep", "position": 4, "name": "依行動建議補正或諮詢", "text": "依未通過項目提供具體行動建議（如補發書面通知、給付預告薪資、補開立非自願離職證明、勿在保護期間解雇等）。中高風險建議諮詢勞動法律師，並備妥書面紀錄以備後續勞資爭議調解或訴訟使用。"}
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type": "Question", "name": "勞基法§11 與§12 有什麼差別？我該選哪個？", "acceptedAnswer": {"@type": "Answer", "text": "§11 為經濟性解雇（資遣），事由限於：（1）歇業或轉讓、（2）虧損或業務緊縮、（3）不可抗力暫停工作 1 個月以上、（4）業務性質變更有減少勞工之必要又無適當工作可安置、（5）勞工不能勝任工作 — 共 5 款。雇主須預告（§16）、給付資遣費（§17）、開立非自願離職證明。§12 為懲戒解雇（不經預告終止），事由為勞工有重大可歸責情形（虛偽意思表示、暴行重大侮辱、刑罰確定、嚴重違規、洩漏業務秘密、無正當理由曠職 3 日或一個月內 6 日）共 6 款，雇主無需給資遣費，但有 30 日除斥期間限制。實務上兩者壁壘分明，誤用會被認定違法。"}},
+    {"@type": "Question", "name": "勞基法§16 預告期間怎麼算？我已經做 5 年了。", "acceptedAnswer": {"@type": "Answer", "text": "依勞基法§16，繼續工作 3 個月以上未滿 1 年者於 10 日前預告；1 年以上未滿 3 年者於 20 日前預告；3 年以上者於 30 日前預告。您年資 5 年屬「3 年以上」，雇主應於 30 日前預告。雇主未依規定期間預告即終止契約者，應給付預告期間之工資（§16 III）。預告期間內勞工得請假外出謀職，每星期不得超過 2 日工作時間，請假期間工資照給。"}},
+    {"@type": "Question", "name": "什麼是「最後手段原則」？我聽說很重要。", "acceptedAnswer": {"@type": "Answer", "text": "最後手段原則（Ultima Ratio）是法院實務針對§11 第 5 款「勞工不能勝任工作」及第 4 款「業務性質變更無適當工作可安置」發展出的核心要件。雇主必須證明：曾透過績效面談、教育訓練、調職等方式給予勞工改善機會，仍無法達成工作要求或無其他適當職位可安置，才得以解雇。如果雇主未經任何安置嘗試直接解雇，法院通常會認定違法。本工具的關鍵題（星號）多與此原則相關。"}},
+    {"@type": "Question", "name": "懲戒解雇的「30 日除斥期間」是什麼意思？", "acceptedAnswer": {"@type": "Answer", "text": "依勞基法§12 第 2 項，雇主依§12 第 1 項第 1 款（虛偽意思表示）、第 2 款（暴行重大侮辱）及第 4 款至第 6 款規定終止契約者，應自知悉其情形之日起 30 日內為之。逾 30 日，解雇權即消滅，雇主不得再以該事由解雇。實務上常見雇主拖延處理，等想用時已過期，導致整個解雇被認定違法。注意：第 3 款（受有期徒刑以上判決確定）不受 30 日限制。"}},
+    {"@type": "Question", "name": "我在請產假/育嬰假/職災醫療期間，老闆可以解雇我嗎？", "acceptedAnswer": {"@type": "Answer", "text": "原則上不可以。依勞基法§13，勞工在第 50 條規定之停止工作期間（產假）或第 59 條規定之醫療期間（職災），雇主不得終止契約。但雇主因天災、事變或其他不可抗力致事業不能繼續，經報主管機關核定者不在此限。育嬰留職停薪期間依性別平等工作法第 21 條，雇主除有歇業或解散情形外，不得拒絕勞工復職，亦不得以此為解雇事由。違反者解雇無效，勞工得請求確認僱傭關係存在並請求工資。"}},
+    {"@type": "Question", "name": "如果我覺得被違法解雇，可以怎麼救濟？", "acceptedAnswer": {"@type": "Answer", "text": "三條路徑：（1）向各縣市政府勞工局申請勞資爭議調解（免費、約 2–4 週）；（2）向法院聲請勞動調解（依勞動事件法，由 1 名法官 + 2 名委員主持，調解不成立自動進入訴訟）；（3）依勞基法§14 主動以雇主違法為由終止契約並請求資遣費。同時得依民法請求確認僱傭關係存在（即復職）及請求未受領工資損害賠償。勞動事件法明定雇主對於工資、工時、解雇事由負舉證責任，對勞工有利。經濟困難者可向法律扶助基金會（02-412-8518）申請免費律師。"}},
+    {"@type": "Question", "name": "本工具的評分能直接拿去打官司嗎？", "acceptedAnswer": {"@type": "Answer", "text": "不能。本工具為依勞基法§11、§12、§13、§14、§16、§17 條文要件設計的初步檢核，產出風險評分與行動建議，不構成法律意見或鑑定報告。最終解雇合法性由法院或勞動主管機關依完整事證認定。建議將本檢核結果作為談判、調解或諮詢律師時的初步整理，正式爭訟前仍應委請勞動法律師依完整事證評估。"}}
+  ]
+}
+</script>
 <style>
   .type-card {
     background: var(--card);
@@ -264,6 +303,50 @@
       &middot; <strong>大量解僱勞工保護法</strong>：60日內解僱達一定人數須通報。
     </div>
   </div>
+
+  <!-- HowTo — visible step list for HowTo schema -->
+  <section style="margin:32px auto 24px;padding:0 4px;max-width:680px">
+    <div style="font-family:'Noto Serif TC',serif;font-size:11px;color:var(--muted);letter-spacing:0.16em;text-transform:uppercase;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border)">使用步驟</div>
+    <ol style="padding-left:20px;color:var(--ink);font-size:13px;line-height:1.9">
+      <li><strong>選擇解雇類型：</strong>判斷是經濟性解雇（§11，5 款事由）或懲戒解雇（§12，6 款事由）。兩者法律要件與舉證責任完全不同。</li>
+      <li><strong>回答檢核問卷：</strong>經濟性解雇 10 題、懲戒解雇 8 題。每題答「是／否／不確定」，關鍵題以星號標示。</li>
+      <li><strong>查看風險評分：</strong>系統依各題權重計算 0–100 分。≤30 高風險、31–60 中風險、>60 低風險。星號題 Fail 將大幅提高違法認定機率。</li>
+      <li><strong>依行動建議補正或諮詢：</strong>依未通過項目提供具體建議（補發書面通知、給付預告薪資、補開非自願離職證明等）。中高風險建議諮詢勞動法律師。</li>
+    </ol>
+  </section>
+
+  <!-- FAQ — visible content for FAQPage schema -->
+  <section style="margin:0 auto 40px;padding:0 4px;max-width:680px">
+    <div style="font-family:'Noto Serif TC',serif;font-size:11px;color:var(--muted);letter-spacing:0.16em;text-transform:uppercase;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border)">常見問題</div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">勞基法§11 與§12 有什麼差別？我該選哪個？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">§11 為經濟性解雇（資遣），事由限於：（1）歇業或轉讓、（2）虧損或業務緊縮、（3）不可抗力暫停工作 1 個月以上、（4）業務性質變更有減少勞工之必要又無適當工作可安置、（5）勞工不能勝任工作 — 共 5 款。雇主須預告（§16）、給付資遣費（§17）、開立非自願離職證明。§12 為懲戒解雇（不經預告終止），事由共 6 款（虛偽意思表示、暴行重大侮辱、刑罰確定、嚴重違規、洩漏業務秘密、無正當理由曠職 3 日或一個月內 6 日），雇主無需給資遣費，但有 30 日除斥期間限制。</div>
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">勞基法§16 預告期間怎麼算？我已經做 5 年了。</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">依勞基法§16，繼續工作 3 個月以上未滿 1 年者於 10 日前預告；1 年以上未滿 3 年者於 20 日前預告；3 年以上者於 30 日前預告。您年資 5 年屬「3 年以上」，雇主應於 30 日前預告。雇主未依規定期間預告即終止契約者，應給付預告期間之工資（§16 III）。預告期間內勞工得請假外出謀職，每星期不得超過 2 日工作時間，請假期間工資照給。</div>
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">什麼是「最後手段原則」？我聽說很重要。</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">最後手段原則是法院實務針對§11 第 5 款「勞工不能勝任工作」及第 4 款「業務性質變更無適當工作可安置」發展出的核心要件。雇主必須證明：曾透過績效面談、教育訓練、調職等方式給予改善機會，仍無法達成或無其他適當職位可安置，才得以解雇。如果雇主未經任何安置嘗試直接解雇，法院通常會認定違法。本工具的關鍵題（星號）多與此原則相關。</div>
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">懲戒解雇的「30 日除斥期間」是什麼意思？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">依勞基法§12 第 2 項，雇主依§12 第 1 項第 1 款（虛偽意思表示）、第 2 款（暴行重大侮辱）及第 4 款至第 6 款規定終止契約者，應自知悉其情形之日起 30 日內為之。逾 30 日，解雇權即消滅。實務上常見雇主拖延處理，等想用時已過期，導致整個解雇被認定違法。注意：第 3 款（受有期徒刑以上判決確定）不受 30 日限制。</div>
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">我在請產假/育嬰假/職災醫療期間，老闆可以解雇我嗎？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">原則上不可以。依勞基法§13，勞工在§50 規定之產假停止工作期間或§59 規定之職災醫療期間，雇主不得終止契約（但天災、事變或其他不可抗力致事業不能繼續，經報主管機關核定者不在此限）。育嬰留職停薪期間依性別平等工作法§21，雇主除有歇業或解散情形外，不得拒絕勞工復職，亦不得以此為解雇事由。違反者解雇無效，勞工得請求確認僱傭關係存在並請求工資。</div>
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">如果我覺得被違法解雇，可以怎麼救濟？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">三條路徑：（1）向各縣市政府勞工局申請勞資爭議調解（免費、約 2–4 週）；（2）向法院聲請勞動調解（依勞動事件法，由 1 名法官 + 2 名委員主持，調解不成立自動進入訴訟）；（3）依勞基法§14 主動以雇主違法為由終止契約並請求資遣費。同時得請求確認僱傭關係存在（復職）及未受領工資。勞動事件法明定雇主對工資、工時、解雇事由負舉證責任。經濟困難者可向法律扶助基金會（02-412-8518）申請免費律師。</div>
+    </div>
+    <div style="padding:14px 0">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">本工具的評分能直接拿去打官司嗎？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">不能。本工具為依勞基法§11、§12、§13、§14、§16、§17 條文要件設計的初步檢核，產出風險評分與行動建議，不構成法律意見或鑑定報告。最終解雇合法性由法院或勞動主管機關依完整事證認定。建議將本檢核結果作為談判、調解或諮詢律師時的初步整理。</div>
+    </div>
+  </section>
 
 </main>
 
