@@ -35,6 +35,45 @@
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "TWD" }
 }
 </script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "LaborPro 首頁", "item": "https://labor.choulegal.com/"},
+    {"@type": "ListItem", "position": 2, "name": "全假別權益計算機", "item": "https://labor.choulegal.com/leave-calc.html"}
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "如何計算所有假別權益",
+  "description": "三步驟依勞基法§38、勞工請假規則及性別工作平等法計算特休、病假、事假、婚假、喪假、產假等假別之天數與薪資影響。",
+  "step": [
+    {"@type": "HowToStep", "position": 1, "name": "輸入到職資訊與基本資料", "text": "填入到職日（用於計算年資與特休天數）、性別、是否懷孕、月薪等基本資料。系統依勞基法§38對應年資自動推算特休天數。"},
+    {"@type": "HowToStep", "position": 2, "name": "選擇要試算的假別與請假天數", "text": "勾選欲使用之假別（特休、病假、事假、婚假、喪假、產假、陪產檢及陪產假、生理假、家庭照顧假），並輸入預計請假天數。"},
+    {"@type": "HowToStep", "position": 3, "name": "查看各假別天數、薪資影響與未休折現", "text": "結果顯示各假別法定上限天數、是否給薪及薪資扣減金額；特休未休部分自動計算折現金額（勞基法§38第4項）。"}
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type": "Question", "name": "特別休假天數依年資如何計算？", "acceptedAnswer": {"@type": "Answer", "text": "依勞動基準法§38第1項，特休天數為：在同一雇主或事業單位繼續工作，6個月以上未滿1年者3日；1年以上未滿2年者7日；2年以上未滿3年者10日；3年以上未滿5年者每年14日；5年以上未滿10年者每年15日；10年以上者，每1年加1日，加至30日為止。"}},
+    {"@type": "Question", "name": "特休未休完，雇主要折現嗎？", "acceptedAnswer": {"@type": "Answer", "text": "依勞基法§38第4項：勞工之特別休假，因年度終結或契約終止而未休之日數，雇主應發給工資。實務上以「1日工資」計算（即月薪÷30，或日薪）。但勞工因個人因素自行未休（雇主已通知排休而未排）情形，仍應發給；雇主不得片面以「未排休視同放棄」為由免除給付義務。"}},
+    {"@type": "Question", "name": "普通傷病假的天數與薪資怎麼算？", "acceptedAnswer": {"@type": "Answer", "text": "依勞工請假規則§4：普通傷病假未住院者，1年內合計不得超過30日；住院者，2年內合計不得超過1年；未住院傷病假與住院傷病假合計，2年內不得超過1年。普通傷病假1年內未超過30日部分，工資折半發給；其領有勞工保險普通傷病給付未達工資半數者，雇主應補足之。"}},
+    {"@type": "Question", "name": "事假可以請幾天？要扣薪嗎？", "acceptedAnswer": {"@type": "Answer", "text": "依勞工請假規則§7：勞工因有事故必須親自處理者，得請事假，1年內合計不得超過14日。事假期間不給工資（除勞動契約另有有利於勞工之約定外）。"}},
+    {"@type": "Question", "name": "婚假、喪假各有幾天？", "acceptedAnswer": {"@type": "Answer", "text": "依勞工請假規則§2，婚假8日，工資照給。依§3，喪假天數依親屬關係：父母、養父母、繼父母、配偶喪亡者，給予喪假8日；祖父母、子女、配偶之父母、配偶之養父母或繼父母喪亡者，給予喪假6日；曾祖父母、兄弟姊妹、配偶之祖父母喪亡者，給予喪假3日。喪假期間工資照給。"}},
+    {"@type": "Question", "name": "產假、陪產檢及陪產假的規定是什麼？", "acceptedAnswer": {"@type": "Answer", "text": "依勞動基準法§50：女性勞工分娩前後，應停止工作，給予產假8星期（56日）；妊娠3個月以上流產者，應給予產假4星期。受僱工作6個月以上者，產假期間工資照給；未滿6個月者減半發給。依性別工作平等法§15第5項：受僱者於配偶分娩時，雇主應給予陪產檢及陪產假7日（合併陪產檢與陪產），工資照給。"}},
+    {"@type": "Question", "name": "生理假與家庭照顧假的天數怎麼算？", "acceptedAnswer": {"@type": "Answer", "text": "依性別工作平等法§14：女性受僱者因生理日致工作有困難者，每月得請生理假1日，全年請假日數未逾3日，不併入病假計算，其餘日數併入病假計算；併入及不併入病假之生理假，薪資減半發給。依§20：受僱者為照顧家庭成員預防接種、發生嚴重之疾病或其他重大事故須親自照顧時，得請家庭照顧假；其請假日數併入事假計算，全年以7日為限，工資依事假規定（不給薪）。"}},
+    {"@type": "Question", "name": "雇主拒絕勞工請假，可以怎麼處理？", "acceptedAnswer": {"@type": "Answer", "text": "勞工請假符合法定要件時，雇主原則上不得拒絕。雇主違反勞基法§38（特休）或性平法§14、§15、§20等規定者，得依勞基法§79或性平法§38及§38-1裁罰；勞工可向當地勞工行政主管機關（縣市政府勞工局處）申訴或檢舉。建議保留書面請假紀錄、Line訊息、雇主拒絕之證據等。"}}
+  ]
+}
+</script>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="js/supabase-config.js"></script>
 <script src="js/persona.js"></script>
@@ -401,6 +440,53 @@
       · <strong>性別工作平等法§14、§15、§20</strong>：生理假、陪產檢假、家庭照顧假
     </div>
   </div>
+
+  <!-- HowTo — visible step list for HowTo schema -->
+  <section style="max-width:700px;margin:40px auto 24px;padding:0 4px">
+    <div style="font-family:'Noto Serif TC',serif;font-size:11px;color:var(--muted);letter-spacing:0.16em;text-transform:uppercase;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border)">使用步驟</div>
+    <ol style="padding-left:20px;color:var(--ink);font-size:13px;line-height:1.9">
+      <li><strong>輸入到職資訊與基本資料：</strong>填入到職日（用於計算年資與特休天數）、性別、是否懷孕、月薪等。系統依勞基法&sect;38對應年資自動推算特休天數。</li>
+      <li><strong>選擇要試算的假別與請假天數：</strong>勾選欲使用之假別（特休、病假、事假、婚假、喪假、產假、陪產檢及陪產假、生理假、家庭照顧假），輸入預計請假天數。</li>
+      <li><strong>查看各假別天數、薪資影響與未休折現：</strong>結果顯示各假別法定上限天數、是否給薪及薪資扣減金額；特休未休部分自動計算折現金額（勞基法&sect;38第4項）。</li>
+    </ol>
+  </section>
+
+  <!-- FAQ — visible content for FAQPage schema -->
+  <section style="max-width:700px;margin:0 auto 40px;padding:0 4px">
+    <div style="font-family:'Noto Serif TC',serif;font-size:11px;color:var(--muted);letter-spacing:0.16em;text-transform:uppercase;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border)">常見問題</div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">特別休假天數依年資如何計算？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">依勞動基準法&sect;38第1項，特休天數為：在同一雇主或事業單位繼續工作，6個月以上未滿1年者3日；1年以上未滿2年者7日；2年以上未滿3年者10日；3年以上未滿5年者每年14日；5年以上未滿10年者每年15日；10年以上者，每1年加1日，加至30日為止。</div>
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">特休未休完，雇主要折現嗎？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">依勞基法&sect;38第4項：勞工之特別休假，因年度終結或契約終止而未休之日數，雇主應發給工資。實務上以「1日工資」計算（即月薪÷30，或日薪）。雇主不得片面以「未排休視同放棄」為由免除給付義務。</div>
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">普通傷病假的天數與薪資怎麼算？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">依勞工請假規則&sect;4：普通傷病假未住院者，1年內合計不得超過30日；住院者，2年內合計不得超過1年；未住院傷病假與住院傷病假合計，2年內不得超過1年。普通傷病假1年內未超過30日部分，工資折半發給；其領有勞工保險普通傷病給付未達工資半數者，雇主應補足之。</div>
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">事假可以請幾天？要扣薪嗎？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">依勞工請假規則&sect;7：勞工因有事故必須親自處理者，得請事假，1年內合計不得超過14日。事假期間不給工資（除勞動契約另有有利於勞工之約定外）。</div>
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">婚假、喪假各有幾天？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">依勞工請假規則&sect;2，婚假8日，工資照給。依&sect;3，喪假天數依親屬關係：父母、養父母、繼父母、配偶喪亡者8日；祖父母、子女、配偶之父母、配偶之養父母或繼父母喪亡者6日；曾祖父母、兄弟姊妹、配偶之祖父母喪亡者3日。喪假期間工資照給。</div>
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">產假、陪產檢及陪產假的規定是什麼？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">依勞動基準法&sect;50：女性勞工分娩前後，應停止工作，給予產假8星期（56日）；妊娠3個月以上流產者，應給予產假4星期。受僱工作6個月以上者，產假期間工資照給；未滿6個月者減半發給。依性別工作平等法&sect;15第5項：受僱者於配偶分娩時，雇主應給予陪產檢及陪產假7日，工資照給。</div>
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">生理假與家庭照顧假的天數怎麼算？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">依性別工作平等法&sect;14：女性受僱者因生理日致工作有困難者，每月得請生理假1日，全年請假日數未逾3日，不併入病假計算，其餘日數併入病假計算；薪資減半發給。依&sect;20：受僱者為照顧家庭成員預防接種、發生嚴重之疾病或其他重大事故須親自照顧時，得請家庭照顧假；其請假日數併入事假計算，全年以7日為限，工資依事假規定（不給薪）。</div>
+    </div>
+    <div style="padding:14px 0">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">雇主拒絕勞工請假，可以怎麼處理？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">勞工請假符合法定要件時，雇主原則上不得拒絕。雇主違反勞基法&sect;38（特休）或性平法&sect;14、&sect;15、&sect;20等規定者，得依勞基法&sect;79或性平法&sect;38及&sect;38-1裁罰；勞工可向當地勞工行政主管機關（縣市政府勞工局處）申訴或檢舉。建議保留書面請假紀錄、Line訊息、雇主拒絕之證據等。</div>
+    </div>
+  </section>
 
 </main>
 
