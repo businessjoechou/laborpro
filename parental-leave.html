@@ -35,6 +35,45 @@
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "TWD" }
 }
 </script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "LaborPro 首頁", "item": "https://labor.choulegal.com/"},
+    {"@type": "ListItem", "position": 2, "name": "育嬰假與津貼試算", "item": "https://labor.choulegal.com/parental-leave.html"}
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "如何試算育嬰留職停薪津貼與產假薪資",
+  "description": "三步驟試算產假、陪產檢假、育嬰留停津貼金額及完整時程時間軸。",
+  "step": [
+    {"@type": "HowToStep", "position": 1, "name": "輸入基本資料", "text": "選擇性別（女性/男性）、輸入到職日期、月薪、勞保投保薪資（不確定可留空自動依月薪查表）、預產期或子女出生日。女性可選擇產假分配方式（產前產後週數分配，依勞基法§50 共 8 週）。"},
+    {"@type": "HowToStep", "position": 2, "name": "查看時程時間軸", "text": "系統依預產期推算完整時間軸：女性顯示產檢假、產假、育嬰留停、復職時點；男性顯示陪產檢及陪產假、育嬰留停。各階段法源依據（勞基法§50、性平法§15、§16、§17）一併標註。"},
+    {"@type": "HowToStep", "position": 3, "name": "查看津貼與薪資金額", "text": "系統計算各階段金額：產假薪資（年資滿 6 個月全薪、未滿半薪，勞基法§50）、陪產檢及陪產假 7 天全薪（性平法§15）、育嬰留停津貼（投保薪資 80% × 6 個月，含就保法§19-2 之 60% 及行政院加發 20% 補助）。"}
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type": "Question", "name": "育嬰留職停薪津貼是 60% 還是 80%？怎麼算？", "acceptedAnswer": {"@type": "Answer", "text": "依就業保險法§19-2，育嬰留職停薪津貼以被保險人育嬰留職停薪當月起前 6 個月平均月投保薪資 60% 計算，每一子女合計最長發給 6 個月。自 110 年（2021）7 月 1 日起，依「育嬰留職停薪薪資補助要點」由勞動部加發 20% 薪資補助，與津貼合併發給，無須另行申請，實質給付為投保薪資 80%。例如投保薪資 45,800 元 × 80% = 每月 36,640 元，6 個月合計 219,840 元。"}},
+    {"@type": "Question", "name": "申請育嬰留職停薪要符合什麼條件？", "acceptedAnswer": {"@type": "Answer", "text": "依性別平等工作法§16 第 1 項，受僱者任職滿 6 個月後，於每一子女滿 3 歲前，得申請育嬰留職停薪，期間至該子女滿 3 歲止，但不得逾 2 年。同時撫育子女 2 人以上者，其育嬰留職停薪期間應合併計算，最長以最幼子女受撫育 2 年為限。津貼方面另須就業保險年資合計滿 1 年。"}},
+    {"@type": "Question", "name": "父母可以同時請領育嬰留停津貼嗎？", "acceptedAnswer": {"@type": "Answer", "text": "可以。依就業保險法§19-2 修法後規定，父母同為被保險人者，得分別請領育嬰留職停薪津貼。父母可同時育嬰留職停薪（同時撫育同一子女）並各自請領 6 個月津貼，等於該子女合計可有 12 個月津貼期間。"}},
+    {"@type": "Question", "name": "產假薪資是全薪還是半薪？", "acceptedAnswer": {"@type": "Answer", "text": "依勞基法§50：女工分娩前後，應停止工作給予產假 8 週（共 56 天）。受僱於同一雇主工作年資已滿 6 個月者，停止工作期間工資照給；未滿 6 個月者減半發給。故產假薪資計算為：月薪 × (56÷30) × 100%（年資滿 6 個月）或 × 50%（未滿 6 個月）。"}},
+    {"@type": "Question", "name": "男性可以申請育嬰假嗎？陪產假有幾天？", "acceptedAnswer": {"@type": "Answer", "text": "可以。性別平等工作法§16 育嬰留職停薪適用於受僱者，不分性別。男性勞工同樣得於子女滿 3 歲前申請最長 2 年育嬰留停，並請領 6 個月育嬰留停津貼。陪產檢及陪產假依性平法§15 為 7 天全薪，可於配偶懷孕產檢期間及分娩後 15 日內請假。"}},
+    {"@type": "Question", "name": "育嬰留停期間，勞健保怎麼處理？", "acceptedAnswer": {"@type": "Answer", "text": "依性別平等工作法§16 第 2 項，受僱者於育嬰留職停薪期間，得繼續參加原有之社會保險（勞保、健保、就保），原由雇主負擔之保險費免予繳納；原由受僱者負擔之保險費，得遞延 3 年繳納。亦即勞工負擔部分可暫停繳，3 年內補繳即可，不致中斷年資。"}},
+    {"@type": "Question", "name": "育嬰假結束後雇主可以拒絕復職嗎？", "acceptedAnswer": {"@type": "Answer", "text": "原則上不可以。依性別平等工作法§17，雇主於受僱者育嬰留職停薪期滿後申請復職時，除有歇業、虧損、業務緊縮、不可抗力暫停工作 1 個月以上、業務性質變更有減少受僱者必要又無適當工作可供安置或其他重大理由等法定事由外，雇主不得拒絕。違者可處新臺幣 2 萬至 30 萬元罰鍰（性平法§38-1）。"}},
+    {"@type": "Question", "name": "育嬰留停津貼如何申請？", "acceptedAnswer": {"@type": "Answer", "text": "向勞動部勞工保險局申請。可採臨櫃、郵寄或網路（勞保局 e 化服務系統）申辦，需備：(1) 育嬰留職停薪津貼申請書、(2) 育嬰留職停薪證明（雇主開立）、(3) 子女出生證明或戶口名簿。津貼按月發給，由勞保局審核後撥入指定帳戶；20% 補助無須另案申請，與津貼合併核發。"}}
+  ]
+}
+</script>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="js/supabase-config.js"></script>
 <script src="js/persona.js"></script>
@@ -370,10 +409,57 @@
       · <strong>勞基法§50</strong>：產假8週，年資滿6個月全薪、未滿半薪<br>
       · <strong>性平法§15</strong>：產檢假7天（女性）、陪產檢及陪產假7天（男性）<br>
       · <strong>性平法§16</strong>：育嬰留職停薪，子女滿3歲前，最長2年<br>
-      · <strong>就業保險法§19-2</strong>：育嬰留停津貼＝投保薪資 × 80%，最長6個月<br>
+      · <strong>就業保險法§19-2</strong>：育嬰留停津貼＝投保薪資 × 60%（行政院加發 20% 補助合計 80%），最長6個月<br>
       · <strong>性平法§17</strong>：復職保障，雇主不得拒絕
     </div>
   </div>
+
+  <!-- HowTo — visible step list for HowTo schema -->
+  <section style="max-width:700px;margin:40px auto 24px;padding:0 16px">
+    <div style="font-family:'Noto Serif TC',serif;font-size:11px;color:var(--muted);letter-spacing:0.16em;text-transform:uppercase;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border)">使用步驟</div>
+    <ol style="padding-left:20px;color:var(--ink);font-size:13px;line-height:1.9">
+      <li><strong>輸入基本資料：</strong>選擇性別、輸入到職日期、月薪、勞保投保薪資（不確定可留空自動依月薪查表）、預產期或子女出生日。女性可選擇產假 8 週的產前產後分配方式（依勞基法&sect;50）。</li>
+      <li><strong>查看時程時間軸：</strong>系統依預產期推算完整時間軸：女性顯示產檢假、產假、育嬰留停、復職時點；男性顯示陪產檢及陪產假、育嬰留停。各階段法源（勞基法&sect;50、性平法&sect;15、&sect;16、&sect;17）一併標註。</li>
+      <li><strong>查看津貼與薪資金額：</strong>系統計算各階段金額：產假薪資（年資滿 6 個月全薪、未滿半薪）、陪產檢及陪產假 7 天全薪、育嬰留停津貼（投保薪資 80% × 6 個月，含就保法&sect;19-2 之 60% 及行政院加發 20% 補助）。</li>
+    </ol>
+  </section>
+
+  <!-- FAQ — visible content for FAQPage schema -->
+  <section style="max-width:700px;margin:0 auto 40px;padding:0 16px">
+    <div style="font-family:'Noto Serif TC',serif;font-size:11px;color:var(--muted);letter-spacing:0.16em;text-transform:uppercase;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border)">常見問題</div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">育嬰留職停薪津貼是 60% 還是 80%？怎麼算？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">依就業保險法&sect;19-2，育嬰留職停薪津貼以被保險人育嬰留職停薪當月起前 6 個月平均月投保薪資 60% 計算，每一子女合計最長發給 6 個月。自 110 年（2021）7 月 1 日起，依「育嬰留職停薪薪資補助要點」由勞動部加發 20% 薪資補助，與津貼合併發給，無須另行申請，實質給付為投保薪資 80%。例如投保薪資 45,800 元 × 80% = 每月 36,640 元，6 個月合計 219,840 元。</div>
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">申請育嬰留職停薪要符合什麼條件？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">依性別平等工作法&sect;16 第 1 項，受僱者任職滿 6 個月後，於每一子女滿 3 歲前，得申請育嬰留職停薪，期間至該子女滿 3 歲止，但不得逾 2 年。同時撫育子女 2 人以上者，其育嬰留職停薪期間應合併計算，最長以最幼子女受撫育 2 年為限。津貼方面另須就業保險年資合計滿 1 年。</div>
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">父母可以同時請領育嬰留停津貼嗎？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">可以。依就業保險法&sect;19-2 修法後規定，父母同為被保險人者，得分別請領育嬰留職停薪津貼。父母可同時育嬰留職停薪（同時撫育同一子女）並各自請領 6 個月津貼，等於該子女合計可有 12 個月津貼期間。</div>
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">產假薪資是全薪還是半薪？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">依勞基法&sect;50：女工分娩前後，應停止工作給予產假 8 週（共 56 天）。受僱於同一雇主工作年資已滿 6 個月者，停止工作期間工資照給；未滿 6 個月者減半發給。故產假薪資計算為：月薪 × (56÷30) × 100%（年資滿 6 個月）或 × 50%（未滿 6 個月）。</div>
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">男性可以申請育嬰假嗎？陪產假有幾天？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">可以。性別平等工作法&sect;16 育嬰留職停薪適用於受僱者，不分性別。男性勞工同樣得於子女滿 3 歲前申請最長 2 年育嬰留停，並請領 6 個月育嬰留停津貼。陪產檢及陪產假依性平法&sect;15 為 7 天全薪，可於配偶懷孕產檢期間及分娩後 15 日內請假。</div>
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">育嬰留停期間，勞健保怎麼處理？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">依性別平等工作法&sect;16 第 2 項，受僱者於育嬰留職停薪期間，得繼續參加原有之社會保險（勞保、健保、就保），原由雇主負擔之保險費免予繳納；原由受僱者負擔之保險費，得遞延 3 年繳納。亦即勞工負擔部分可暫停繳，3 年內補繳即可，不致中斷年資。</div>
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">育嬰假結束後雇主可以拒絕復職嗎？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">原則上不可以。依性別平等工作法&sect;17，雇主於受僱者育嬰留職停薪期滿後申請復職時，除有歇業、虧損、業務緊縮、不可抗力暫停工作 1 個月以上、業務性質變更有減少受僱者必要又無適當工作可供安置或其他重大理由等法定事由外，雇主不得拒絕。違者可處新臺幣 2 萬至 30 萬元罰鍰。</div>
+    </div>
+    <div style="padding:14px 0">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">育嬰留停津貼如何申請？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">向勞動部勞工保險局申請。可採臨櫃、郵寄或網路（勞保局 e 化服務系統）申辦，需備：(1) 育嬰留職停薪津貼申請書、(2) 育嬰留職停薪證明（雇主開立）、(3) 子女出生證明或戶口名簿。津貼按月發給，由勞保局審核後撥入指定帳戶；20% 補助無須另案申請，與津貼合併核發。</div>
+    </div>
+  </section>
 
 </main>
 

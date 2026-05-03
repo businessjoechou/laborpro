@@ -35,6 +35,45 @@
   "inLanguage": "zh-TW"
 }
 </script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "LaborPro 首頁", "item": "https://labor.choulegal.com/"},
+    {"@type": "ListItem", "position": 2, "name": "薪資單檢查器", "item": "https://labor.choulegal.com/payslip-checker.html"}
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "如何檢查薪資單是否正確",
+  "description": "三步驟核對本薪、加班費、勞健保扣款，自動比對應領與實領差異。",
+  "step": [
+    {"@type": "HowToStep", "position": 1, "name": "輸入基本薪資資訊", "text": "填入勞動契約上約定的月薪、本月實際工作天數、本月應工作天數（預設 22 天）。系統將以此推算應領本薪基準。"},
+    {"@type": "HowToStep", "position": 2, "name": "輸入薪資單明細", "text": "照薪資單逐項輸入：本薪、加班費、全勤獎金、其他加項；勞保自付額、健保自付額、所得稅預扣、其他扣項；以及薪資單顯示的最終實領金額。"},
+    {"@type": "HowToStep", "position": 3, "name": "查看核對結果", "text": "系統依勞基法§22-§24 與 2026 年勞健保級距表自動比對：應發合計、應扣合計、計算應實領、實際差異。並驗證勞保（約 2.5%）、健保（約 1.55%）扣款是否符合級距，標示可能高薪低報之疑義。"}
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type": "Question", "name": "薪資單可以只給一張紙寫總額嗎？", "acceptedAnswer": {"@type": "Answer", "text": "不可以。依勞動基準法§23 第 1 項，工資之給付除當事人有特別約定或按月預付者外，每月至少定期發給 2 次，並應提供工資各項目計算方式明細。雇主必須提供完整的工資項目明細（薪資單），列明本薪、加班費、各項加給、扣款項目與計算方式。僅給總額而未提供明細違反§23，可依§79 處 2 萬至 100 萬元罰鍰。"}},
+    {"@type": "Question", "name": "加班費怎麼算？平日、休息日、例假日有什麼不同？", "acceptedAnswer": {"@type": "Answer", "text": "依勞基法§24：(1) 平日延長工時前 2 小時加給 1/3 以上、再延 2 小時加給 2/3 以上、依§32 第 4 項天災事變則加倍發給。(2) 休息日工作前 2 小時另加給 1 又 1/3 以上、超過 2 小時另加給 1 又 2/3 以上（§24 第 2 項）。(3) 例假日及國定假日依§39 加倍發給。簡言之：平日加班 1.33x/1.66x、休息日 2.33x/2.66x、例假日 2x。"}},
+    {"@type": "Question", "name": "勞保自付額如何計算？", "acceptedAnswer": {"@type": "Answer", "text": "勞工保險普通事故保險費率為 12% + 就業保險 1% = 13%（含就保），勞工自付 20%，故勞工自付率約為 12.5% × 20% = 2.5%（依年度費率調整）。例如投保薪資 45,800 元 × 2.5% = 約 1,145 元。本工具依 2026 年勞保投保薪資分級表（11 級，29,500 至 45,800 元）自動推估正確扣款。"}},
+    {"@type": "Question", "name": "健保自付額如何計算？眷屬怎麼處理？", "acceptedAnswer": {"@type": "Answer", "text": "全民健保保險費率為 5.17%，受僱者本人自付 30%，故本人自付率約為 5.17% × 30% ≈ 1.551%。每名眷屬另加收同額（最多計 3 口）。例如投保 45,800 元 × 1.55% = 約 710 元（本人）；含 1 名眷屬則扣 2 份共約 1,420 元。本工具會自動偵測扣款是否為本人自付額的整數倍，判斷眷屬人數。"}},
+    {"@type": "Question", "name": "雇主可以從薪資單扣遲到費、罰款嗎？", "acceptedAnswer": {"@type": "Answer", "text": "依勞基法§22 第 2 項，工資應全額直接給付勞工，但法令另有規定或勞雇雙方另有約定者不在此限。實務上：(1) 遲到對應時段未提供勞務之扣薪屬合理（不工作不給薪）；(2) 但「罰款」性質之扣款違反§22 全額給付原則，除非工作規則明定且勞工同意，否則違法。雇主不得任意以「罰款」名義剋扣薪資。"}},
+    {"@type": "Question", "name": "發現薪資單金額有誤，怎麼處理？", "acceptedAnswer": {"@type": "Answer", "text": "建議步驟：(1) 先以書面（存證信函或書面信件）向雇主反映差異，並要求書面說明計算方式，保留溝通紀錄；(2) 撥打 1955 勞工諮詢專線免費諮詢；(3) 向公司所在地縣市勞工局申訴或申請勞資爭議調解；(4) 準備證據：薪資單影本、銀行轉帳紀錄、勞動契約、出勤打卡紀錄。雇主短付工資違反§22，可處 2 萬至 100 萬元罰鍰（§79）。"}},
+    {"@type": "Question", "name": "薪資單應該保存多久？", "acceptedAnswer": {"@type": "Answer", "text": "依勞動基準法§23 第 2 項，雇主應置備勞工工資清冊，將發放工資、工資各項目計算方式明細、工資總額等事項記入；工資清冊應保存 5 年。勞工本人也建議自行保存薪資單與銀行入帳紀錄至少 5 年，以備日後爭議或申報所得稅查核之用。"}},
+    {"@type": "Question", "name": "高薪低報是什麼？對勞工有什麼影響？", "acceptedAnswer": {"@type": "Answer", "text": "高薪低報指雇主將實際薪資較高的勞工以較低投保薪資申報勞健保，違反勞工保險條例§14（投保薪資應覈實申報）與全民健康保險法§20。對勞工的影響：(1) 老年給付、傷病給付、職災給付等以投保薪資計算之給付被低估；(2) 育嬰留停津貼（投保薪資 80%）金額減少；(3) 勞退提繳基數降低，退休金少領。本工具會比對薪資單扣款是否低於應有金額，標示可能高薪低報之疑義。"}}
+  ]
+}
+</script>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="js/supabase-config.js"></script>
 <script src="js/persona.js"></script>
@@ -449,11 +488,60 @@
       <strong>法律依據</strong><br>
       · <strong>勞基法§22</strong>：薪資應全額直接給付勞工<br>
       · <strong>勞基法§23</strong>：雇主應提供薪資各項目計算方式明細（薪資單）<br>
+      · <strong>勞基法§24</strong>：加班費平日 1.33x/1.66x、休息日 2.33x/2.66x<br>
+      · <strong>勞基法§39</strong>：例假日工作工資加倍發給<br>
       · <strong>勞工保險條例§14</strong>：投保薪資應覈實申報，不得以多報少或以少報多<br>
       · <strong>全民健康保險法§20</strong>：投保金額依薪資所得覈實申報<br>
       · <strong>勞工退休金條例§14</strong>：雇主應按月提繳不低於 6% 退休金
     </div>
   </div>
+
+  <!-- HowTo — visible step list for HowTo schema -->
+  <section style="max-width:700px;margin:40px auto 24px;padding:0 16px">
+    <div style="font-family:'Noto Serif TC',serif;font-size:11px;color:var(--muted);letter-spacing:0.16em;text-transform:uppercase;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border)">使用步驟</div>
+    <ol style="padding-left:20px;color:var(--ink);font-size:13px;line-height:1.9">
+      <li><strong>輸入基本薪資資訊：</strong>填入勞動契約上約定的月薪、本月實際工作天數、本月應工作天數（預設 22 天）。系統將以此推算應領本薪基準。</li>
+      <li><strong>輸入薪資單明細：</strong>照薪資單逐項輸入：本薪、加班費、全勤獎金、其他加項；勞保自付額、健保自付額、所得稅預扣、其他扣項；以及薪資單顯示的最終實領金額。</li>
+      <li><strong>查看核對結果：</strong>系統依勞基法&sect;22-&sect;24 與 2026 年勞健保級距表自動比對：應發合計、應扣合計、計算應實領、實際差異。並驗證勞保（約 2.5%）、健保（約 1.55%）扣款是否符合級距，標示可能高薪低報之疑義。</li>
+    </ol>
+  </section>
+
+  <!-- FAQ — visible content for FAQPage schema -->
+  <section style="max-width:700px;margin:0 auto 40px;padding:0 16px">
+    <div style="font-family:'Noto Serif TC',serif;font-size:11px;color:var(--muted);letter-spacing:0.16em;text-transform:uppercase;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border)">常見問題</div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">薪資單可以只給一張紙寫總額嗎？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">不可以。依勞動基準法&sect;23 第 1 項，工資之給付除當事人有特別約定或按月預付者外，每月至少定期發給 2 次，並應提供工資各項目計算方式明細。雇主必須提供完整的工資項目明細（薪資單），列明本薪、加班費、各項加給、扣款項目與計算方式。僅給總額而未提供明細違反&sect;23，可依&sect;79 處 2 萬至 100 萬元罰鍰。</div>
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">加班費怎麼算？平日、休息日、例假日有什麼不同？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">依勞基法&sect;24：(1) 平日延長工時前 2 小時加給 1/3 以上、再延 2 小時加給 2/3 以上、依&sect;32 第 4 項天災事變則加倍發給。(2) 休息日工作前 2 小時另加給 1 又 1/3 以上、超過 2 小時另加給 1 又 2/3 以上（&sect;24 第 2 項）。(3) 例假日及國定假日依&sect;39 加倍發給。簡言之：平日加班 1.33x/1.66x、休息日 2.33x/2.66x、例假日 2x。</div>
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">勞保自付額如何計算？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">勞工保險普通事故保險費率為 12% + 就業保險 1% = 13%（含就保），勞工自付 20%，故勞工自付率約為 12.5% × 20% = 2.5%（依年度費率調整）。例如投保薪資 45,800 元 × 2.5% = 約 1,145 元。本工具依 2026 年勞保投保薪資分級表（11 級，29,500 至 45,800 元）自動推估正確扣款。</div>
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">健保自付額如何計算？眷屬怎麼處理？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">全民健保保險費率為 5.17%，受僱者本人自付 30%，故本人自付率約為 5.17% × 30% ≈ 1.551%。每名眷屬另加收同額（最多計 3 口）。例如投保 45,800 元 × 1.55% = 約 710 元（本人）；含 1 名眷屬則扣 2 份共約 1,420 元。本工具會自動偵測扣款是否為本人自付額的整數倍，判斷眷屬人數。</div>
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">雇主可以從薪資單扣遲到費、罰款嗎？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">依勞基法&sect;22 第 2 項，工資應全額直接給付勞工，但法令另有規定或勞雇雙方另有約定者不在此限。實務上：(1) 遲到對應時段未提供勞務之扣薪屬合理（不工作不給薪）；(2) 但「罰款」性質之扣款違反&sect;22 全額給付原則，除非工作規則明定且勞工同意，否則違法。雇主不得任意以「罰款」名義剋扣薪資。</div>
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">發現薪資單金額有誤，怎麼處理？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">建議步驟：(1) 先以書面（存證信函或書面信件）向雇主反映差異，並要求書面說明計算方式，保留溝通紀錄；(2) 撥打 1955 勞工諮詢專線免費諮詢；(3) 向公司所在地縣市勞工局申訴或申請勞資爭議調解；(4) 準備證據：薪資單影本、銀行轉帳紀錄、勞動契約、出勤打卡紀錄。雇主短付工資違反&sect;22，可處 2 萬至 100 萬元罰鍰（&sect;79）。</div>
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">薪資單應該保存多久？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">依勞動基準法&sect;23 第 2 項，雇主應置備勞工工資清冊，將發放工資、工資各項目計算方式明細、工資總額等事項記入；工資清冊應保存 5 年。勞工本人也建議自行保存薪資單與銀行入帳紀錄至少 5 年，以備日後爭議或申報所得稅查核之用。</div>
+    </div>
+    <div style="padding:14px 0">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">高薪低報是什麼？對勞工有什麼影響？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">高薪低報指雇主將實際薪資較高的勞工以較低投保薪資申報勞健保，違反勞工保險條例&sect;14（投保薪資應覈實申報）與全民健康保險法&sect;20。對勞工的影響：(1) 老年給付、傷病給付、職災給付等以投保薪資計算之給付被低估；(2) 育嬰留停津貼（投保薪資 80%）金額減少；(3) 勞退提繳基數降低，退休金少領。本工具會比對薪資單扣款是否低於應有金額，標示可能高薪低報之疑義。</div>
+    </div>
+  </section>
 
 </main>
 
