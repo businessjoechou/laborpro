@@ -39,6 +39,46 @@
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "TWD" }
 }
 </script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "LaborPro 首頁", "item": "https://labor.choulegal.com/"},
+    {"@type": "ListItem", "position": 2, "name": "勞基法合規自檢", "item": "https://labor.choulegal.com/compliance-audit.html"}
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "如何完成勞基法合規自檢",
+  "description": "依工時、薪資、勞健保、假別、解僱、職安、勞動契約七大面向自檢，產出風險分數與罰鍰曝險。",
+  "step": [
+    {"@type": "HowToStep", "position": 1, "name": "填寫公司基本資料", "text": "選擇公司員工人數（5人以下／5–29／30–199／200以上）與產業類別。公司規模影響部分項目是否適用，例如 30 人以上須設安全衛生人員（職安法§23）、須報備工作規則（勞基法§70）。"},
+    {"@type": "HowToStep", "position": 2, "name": "回答七大面向自檢題目", "text": "針對工時、薪資、勞健保、假別、解僱、職安、勞動契約七大類，逐題回答「是」、「否」或「不確定」。「是」表示已符合該法定要求，「否」可能違規受罰，「不確定」代表無法確認，後續應重點查核。"},
+    {"@type": "HowToStep", "position": 3, "name": "檢視合規風險報告", "text": "系統自動計算合規分數（0–100）、風險等級、預估罰鍰曝險（依不符合項目之法定罰鍰下限合計）、各類別小結與關鍵違規警示。"},
+    {"@type": "HowToStep", "position": 4, "name": "依改善優先清單修正缺失", "text": "改善優先清單依違規嚴重度排序（罰鍰金額、可連續處罰、是否屬刑事責任）。建議優先處理勞基法§79 之高額罰鍰項目（2萬至100萬，可連續處罰）。"},
+    {"@type": "HowToStep", "position": 5, "name": "定期複檢與保留紀錄", "text": "建議每季自檢一次，並於人事制度變更、組織異動時即時複檢。保留自檢紀錄可作為勞檢時的善意配合證明，有助於減輕裁罰。"}
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type": "Question", "name": "勞檢一年大概來幾次？哪些公司比較容易被檢查？", "acceptedAnswer": {"@type": "Answer", "text": "勞動部及各地方政府勞動檢查機構依年度勞檢計畫進行例行檢查，並依勞工申訴、職災通報、媒體報導進行專案檢查。下列情形較易被列為檢查對象：(1) 勞工檢舉案件；(2) 高風險產業（製造業、營造業、餐飲業）；(3) 已有違規前科之事業單位；(4) 大型事件或重大職災後之同業普查。沒有固定頻率，重點是「隨時要能通過檢查」。"}},
+    {"@type": "Question", "name": "勞基法違規最高罰多少？會連續處罰嗎？", "acceptedAnswer": {"@type": "Answer", "text": "依勞基法§79，違反工時、加班費、特休、資遣等核心義務者，處新臺幣 2 萬元以上 100 萬元以下罰鍰；違反勞動契約終止規定者依§78 處 30 萬元以上 150 萬元以下罰鍰。同條第 4 項規定主管機關得加重至罰鍰最高額二分之一，且依§80-1 應公布事業單位名稱、負責人姓名、處分期日及金額，並令限期改善；屆期未改善者可按次處罰（連續處罰）。"}},
+    {"@type": "Question", "name": "我們是 5 人以下小公司，勞基法都要遵守嗎？", "acceptedAnswer": {"@type": "Answer", "text": "原則上仍適用勞基法。勞基法§3 列舉強制適用之行業；§3 第 3 項及第 4 項授權勞動部得指定特定行業或工作者不適用。實務上絕大多數受僱關係（含 5 人以下小公司）均適用勞基法之工時、加班費、特休、資遣費等規定。少數例外（如部分自然人雇主僱用之家事勞工、特定身分者）才有不適用之可能，建議查詢勞動部最新公告或諮詢勞動法顧問。"}},
+    {"@type": "Question", "name": "30 人以上才要備工作規則嗎？沒備會怎樣？", "acceptedAnswer": {"@type": "Answer", "text": "依勞基法§70，雇主僱用勞工人數在 30 人以上者，應依勞工人數、工作性質訂立工作規則並報請主管機關核備後公開揭示。未訂立或未報備者，依§79 第 1 項處 2 萬元至 100 萬元罰鍰；得限期改善，屆期未改善按次處罰。30 人以下雖無此義務，仍建議自願制訂以明確勞動條件。"}},
+    {"@type": "Question", "name": "「不確定」該怎麼選？會影響分數嗎？", "acceptedAnswer": {"@type": "Answer", "text": "若對某項法定要求不確定是否符合，建議選「不確定」而非猜測「是」。本工具將「不確定」視為潛在風險（高於「是」、低於「否」），會降低合規分數但不計入罰鍰曝險。後續應將「不確定」項目列為優先查核對象——通常表示制度未明文化或文件不完整，這本身就是勞檢時的扣分項。"}},
+    {"@type": "Question", "name": "已經出問題的事項，自檢後馬上改還來得及嗎？", "acceptedAnswer": {"@type": "Answer", "text": "視違規類型而定。多數行政罰違反屬「狀態犯」或「繼續犯」，主動改善並補發欠款（如積欠加班費、未休特休工資）可降低裁罰額度，但已成立的違規行為主管機關仍可裁處。建議發現缺失後：(1) 立即停止違規行為；(2) 補發欠款並取得勞工簽收憑證；(3) 修訂內部制度與工作規則；(4) 留存自檢紀錄與改善證據，作為日後勞檢時的善意配合證明。"}},
+    {"@type": "Question", "name": "本自檢結果可以代替正式法律意見嗎？", "acceptedAnswer": {"@type": "Answer", "text": "不能。本工具以勞基法、勞工保險條例、勞工退休金條例、職業安全衛生法、就業服務法之主要條文為基準進行初步篩查，不涵蓋所有特殊行業規定（如責任制工作者、變形工時行業、特殊危險作業）、地方政府自治法規、團體協約效力等變數。實際合規判定應以主管機關認定為準，建議搭配執業律師或勞動法顧問做完整合規盤點。"}}
+  ]
+}
+</script>
 <style>
   /* Question item */
   .q-item {
@@ -332,6 +372,51 @@
       &middot; <strong>就業服務法</strong>：通報（&sect;33）。
     </div>
   </div>
+
+  <!-- HowTo — visible step list for HowTo schema -->
+  <section style="max-width:700px;margin:40px auto 24px;padding:0 4px">
+    <div style="font-family:'Noto Serif TC',serif;font-size:11px;color:var(--muted);letter-spacing:0.16em;text-transform:uppercase;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border)">使用步驟</div>
+    <ol style="padding-left:20px;color:var(--ink);font-size:13px;line-height:1.9">
+      <li><strong>填寫公司基本資料：</strong>選擇員工人數與產業類別。公司規模影響部分項目是否適用，例如 30 人以上須設安全衛生人員（職安法&sect;23）、須報備工作規則（勞基法&sect;70）。</li>
+      <li><strong>回答七大面向自檢題目：</strong>逐題回答「是」、「否」或「不確定」。「是」表示已符合法定要求，「否」可能違規受罰，「不確定」代表無法確認，後續應重點查核。</li>
+      <li><strong>檢視合規風險報告：</strong>系統自動計算合規分數（0–100）、風險等級、預估罰鍰曝險、各類別小結與關鍵違規警示。</li>
+      <li><strong>依改善優先清單修正缺失：</strong>清單依違規嚴重度排序（罰鍰金額、可連續處罰、是否屬刑事責任）。優先處理勞基法&sect;79 之高額罰鍰項目。</li>
+      <li><strong>定期複檢與保留紀錄：</strong>建議每季自檢一次，於人事制度變更時即時複檢。保留紀錄可作為勞檢時的善意配合證明，有助於減輕裁罰。</li>
+    </ol>
+  </section>
+
+  <!-- FAQ — visible content for FAQPage schema -->
+  <section style="max-width:700px;margin:0 auto 40px;padding:0 4px">
+    <div style="font-family:'Noto Serif TC',serif;font-size:11px;color:var(--muted);letter-spacing:0.16em;text-transform:uppercase;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border)">常見問題</div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">勞檢一年大概來幾次？哪些公司比較容易被檢查？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">勞動部及各地方政府勞動檢查機構依年度勞檢計畫進行例行檢查，並依勞工申訴、職災通報、媒體報導進行專案檢查。下列情形較易被列為對象：(1) 勞工檢舉案件；(2) 高風險產業（製造、營造、餐飲）；(3) 已有違規前科之事業；(4) 大型事件或重大職災後之同業普查。沒有固定頻率，重點是「隨時要能通過檢查」。</div>
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">勞基法違規最高罰多少？會連續處罰嗎？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">依勞基法&sect;79，違反工時、加班費、特休、資遣等核心義務者，處新臺幣 2 萬元以上 100 萬元以下罰鍰；違反勞動契約終止規定者依&sect;78 處 30 萬元以上 150 萬元以下。同條第 4 項規定主管機關得加重至罰鍰最高額二分之一，並依&sect;80-1 公布事業單位名稱、負責人姓名、處分期日及金額；屆期未改善者可按次處罰。</div>
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">我們是 5 人以下小公司，勞基法都要遵守嗎？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">原則上仍適用勞基法。勞基法&sect;3 列舉強制適用之行業；&sect;3 第 3 項及第 4 項授權勞動部得指定特定行業或工作者不適用。實務上絕大多數受僱關係（含 5 人以下小公司）均適用勞基法之工時、加班費、特休、資遣費等規定。少數例外才有不適用之可能，建議查詢勞動部最新公告或諮詢勞動法顧問。</div>
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">30 人以上才要備工作規則嗎？沒備會怎樣？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">依勞基法&sect;70，雇主僱用勞工人數在 30 人以上者，應依勞工人數、工作性質訂立工作規則並報請主管機關核備後公開揭示。未訂立或未報備者依&sect;79 第 1 項處 2 萬元至 100 萬元罰鍰；得限期改善，屆期未改善按次處罰。30 人以下雖無此義務，仍建議自願制訂以明確勞動條件。</div>
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">「不確定」該怎麼選？會影響分數嗎？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">若對某項法定要求不確定是否符合，建議選「不確定」而非猜測「是」。本工具將「不確定」視為潛在風險（高於「是」、低於「否」），會降低合規分數但不計入罰鍰曝險。後續應將「不確定」項目列為優先查核對象——通常表示制度未明文化或文件不完整，這本身就是勞檢時的扣分項。</div>
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">已經出問題的事項，自檢後馬上改還來得及嗎？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">視違規類型而定。多數行政罰違反屬「狀態犯」或「繼續犯」，主動改善並補發欠款（如積欠加班費、未休特休工資）可降低裁罰額度，但已成立的違規行為主管機關仍可裁處。建議發現缺失後：立即停止違規、補發欠款並取得簽收憑證、修訂內部制度與工作規則、留存自檢紀錄與改善證據。</div>
+    </div>
+    <div style="padding:14px 0">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">本自檢結果可以代替正式法律意見嗎？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">不能。本工具以勞基法、勞保條例、勞退條例、職安法、就業服務法之主要條文為基準進行初步篩查，不涵蓋所有特殊行業規定（責任制、變形工時、特殊危險作業）、地方自治法規、團體協約效力等變數。實際合規判定應以主管機關認定為準，建議搭配執業律師或勞動法顧問做完整合規盤點。</div>
+    </div>
+  </section>
 
 </main>
 
