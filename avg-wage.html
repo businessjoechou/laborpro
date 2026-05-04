@@ -191,7 +191,7 @@
     <div class="step-header">
       <div class="step-label">Step 2 of 3 &middot; 各月薪資</div>
       <h1 class="step-title">前六個月薪資</h1>
-      <p class="step-sub">輸入事由發生日前6個月的薪資及工作天數。如有排除期間（產假、職災醫療、留停等）請勾選。</p>
+      <p class="step-sub">輸入事由發生日前 6 個月各月之工資總額。系統依勞基法§2 第 4 款採「曆日制」（最高法院多數見解：分母為該期間之總日數，即該月實際曆日數），如有排除期間（產假、職災醫療、留停等）請勾選整月排除。</p>
     </div>
 
     <div id="monthCards"></div>
@@ -388,12 +388,12 @@ function buildMonthCards() {
         </div>
         <div class="month-card-fields">
           <div class="field-group">
-            <label>薪資金額</label>
+            <label for="wage_${i}">當月工資總額</label>
             <input type="number" id="wage_${i}" placeholder="0" min="0" inputmode="numeric">
           </div>
           <div class="field-group">
-            <label>工作天數</label>
-            <input type="number" id="days_${i}" value="${daysInMonth}" min="0" max="31" inputmode="numeric">
+            <label>該月曆日數（自動）</label>
+            <input type="number" id="days_${i}" value="${daysInMonth}" readonly tabindex="-1" aria-readonly="true" style="background:#f4f1ec;color:#5c5246;cursor:not-allowed">
           </div>
         </div>
       </div>
@@ -416,9 +416,7 @@ function validateStep2() {
   for (let i = 6; i >= 1; i--) {
     if (document.getElementById('ex_' + i).checked) continue;
     const w = parseFloat(document.getElementById('wage_' + i).value);
-    const d = parseFloat(document.getElementById('days_' + i).value);
-    if (!w || w < 0) { alert('請填寫有效的薪資金額。'); return false; }
-    if (!d || d <= 0) { alert('請填寫有效的工作天數。'); return false; }
+    if (!(w >= 0) || isNaN(w)) { alert('請填寫有效的當月工資總額（可為 0）。'); return false; }
     hasValid = true;
   }
   if (!hasValid) { alert('至少需有一個月未被排除。'); return false; }
@@ -444,7 +442,8 @@ function calculate() {
     const label = `${d.getFullYear()}/${String(d.getMonth()+1).padStart(2,'0')}`;
     const excluded = document.getElementById('ex_' + i).checked;
     const wage = parseFloat(document.getElementById('wage_' + i).value) || 0;
-    const days = parseFloat(document.getElementById('days_' + i).value) || 0;
+    // 曆日制：分母 = 該月實際曆日數（28/29/30/31），不是工作天
+    const days = new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate();
 
     if (excluded) {
       excludedMonths.push(label);
