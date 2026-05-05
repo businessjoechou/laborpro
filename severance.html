@@ -30,6 +30,7 @@
 <script src="js/_generated/core-labor.bundle.js"></script>
 <script src="js/calc-utils.js"></script>
 <script src="js/animations.js" defer></script>
+<script src="js/law-basis.js" defer></script>
 <style>
   .extra-field {
     display: none;
@@ -387,6 +388,10 @@
       · <strong>勞基法§78</strong>：違反§17資遣費規定，處30萬至150萬元罰鍰<br>
       · <strong>就服法§33</strong>：資遣10日前通報義務
     </div>
+
+    <!-- 即時：本計算依據條文（接 Supabase law_corpus + diff layer） -->
+    <div data-law-basis
+         data-formula-ids="core-labor.severance.calcOldSystem,core-labor.severance.calcNewSystem,core-labor.severance.advanceNoticeDays"></div>
   </div>
 
 </main>

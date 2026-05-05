@@ -24,6 +24,7 @@
 <script type="module" src="js/auth-bar.js"></script>
 <link rel="stylesheet" href="css/common.css">
 <script src="js/animations.js" defer></script>
+<script src="js/law-basis.js" defer></script>
 <style>
   body { background: var(--paper); color: var(--ink); }
   header { border-bottom: none; }
@@ -180,6 +181,10 @@
     <h2>特休未休折現結果</h2>
     <p class="subtitle">以下為依勞基法§38計算之特別休假天數及折現金額。</p>
     <div id="resultContent"></div>
+
+    <!-- 即時：本計算依據條文 -->
+    <div data-law-basis
+         data-formula-ids="core-labor.leave.annualLeaveDays"></div>
   </div>
 
 </main>

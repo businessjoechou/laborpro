@@ -26,6 +26,7 @@
 <script type="module" src="js/auth-bar.js"></script>
 <link rel="stylesheet" href="css/common.css">
 <script src="js/animations.js" defer></script>
+<script src="js/law-basis.js" defer></script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -414,6 +415,10 @@
       · <strong>勞退雇主提撥</strong>：月提繳薪資 × 6%<br>
       · <strong>老年給付</strong>：一次請領最高45個月；月退按年資×1.55%計算
     </div>
+
+    <!-- 即時：本計算依據條文 -->
+    <div data-law-basis
+         data-formula-ids="core-labor.insurance.occupationalRate,core-labor.pension.monthlyContribution"></div>
   </div>
 </main>
 

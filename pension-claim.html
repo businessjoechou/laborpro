@@ -30,6 +30,7 @@
 <script src="js/_generated/core-labor.bundle.js"></script>
 <script src="js/calc-utils.js"></script>
 <script src="js/animations.js" defer></script>
+<script src="js/law-basis.js" defer></script>
 <style>
   .regime-fields { display: none; margin-top: 14px; }
   .regime-fields.visible { display: block; }
@@ -464,6 +465,10 @@
       · <strong>勞基法§55</strong>：舊制退休金基數——前15年每年2基數，超過部分每年1基數，最高45基數<br>
       · <strong>勞基法§56</strong>：雇主應按月提撥勞工退休準備金
     </div>
+
+    <!-- 即時：本計算依據條文 -->
+    <div data-law-basis
+         data-formula-ids="core-labor.pension.calcOldRetirement,core-labor.pension.lumpSumOrMonthly,core-labor.pension.monthlyAnnuity"></div>
   </div>
 
   <!-- HowTo — visible step list for HowTo schema -->

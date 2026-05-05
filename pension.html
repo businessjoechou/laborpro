@@ -28,6 +28,7 @@
 <script src="js/_generated/core-labor.bundle.js"></script>
 <script src="js/calc-utils.js"></script>
 <script src="js/animations.js" defer></script>
+<script src="js/law-basis.js" defer></script>
 <style>
   .field-group label { line-height: 1.4; }
 
@@ -322,6 +323,10 @@
       · <strong>勞工退休金條例§14</strong>：雇主每月提繳率不得低於勞工每月薪資 6%；勞工得自願提繳，最高 6%，並享所得稅全額扣除<br>
       · <strong>勞工退休金條例§24</strong>：勞工年滿60歲，得選擇一次領回或按月領取退休金
     </div>
+
+    <!-- 即時：本計算依據條文 -->
+    <div data-law-basis
+         data-formula-ids="core-labor.pension.monthlyContribution,core-labor.pension.monthlyAnnuity,core-labor.pension.lumpSumOrMonthly"></div>
   </div>
 
 </main>

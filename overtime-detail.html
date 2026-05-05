@@ -26,6 +26,7 @@
 <script type="module" src="js/auth-bar.js"></script>
 <link rel="stylesheet" href="css/common.css">
 <script src="js/animations.js" defer></script>
+<script src="js/law-basis.js" defer></script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -334,6 +335,10 @@
       <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">雇主沒給加班費怎麼辦？怎麼舉證？</div>
       <div style="font-size:13px;color:var(--muted);line-height:1.8">勞工得 (1) 申請勞資爭議調解；(2) 申請勞動檢查（§72）；(3) 提起勞動訴訟。依勞動事件法§38：「出勤紀錄內記載之勞工出勤時間，推定勞工於該時間內經雇主同意而執行職務。」雇主依§30 V 應記載出勤至分鐘為止並保存 5 年。蒐證建議保留打卡紀錄、LINE 工作群組、加班簽到表等。</div>
     </div>
+
+    <!-- 即時：本計算依據條文 -->
+    <div data-law-basis style="margin-top:24px"
+         data-formula-ids="core-labor.overtime.calcWeekday,core-labor.overtime.calcRestDay,core-labor.overtime.calcHoliday"></div>
   </section>
 </main>
 

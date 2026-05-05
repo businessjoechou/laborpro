@@ -30,6 +30,7 @@
 <script src="js/_generated/core-labor.bundle.js"></script>
 <script src="js/calc-utils.js"></script>
 <script src="js/animations.js" defer></script>
+<script src="js/law-basis.js" defer></script>
 <style>
   .field-group label { line-height: 1.4; }
 
@@ -471,6 +472,10 @@
       · <strong>勞基法§36</strong>：勞工每7日應有2日休息，其中1日為例假，例假原則上不得出勤<br>
       · <strong>勞基法§39</strong>：國定假日及例假日出勤，薪資加倍發給
     </div>
+
+    <!-- 即時：本計算依據條文（接 Supabase law_corpus + diff layer） -->
+    <div data-law-basis
+         data-formula-ids="core-labor.overtime.calcWeekday,core-labor.overtime.calcRestDay,core-labor.overtime.calcHoliday"></div>
   </div>
 
 </main>
