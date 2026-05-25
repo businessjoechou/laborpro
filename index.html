@@ -1298,9 +1298,14 @@ const TABS = [
     label: '合規與爭議',
     subtitle: '工時合規、職災補償、競業禁止、罰則速查、爭議調解。',
     tools: ['work-hours', 'work-injury', 'non-compete', 'dispute-guide', 'penalty-lookup']
+  },
+  {
+    id: 'employer-tools',
+    label: '雇主專區',
+    subtitle: '人事成本精算、合規自檢、解僱成本試算——雇主 / HR 專屬工具。',
+    tools: ['hr-cost', 'compliance-audit', 'termination-cost'],
+    persona: 'employer'
   }
-  // 2026-05-25 「雇主專區」TAB 已下架；hr-cost / compliance-audit / termination-cost
-  // 搬到周全專業版 etp/apps/[workspace]/labor-dispute。
 ];
 
 // ═══════════════════════════════════════════════════════════
@@ -1344,7 +1349,18 @@ const FEATURED_LATEST = [
   }
 ];
 
-// 2026-05-25 FEATURED_EMPLOYER 已下架；persona 強制 worker，雇主視角搬到周全專業版。
+const FEATURED_EMPLOYER = [
+  { id: 'hr-cost', badge: 'new', badgeLabel: '雇主專用', cls: 'style-gold',
+    title: '人事成本計算機', desc: '薪資＋勞健保＋勞退——精算每位員工真實成本' },
+  { id: 'compliance-audit', badge: 'new', badgeLabel: '勞檢必備', cls: 'style-green',
+    title: '合規自檢表', desc: '30+ 項檢核，罰鍰曝險一次算清' },
+  { id: 'termination-cost', badge: 'alert', badgeLabel: '風險評估', cls: 'style-red',
+    title: '解僱成本試算', desc: '合法 vs 違法解僱成本對比' },
+  { id: 'severance', badge: 'hot', badgeLabel: '最常用', cls: 'style-gold',
+    title: '資遣費計算機', desc: '員薪資遣成本精算，含預告薪資義務' },
+  { id: 'penalty-lookup', badge: 'alert', badgeLabel: '罰則速查', cls: 'style-red',
+    title: '違規罰鍰速查', desc: '勞基法各條違規罰則 2 萬～150 萬' }
+];
 
 // ═══════════════════════════════════════════════════════════
 // RENDER
@@ -1378,7 +1394,7 @@ function renderToolCard(key, tool) {
 
 function renderFeatured() {
   const strip = document.getElementById('featuredStrip');
-  const featured = FEATURED_LATEST;
+  const featured = P === 'employer' ? FEATURED_EMPLOYER : FEATURED_LATEST;
   strip.innerHTML = featured.map(f => {
     const tool = ALL_TOOLS[f.id];
     if (!tool) return '';
