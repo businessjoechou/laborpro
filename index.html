@@ -974,29 +974,25 @@
 })();
 </script>
 
-<div class="hero">
-  <div class="hero-top">
-    <div>
-      <a href="https://choulegal.com" class="brand-header" target="_blank" rel="noopener" aria-label="周全法律科技 ChouLegal 官網">
-        <img class="cl-icon" src="choulegal-icon.svg" alt="周全法律科技">
-        <div class="brand-text">
-          <div class="brand-parent">周全 <span>ChouLegal</span></div>
-          <div class="brand-child">Labor<em>Pro</em><span class="tag">v1.0</span></div>
-        </div>
-      </a>
+<header class="site-header">
+  <a href="/" class="brand" aria-label="LaborPro 首頁">
+    <img class="brand-icon" src="choulegal-icon.svg" alt="周全法律科技">
+    <div class="brand-text">
+      <span class="brand-parent">周全 · CHOULEGAL</span>
+      <span class="brand-child">Labor<em>Pro</em></span>
     </div>
-    <button id="themeToggle" aria-label="切換深色/淺色模式"></button>
-  </div>
+  </a>
+  <nav>
+    <a href="#featuredSection">精選</a>
+    <a href="#browseHeader">工具</a>
+    <button id="themeToggle" class="theme-toggle-btn" aria-label="切換深色/淺色模式"></button>
+  </nav>
+</header>
 
+<div class="hero">
   <span class="eyebrow">中華民國勞基法 · 勞動權益</span>
   <h1 class="hero-title">中華民國<em>勞基法權益</em>計算平台</h1>
   <p class="hero-sub">資遣費、加班費、特休、職災補償、工時合規。20+ 個工具，引用勞基法與勞退條例條號。</p>
-
-  <!-- Persona Bar -->
-  <div class="persona-bar">
-    <div class="persona-badge" id="personaBadge"></div>
-    <button class="persona-switch" aria-label="切換勞工／雇主身份" onclick="localStorage.removeItem('lp_persona');window.location.href='landing.html'">切換身份</button>
-  </div>
 
   <!-- Search -->
   <div class="search-bar">
@@ -1114,7 +1110,17 @@
 }
 </script>
 
-<div class="disclaimer-bar"><strong>免責聲明</strong>：本平台之計算結果僅供初步參考，不構成法律意見或法律諮詢服務。實際案件因個案事實、適用法規及法院見解不同，結果可能有所差異，建議諮詢具執照之律師或相關法律專業人員。<div style="margin-top:10px;display:flex;gap:16px;justify-content:center;flex-wrap:wrap;"><a href="privacy.html">隱私權政策</a><span class="dot">·</span><a href="terms.html">使用者條款</a><span class="dot">·</span><span class="copyright">© 2026 LaborPro</span></div></div>
+<div class="disclaimer-bar"><strong>免責聲明</strong>：本平台之計算結果僅供初步參考，不構成法律意見或法律諮詢服務。實際案件因個案事實、適用法規及法院見解不同，結果可能有所差異，建議諮詢具執照之律師或相關法律專業人員。</div>
+
+<footer class="site-footer">
+  <div class="footer-mark">周全｜<em>LaborPro</em><br>勞基法權益計算平台</div>
+  <div>© 2026 周全法律科技 · ChouLegal</div>
+  <div class="footer-links">
+    <a href="terms.html">使用條款</a> ·
+    <a href="privacy.html">隱私政策</a> ·
+    <a href="https://choulegal.com">回周全首頁</a>
+  </div>
+</footer>
 
 <script>
 // ═══════════════════════════════════════════════════════════
@@ -1261,22 +1267,8 @@ const ALL_TOOLS = {
       worker: '薪資單金額對嗎？輸入薪資明細，自動核對勞健保扣款與實領金額',
       employer: '員工薪資單合規檢查，勞健保級距驗證、各項扣款正確性確認'
     }},
-  // ── 雇主專屬工具 ──
-  'hr-cost': { href: 'hr-cost.html', badge: 'new', persona: 'employer',
-    name: { all: '人事成本計算機' },
-    desc: {
-      employer: '精算每位員工真實成本——薪資＋勞健保＋勞退＋加班費，年度預算一目了然'
-    }},
-  'compliance-audit': { href: 'compliance-audit.html', badge: 'new', persona: 'employer',
-    name: { all: '合規自檢表' },
-    desc: {
-      employer: '7大面向 30+ 項勞基法合規檢核，附風險評分與罰鍰曝險計算'
-    }},
-  'termination-cost': { href: 'termination-cost.html', badge: 'new', persona: 'employer',
-    name: { all: '解僱成本試算' },
-    desc: {
-      employer: '合法 vs 違法解僱成本對比——資遣費、罰鍰、訴訟費全面精算'
-    }}
+  // 2026-05-25 雇主專屬工具（hr-cost / compliance-audit / termination-cost）已下架。
+  // 雇主視角搬到周全專業版 etp/apps/[workspace]/labor-dispute。
 };
 
 // ═══════════════════════════════════════════════════════════
@@ -1306,14 +1298,9 @@ const TABS = [
     label: '合規與爭議',
     subtitle: '工時合規、職災補償、競業禁止、罰則速查、爭議調解。',
     tools: ['work-hours', 'work-injury', 'non-compete', 'dispute-guide', 'penalty-lookup']
-  },
-  {
-    id: 'employer-tools',
-    label: '雇主專區',
-    subtitle: '人事成本精算、合規自檢、解僱成本試算——雇主 / HR 專屬工具。',
-    tools: ['hr-cost', 'compliance-audit', 'termination-cost'],
-    persona: 'employer'
   }
+  // 2026-05-25 「雇主專區」TAB 已下架；hr-cost / compliance-audit / termination-cost
+  // 搬到周全專業版 etp/apps/[workspace]/labor-dispute。
 ];
 
 // ═══════════════════════════════════════════════════════════
@@ -1357,18 +1344,7 @@ const FEATURED_LATEST = [
   }
 ];
 
-const FEATURED_EMPLOYER = [
-  { id: 'hr-cost', badge: 'new', badgeLabel: '雇主專用', cls: 'style-gold',
-    title: '人事成本計算機', desc: '薪資＋勞健保＋勞退——精算每位員工真實成本' },
-  { id: 'compliance-audit', badge: 'new', badgeLabel: '勞檢必備', cls: 'style-green',
-    title: '合規自檢表', desc: '30+ 項檢核，罰鍰曝險一次算清' },
-  { id: 'termination-cost', badge: 'alert', badgeLabel: '風險評估', cls: 'style-red',
-    title: '解僱成本試算', desc: '合法 vs 違法解僱成本對比' },
-  { id: 'severance', badge: 'hot', badgeLabel: '最常用', cls: 'style-gold',
-    title: '資遣費計算機', desc: '員薪資遣成本精算，含預告薪資義務' },
-  { id: 'penalty-lookup', badge: 'alert', badgeLabel: '罰則速查', cls: 'style-red',
-    title: '違規罰鍰速查', desc: '勞基法各條違規罰則 2 萬～150 萬' }
-];
+// 2026-05-25 FEATURED_EMPLOYER 已下架；persona 強制 worker，雇主視角搬到周全專業版。
 
 // ═══════════════════════════════════════════════════════════
 // RENDER
@@ -1402,7 +1378,7 @@ function renderToolCard(key, tool) {
 
 function renderFeatured() {
   const strip = document.getElementById('featuredStrip');
-  const featured = P === 'employer' ? FEATURED_EMPLOYER : FEATURED_LATEST;
+  const featured = FEATURED_LATEST;
   strip.innerHTML = featured.map(f => {
     const tool = ALL_TOOLS[f.id];
     if (!tool) return '';
