@@ -1587,6 +1587,12 @@ function revealFeaturedCards() {
   cards.forEach(function(c) { obs.observe(c); });
 }
 
+function escHtml(s) {
+  return String(s).replace(/[&<>"']/g, function(c) {
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+  });
+}
+
 function renderSearch(query) {
   const q = query.toLowerCase();
   const container = document.getElementById('toolsContainer');
@@ -1599,7 +1605,7 @@ function renderSearch(query) {
 
   if (matches.length === 0) {
     container.innerHTML = `<div class="search-fallback">
-      <div class="search-fallback-title">找不到「<strong>${query}</strong>」</div>
+      <div class="search-fallback-title">找不到「<strong>${escHtml(query)}</strong>」</div>
       <div class="search-fallback-hint">試試其他關鍵字</div>
       <div>
         <span class="search-chip" onclick="setSearch('資遣費')">資遣費</span>
