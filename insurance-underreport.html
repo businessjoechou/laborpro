@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<script src="js/theme-boot.js"></script>
+<script src="js/ga.js" defer></script>
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>我被高薪低報了嗎？投保薪資自查｜LaborPro</title>
+<meta name="description" content="輸入實際月薪與勞保投保薪資，檢查雇主是否高薪低報，並試算被低報後老年年金、失業給付少領多少。免費使用，附申訴管道。">
+<meta property="og:title" content="我被高薪低報了嗎？投保薪資自查｜LaborPro">
+<meta property="og:description" content="檢查雇主是否高薪低報投保薪資，試算老年年金、失業給付縮水金額。">
+<meta name="robots" content="index, follow">
+<meta name="author" content="LaborPro">
+<meta property="og:site_name" content="LaborPro">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://labor.choulegal.com/choulegal-icon.svg">
+<meta property="og:image:width" content="400">
+<meta property="og:image:height" content="400">
+<link rel="canonical" href="https://labor.choulegal.com/insurance-underreport.html">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="js/supabase-config.js"></script>
+<script src="js/persona.js"></script>
+<script src="js/_generated/core-labor.bundle.js"></script>
+<script type="module" src="js/auth-bar.js"></script>
+<link rel="stylesheet" href="css/common.css">
+<script src="js/animations.js" defer></script>
+<style>
+  body { background: var(--paper); color: var(--ink); }
+  header { border-bottom: none; }
+  .progress-bar { background: var(--soft); }
+  main { padding: 24px 20px 100px; }
+  h2 { font-family: 'Noto Serif TC', serif; font-size: 22px; font-weight: 700; margin-bottom: 6px; line-height: 1.4; }
+  .subtitle { font-size: 13px; color: var(--muted); margin-bottom: 28px; line-height: 1.6; }
+  .card { background: var(--card); border: 1.5px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 14px; }
+  label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 8px; color: var(--ink); }
+  .label-sub { font-size: 11px; color: var(--muted); font-weight: 400; margin-left: 6px; }
+  .input-prefix { display: flex; align-items: center; }
+  .prefix-label { background: var(--soft); border: 1.5px solid var(--border); border-right: none; border-radius: 8px 0 0 8px; padding: 12px; font-family: 'Noto Serif TC', serif; font-size: 12px; color: var(--muted); white-space: nowrap; }
+  input[type="number"] { flex: 1; padding: 12px 14px; border: 1.5px solid var(--border); border-radius: 8px; background: var(--paper); font-size: 15px; font-family: 'Noto Serif TC', serif; color: var(--ink); -webkit-appearance: none; }
+  .input-prefix input[type="number"] { border-radius: 0 8px 8px 0; }
+  input:focus { outline: none; border-color: var(--gold); }
+  .info-box { background: #e6f0e6; border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 6px; padding: 12px 14px; font-size: 12px; color: var(--accent); line-height: 1.7; margin-bottom: 14px; }
+  .warn-box { background: #fdf3e7; border: 1px solid #e8c882; border-left: 3px solid var(--gold); border-radius: 6px; padding: 12px 14px; font-size: 12px; color: #7a5a10; line-height: 1.7; margin-bottom: 14px; }
+  .law-note { border-left: 3px solid var(--gold); padding-left: 12px; font-size: 12px; color: var(--muted); line-height: 1.7; margin-top: 10px; background: transparent; }
+  .result-hero { background: var(--ink); color: var(--paper); border-radius: 12px; padding: 24px 20px; margin-bottom: 14px; text-align: center; }
+  .result-hero-label { font-family: 'Noto Serif TC', serif; font-size: 10px; color: var(--muted); letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 8px; }
+  .result-hero-amount { font-family: 'Noto Serif TC', serif; font-size: 36px; font-weight: 700; color: var(--gold); margin-bottom: 6px; }
+  .result-hero-sub { font-size: 13px; color: var(--muted); }
+  .breakdown-card { background: var(--card); border: 1.5px solid var(--border); border-radius: 12px; overflow: hidden; margin-bottom: 14px; }
+  .breakdown-header { background: var(--soft); padding: 12px 16px; font-family: 'Noto Serif TC', serif; font-size: 10px; color: var(--muted); letter-spacing: 0.14em; text-transform: uppercase; }
+  .breakdown-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; border-bottom: 1px solid var(--soft); gap: 12px; }
+  .breakdown-row:last-child { border-bottom: none; }
+  .breakdown-label { font-size: 13px; color: var(--ink); }
+  .breakdown-value { font-family: 'Noto Serif TC', serif; font-size: 13px; font-weight: 500; color: var(--accent); }
+  .breakdown-row.total { background: var(--soft); }
+  .breakdown-row.total .breakdown-label { font-weight: 600; }
+  .breakdown-row.total .breakdown-value { font-size: 15px; color: var(--ink); font-weight: 700; }
+  .nav-bar { background: var(--card); border-top: 1px solid var(--border); }
+  .btn-primary { background: var(--accent); color: var(--paper); }
+  .btn-secondary { background: var(--soft); color: var(--muted); }
+  .btn-print { background: var(--accent); color: #fff; flex: 2; }
+  .action-link { display:block; padding:12px 14px; border:1.5px solid var(--border); border-radius:8px; font-size:13px; color:var(--ink); text-decoration:none; margin-bottom:8px; }
+  .action-link:hover { border-color: var(--gold); }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "投保薪資高薪低報自查",
+  "alternateName": "我被高薪低報了嗎｜LaborPro",
+  "description": "輸入實際月薪與勞保投保薪資，檢查雇主是否高薪低報，並試算被低報後老年年金、失業給付縮水金額。免費使用。",
+  "url": "https://labor.choulegal.com/insurance-underreport.html",
+  "applicationCategory": "FinanceApplication",
+  "applicationSubCategory": "勞動法計算工具",
+  "operatingSystem": "Web",
+  "browserRequirements": "Requires JavaScript",
+  "inLanguage": "zh-TW",
+  "isAccessibleForFree": true,
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "TWD" },
+  "provider": { "@type": "Organization", "name": "周全法律科技 ChouLegal", "url": "https://choulegal.com" }
+}
+</script>
+</head>
+<body>
+
+<header>
+  <a href="index.html" style="text-decoration:none;color:inherit">
+    <div class="parent-brand"><img class="cl-icon" src="choulegal-icon.svg" alt="周全法律科技">周全 <span>ChouLegal</span></div>
+    <div class="logo">Labor<span>Pro</span></div>
+  </a>
+  <div style="display:flex;align-items:center;gap:8px">
+    <a class="back-link" href="index.html">← 首頁</a>
+    <button id="themeToggle" type="button" aria-label="切換深色/淺色模式">☀</button>
+  </div>
+</header>
+<div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:50%"></div></div>
+
+<main>
+
+  <!-- Step 1 -->
+  <div class="step active" id="step1">
+    <div class="step-label">Step 1 of 2 · 基本資料</div>
+    <h2>我被高薪低報了嗎？</h2>
+    <p class="subtitle">高薪低報＝雇主用低於你實際薪水的金額投保，雖然你每月扣的勞健保變少，但退休金、失業給付、職災給付都會跟著縮水。輸入下面三個數字就能自查。</p>
+
+    <div class="info-box">
+      實際月薪：你每月實際領到的薪水總額（含按月固定發的技術獎金、輪班補助、伙食津貼等）。投保薪資：可查勞保局「e 化服務」或薪資單上的「勞保投保薪資」。
+    </div>
+
+    <div class="card">
+      <div class="field-group">
+        <label>實際月薪總額 <span class="label-sub">（含經常性獎金 / 津貼）</span></label>
+        <div class="input-prefix">
+          <span class="prefix-label">NT$</span>
+          <input type="number" id="realWage" placeholder="0" min="0" inputmode="numeric">
+        </div>
+      </div>
+      <div class="field-group">
+        <label>目前勞保投保薪資</label>
+        <div class="input-prefix">
+          <span class="prefix-label">NT$</span>
+          <input type="number" id="declared" placeholder="0" min="0" inputmode="numeric">
+        </div>
+      </div>
+      <div class="field-group">
+        <label>勞保年資 <span class="label-sub">（年，估老年年金用）</span></label>
+        <div class="input-prefix">
+          <span class="prefix-label">年</span>
+          <input type="number" id="years" placeholder="0" min="0" inputmode="numeric">
+        </div>
+      </div>
+      <div class="law-note">
+        勞工保險條例§14：月投保薪資應按勞工「月薪資總額」申報，不得只用底薪。
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 2 / Results -->
+  <div class="step" id="step2">
+    <div class="step-label">結果 · 給付影響</div>
+    <h2>自查結果</h2>
+    <p class="subtitle">以下為被低報後各項勞保給付的縮水估算。</p>
+    <div id="resultContent"></div>
+  </div>
+
+</main>
+
+<div class="nav-bar" id="navBar">
+  <button class="btn btn-secondary" id="btnBack" style="display:none" onclick="goBack()">上一步</button>
+  <button class="btn btn-primary" id="btnNext" onclick="goNext()">檢查 →</button>
+</div>
+
+<script>
+  let currentStep = 1;
+  const totalSteps = 2;
+
+  function fmt(n) { return 'NT$ ' + Math.round(n).toLocaleString('zh-TW'); }
+
+  function goNext() {
+    const realWage = +document.getElementById('realWage').value;
+    const declared = +document.getElementById('declared').value;
+    const years = +document.getElementById('years').value || 0;
+    if (realWage <= 0) { alert('請輸入實際月薪總額'); return; }
+    if (declared <= 0) { alert('請輸入目前勞保投保薪資'); return; }
+    renderResults(realWage, declared, years);
+    showStep(2);
+  }
+
+  function goBack() { showStep(1); }
+
+  function showStep(n) {
+    currentStep = n;
+    document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+    document.getElementById('step' + n).classList.add('active');
+    document.getElementById('progressFill').style.width = (n / totalSteps * 100) + '%';
+    document.getElementById('btnBack').style.display = n > 1 ? 'block' : 'none';
+    if (n === totalSteps) {
+      document.getElementById('navBar').innerHTML = `
+        <button class="btn btn-secondary" onclick="goBack()">← 重新計算</button>
+        <button class="btn btn-print" onclick="window.print()">列印 / PDF</button>
+      `;
+    }
+    window.scrollTo(0, 0);
+  }
+
+  function renderResults(realWage, declared, years) {
+    const r = window.LC_CORE.estimateWorkerBenefitImpact({
+      items: [{ name: '實際月薪總額', amount: realWage, isRegular: true }],
+      declaredMonthlyInsuranceSalary: declared,
+      yearsOfService: years,
+    });
+
+    if (!r.underReported) {
+      document.getElementById('resultContent').innerHTML = `
+        <div class="result-hero">
+          <div class="result-hero-label">自查結果</div>
+          <div class="result-hero-amount" style="font-size:26px">無低報</div>
+          <div class="result-hero-sub">投保薪資 ${fmt(r.declaredLaborBracket)} 已達應投保級距 ${fmt(r.correctLaborBracket)}</div>
+        </div>
+        <div class="card"><div class="law-note">你的投保薪資與實際薪資相符，給付基數正常。若日後加薪，記得確認投保薪資有跟著調整。</div></div>
+      `;
+      return;
+    }
+
+    const pension = r.oldAgePension;
+    const unemp = r.unemployment;
+
+    document.getElementById('resultContent').innerHTML = `
+      <div class="result-hero">
+        <div class="result-hero-label">投保薪資被低報</div>
+        <div class="result-hero-amount">${fmt(r.insuredSalaryGap)}</div>
+        <div class="result-hero-sub">應投保 ${fmt(r.correctLaborBracket)}，實際只報 ${fmt(r.declaredLaborBracket)}</div>
+      </div>
+
+      <div class="breakdown-card">
+        <div class="breakdown-header">被低報後，你的給付少領多少</div>
+        <div class="breakdown-row">
+          <div class="breakdown-label">老年年金（每 1 年年資，每月）</div>
+          <div class="breakdown-value">少 ${fmt(pension.monthlyReductionPerYear)}</div>
+        </div>
+        <div class="breakdown-row">
+          <div class="breakdown-label">老年年金（你 ${years} 年年資，每月）</div>
+          <div class="breakdown-value">少 ${fmt(pension.estimatedMonthlyReduction)}</div>
+        </div>
+        <div class="breakdown-row">
+          <div class="breakdown-label">失業給付（每月）</div>
+          <div class="breakdown-value">少 ${fmt(unemp.monthlyBenefitGap)}</div>
+        </div>
+        <div class="breakdown-row total">
+          <div class="breakdown-label">失業給付最多 6 個月共</div>
+          <div class="breakdown-value">少 ${fmt(unemp.maxTotalGap)}</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="breakdown-header" style="margin:-20px -20px 14px;border-radius:12px 12px 0 0">可以怎麼做</div>
+        <a class="action-link" href="https://www.bli.gov.tw/" target="_blank" rel="noopener">① 向勞保局查詢 / 申訴 →</a>
+        <a class="action-link" href="https://www.mol.gov.tw/" target="_blank" rel="noopener">② 向勞動部 / 各地勞工局申訴 →</a>
+        <div class="law-note" style="margin-top:12px">
+          雇主將投保薪資以多報少，依勞工保險條例§72 III 須負責任，你因此所受的給付損失，也可向投保單位請求賠償。<br><br>
+          老年年金估算依勞工保險條例§58-1（平均月投保薪資 × 年資 × 1.55%）；失業給付依就業保險法§16（平均月投保薪資 60%，最長 6 個月）。實際金額以勞保局核定為準。
+        </div>
+      </div>
+    `;
+  }
+</script>
+<div class="disclaimer-bar"><strong>免責聲明</strong>：本平台之計算結果僅供初步參考，不構成法律意見或法律諮詢服務。實際案件因個案事實、適用法規及法院見解不同，結果可能有所差異，建議諮詢具執照之律師或相關法律專業人員。</div>
+<script defer src="js/coffee-button.js"></script>
+</body>
+</html>

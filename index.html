@@ -1302,6 +1302,12 @@ const ALL_TOOLS = {
       worker: '薪資單上的數字對嗎？核對本薪、加班費、勞健保扣款，找出差異',
       employer: '核對員工薪資單正確性，勞健保級距驗證、扣款合規檢查'
     }},
+  'insurance-underreport': { href: 'insurance-underreport.html', badge: 'new',
+    name: { all: '我被高薪低報了嗎' },
+    desc: {
+      worker: '雇主用低於實領的薪水投保？算出老年年金、失業給付少領多少',
+      employer: '雇主用低於實領的薪水投保？算出老年年金、失業給付少領多少'
+    }},
   'leave-calc': { href: 'leave-calc.html',
     name: { all: '全假別權益計算機' },
     desc: {
@@ -1380,7 +1386,7 @@ const TABS = [
     id: 'wage',
     label: '薪資與加班',
     subtitle: '加班費精算、平均薪資、薪資認定、最低薪資合規。',
-    tools: ['overtime', 'overtime-detail', 'avg-wage', 'wage-analysis', 'min-wage', 'payslip-checker']
+    tools: ['overtime', 'overtime-detail', 'avg-wage', 'wage-analysis', 'min-wage', 'payslip-checker', 'insurance-underreport']
   },
   {
     id: 'leave',

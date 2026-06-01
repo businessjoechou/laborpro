@@ -25,41 +25,76 @@ var LC_CORE = (() => {
   var index_exports = {};
   __export(index_exports, {
     ANOMALY_RULES: () => ANOMALY_RULES,
+    AVG_WAGE_DAY_DIVISOR: () => AVG_WAGE_DAY_DIVISOR,
+    DAILY_HOURS_LIMIT: () => DAILY_HOURS_LIMIT,
+    DAILY_INCL_OT_LIMIT: () => DAILY_INCL_OT_LIMIT,
     DEFAULT_ROLE_WEIGHTS: () => DEFAULT_ROLE_WEIGHTS,
     DISABILITY_GRADE_DAYS: () => DISABILITY_GRADE_DAYS,
+    HEALTH_INS_WORKER_RATE: () => HEALTH_INS_WORKER_RATE,
     LABOR_INSURANCE_BRACKETS_2026: () => LABOR_INSURANCE_BRACKETS_2026,
+    LABOR_INS_WORKER_RATE: () => LABOR_INS_WORKER_RATE,
     LABOR_PENALTIES: () => LABOR_PENALTIES,
     LABOR_RATES_2026: () => LABOR_RATES_2026,
+    LABOR_UNDERREPORT_PENALTY_MULTIPLE: () => LABOR_UNDERREPORT_PENALTY_MULTIPLE,
     LATEST_HOURLY_VERSION: () => LATEST_HOURLY_VERSION,
     LAW_MOJ_URL: () => LAW_MOJ_URL,
     LEAVE_PAY_RATE: () => LEAVE_PAY_RATE,
     LEGAL_FLOOR: () => LEGAL_FLOOR,
     LIFE_MONTHS_CURRENT_VERSION: () => LIFE_MONTHS_CURRENT_VERSION,
     LIFE_MONTHS_VERSIONS: () => LIFE_MONTHS_VERSIONS,
+    MATERNITY_FULL_PAY_TENURE_MONTHS: () => MATERNITY_FULL_PAY_TENURE_MONTHS,
+    MATERNITY_LEAVE_DAYS: () => MATERNITY_LEAVE_DAYS,
+    MEAL_ALLOWANCE_CAP: () => MEAL_ALLOWANCE_CAP,
     MIN_HOURLY_WAGE: () => MIN_HOURLY_WAGE,
     MIN_HOURLY_WAGE_VERSIONS: () => MIN_HOURLY_WAGE_VERSIONS,
+    MIN_WAGE_PENALTY_MAX: () => PENALTY_MAX,
+    MIN_WAGE_PENALTY_MIN: () => PENALTY_MIN,
+    MONTHLY_OT_LIMIT_NO_AGREEMENT: () => MONTHLY_OT_LIMIT_NO_AGREEMENT,
+    MONTHLY_OT_LIMIT_WITH_AGREEMENT: () => MONTHLY_OT_LIMIT_WITH_AGREEMENT,
     NHI_BRACKETS_2026: () => NHI_BRACKETS_2026,
+    NHI_UNDERREPORT_PENALTY_MAX_MULTIPLE: () => NHI_UNDERREPORT_PENALTY_MAX_MULTIPLE,
+    NHI_UNDERREPORT_PENALTY_MIN_MULTIPLE: () => NHI_UNDERREPORT_PENALTY_MIN_MULTIPLE,
     NON_COMPETE_REQUIREMENTS: () => NON_COMPETE_REQUIREMENTS,
+    OLD_AGE_PENSION_ACCRUAL_RATE: () => OLD_AGE_PENSION_ACCRUAL_RATE,
+    OVERTIME_TYPE_LABELS: () => OVERTIME_TYPE_LABELS,
+    OVERTIME_TYPE_MAP: () => OVERTIME_TYPE_MAP,
+    PARENTAL_ALLOWANCE_BASE_RATE: () => PARENTAL_ALLOWANCE_BASE_RATE,
+    PARENTAL_ALLOWANCE_MAX_MONTHS: () => PARENTAL_ALLOWANCE_MAX_MONTHS,
+    PARENTAL_ALLOWANCE_SUPPLEMENT_RATE: () => PARENTAL_ALLOWANCE_SUPPLEMENT_RATE,
+    PARENTAL_LEAVE_MIN_TENURE_MONTHS: () => PARENTAL_LEAVE_MIN_TENURE_MONTHS,
+    PARENTAL_SUPPLEMENT_EFFECTIVE_FROM: () => PARENTAL_SUPPLEMENT_EFFECTIVE_FROM,
     PENSION_BRACKETS_2026: () => PENSION_BRACKETS_2026,
     PENSION_EMPLOYEE_RATE_CAP: () => PENSION_EMPLOYEE_RATE_CAP,
     PENSION_EMPLOYER_RATE_FLOOR: () => PENSION_EMPLOYER_RATE_FLOOR,
+    REST_PATTERN_VALUES: () => REST_PATTERN_VALUES,
     SCHEDULE_RULES: () => SCHEDULE_RULES,
+    SHIFT_GAP_MIN_HOURS: () => SHIFT_GAP_MIN_HOURS,
     SUPPORTED_OVERRIDE_RULES: () => SUPPORTED_OVERRIDE_RULES,
+    THREE_MONTH_OT_LIMIT: () => THREE_MONTH_OT_LIMIT,
+    UNEMPLOYMENT_BENEFIT_MAX_MONTHS: () => UNEMPLOYMENT_BENEFIT_MAX_MONTHS,
+    UNEMPLOYMENT_BENEFIT_RATE: () => UNEMPLOYMENT_BENEFIT_RATE,
+    WAGE_ITEM_CATALOG: () => WAGE_ITEM_CATALOG,
+    WEEKLY_HOURS_LIMIT: () => WEEKLY_HOURS_LIMIT,
     WORK_INJURY_BRACKETS_2026: () => WORK_INJURY_BRACKETS_2026,
     addLaw: () => addLaw,
     addStep: () => addStep,
+    aggregateOvertimeEntries: () => aggregateOvertimeEntries,
     analyzeNonCompete: () => analyzeNonCompete,
+    analyzeWageStructure: () => analyzeWageStructure,
     calcCompensatoryLeave: () => calcCompensatoryLeave,
     calcEmployerInsuranceCost: () => calcEmployerInsuranceCost,
     calcHourlyWage: () => calcHourlyWage,
     calcLaborPension: () => calcLaborPension,
     calcLeavePay: () => calcLeavePay,
+    calcMaternityPay: () => calcMaternityPay,
     calcMonths: () => calcMonths,
     calcNotice: () => calcNotice,
     calcNoticeTraced: () => calcNoticeTraced,
     calcOvertimeCost: () => calcOvertimeCost,
     calcOvertimeCostTraced: () => calcOvertimeCostTraced,
     calcOvertimePay: () => calcOvertimePay,
+    calcParentalAllowance: () => calcParentalAllowance,
+    calcParentalLeavePackage: () => calcParentalLeavePackage,
     calcPensionNew: () => calcPensionNew,
     calcPensionOld: () => calcPensionOld,
     calcSeveranceNew: () => calcSeveranceNew,
@@ -70,12 +105,23 @@ var LC_CORE = (() => {
     calcTyphoonDay: () => calcTyphoonDay,
     calcWorkInjuryCompensation: () => calcWorkInjuryCompensation,
     calcWorkInjuryItems: () => calcWorkInjuryItems,
+    checkHourlyMinWage: () => checkHourlyMinWage,
+    checkMonthlyMinWage: () => checkMonthlyMinWage,
+    checkMonthlyOvertime: () => checkMonthlyOvertime,
+    checkPayslip: () => checkPayslip,
+    checkRestDays: () => checkRestDays,
     checkSchedule: () => checkSchedule,
+    checkShiftGap: () => checkShiftGap,
+    checkUnderReporting: () => checkUnderReporting,
+    checkWeeklyHours: () => checkWeeklyHours,
+    checkWorkHoursCompliance: () => checkWorkHoursCompliance,
+    classifyWageItem: () => classifyWageItem,
     computeOvertimePay: () => computeOvertimePay,
     computeSeverance: () => computeSeverance,
     createTrace: () => createTrace,
     detectAttendanceAnomalies: () => detectAttendanceAnomalies,
     distributeServiceCharge: () => distributeServiceCharge,
+    estimateWorkerBenefitImpact: () => estimateWorkerBenefitImpact,
     getAnnualLeaveDays: () => getAnnualLeaveDays,
     getDailyRate: () => getDailyRate,
     getHourlyRate: () => getHourlyRate,
@@ -143,14 +189,20 @@ var LC_CORE = (() => {
 
   // ../../packages/core-labor/src/severance.js
   function calcSeveranceNew(totalMonths, avgWage) {
+    if (!Number.isFinite(totalMonths) || totalMonths < 0) throw new TypeError("totalMonths \u5FC5\u9808\u70BA\u975E\u8CA0\u6709\u9650\u6578");
+    if (!Number.isFinite(avgWage) || avgWage < 0) throw new TypeError("avgWage \u5FC5\u9808\u70BA\u975E\u8CA0\u6709\u9650\u6578");
     const raw = totalMonths / 12 * 0.5;
     return Math.min(raw, 6) * avgWage;
   }
   function calcSeveranceOld(totalMonths, avgWage) {
+    if (!Number.isFinite(totalMonths) || totalMonths < 0) throw new TypeError("totalMonths \u5FC5\u9808\u70BA\u975E\u8CA0\u6709\u9650\u6578");
+    if (!Number.isFinite(avgWage) || avgWage < 0) throw new TypeError("avgWage \u5FC5\u9808\u70BA\u975E\u8CA0\u6709\u9650\u6578");
     const raw = totalMonths / 12;
     return raw * avgWage;
   }
   function calcNotice(calendarMonths, avgWage) {
+    if (!Number.isFinite(calendarMonths) || calendarMonths < 0) throw new TypeError("calendarMonths \u5FC5\u9808\u70BA\u975E\u8CA0\u6709\u9650\u6578");
+    if (!Number.isFinite(avgWage) || avgWage < 0) throw new TypeError("avgWage \u5FC5\u9808\u70BA\u975E\u8CA0\u6709\u9650\u6578");
     if (calendarMonths < 3) return { days: 0, amount: 0, label: "\u672A\u6EFF3\u500B\u6708\uFF0C\u7121\u9700\u9810\u544A" };
     if (calendarMonths < 12) return { days: 10, amount: avgWage / 30 * 10, label: "3\u500B\u6708\u4EE5\u4E0A\u672A\u6EFF1\u5E74\uFF1A10\u65E5" };
     if (calendarMonths < 36) return { days: 20, amount: avgWage / 30 * 20, label: "1\u5E74\u4EE5\u4E0A\u672A\u6EFF3\u5E74\uFF1A20\u65E5" };
@@ -415,6 +467,7 @@ var LC_CORE = (() => {
   };
   var LIFE_MONTHS_CURRENT_VERSION = "113-04-01";
   function getLifeMonths(age, opts = {}) {
+    if (!Number.isFinite(age) || age < 0) throw new TypeError("age \u5FC5\u9808\u70BA\u975E\u8CA0\u6709\u9650\u6578");
     const version = opts.version || LIFE_MONTHS_CURRENT_VERSION;
     const table = LIFE_MONTHS_VERSIONS[version];
     if (!table) throw new Error(`Unknown lifeMonths version: ${version}`);
@@ -423,6 +476,8 @@ var LC_CORE = (() => {
     return table.years[key] * 12;
   }
   function calcPensionNew(accountTotal, age, seniorityYears) {
+    if (!Number.isFinite(accountTotal) || accountTotal < 0) throw new TypeError("accountTotal \u5FC5\u9808\u70BA\u975E\u8CA0\u6709\u9650\u6578");
+    if (!Number.isFinite(seniorityYears) || seniorityYears < 0) throw new TypeError("seniorityYears \u5FC5\u9808\u70BA\u975E\u8CA0\u6709\u9650\u6578");
     const lifeMonths = getLifeMonths(age);
     return {
       lumpSum: accountTotal,
@@ -432,6 +487,8 @@ var LC_CORE = (() => {
     };
   }
   function calcPensionOld(totalYears, avgWage, isDisabledRetirement = false) {
+    if (!Number.isFinite(totalYears) || totalYears < 0) throw new TypeError("totalYears \u5FC5\u9808\u70BA\u975E\u8CA0\u6709\u9650\u6578");
+    if (!Number.isFinite(avgWage) || avgWage < 0) throw new TypeError("avgWage \u5FC5\u9808\u70BA\u975E\u8CA0\u6709\u9650\u6578");
     const first15 = Math.min(totalYears, 15) * 2;
     const after15 = Math.max(totalYears - 15, 0) * 1;
     const baseUnitsRaw = first15 + after15;
@@ -1230,7 +1287,7 @@ var LC_CORE = (() => {
     const depCount = dependents == null ? R.nhiAvgDependents : dependents;
     const laborIns = Math.round(bracket * R.labor * R.laborEmployer);
     const laborAccident = Math.round(workInjuryBracket * R.accident);
-    const effectiveDep = Math.min(depCount, 3);
+    const effectiveDep = Math.min(Math.max(depCount, 0), 3);
     const nhi = Math.round(nhiBracket * R.nhi * R.nhiEmployer * (1 + effectiveDep));
     const pension = Math.round(pensionBracket * R.pension);
     return {
@@ -1243,6 +1300,419 @@ var LC_CORE = (() => {
       nhiBracket,
       pensionBracket,
       workInjuryBracket
+    };
+  }
+
+  // ../../packages/core-labor/src/wage-analysis.js
+  var WAGE_ITEM_CATALOG = Object.freeze([
+    Object.freeze({ name: "\u5E95\u85AA", isWage: true, note: "\u52DE\u52D9\u5C0D\u50F9\uFF0C\u5C6C\u7D93\u5E38\u6027\u7D66\u8207\uFF08\xA72 III\uFF09" }),
+    Object.freeze({
+      name: "\u5168\u52E4\u734E\u91D1",
+      isWage: "warn",
+      note: "\u5BE6\u52D9\u591A\u8A8D\u5C6C\u7D93\u5E38\u6027\u7D66\u8207\uFF08\u6700\u9AD8\u6CD5\u9662\u5224\u6C7A\u591A\u6578\u898B\u89E3\uFF09\uFF0C\u60DF\u4ECD\u5B58\u722D\u8B70\uFF1B\u672C\u7CFB\u7D71\u66AB\u5217\u5165"
+    }),
+    Object.freeze({
+      name: "\u4F19\u98DF\u6D25\u8CBC",
+      isWage: true,
+      note: "\u6309\u6708\u56FA\u5B9A\u767C\u7D66\u5C6C\u7D93\u5E38\u6027\u7D66\u8207\uFF1B\u6BCF\u6708 2,400 \u5143\u4EE5\u4E0B\u514D\u7D0D\u6240\u5F97\u7A05\uFF0C\u4F46\u4ECD\u8A08\u5165\u5DE5\u8CC7"
+    }),
+    Object.freeze({
+      name: "\u4EA4\u901A\u88DC\u52A9",
+      isWage: "depends",
+      defaultWage: true,
+      note: "\u6309\u6708\u56FA\u5B9A\u767C\u7D66 \u2192 \u8A08\u5165\uFF1B\u5BE6\u652F\u5BE6\u5831\u6838\u92B7 \u2192 \u4E0D\u8A08\u5165\uFF08\u7D30\u5247\xA710 \u4E5D \u5DEE\u65C5\uFF09"
+    }),
+    Object.freeze({ name: "\u8077\u52D9\u52A0\u7D66", isWage: true, note: "\u56E0\u8077\u52D9\u56FA\u5B9A\u652F\u9818\uFF0C\u5C6C\u7D93\u5E38\u6027\u7D66\u8207" }),
+    Object.freeze({
+      name: "\u7E3E\u6548\u734E\u91D1",
+      isWage: "warn",
+      note: "\u6309\u6708 / \u6309\u5B63\u56FA\u5B9A\u767C \u2192 \u53EF\u80FD\u5C6C\u5DE5\u8CC7\uFF1B\u4E0D\u5B9A\u671F\u4E0D\u5B9A\u984D \u2192 \u591A\u88AB\u8A8D\u975E\u7D93\u5E38\u6027"
+    }),
+    Object.freeze({
+      name: "\u5E74\u7D42\u734E\u91D1",
+      isWage: false,
+      note: "\u6069\u60E0\u6027\u7D66\u8207\uFF0C\u7D30\u5247\xA710 \u4E8C\u660E\u5217\u975E\u7D93\u5E38\u6027"
+    }),
+    Object.freeze({
+      name: "\u52A0\u73ED\u8CBB",
+      isWage: "special",
+      note: "\u4F9D\xA724 \u53E6\u8A08\uFF0C\u8A08\u7B97\u5E73\u5747\u5DE5\u8CC7\u6642 \u4E0D\u4F75\u5165\uFF08\u6700\u9AD8\u6CD5\u9662\u5224\u6C7A\u4EA6\u540C\uFF09"
+    }),
+    Object.freeze({
+      name: "\u5DEE\u65C5\u8CBB",
+      isWage: false,
+      note: "\u5BE6\u652F\u5BE6\u4ED8\uFF0C\u7D30\u5247\xA710 \u4E5D \u660E\u5217\u975E\u7D93\u5E38\u6027"
+    }),
+    Object.freeze({
+      name: "\u5176\u4ED6",
+      isWage: "depends",
+      defaultWage: false,
+      note: "\u4F9D\u662F\u5426\u300C\u7D93\u5E38\u6027\u7D66\u8207\u300D\u500B\u6848\u5224\u65B7\uFF1B\u8209\u8B49\u8CAC\u4EFB\u5728\u96C7\u4E3B"
+    })
+  ]);
+  var AVG_WAGE_DAY_DIVISOR = 30;
+  var HOURS_PER_DAY = 8;
+  function lookupDef(name) {
+    return WAGE_ITEM_CATALOG.find((i) => i.name === name) ?? null;
+  }
+  function classifyWageItem({ name, isRegular = false }) {
+    const def = lookupDef(name);
+    if (!def) {
+      return {
+        status: isRegular ? "yes" : "no",
+        tag: isRegular ? "\u85AA\u8CC7" : "\u975E\u85AA\u8CC7",
+        reason: "\u672A\u5217\u65BC\u6A19\u6E96\u5B57\u5178\uFF0C\u4F9D\u300C\u7D93\u5E38\u6027\u300D\u65D7\u6A19\u5224\u5B9A",
+        def: null
+      };
+    }
+    switch (def.isWage) {
+      case true:
+        return { status: "yes", tag: "\u85AA\u8CC7", reason: def.note, def };
+      case false:
+        return { status: "no", tag: "\u975E\u85AA\u8CC7", reason: def.note, def };
+      case "warn":
+        return { status: "warn", tag: "\u722D\u8B70", reason: def.note, def };
+      case "special":
+        return { status: "special", tag: "\u53E6\u8A08", reason: def.note, def };
+      case "depends":
+        return {
+          status: isRegular ? "yes" : "no",
+          tag: isRegular ? "\u85AA\u8CC7" : "\u975E\u85AA\u8CC7",
+          reason: def.note,
+          def
+        };
+      default:
+        return {
+          status: isRegular ? "yes" : "no",
+          tag: isRegular ? "\u85AA\u8CC7" : "\u975E\u85AA\u8CC7",
+          reason: "\u672A\u8B58\u5225 isWage \u503C\uFF0C\u4F9D\u300C\u7D93\u5E38\u6027\u300D\u65D7\u6A19\u5224\u5B9A",
+          def
+        };
+    }
+  }
+  function analyzeWageStructure(items) {
+    if (!Array.isArray(items)) {
+      throw new Error("analyzeWageStructure: items \u5FC5\u9808\u70BA\u9663\u5217");
+    }
+    const analyzedRows = items.map((item) => {
+      const amount = Number(item.amount);
+      if (!Number.isFinite(amount) || amount < 0) {
+        throw new Error(
+          `analyzeWageStructure: ${item.name ?? "<unknown>"} \u4E4B amount \u5FC5\u9808\u70BA \u2265 0`
+        );
+      }
+      const classification = classifyWageItem({
+        name: item.name,
+        isRegular: item.isRegular ?? false
+      });
+      return {
+        name: item.name,
+        amount,
+        status: classification.status,
+        tag: classification.tag,
+        reason: classification.reason
+      };
+    });
+    const wageItems = analyzedRows.filter((r) => r.status === "yes");
+    const disputedItems = analyzedRows.filter((r) => r.status === "warn");
+    const specialItems = analyzedRows.filter((r) => r.status === "special");
+    const excludedItems = analyzedRows.filter((r) => r.status === "no");
+    const wageTotalStrict = wageItems.reduce((s, r) => s + r.amount, 0);
+    const wageTotal = wageTotalStrict + disputedItems.reduce((s, r) => s + r.amount, 0);
+    const dailyWage = wageTotal / AVG_WAGE_DAY_DIVISOR;
+    const hourlyWage = dailyWage / HOURS_PER_DAY;
+    const trace = createTrace();
+    addStep(trace, {
+      label: "\u7D93\u5E38\u6027\u7D66\u8207\u5206\u985E",
+      inputs: {
+        total: analyzedRows.length,
+        yes: wageItems.length,
+        warn: disputedItems.length,
+        special: specialItems.length,
+        no: excludedItems.length
+      },
+      value: analyzedRows.length,
+      note: "\u4F9D\xA72 III + \u7D30\u5247\xA710 \u5C07\u9805\u76EE\u5206\u70BA yes / no / warn / special / depends"
+    });
+    addStep(trace, {
+      label: "\u8A08\u5165\u5DE5\u8CC7\u7E3D\u984D\uFF08\u56B4\u683C\uFF09",
+      formula: "sum(yes)",
+      inputs: { count: wageItems.length },
+      value: Math.round(wageTotalStrict),
+      note: "\u53EA\u8A08\u5165\u660E\u78BA\u8A8D\u5C6C\u5DE5\u8CC7\u4E4B\u9805\u76EE"
+    });
+    if (disputedItems.length > 0) {
+      addStep(trace, {
+        label: "\u8A08\u5165\u5DE5\u8CC7\u7E3D\u984D\uFF08\u542B\u722D\u8B70\u66AB\u5217\uFF09",
+        formula: "sum(yes) + sum(warn)",
+        inputs: {
+          strict: Math.round(wageTotalStrict),
+          warn: Math.round(wageTotal - wageTotalStrict)
+        },
+        value: Math.round(wageTotal),
+        note: "\u722D\u8B70\u9805\u76EE\uFF08\u5982\u5168\u52E4\u734E\u91D1\uFF09\u4F9D\u6700\u9AD8\u6CD5\u9662\u591A\u6578\u898B\u89E3\u66AB\u5217\u5165\uFF1B\u5EFA\u8B70\u4FDD\u7559\u767C\u653E\u7D00\u9304"
+      });
+    }
+    addStep(trace, {
+      label: "\u65E5\u85AA",
+      formula: "wageTotal / 30",
+      inputs: { wageTotal: Math.round(wageTotal), divisor: AVG_WAGE_DAY_DIVISOR },
+      value: Math.round(dailyWage)
+    });
+    addStep(trace, {
+      label: "\u6642\u85AA",
+      formula: "dailyWage / 8",
+      inputs: { dailyWage: Math.round(dailyWage), hoursPerDay: HOURS_PER_DAY },
+      value: Number(hourlyWage.toFixed(2))
+    });
+    addLaw(trace, {
+      article: "\u52DE\u57FA\u6CD5\xA72 III",
+      description: "\u5DE5\u8CC7\u5305\u542B\u7D93\u5E38\u6027\u7D66\u8207\uFF1B\u734E\u91D1 / \u6D25\u8CBC / \u5176\u4ED6\u4EFB\u4F55\u540D\u7FA9\u4E4B\u7D93\u5E38\u6027\u7D66\u8207\u5747\u5C6C\u5DE5\u8CC7\u3002"
+    });
+    addLaw(trace, {
+      article: "\u52DE\u57FA\u6CD5\xA72 IV",
+      description: "\u5E73\u5747\u5DE5\u8CC7 = \u8A08\u7B97\u4E8B\u7531\u767C\u751F\u524D 6 \u500B\u6708\u5DE5\u8CC7\u7E3D\u984D / \u8A72\u671F\u9593\u7E3D\u65E5\u6578\u3002"
+    });
+    addLaw(trace, {
+      article: "\u52DE\u52D5\u57FA\u6E96\u6CD5\u65BD\u884C\u7D30\u5247\xA710",
+      description: "\u5217\u8209 11 \u6B3E\u300C\u975E\u7D93\u5E38\u6027\u7D66\u8207\u300D\uFF1A\u7D05\u5229\u3001\u5E74\u7D42 / \u7AF6\u8CFD / \u4E45\u4EFB\u734E\u91D1\u3001\u7BC0\u91D1\u3001\u91AB\u7642 / \u6559\u80B2\u88DC\u52A9\u3001\u670D\u52D9\u8CBB\u3001\u8CC0\u79AE / \u6170\u554F\u91D1\u3001\u8077\u707D\u88DC\u511F\u8CBB\u3001\u4FDD\u96AA\u8CBB\u3001\u5DEE\u65C5\u8CBB / \u6D25\u8CBC\u3001\u5DE5\u4F5C\u670D\u7B49\u3002"
+    });
+    if (specialItems.length > 0) {
+      addLaw(trace, {
+        article: "\u52DE\u57FA\u6CD5\xA724",
+        description: "\u52A0\u73ED\u8CBB\u53E6\u8A08\uFF1B\u8A08\u7B97\u5E73\u5747\u5DE5\u8CC7\u6642\u4E0D\u4F75\u5165\u3002"
+      });
+    }
+    setSummary(
+      trace,
+      `\u5DE5\u8CC7\u7E3D\u984D ${Math.round(wageTotal).toLocaleString()} \u5143\uFF08\u56B4\u683C ${Math.round(wageTotalStrict).toLocaleString()} + \u722D\u8B70\u66AB\u5217 ${Math.round(wageTotal - wageTotalStrict).toLocaleString()}\uFF09\uFF1B\u65E5\u85AA ${Math.round(dailyWage).toLocaleString()} \u5143 / \u6642\u85AA ${hourlyWage.toFixed(2)} \u5143\u3002`
+    );
+    return {
+      analyzedRows,
+      wageTotal: Math.round(wageTotal),
+      wageTotalStrict: Math.round(wageTotalStrict),
+      dailyWage: Math.round(dailyWage),
+      hourlyWage: Number(hourlyWage.toFixed(2)),
+      specialItems,
+      disputedItems,
+      excludedItems,
+      trace
+    };
+  }
+
+  // ../../packages/core-labor/src/insurance-compliance.js
+  var LABOR_UNDERREPORT_PENALTY_MULTIPLE = 4;
+  var NHI_UNDERREPORT_PENALTY_MIN_MULTIPLE = 2;
+  var NHI_UNDERREPORT_PENALTY_MAX_MULTIPLE = 4;
+  var OLD_AGE_PENSION_ACCRUAL_RATE = 0.0155;
+  var UNEMPLOYMENT_BENEFIT_RATE = 0.6;
+  var UNEMPLOYMENT_BENEFIT_MAX_MONTHS = 6;
+  function deriveWageBasis(items) {
+    const wageAnalysis = analyzeWageStructure(items);
+    return { wageBasis: wageAnalysis.wageTotal, wageAnalysis };
+  }
+  function assertPositiveNumber(label, value) {
+    const n = Number(value);
+    if (!Number.isFinite(n) || n < 0) {
+      throw new Error(`insurance-compliance: ${label} \u5FC5\u9808\u70BA \u2265 0 \u7684\u6578\u503C`);
+    }
+    return n;
+  }
+  function checkUnderReporting({
+    items,
+    declaredMonthlyInsuranceSalary,
+    monthsUnderReported = 1
+  }) {
+    const declared = assertPositiveNumber("declaredMonthlyInsuranceSalary", declaredMonthlyInsuranceSalary);
+    const months = Math.max(1, Math.floor(assertPositiveNumber("monthsUnderReported", monthsUnderReported)));
+    const { wageBasis, wageAnalysis } = deriveWageBasis(items);
+    const correctLaborBracket = getLaborInsuranceBracket(wageBasis);
+    const declaredLaborBracket = getLaborInsuranceBracket(declared);
+    const correctNhiBracket = getNhiBracket(wageBasis);
+    const declaredNhiBracket = getNhiBracket(declared);
+    const laborBracketGap = Math.max(0, correctLaborBracket - declaredLaborBracket);
+    const nhiBracketGap = Math.max(0, correctNhiBracket - declaredNhiBracket);
+    const monthlyLaborPremiumGap = Math.round(laborBracketGap * LABOR_RATES_2026.labor);
+    const monthlyNhiPremiumGap = Math.round(nhiBracketGap * LABOR_RATES_2026.nhi);
+    const monthlyPremiumGap = monthlyLaborPremiumGap + monthlyNhiPremiumGap;
+    const underReported = laborBracketGap > 0 || nhiBracketGap > 0;
+    const backLabor = monthlyLaborPremiumGap * months;
+    const backNhi = monthlyNhiPremiumGap * months;
+    const backPremium = { labor: backLabor, nhi: backNhi, total: backLabor + backNhi };
+    const laborPenalty = backLabor * LABOR_UNDERREPORT_PENALTY_MULTIPLE;
+    const nhiPenaltyMin = backNhi * NHI_UNDERREPORT_PENALTY_MIN_MULTIPLE;
+    const nhiPenaltyMax = backNhi * NHI_UNDERREPORT_PENALTY_MAX_MULTIPLE;
+    const penalty = {
+      laborMin: laborPenalty,
+      laborMax: laborPenalty,
+      nhiMin: nhiPenaltyMin,
+      nhiMax: nhiPenaltyMax,
+      totalMin: laborPenalty + nhiPenaltyMin,
+      totalMax: laborPenalty + nhiPenaltyMax
+    };
+    const criminalRisk = underReported ? {
+      crime: "\u8A50\u6B3A\u5F97\u5229\u7F6A",
+      article: "\u5211\u6CD5\xA7339 II",
+      note: "\u4EE5\u4F4E\u5831\u6295\u4FDD\u85AA\u8CC7\u4F7F\u52DE\u4FDD\u5C40\uFF0F\u5065\u4FDD\u7F72\u5C11\u6536\u4FDD\u8CBB\uFF0C\u96C7\u4E3B\u5F97\u8CA1\u7522\u4E0A\u4E0D\u6CD5\u5229\u76CA\uFF0C\u5BE6\u52D9\u4E0A\u6210\u7ACB\u8A50\u6B3A\u5F97\u5229\u7F6A\uFF08\u696D\u52D9\u767B\u8F09\u4E0D\u5BE6\xA7215 \u88AB\u884C\u4F7F\u4E0D\u5BE6\u6587\u66F8\xA7216 \u5438\u6536\uFF0C\u518D\u8207\xA7339 II \u60F3\u50CF\u7AF6\u5408\u5F9E\u4E00\u91CD\u8AD6\u8655\uFF09\u3002\u300C\u4E0D\u77E5\u9053\u6CD5\u5F8B\u300D\u4F9D\u5211\u6CD5\xA716 \u4E0D\u80FD\u514D\u8CAC\uFF0C\u96C7\u4E3B\u8CA0\u64DA\u5BE6\u6295\u4FDD\u4E4B\u6CD5\u5B9A\u7FA9\u52D9\uFF0C\u96E3\u4EE5\u963B\u537B\u6545\u610F\u3002"
+    } : null;
+    const trace = createTrace();
+    addStep(trace, {
+      label: "\u6708\u85AA\u8CC7\u7E3D\u984D\uFF08\u6295\u4FDD\u85AA\u8CC7\u61C9\u7533\u5831\u57FA\u6E96\uFF09",
+      formula: "sum(\u7D93\u5E38\u6027\u7D66\u8207)",
+      inputs: { wageTotalStrict: wageAnalysis.wageTotalStrict, disputedIncluded: wageBasis - wageAnalysis.wageTotalStrict },
+      value: wageBasis,
+      note: "\u4F9D\xA72 III + \u7D30\u5247\xA710 \u5224\u5B9A\u8A08\u5165\u5DE5\u8CC7\u4E4B\u9805\u76EE\uFF1B\u722D\u8B70\u9805\u76EE\uFF08\u5982\u5168\u52E4\u734E\u91D1\uFF09\u66AB\u5217\u5165"
+    });
+    addStep(trace, {
+      label: "\u6B63\u78BA vs \u7533\u5831\u6295\u4FDD\u7D1A\u8DDD",
+      inputs: {
+        correctLaborBracket,
+        declaredLaborBracket,
+        correctNhiBracket,
+        declaredNhiBracket
+      },
+      value: laborBracketGap,
+      note: underReported ? "\u7533\u5831\u7D1A\u8DDD\u4F4E\u65BC\u61C9\u7533\u5831\u7D1A\u8DDD \u2192 \u69CB\u6210\u9AD8\u85AA\u4F4E\u5831" : "\u7533\u5831\u7D1A\u8DDD\u5DF2\u9054\u61C9\u7533\u5831\u7D1A\u8DDD\uFF0C\u7121\u4F4E\u5831"
+    });
+    if (underReported) {
+      addStep(trace, {
+        label: "\u6BCF\u6708\u77ED\u5831\u4FDD\u8CBB\u5DEE\u984D",
+        formula: "\u52DE\u4FDD\u5DEE\u984D\xD712.5% + \u5065\u4FDD\u5DEE\u984D\xD75.17%",
+        inputs: { laborBracketGap, nhiBracketGap },
+        value: monthlyPremiumGap
+      });
+      addStep(trace, {
+        label: `\u88DC\u7E73\u4FDD\u8CBB\uFF08${months} \u500B\u6708\uFF09`,
+        formula: "monthlyPremiumGap \xD7 months",
+        inputs: { monthlyPremiumGap, months },
+        value: backPremium.total
+      });
+      addStep(trace, {
+        label: "\u7F70\u9370",
+        formula: "\u52DE\u4FDD 4\xD7\u77ED\u5831\u4FDD\u8CBB + \u5065\u4FDD (2~4)\xD7\u77ED\u5831\u4FDD\u8CBB",
+        inputs: { backLabor, backNhi },
+        value: penalty.totalMin,
+        note: `\u5340\u9593 ${penalty.totalMin.toLocaleString()} ~ ${penalty.totalMax.toLocaleString()} \u5143\uFF08\u5065\u4FDD 2~4 \u500D\u88C1\u91CF\uFF09`
+      });
+    }
+    addLaw(trace, {
+      article: "\u52DE\u5DE5\u4FDD\u96AA\u689D\u4F8B\xA714",
+      description: "\u6708\u6295\u4FDD\u85AA\u8CC7\u6309\u6708\u85AA\u8CC7\u7E3D\u984D\u4F9D\u5206\u7D1A\u8868\u7533\u5831\u3002",
+      url: "https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=N0050001&flno=14"
+    });
+    if (underReported) {
+      addLaw(trace, {
+        article: "\u52DE\u5DE5\u4FDD\u96AA\u689D\u4F8B\xA772 III",
+        description: "\u6295\u4FDD\u85AA\u8CC7\u4EE5\u591A\u5831\u5C11\uFF0C\u6309\u77ED\u5831\u4FDD\u96AA\u8CBB\u8655 4 \u500D\u7F70\u9370\uFF0C\u4E26\u8FFD\u7E73\u6EA2\u9818\u7D66\u4ED8\u3001\u8CE0\u511F\u52DE\u5DE5\u640D\u5931\u3002",
+        url: "https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=N0050001&flno=72"
+      });
+      addLaw(trace, {
+        article: "\u5168\u6C11\u5065\u5EB7\u4FDD\u96AA\u6CD5\xA789",
+        description: "\u6295\u4FDD\u91D1\u984D\u4EE5\u591A\u5831\u5C11\uFF0C\u8FFD\u7E73\u77ED\u7E73\u4FDD\u96AA\u8CBB\u4E26\u8655 2~4 \u500D\u7F70\u9370\u3002",
+        url: "https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=L0060001&flno=89"
+      });
+      addLaw(trace, {
+        article: "\u5211\u6CD5\xA7339 II",
+        description: "\u8A50\u8853\u4F7F\u4FDD\u96AA\u4EBA\u5C11\u6536\u4FDD\u8CBB\u3001\u96C7\u4E3B\u5F97\u4E0D\u6CD5\u5229\u76CA \u2192 \u8A50\u6B3A\u5F97\u5229\u7F6A\u3002",
+        url: "https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=C0000001&flno=339"
+      });
+      addLaw(trace, {
+        article: "\u5211\u6CD5\xA716",
+        description: "\u4E0D\u5F97\u56E0\u4E0D\u77E5\u6CD5\u5F8B\u514D\u9664\u5211\u8CAC\uFF08\u81F3\u591A\u6E1B\u8F15\uFF09\u3002",
+        url: "https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=C0000001&flno=16"
+      });
+    }
+    setSummary(
+      trace,
+      underReported ? `\u9AD8\u85AA\u4F4E\u5831\uFF1A\u61C9\u7533\u5831 ${correctLaborBracket.toLocaleString()}\uFF08\u52DE\u4FDD\uFF09/ ${correctNhiBracket.toLocaleString()}\uFF08\u5065\u4FDD\uFF09\uFF0C\u6BCF\u6708\u77ED\u5831\u4FDD\u8CBB ${monthlyPremiumGap.toLocaleString()} \u5143\uFF1B${months} \u500B\u6708\u88DC\u7E73 ${backPremium.total.toLocaleString()} \u5143\uFF0C\u7F70\u9370 ${penalty.totalMin.toLocaleString()}~${penalty.totalMax.toLocaleString()} \u5143\uFF0C\u53E6\u6709\u5211\u6CD5\xA7339 II \u8A50\u6B3A\u5F97\u5229\u98A8\u96AA\u3002` : `\u6295\u4FDD\u85AA\u8CC7\u7533\u5831\u7121\u4F4E\u5831\uFF08\u61C9\u7533\u5831 ${correctLaborBracket.toLocaleString()}\uFF0C\u5DF2\u7533\u5831 ${declaredLaborBracket.toLocaleString()}\uFF09\u3002`
+    );
+    return {
+      underReported,
+      wageBasis,
+      correctLaborBracket,
+      declaredLaborBracket,
+      correctNhiBracket,
+      declaredNhiBracket,
+      monthlyLaborPremiumGap,
+      monthlyNhiPremiumGap,
+      monthlyPremiumGap,
+      months,
+      backPremium,
+      penalty,
+      criminalRisk,
+      wageAnalysis,
+      trace
+    };
+  }
+  function estimateWorkerBenefitImpact({
+    items,
+    declaredMonthlyInsuranceSalary,
+    yearsOfService = 0
+  }) {
+    const declared = assertPositiveNumber("declaredMonthlyInsuranceSalary", declaredMonthlyInsuranceSalary);
+    const years = assertPositiveNumber("yearsOfService", yearsOfService);
+    const { wageAnalysis } = deriveWageBasis(items);
+    const wageBasis = wageAnalysis.wageTotal;
+    const correctLaborBracket = getLaborInsuranceBracket(wageBasis);
+    const declaredLaborBracket = getLaborInsuranceBracket(declared);
+    const insuredSalaryGap = Math.max(0, correctLaborBracket - declaredLaborBracket);
+    const underReported = insuredSalaryGap > 0;
+    const monthlyReductionPerYear = Math.round(insuredSalaryGap * OLD_AGE_PENSION_ACCRUAL_RATE);
+    const estimatedMonthlyReduction = Math.round(insuredSalaryGap * OLD_AGE_PENSION_ACCRUAL_RATE * years);
+    const monthlyBenefitGap = Math.round(insuredSalaryGap * UNEMPLOYMENT_BENEFIT_RATE);
+    const maxTotalGap = monthlyBenefitGap * UNEMPLOYMENT_BENEFIT_MAX_MONTHS;
+    const trace = createTrace();
+    addStep(trace, {
+      label: "\u61C9\u6295\u4FDD vs \u5BE6\u969B\u7533\u5831",
+      inputs: { wageBasis, correctLaborBracket, declaredLaborBracket },
+      value: insuredSalaryGap,
+      note: underReported ? "\u6295\u4FDD\u85AA\u8CC7\u88AB\u4F4E\u5831\uFF0C\u5404\u9805\u7D66\u4ED8\u57FA\u6578\u7E2E\u6C34" : "\u7121\u4F4E\u5831"
+    });
+    if (underReported) {
+      addStep(trace, {
+        label: "\u8001\u5E74\u5E74\u91D1\u6708\u5DEE\u984D\uFF08\u6BCF 1 \u5E74\u5E74\u8CC7\uFF09",
+        formula: "insuredSalaryGap \xD7 1.55%",
+        inputs: { insuredSalaryGap },
+        value: monthlyReductionPerYear,
+        note: "\u52DE\u4FDD\u8001\u5E74\u5E74\u91D1\u7B2C 2 \u5F0F\uFF1B\u4E58\u4E0A\u5BE6\u969B\u5E74\u8CC7\u5F97\u7E3D\u6708\u5DEE\u984D"
+      });
+      addStep(trace, {
+        label: `\u8001\u5E74\u5E74\u91D1\u6708\u5DEE\u984D\uFF08${years} \u5E74\u5E74\u8CC7\uFF09`,
+        formula: "insuredSalaryGap \xD7 1.55% \xD7 \u5E74\u8CC7",
+        inputs: { insuredSalaryGap, years },
+        value: estimatedMonthlyReduction
+      });
+      addStep(trace, {
+        label: "\u5931\u696D\u7D66\u4ED8\u6708\u5DEE\u984D",
+        formula: "insuredSalaryGap \xD7 60%",
+        inputs: { insuredSalaryGap },
+        value: monthlyBenefitGap,
+        note: `\u6700\u9577 ${UNEMPLOYMENT_BENEFIT_MAX_MONTHS} \u500B\u6708\uFF0C\u5408\u8A08\u5DEE\u984D ${maxTotalGap.toLocaleString()} \u5143`
+      });
+    }
+    addLaw(trace, {
+      article: "\u52DE\u5DE5\u4FDD\u96AA\u689D\u4F8B\xA758-1",
+      description: "\u8001\u5E74\u5E74\u91D1\u7B2C 2 \u5F0F\uFF1D\u5E73\u5747\u6708\u6295\u4FDD\u85AA\u8CC7 \xD7 \u5E74\u8CC7 \xD7 1.55%\u3002",
+      url: "https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=N0050001&flno=58-1"
+    });
+    addLaw(trace, {
+      article: "\u5C31\u696D\u4FDD\u96AA\u6CD5\xA716",
+      description: "\u5931\u696D\u7D66\u4ED8\uFF1D\u5E73\u5747\u6708\u6295\u4FDD\u85AA\u8CC7 60%\uFF0C\u6700\u9577 6 \u500B\u6708\u3002",
+      url: "https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=N0050021&flno=16"
+    });
+    setSummary(
+      trace,
+      underReported ? `\u6295\u4FDD\u85AA\u8CC7\u88AB\u4F4E\u5831 ${insuredSalaryGap.toLocaleString()} \u5143\uFF1A\u8001\u5E74\u5E74\u91D1\u6BCF\u5E74\u5E74\u8CC7\u6BCF\u6708\u5C11\u9818\u7D04 ${monthlyReductionPerYear.toLocaleString()} \u5143\u3001\u5931\u696D\u7D66\u4ED8\u6BCF\u6708\u5C11\u9818\u7D04 ${monthlyBenefitGap.toLocaleString()} \u5143\uFF08\u6700\u9577 6 \u500B\u6708\u5171 ${maxTotalGap.toLocaleString()} \u5143\uFF09\u3002` : "\u6295\u4FDD\u85AA\u8CC7\u7121\u4F4E\u5831\uFF0C\u7D66\u4ED8\u57FA\u6578\u6B63\u5E38\u3002"
+    );
+    return {
+      underReported,
+      wageBasis,
+      correctLaborBracket,
+      declaredLaborBracket,
+      insuredSalaryGap,
+      oldAgePension: { monthlyReductionPerYear, estimatedMonthlyReduction },
+      unemployment: { monthlyBenefitGap, maxTotalGap },
+      trace
     };
   }
 
@@ -2837,6 +3307,7 @@ var LC_CORE = (() => {
     for (let i = 1; i < intervals.length; i++) {
       const prev = intervals[i - 1];
       const cur = intervals[i];
+      if (cur.s.date === prev.s.date) continue;
       const gapHours = (cur.startMs - prev.endMs) / 36e5;
       if (gapHours >= 0 && gapHours < minGap - 1e-9) {
         out.push({
@@ -3650,8 +4121,8 @@ var LC_CORE = (() => {
       description: "\u672A\u7B26\u5408\u4E0B\u5217\u898F\u5B9A\u8005\uFF0C\u96C7\u4E3B\u4E0D\u5F97\u8207\u52DE\u5DE5\u70BA\u96E2\u8077\u5F8C\u7AF6\u696D\u7981\u6B62\u4E4B\u7D04\u5B9A\uFF1A\u4E00\u3001\u96C7\u4E3B\u6709\u61C9\u53D7\u4FDD\u8B77\u4E4B\u6B63\u7576\u71DF\u696D\u5229\u76CA\u3002\u4E8C\u3001\u52DE\u5DE5\u64D4\u4EFB\u4E4B\u8077\u4F4D\u6216\u8077\u52D9\uFF0C\u80FD\u63A5\u89F8\u6216\u4F7F\u7528\u96C7\u4E3B\u4E4B\u71DF\u696D\u79D8\u5BC6\u3002\u4E09\u3001\u7AF6\u696D\u7981\u6B62\u4E4B\u671F\u9593\u3001\u5340\u57DF\u3001\u8077\u696D\u6D3B\u52D5\u4E4B\u7BC4\u570D\u53CA\u5C31\u696D\u5C0D\u8C61\uFF0C\u672A\u903E\u5408\u7406\u7BC4\u7587\u3002\u56DB\u3001\u96C7\u4E3B\u5C0D\u52DE\u5DE5\u56E0\u4E0D\u5F9E\u4E8B\u7AF6\u696D\u884C\u70BA\u6240\u53D7\u640D\u5931\u6709\u5408\u7406\u88DC\u511F\u3002"
     });
     addLaw(trace, {
-      article: "\u52DE\u57FA\u6CD5\xA79-1 II",
-      description: "\u9055\u53CD\u524D\u9805\u5404\u6B3E\u898F\u5B9A\u4E4B\u4E00\u8005\uFF0C\u5176\u7D04\u5B9A\u7121\u6548\u3002"
+      article: "\u52DE\u57FA\u6CD5\xA79-1 III",
+      description: "\u9055\u53CD\u7B2C\u4E00\u9805\u5404\u6B3E\u898F\u5B9A\u4E4B\u4E00\u8005\uFF0C\u5176\u7D04\u5B9A\u7121\u6548\u3002"
     });
     const checks = [];
     if (hasLegitInterest === true) {
@@ -3660,7 +4131,7 @@ var LC_CORE = (() => {
       checks.push({
         key: "LEGIT_INTEREST",
         status: "fail",
-        detail: "\u6B20\u7F3A\u61C9\u53D7\u4FDD\u8B77\u4E4B\u6B63\u7576\u71DF\u696D\u5229\u76CA\uFF0C\u4F9D\xA79-1 II \u6574\u4EFD\u7D04\u5B9A\u7121\u6548\u3002"
+        detail: "\u6B20\u7F3A\u61C9\u53D7\u4FDD\u8B77\u4E4B\u6B63\u7576\u71DF\u696D\u5229\u76CA\uFF0C\u4F9D\xA79-1 III \u6574\u4EFD\u7D04\u5B9A\u7121\u6548\u3002"
       });
     }
     if (hasSecretAccess === true) {
@@ -3669,7 +4140,7 @@ var LC_CORE = (() => {
       checks.push({
         key: "SECRET_ACCESS",
         status: "fail",
-        detail: "\u52DE\u5DE5\u672A\u63A5\u89F8\u6216\u4F7F\u7528\u96C7\u4E3B\u71DF\u696D\u79D8\u5BC6\uFF0C\u9650\u5236\u7AF6\u696D\u6B20\u7F3A\u5FC5\u8981\u6027\uFF0C\u4F9D\xA79-1 II \u7D04\u5B9A\u7121\u6548\u3002"
+        detail: "\u52DE\u5DE5\u672A\u63A5\u89F8\u6216\u4F7F\u7528\u96C7\u4E3B\u71DF\u696D\u79D8\u5BC6\uFF0C\u9650\u5236\u7AF6\u696D\u6B20\u7F3A\u5FC5\u8981\u6027\uFF0C\u4F9D\xA79-1 III \u7D04\u5B9A\u7121\u6548\u3002"
       });
     }
     const effectivePeriodMonths = Math.min(periodMonths, PERIOD_CAP_MONTHS);
@@ -3677,17 +4148,17 @@ var LC_CORE = (() => {
       checks.push({
         key: "PERIOD_REASONABLE",
         status: "pass",
-        detail: `\u7AF6\u696D\u7981\u6B62\u671F\u9593 ${periodMonths} \u500B\u6708\uFF0C\u672A\u8D85\u904E\xA79-1 III \u6CD5\u5B9A\u4E0A\u9650 24 \u500B\u6708\u3002`
+        detail: `\u7AF6\u696D\u7981\u6B62\u671F\u9593 ${periodMonths} \u500B\u6708\uFF0C\u672A\u8D85\u904E\xA79-1 IV \u6CD5\u5B9A\u4E0A\u9650 24 \u500B\u6708\u3002`
       });
     } else {
       checks.push({
         key: "PERIOD_REASONABLE",
         status: "fail",
-        detail: `\u7AF6\u696D\u7981\u6B62\u671F\u9593 ${periodMonths} \u500B\u6708\u8D85\u904E\xA79-1 III \u6CD5\u5B9A\u4E0A\u9650 24 \u500B\u6708\uFF0C\u8D85\u904E\u90E8\u5206\u4F9D\u689D\u6587\u6587\u7FA9\u7E2E\u77ED\u70BA 2 \u5E74\uFF08\u7D30\u5247\xA77-3 II \u4EA6\u660E\u5B9A\u903E 2 \u5E74\u8005\uFF0C\u7E2E\u77ED\u70BA 2 \u5E74\uFF09\u3002`
+        detail: `\u7AF6\u696D\u7981\u6B62\u671F\u9593 ${periodMonths} \u500B\u6708\u8D85\u904E\xA79-1 IV \u6CD5\u5B9A\u4E0A\u9650 24 \u500B\u6708\uFF0C\u8D85\u904E\u90E8\u5206\u4F9D\u689D\u6587\u6587\u7FA9\u7E2E\u77ED\u70BA 2 \u5E74\uFF08\u7D30\u5247\xA77-2 I 1 \u4EA6\u660E\u5B9A\u671F\u9593\u6700\u9577\u4E0D\u5F97\u903E\u4E8C\u5E74\uFF09\u3002`
       });
     }
     addStep(trace, {
-      label: "\u6709\u6548\u671F\u9593\uFF08\xA79-1 III \u7E2E\u77ED\u5F8C\uFF09",
+      label: "\u6709\u6548\u671F\u9593\uFF08\xA79-1 IV \u7E2E\u77ED\u5F8C\uFF09",
       formula: "min(periodMonths, 24)",
       inputs: { periodMonths },
       value: effectivePeriodMonths,
@@ -3703,7 +4174,7 @@ var LC_CORE = (() => {
       checks.push({
         key: "SCOPE_REASONABLE",
         status: "warn",
-        detail: "\u7BC4\u570D\u904E\u5BEC\u6216\u4E0D\u5177\u9AD4\uFF1B\u6CD5\u9662\u5F97\u4F9D\xA79-1 III \u5F8C\u6BB5\u914C\u6E1B\u81F3\u5408\u7406\u7BC4\u570D\uFF0C\u904E\u5BEC\u90E8\u5206\u7121\u6548\uFF08\u7D30\u5247\xA77-2\uFF09\u3002"
+        detail: "\u7BC4\u570D\u904E\u5BEC\u6216\u4E0D\u5177\u9AD4\u8005\uFF0C\u672A\u7B26\xA79-1 I 3 \u5408\u7406\u7BC4\u7587\u8981\u4EF6\uFF08\u7D30\u5247\xA77-2\uFF09\uFF1B\u8A72\u6B3E\u4E0D\u7B26\u4F9D\xA79-1 III \u7D04\u5B9A\u7121\u6548\uFF0C\u5BE6\u52D9\u4E0A\u6CD5\u9662\u4EA6\u591A\u914C\u6E1B\u81F3\u5408\u7406\u7BC4\u570D\u3002"
       });
     }
     const minRequired = monthlySalary * COMPENSATION_FLOOR_RATIO;
@@ -3730,7 +4201,7 @@ var LC_CORE = (() => {
       checks.push({
         key: "COMPENSATION_ADEQUATE",
         status: "fail",
-        detail: `\u88DC\u511F\u91D1 ${Math.round(monthlyCompensation).toLocaleString()}/\u6708\uFF08\u50C5\u9054\u6708\u85AA ${(ratio * 100).toFixed(1)}%\uFF09\u4F4E\u65BC\u7D30\u5247\xA77-3 I 1 \u4E4B 50% \u4E0B\u9650\uFF08${Math.round(minRequired).toLocaleString()}/\u6708\uFF09\uFF1B\u6BCF\u6708\u5DEE\u984D ${Math.round(monthlyGap).toLocaleString()}\uFF0C\u6709\u6548\u671F\u9593 ${effectivePeriodMonths} \u500B\u6708\u7E3D\u5DEE\u984D ${Math.round(totalGap).toLocaleString()}\u3002\u4F9D\xA79-1 II \u7D04\u5B9A\u7121\u6548\u3002`
+        detail: `\u88DC\u511F\u91D1 ${Math.round(monthlyCompensation).toLocaleString()}/\u6708\uFF08\u50C5\u9054\u6708\u85AA ${(ratio * 100).toFixed(1)}%\uFF09\u4F4E\u65BC\u7D30\u5247\xA77-3 I 1 \u4E4B 50% \u4E0B\u9650\uFF08${Math.round(minRequired).toLocaleString()}/\u6708\uFF09\uFF1B\u6BCF\u6708\u5DEE\u984D ${Math.round(monthlyGap).toLocaleString()}\uFF0C\u6709\u6548\u671F\u9593 ${effectivePeriodMonths} \u500B\u6708\u7E3D\u5DEE\u984D ${Math.round(totalGap).toLocaleString()}\u3002\u4F9D\xA79-1 III \u7D04\u5B9A\u7121\u6548\u3002`
       });
       addStep(trace, {
         label: "\u88DC\u511F\u91D1\u5DEE\u984D\u8A66\u7B97",
@@ -3749,7 +4220,7 @@ var LC_CORE = (() => {
       setSummary(trace, `\u5408\u6CD5\u6027\u5B58\u7591\uFF1A${passCount} / 5 \u8981\u4EF6\u901A\u904E\uFF0C\u90E8\u5206\u8981\u4EF6\u672A\u9054\u6A19\u3002`);
     } else {
       verdict = "red";
-      setSummary(trace, `\u5408\u6CD5\u6027\u4F4E\uFF1A${passCount} / 5 \u8981\u4EF6\u901A\u904E\uFF0C\u4F9D\xA79-1 II \u53EF\u4E3B\u5F35\u5168\u90E8\u7121\u6548\u3002`);
+      setSummary(trace, `\u5408\u6CD5\u6027\u4F4E\uFF1A${passCount} / 5 \u8981\u4EF6\u901A\u904E\uFF0C\u4F9D\xA79-1 III \u53EF\u4E3B\u5F35\u5168\u90E8\u7121\u6548\u3002`);
     }
     return {
       result: {
@@ -3759,6 +4230,885 @@ var LC_CORE = (() => {
         compensationGap: { monthlyGap, totalGap, minRequired, ratio },
         effectivePeriodMonths
       },
+      trace
+    };
+  }
+
+  // ../../packages/core-labor/src/parental-leave.js
+  var MATERNITY_LEAVE_DAYS = 56;
+  var MATERNITY_FULL_PAY_TENURE_MONTHS = 6;
+  var PARENTAL_ALLOWANCE_BASE_RATE = 0.6;
+  var PARENTAL_ALLOWANCE_SUPPLEMENT_RATE = 0.2;
+  var PARENTAL_SUPPLEMENT_EFFECTIVE_FROM = "2021-07-01";
+  var PARENTAL_ALLOWANCE_MAX_MONTHS = 6;
+  var PARENTAL_LEAVE_MIN_TENURE_MONTHS = 6;
+  function clampMonths(months) {
+    if (months == null || !Number.isFinite(months) || months < 0) return 0;
+    return Math.min(months, PARENTAL_ALLOWANCE_MAX_MONTHS);
+  }
+  function roundCurrency(n) {
+    return Math.round(n);
+  }
+  function calcMaternityPay({ monthlySalary, tenureMonths }) {
+    if (!Number.isFinite(monthlySalary) || monthlySalary < 0) {
+      throw new Error("calcMaternityPay: monthlySalary \u5FC5\u9808\u70BA \u2265 0 \u7684\u6578\u5B57");
+    }
+    if (!Number.isFinite(tenureMonths) || tenureMonths < 0) {
+      throw new Error("calcMaternityPay: tenureMonths \u5FC5\u9808\u70BA \u2265 0 \u7684\u6578\u5B57");
+    }
+    const trace = createTrace();
+    const isFullPay = tenureMonths >= MATERNITY_FULL_PAY_TENURE_MONTHS;
+    const rate = isFullPay ? 1 : 0.5;
+    const baseDays = MATERNITY_LEAVE_DAYS;
+    const factor = baseDays / 30;
+    const amount = roundCurrency(monthlySalary * factor * rate);
+    addStep(trace, {
+      label: "\u7522\u5047\u57FA\u671F",
+      formula: `${baseDays} \u65E5 / 30 \u65E5`,
+      inputs: { days: baseDays, monthDivisor: 30 },
+      value: Number(factor.toFixed(4)),
+      note: "\u52DE\u57FA\u6CD5\xA750 \u7522\u5047 56 \u65E5\uFF08\u516B\u661F\u671F\uFF09\uFF0C\u4EE5\u6708\u85AA 30 \u65E5\u70BA\u57FA\u671F\u63DB\u7B97\u6708\u6578"
+    });
+    addStep(trace, {
+      label: "\u7D66\u4ED8\u7387",
+      inputs: { tenureMonths, threshold: MATERNITY_FULL_PAY_TENURE_MONTHS },
+      value: rate,
+      note: isFullPay ? "\u5E74\u8CC7\u6EFF 6 \u500B\u6708 \u2192 \u5DE5\u8CC7\u7167\u7D66\uFF08\u5168\u85AA\uFF09" : "\u5E74\u8CC7\u672A\u6EFF 6 \u500B\u6708 \u2192 \u6E1B\u534A\u767C\u7D66\uFF08\u534A\u85AA\uFF09"
+    });
+    addStep(trace, {
+      label: "\u7522\u5047\u85AA\u8CC7",
+      formula: "monthlySalary \xD7 (56/30) \xD7 rate",
+      inputs: { monthlySalary, factor: Number(factor.toFixed(4)), rate },
+      value: amount
+    });
+    addLaw(trace, {
+      article: "\u52DE\u57FA\u6CD5\xA750",
+      description: "\u7522\u5047 56 \u65E5\uFF08\u516B\u661F\u671F\uFF09\uFF1B\u5E74\u8CC7\u6EFF 6 \u500B\u6708\u8005\u5DE5\u8CC7\u7167\u7D66\uFF0C\u672A\u6EFF\u8005\u6E1B\u534A\u767C\u7D66\u3002"
+    });
+    addLaw(trace, {
+      article: "\u6027\u5225\u5E73\u7B49\u5DE5\u4F5C\u6CD5\xA715 I",
+      description: "\u7522\u5047 56 \u65E5\uFF0C\u8207\u52DE\u57FA\u6CD5\xA750 \u4E26\u884C\uFF1B\u7522\u5047\u7D66\u4ED8\u4EE5\u52DE\u57FA\u6CD5\u70BA\u6E96\u3002"
+    });
+    setSummary(
+      trace,
+      `\u7522\u5047\u85AA\u8CC7 ${amount.toLocaleString()} \u5143\uFF08\u6708\u85AA ${monthlySalary.toLocaleString()} \xD7 56/30 \xD7 ${rate === 1 ? "100%" : "50%"}\uFF09`
+    );
+    return { amount, rate, days: baseDays, trace };
+  }
+  function calcParentalAllowance({
+    insuredSalary,
+    months = PARENTAL_ALLOWANCE_MAX_MONTHS,
+    includeSupplement = true
+  }) {
+    if (!Number.isFinite(insuredSalary) || insuredSalary < 0) {
+      throw new Error("calcParentalAllowance: insuredSalary \u5FC5\u9808\u70BA \u2265 0 \u7684\u6578\u5B57");
+    }
+    const safeMonths = clampMonths(months);
+    const effectiveRate = includeSupplement ? PARENTAL_ALLOWANCE_BASE_RATE + PARENTAL_ALLOWANCE_SUPPLEMENT_RATE : PARENTAL_ALLOWANCE_BASE_RATE;
+    const monthlyAllowance = roundCurrency(insuredSalary * effectiveRate);
+    const totalAllowance = monthlyAllowance * safeMonths;
+    const trace = createTrace();
+    addStep(trace, {
+      label: "\u57FA\u672C\u6D25\u8CBC\u7387",
+      inputs: { rate: PARENTAL_ALLOWANCE_BASE_RATE },
+      value: PARENTAL_ALLOWANCE_BASE_RATE,
+      note: "\u5C31\u4FDD\xA719-2\uFF1A\u6295\u4FDD\u85AA\u8CC7 60%"
+    });
+    if (includeSupplement) {
+      addStep(trace, {
+        label: "\u52A0\u767C\u88DC\u52A9\u7387",
+        inputs: { rate: PARENTAL_ALLOWANCE_SUPPLEMENT_RATE },
+        value: PARENTAL_ALLOWANCE_SUPPLEMENT_RATE,
+        note: `\u884C\u653F\u9662 ${PARENTAL_SUPPLEMENT_EFFECTIVE_FROM} \u8D77\u52A0\u767C\u6295\u4FDD\u85AA\u8CC7 20% \u88DC\u52A9`
+      });
+    }
+    addStep(trace, {
+      label: "\u6BCF\u6708\u6D25\u8CBC",
+      formula: includeSupplement ? "insuredSalary \xD7 (60% + 20%)" : "insuredSalary \xD7 60%",
+      inputs: { insuredSalary, effectiveRate },
+      value: monthlyAllowance
+    });
+    addStep(trace, {
+      label: "\u5408\u8A08\u7D66\u4ED8",
+      formula: "monthly \xD7 months",
+      inputs: { monthly: monthlyAllowance, months: safeMonths },
+      value: totalAllowance,
+      note: safeMonths < months ? `\u5C31\u4FDD\xA719-2 \u6BCF\u4E00\u5B50\u5973\u6700\u9577 ${PARENTAL_ALLOWANCE_MAX_MONTHS} \u500B\u6708\uFF0C\u5DF2 clamp` : void 0
+    });
+    addLaw(trace, {
+      article: "\u5C31\u696D\u4FDD\u96AA\u6CD5\xA719-2 I",
+      description: "\u80B2\u5B30\u7559\u8077\u505C\u85AA\u6D25\u8CBC\u4EE5\u7576\u6708\u8D77\u524D\u516D\u500B\u6708\u5E73\u5747\u6708\u6295\u4FDD\u85AA\u8CC7 60% \u8A08\u7B97\uFF0C\u6BCF\u4E00\u5B50\u5973\u5408\u8A08\u6700\u9577\u767C\u7D66 6 \u500B\u6708\u3002"
+    });
+    if (includeSupplement) {
+      addLaw(trace, {
+        article: "\u884C\u653F\u9662\u300C\u80B2\u5B30\u7559\u8077\u505C\u85AA\u85AA\u8CC7\u88DC\u52A9\u8981\u9EDE\u300D\uFF08110.7.1 \u65BD\u884C\uFF09",
+        description: "\u5C31\u4FDD\xA719-2 \u671F\u9593\u52A0\u767C\u6295\u4FDD\u85AA\u8CC7 20% \u88DC\u52A9\uFF0C\u8207\u6D25\u8CBC\u5408\u4F75\u767C\u7D66\uFF0C\u7121\u9808\u53E6\u884C\u7533\u8ACB\u3002"
+      });
+    }
+    addLaw(trace, {
+      article: "\u6027\u5225\u5E73\u7B49\u5DE5\u4F5C\u6CD5\xA716 I",
+      description: "\u53D7\u50F1\u8005\u4EFB\u8077\u6EFF 6 \u500B\u6708\u5F8C\uFF0C\u65BC\u6BCF\u4E00\u5B50\u5973\u6EFF 3 \u6B72\u524D\u5F97\u7533\u8ACB\u80B2\u5B30\u7559\u8077\u505C\u85AA\uFF0C\u6700\u9577 2 \u5E74\u3002"
+    });
+    setSummary(
+      trace,
+      `\u80B2\u5B30\u7559\u505C\u6D25\u8CBC\u5408\u8A08 ${totalAllowance.toLocaleString()} \u5143\uFF08${monthlyAllowance.toLocaleString()} \xD7 ${safeMonths} \u500B\u6708\uFF09`
+    );
+    return {
+      monthlyAllowance,
+      totalAllowance,
+      months: safeMonths,
+      effectiveRate,
+      trace
+    };
+  }
+  function calcParentalLeavePackage({
+    monthlySalary,
+    insuredSalary,
+    tenureMonths,
+    includeMaternity = true,
+    parentalMonths = PARENTAL_ALLOWANCE_MAX_MONTHS,
+    includeSupplement = true
+  }) {
+    const maternity = includeMaternity && monthlySalary > 0 ? calcMaternityPay({ monthlySalary, tenureMonths }) : null;
+    const parental = calcParentalAllowance({
+      insuredSalary,
+      months: parentalMonths,
+      includeSupplement
+    });
+    const eligibleForParental = tenureMonths >= PARENTAL_LEAVE_MIN_TENURE_MONTHS;
+    const grandTotal = (maternity?.amount ?? 0) + parental.totalAllowance;
+    return { maternity, parental, grandTotal, eligibleForParental };
+  }
+
+  // ../../packages/core-labor/src/work-hours-compliance.js
+  var WEEKLY_HOURS_LIMIT = 40;
+  var DAILY_HOURS_LIMIT = 8;
+  var DAILY_INCL_OT_LIMIT = 12;
+  var MONTHLY_OT_LIMIT_NO_AGREEMENT = 46;
+  var MONTHLY_OT_LIMIT_WITH_AGREEMENT = 54;
+  var THREE_MONTH_OT_LIMIT = 138;
+  var SHIFT_GAP_MIN_HOURS = 11;
+  var REST_PATTERN_VALUES = Object.freeze({
+    FULL: "full",
+    // 例假 + 休息日 雙具備
+    HOLIDAY_ONLY: "holiday_only",
+    // 只有例假，缺休息日
+    NONE: "none"
+    // 兩者皆無（重大違法）
+  });
+  function makeCheck(article, level, status, note) {
+    return { article, level, status, note };
+  }
+  function checkWeeklyHours(weeklyHours) {
+    if (!Number.isFinite(weeklyHours) || weeklyHours < 0) {
+      throw new Error("checkWeeklyHours: weeklyHours \u5FC5\u9808\u70BA \u2265 0 \u7684\u6578\u5B57");
+    }
+    if (weeklyHours <= WEEKLY_HOURS_LIMIT) {
+      return makeCheck(
+        "\u52DE\u57FA\u6CD5\xA730",
+        "pass",
+        `\u9031\u5DE5\u6642 ${weeklyHours} \u5C0F\u6642 \u2264 40 \u5C0F\u6642`,
+        "\xA730 I \u6BCF\u9031\u6B63\u5E38\u5DE5\u6642\u4E0A\u9650 40 \u5C0F\u6642\uFF0C\u76EE\u524D\u5408\u898F\u3002\u5EF6\u9577\u5DE5\u6642\u9808\u53E6\u5FAA\xA732\u3002"
+      );
+    }
+    const over = Number((weeklyHours - WEEKLY_HOURS_LIMIT).toFixed(1));
+    return makeCheck(
+      "\u52DE\u57FA\u6CD5\xA730",
+      "fail",
+      `\u9031\u5DE5\u6642\u8D85\u51FA ${over} \u5C0F\u6642`,
+      "\xA730 I \u898F\u5B9A\u6BCF\u9031\u6B63\u5E38\u5DE5\u6642\u4E0D\u5F97\u8D85\u904E 40 \u5C0F\u6642\u3002\u5EF6\u9577\u5DE5\u6642\u61C9\u4F9D\xA732 II \u7D93\u5DE5\u6703 / \u52DE\u8CC7\u6703\u8B70\u540C\u610F\u4E26\u53E6\u8A08\u52A0\u73ED\u8CBB\u3002"
+    );
+  }
+  function checkMonthlyOvertime(monthlyOvertimeHours, hasAgreement = false) {
+    if (!Number.isFinite(monthlyOvertimeHours) || monthlyOvertimeHours < 0) {
+      throw new Error("checkMonthlyOvertime: monthlyOvertimeHours \u5FC5\u9808\u70BA \u2265 0 \u7684\u6578\u5B57");
+    }
+    const ot = monthlyOvertimeHours;
+    if (ot <= MONTHLY_OT_LIMIT_NO_AGREEMENT) {
+      return makeCheck(
+        "\u52DE\u57FA\u6CD5\xA732",
+        "pass",
+        `\u7576\u6708\u52A0\u73ED ${ot} \u5C0F\u6642 \u2264 46 \u5C0F\u6642`,
+        "\xA732 II \u9810\u8A2D\u6708\u52A0\u73ED\u4E0A\u9650 46 \u5C0F\u6642\uFF0C\u76EE\u524D\u5408\u898F\u3002\u96C7\u4E3B\u4ECD\u61C9\u4F9D\xA724 \u652F\u4ED8\u52A0\u73ED\u8CBB\u3002"
+      );
+    }
+    if (hasAgreement && ot <= MONTHLY_OT_LIMIT_WITH_AGREEMENT) {
+      return makeCheck(
+        "\u52DE\u57FA\u6CD5\xA732",
+        "warn",
+        `\u52A0\u73ED ${ot} \u5C0F\u6642\u4ECB\u65BC 46\u201354 \u5C0F\u6642\uFF0C\u9700\u52DE\u8CC7\u5354\u8B70\u64F4\u5F35`,
+        "\xA732 II \u4F46\u66F8\u7D93\u5DE5\u6703 / \u52DE\u8CC7\u6703\u8B70\u540C\u610F\u53EF\u81F3 54 \u5C0F\u6642\uFF0C\u4E14 3 \u500B\u6708\u5408\u8A08 \u2264 138 \u5C0F\u6642\u3002\u5EFA\u8B70\u5B9A\u671F\u52FE\u7A3D 3 \u500B\u6708\u7D2F\u8A08\u8207\u5354\u8B70\u6709\u6548\u6027\u3002"
+      );
+    }
+    if (!hasAgreement && ot > MONTHLY_OT_LIMIT_NO_AGREEMENT) {
+      return makeCheck(
+        "\u52DE\u57FA\u6CD5\xA732",
+        "fail",
+        `\u52A0\u73ED ${ot} \u5C0F\u6642 > 46 \u5C0F\u6642 \u4F46\u7121\u5354\u8B70`,
+        "\xA732 II \u7121\u5354\u8B70\u6642\u6708\u52A0\u73ED\u4E0D\u5F97\u903E 46 \u5C0F\u6642\u3002\u61C9\u7ACB\u5373\u6AA2\u8A0E\u6216\u5FAA\u5DE5\u6703 / \u52DE\u8CC7\u6703\u8B70\u540C\u610F\u7A0B\u5E8F\u3002"
+      );
+    }
+    return makeCheck(
+      "\u52DE\u57FA\u6CD5\xA732",
+      "fail",
+      `\u52A0\u73ED ${ot} \u5C0F\u6642 > 54 \u5C0F\u6642 \u7E31\u6709\u5354\u8B70\u4EA6\u9055\u6CD5`,
+      "\xA732 II \u7E31\u6709\u52DE\u8CC7\u5354\u8B70\uFF0C\u6708\u52A0\u73ED\u6700\u9AD8 54 \u5C0F\u6642\u4E0D\u5F97\u7A81\u7834\uFF1B\u6BCF 3 \u500B\u6708\u5408\u8A08\u4E0A\u9650 138 \u5C0F\u6642\u4EA6\u540C\u3002"
+    );
+  }
+  function checkShiftGap(shiftGapHours) {
+    if (!Number.isFinite(shiftGapHours) || shiftGapHours < 0) {
+      throw new Error("checkShiftGap: shiftGapHours \u5FC5\u9808\u70BA \u2265 0 \u7684\u6578\u5B57");
+    }
+    if (shiftGapHours >= 24) {
+      return makeCheck(
+        "\u52DE\u57FA\u6CD5\xA734",
+        "info",
+        "\u975E\u8F2A\u73ED\u5236\uFF0C\xA734 \u4E0D\u9069\u7528",
+        "\u63DB\u73ED\u9593\u9694 \u2265 24 \u5C0F\u6642\u8996\u70BA\u7121\u8F2A\u73ED\uFF0C\xA734 II 11 \u5C0F\u6642\u898F\u5B9A\u4E0D\u9069\u7528\u65BC\u6B64\u60C5\u5F62\u3002"
+      );
+    }
+    if (shiftGapHours >= SHIFT_GAP_MIN_HOURS) {
+      return makeCheck(
+        "\u52DE\u57FA\u6CD5\xA734",
+        "pass",
+        `\u63DB\u73ED\u9593\u9694 ${shiftGapHours} \u5C0F\u6642 \u2265 11 \u5C0F\u6642`,
+        "\xA734 II \u8F2A\u73ED\u63DB\u73ED\u6700\u4F4E\u9593\u9694 11 \u5C0F\u6642\uFF0C\u76EE\u524D\u5408\u898F\u3002"
+      );
+    }
+    const diff = Number((SHIFT_GAP_MIN_HOURS - shiftGapHours).toFixed(1));
+    return makeCheck(
+      "\u52DE\u57FA\u6CD5\xA734",
+      "fail",
+      `\u63DB\u73ED\u9593\u9694 ${shiftGapHours} \u5C0F\u6642\uFF0C\u5DEE ${diff} \u5C0F\u6642\u672A\u9054 11`,
+      "\xA734 II \u898F\u5B9A\u8F2A\u73ED\u5236\u52DE\u5DE5\u63DB\u73ED\u81F3\u5C11 11 \u5C0F\u6642\u9023\u7E8C\u4F11\u606F\u3002\u5EFA\u8B70\u8ABF\u6574\u6392\u73ED\u88DC\u8DB3\u5408\u6CD5\u9593\u9694\u3002"
+    );
+  }
+  function checkRestDays(restDayPattern) {
+    if (restDayPattern === REST_PATTERN_VALUES.FULL) {
+      return makeCheck(
+        "\u52DE\u57FA\u6CD5\xA736",
+        "pass",
+        "\u6BCF 7 \u65E5\u6709\u4F8B\u5047 + \u4F11\u606F\u65E5",
+        "\xA736 I \u6BCF 7 \u65E5\u61C9\u6709 1 \u4F8B\u5047 + 1 \u4F11\u606F\u65E5\uFF0C\u76EE\u524D\u5B8C\u6574\u5408\u898F\u3002"
+      );
+    }
+    if (restDayPattern === REST_PATTERN_VALUES.HOLIDAY_ONLY) {
+      return makeCheck(
+        "\u52DE\u57FA\u6CD5\xA736",
+        "warn",
+        "\u6709\u4F8B\u5047\u4F46\u7F3A\u4F11\u606F\u65E5",
+        "\xA736 I \u898F\u5B9A\u6BCF 7 \u65E5 1 \u4F8B\u5047 + 1 \u4F11\u606F\u65E5\uFF1B\u76EE\u524D\u7F3A\u4F11\u606F\u65E5\u3002\u4F8B\u5047\u4E0D\u9055\uFF0C\u4F46\u4F11\u606F\u65E5\u7F3A\u5931\u4ECD\u61C9\u88DC\u8DB3\u3002"
+      );
+    }
+    if (restDayPattern === REST_PATTERN_VALUES.NONE) {
+      return makeCheck(
+        "\u52DE\u57FA\u6CD5\xA736",
+        "fail",
+        "\u7121\u4F8B\u5047\u4EA6\u7121\u4F11\u606F\u65E5",
+        "\xA736 I \u4F8B\u5047\u70BA\u5F37\u5236\u898F\u5B9A\uFF0C\u96C7\u4E3B\u4E0D\u5F97\u525D\u596A\u3002\u76EE\u524D\u5B89\u6392\u9055\u53CD\u6BCF 7 \u65E5\u6700\u4F4E\u4F11\u606F\u8981\u6C42\uFF0C\u5C6C\u91CD\u5927\u9055\u6CD5\u3002"
+      );
+    }
+    throw new Error(
+      `checkRestDays: restDayPattern \u5FC5\u9808\u70BA 'full'|'holiday_only'|'none'\uFF0C\u6536\u5230 ${restDayPattern}`
+    );
+  }
+  function checkWorkHoursCompliance({
+    weeklyHours,
+    monthlyOvertimeHours,
+    hasOvertimeAgreement = false,
+    shiftGapHours,
+    restDayPattern
+  }) {
+    const weekly = checkWeeklyHours(weeklyHours);
+    const monthlyOT = checkMonthlyOvertime(monthlyOvertimeHours, hasOvertimeAgreement);
+    const shiftGap = checkShiftGap(shiftGapHours);
+    const restDays = checkRestDays(restDayPattern);
+    const all = [weekly, monthlyOT, shiftGap, restDays];
+    const passCount = all.filter((c) => c.level === "pass").length;
+    const warnCount = all.filter((c) => c.level === "warn").length;
+    const failCount = all.filter((c) => c.level === "fail").length;
+    const infoCount = all.filter((c) => c.level === "info").length;
+    let level;
+    let verdict;
+    if (failCount > 0) {
+      level = "fail";
+      verdict = "\u6709\u9055\u898F\u98A8\u96AA\uFF0C\u5EFA\u8B70\u7ACB\u5373\u6539\u5584";
+    } else if (warnCount > 0) {
+      level = "warn";
+      verdict = "\u90E8\u5206\u6CE8\u610F\u4E8B\u9805\uFF0C\u5EFA\u8B70\u6AA2\u8996";
+    } else {
+      level = "pass";
+      verdict = "\u6574\u9AD4\u5408\u898F\uFF0C\u7B26\u5408\u6CD5\u5B9A\u898F\u5B9A";
+    }
+    const trace = createTrace();
+    addStep(trace, {
+      label: "\xA730 I \u9031\u5DE5\u6642",
+      inputs: { weeklyHours, limit: WEEKLY_HOURS_LIMIT },
+      value: weeklyHours,
+      note: weekly.status
+    });
+    addStep(trace, {
+      label: "\xA732 II \u6708\u52A0\u73ED",
+      inputs: {
+        monthlyOvertimeHours,
+        hasAgreement: hasOvertimeAgreement,
+        noAgreementLimit: MONTHLY_OT_LIMIT_NO_AGREEMENT,
+        withAgreementLimit: MONTHLY_OT_LIMIT_WITH_AGREEMENT
+      },
+      value: monthlyOvertimeHours,
+      note: monthlyOT.status
+    });
+    addStep(trace, {
+      label: "\xA734 II \u63DB\u73ED\u9593\u9694",
+      inputs: { shiftGapHours, minHours: SHIFT_GAP_MIN_HOURS },
+      value: shiftGapHours,
+      note: shiftGap.status
+    });
+    addStep(trace, {
+      label: "\xA736 I \u4F8B\u4F11",
+      inputs: { restDayPattern },
+      value: passCount + warnCount + failCount + infoCount,
+      note: restDays.status
+    });
+    addLaw(trace, {
+      article: "\u52DE\u57FA\u6CD5\xA730 I",
+      description: "\u6BCF\u65E5 \u2264 8 \u5C0F\u6642\u3001\u6BCF\u9031 \u2264 40 \u5C0F\u6642\u3002"
+    });
+    addLaw(trace, {
+      article: "\u52DE\u57FA\u6CD5\xA732 II",
+      description: "\u52A0\u73ED\u542B\u6B63\u5E38\u4E00\u65E5 \u2264 12 \u5C0F\u6642\uFF1B\u6708 \u2264 46 \u5C0F\u6642\uFF0C\u7D93\u5DE5\u6703 / \u52DE\u8CC7\u6703\u8B70\u540C\u610F\u53EF\u81F3 54\uFF0C\u6BCF 3 \u500B\u6708 \u2264 138\u3002"
+    });
+    addLaw(trace, {
+      article: "\u52DE\u57FA\u6CD5\xA734 II",
+      description: "\u8F2A\u73ED\u5236\u63DB\u73ED\u9023\u7E8C\u4F11\u606F\u81F3\u5C11 11 \u5C0F\u6642\u3002"
+    });
+    addLaw(trace, {
+      article: "\u52DE\u57FA\u6CD5\xA736 I",
+      description: "\u6BCF 7 \u65E5 1 \u4F8B\u5047 + 1 \u4F11\u606F\u65E5\u3002"
+    });
+    setSummary(
+      trace,
+      `\u5408\u898F ${passCount} \u9805 \xB7 \u6CE8\u610F ${warnCount} \u9805 \xB7 \u9055\u898F ${failCount} \u9805${infoCount > 0 ? ` \xB7 \u4E0D\u9069\u7528 ${infoCount} \u9805` : ""} \u2192 ${verdict}`
+    );
+    return {
+      checks: { weekly, monthlyOT, shiftGap, restDays },
+      summary: { passCount, warnCount, failCount, infoCount, verdict, level },
+      trace
+    };
+  }
+
+  // ../../packages/core-labor/src/min-wage-compliance.js
+  var MEAL_ALLOWANCE_CAP = 2400;
+  var PENALTY_MIN = 2e4;
+  var PENALTY_MAX = 1e6;
+  function roundCurrency2(n) {
+    return Math.round(n);
+  }
+  function checkMonthlyMinWage({
+    baseSalary,
+    mealAllowance = 0,
+    fullAttendanceBonus = 0,
+    overtimePay = 0,
+    weeklyHours = 40,
+    minMonthly = LATEST_HOURLY_VERSION.monthly,
+    minHourly = LATEST_HOURLY_VERSION.hourly
+  }) {
+    if (!Number.isFinite(baseSalary) || baseSalary < 0) {
+      throw new Error("checkMonthlyMinWage: baseSalary \u5FC5\u9808\u70BA \u2265 0 \u7684\u6578\u5B57");
+    }
+    if (!Number.isFinite(mealAllowance) || mealAllowance < 0) {
+      throw new Error("checkMonthlyMinWage: mealAllowance \u5FC5\u9808\u70BA \u2265 0 \u7684\u6578\u5B57");
+    }
+    if (!Number.isFinite(weeklyHours) || weeklyHours <= 0) {
+      throw new Error("checkMonthlyMinWage: weeklyHours \u5FC5\u9808\u70BA > 0 \u7684\u6578\u5B57");
+    }
+    const mealCountable = Math.min(mealAllowance, MEAL_ALLOWANCE_CAP);
+    const mealExcluded = Math.max(0, mealAllowance - MEAL_ALLOWANCE_CAP);
+    const countableWage = baseSalary + mealCountable;
+    const gap = minMonthly - countableWage;
+    const level = countableWage >= minMonthly ? "pass" : "fail";
+    const monthsFactor = 52 / 12;
+    const impliedHourly = baseSalary / monthsFactor / weeklyHours;
+    const impliedHourlyPasses = impliedHourly >= minHourly;
+    const trace = createTrace();
+    addStep(trace, {
+      label: "\u8A08\u85AA\u57FA\u790E",
+      formula: "baseSalary + min(mealAllowance, 2400)",
+      inputs: { baseSalary, mealAllowance, mealCountable, mealCap: MEAL_ALLOWANCE_CAP },
+      value: countableWage,
+      note: mealExcluded > 0 ? `\u4F19\u98DF\u6D25\u8CBC\u8D85\u51FA 2,400 \u7684 ${mealExcluded} \u5143\u4E0D\u8A08\u5165\u6BD4\u8F03\u57FA\u790E` : "\u5168\u52E4\u734E\u91D1\u3001\u52A0\u73ED\u8CBB\u5C6C\u975E\u7D93\u5E38\u6027 / \u6CD5\u5B9A\u52A0\u7D66\uFF0C\u4E0D\u8A08\u5165"
+    });
+    addStep(trace, {
+      label: "\u57FA\u672C\u5DE5\u8CC7\u6BD4\u5C0D",
+      formula: "countable \u2265 minMonthly ?",
+      inputs: { countableWage, minMonthly },
+      value: gap,
+      note: level === "pass" ? `\u591A ${Math.abs(gap).toLocaleString()} \u5143\uFF0C\u5408\u898F` : `\u5DEE ${gap.toLocaleString()} \u5143 / \u6708\uFF08\u5E74\u5DEE ${(gap * 12).toLocaleString()} \u5143\uFF09\uFF0C\u9055\u53CD\xA721 I`
+    });
+    addStep(trace, {
+      label: "\u96B1\u542B\u6642\u85AA cross-check",
+      formula: "baseSalary / (52/12) / weeklyHours",
+      inputs: { baseSalary, monthsFactor: Number(monthsFactor.toFixed(4)), weeklyHours, minHourly },
+      value: Number(impliedHourly.toFixed(2)),
+      note: impliedHourlyPasses ? "\u96B1\u542B\u6642\u85AA \u2265 \u6CD5\u5B9A\u6642\u85AA\uFF0C\u5408\u898F" : "\u96B1\u542B\u6642\u85AA < \u6CD5\u5B9A\u6642\u85AA\uFF0C\u96C7\u4E3B\u4E0D\u5F97\u85C9\u6642 / \u6708\u85AA\u63DB\u7B97\u898F\u907F\uFF08\u52DE\u52D5\u90E8\u51FD\u91CB\uFF09"
+    });
+    addLaw(trace, {
+      article: "\u52DE\u57FA\u6CD5\xA721 I",
+      description: "\u5DE5\u8CC7\u7531\u52DE\u96C7\u96D9\u65B9\u8B70\u5B9A\u4E4B\uFF0C\u4F46\u4E0D\u5F97\u4F4E\u65BC\u57FA\u672C\u5DE5\u8CC7\u3002"
+    });
+    if (level === "fail") {
+      addLaw(trace, {
+        article: "\u52DE\u57FA\u6CD5\xA779 I 1",
+        description: `\u9055\u53CD\xA721 I \u8655\u65B0\u81FA\u5E63 ${PENALTY_MIN.toLocaleString()} \u5143\u4EE5\u4E0A ${PENALTY_MAX.toLocaleString()} \u5143\u4EE5\u4E0B\u7F70\u9370\uFF1B\u96C7\u4E3B\u4E26\u61C9\u88DC\u8DB3\u5DEE\u984D\u3002`
+      });
+    }
+    setSummary(
+      trace,
+      level === "pass" ? `\u8A08\u85AA\u57FA\u790E ${countableWage.toLocaleString()} \u5143 \u2265 \u57FA\u672C\u5DE5\u8CC7\u6708\u85AA ${minMonthly.toLocaleString()} \u5143\uFF0C\u5408\u898F\u3002` : `\u8A08\u85AA\u57FA\u790E ${countableWage.toLocaleString()} \u5143 < \u57FA\u672C\u5DE5\u8CC7 ${minMonthly.toLocaleString()} \u5143\uFF0C\u6708\u5DEE ${gap.toLocaleString()} \u5143\uFF0C\u9055\u53CD\xA721 I\uFF08\xA779 I 1 \u7F70 2 \u842C \uFF5E 100 \u842C\u5143\uFF09\u3002`
+    );
+    return {
+      payType: "monthly",
+      countableWage: roundCurrency2(countableWage),
+      countableBreakdown: {
+        baseSalary,
+        mealCountable,
+        mealExcluded,
+        fullAttendanceBonus,
+        overtimePay
+      },
+      gap: roundCurrency2(gap),
+      level,
+      minMonthly,
+      impliedHourly: Number(impliedHourly.toFixed(2)),
+      impliedHourlyPasses,
+      trace
+    };
+  }
+  function checkHourlyMinWage({
+    hourlyWage,
+    weeklyHours = 40,
+    minHourly = LATEST_HOURLY_VERSION.hourly
+  }) {
+    if (!Number.isFinite(hourlyWage) || hourlyWage < 0) {
+      throw new Error("checkHourlyMinWage: hourlyWage \u5FC5\u9808\u70BA \u2265 0 \u7684\u6578\u5B57");
+    }
+    if (!Number.isFinite(weeklyHours) || weeklyHours <= 0) {
+      throw new Error("checkHourlyMinWage: weeklyHours \u5FC5\u9808\u70BA > 0 \u7684\u6578\u5B57");
+    }
+    const gap = hourlyWage - minHourly;
+    const level = hourlyWage >= minHourly ? "pass" : "fail";
+    const monthsFactor = 52 / 12;
+    const impliedMonthly = hourlyWage * weeklyHours * monthsFactor;
+    const trace = createTrace();
+    addStep(trace, {
+      label: "\u6642\u85AA\u6BD4\u5C0D",
+      formula: "hourlyWage \u2265 minHourly ?",
+      inputs: { hourlyWage, minHourly },
+      value: gap,
+      note: level === "pass" ? "\u6642\u85AA \u2265 \u6CD5\u5B9A\u4E0B\u9650\uFF0C\u5408\u898F" : `\u5DEE ${Math.abs(gap)} \u5143 / \u5C0F\u6642`
+    });
+    addStep(trace, {
+      label: "\u96B1\u542B\u6708\u85AA\uFF08\u53C3\u8003\uFF09",
+      formula: "hourlyWage \xD7 weeklyHours \xD7 (52/12)",
+      inputs: { hourlyWage, weeklyHours, monthsFactor: Number(monthsFactor.toFixed(4)) },
+      value: roundCurrency2(impliedMonthly),
+      note: "\u52DE\u52D5\u90E8\u51FD\u91CB\uFF1A\u6642\u85AA / \u6708\u85AA\u57FA\u672C\u5DE5\u8CC7\u5404\u81EA\u7368\u7ACB\uFF0C\u4E0D\u5F97\u63DB\u7B97\u898F\u907F"
+    });
+    addLaw(trace, {
+      article: "\u52DE\u57FA\u6CD5\xA721 I",
+      description: "\u5DE5\u8CC7\u7531\u52DE\u96C7\u96D9\u65B9\u8B70\u5B9A\u4E4B\uFF0C\u4F46\u4E0D\u5F97\u4F4E\u65BC\u57FA\u672C\u5DE5\u8CC7\u3002"
+    });
+    if (level === "fail") {
+      addLaw(trace, {
+        article: "\u52DE\u57FA\u6CD5\xA779 I 1",
+        description: `\u9055\u53CD\xA721 I \u8655\u65B0\u81FA\u5E63 ${PENALTY_MIN.toLocaleString()} \u5143\u4EE5\u4E0A ${PENALTY_MAX.toLocaleString()} \u5143\u4EE5\u4E0B\u7F70\u9370\u3002`
+      });
+    }
+    setSummary(
+      trace,
+      level === "pass" ? `\u6642\u85AA ${hourlyWage} \u5143 \u2265 \u57FA\u672C\u6642\u85AA ${minHourly} \u5143\uFF0C\u5408\u898F\u3002` : `\u6642\u85AA ${hourlyWage} \u5143 < \u57FA\u672C\u6642\u85AA ${minHourly} \u5143\uFF08\u5DEE ${Math.abs(gap)} \u5143 / hr\uFF09\uFF0C\u9055\u53CD\xA721 I\u3002`
+    );
+    return {
+      payType: "hourly",
+      hourlyWage,
+      gap: Number(gap.toFixed(2)),
+      level,
+      minHourly,
+      impliedMonthly: roundCurrency2(impliedMonthly),
+      trace
+    };
+  }
+
+  // ../../packages/core-labor/src/payslip-checker.js
+  var LABOR_INS_WORKER_RATE = LABOR_RATES_2026.labor * LABOR_RATES_2026.laborEmployee;
+  var HEALTH_INS_WORKER_RATE = LABOR_RATES_2026.nhi * LABOR_RATES_2026.nhiEmployee;
+  var TOLERANCE = 1;
+  var HEALTH_MULTIPLE_TOLERANCE = 0.05;
+  function roundCurrency3(n) {
+    return Math.round(n);
+  }
+  function statusLabel(actual, expected, opts = {}) {
+    if (actual === 0) return "missing";
+    const diff = Math.abs(actual - expected);
+    if (diff < (opts.toleranceAbs ?? 2)) return "pass";
+    if (actual < expected) return "underpaid";
+    return "overpaid";
+  }
+  function checkPayslip({
+    agreedSalary,
+    actualDays,
+    expectedDays = 22,
+    slip
+  }) {
+    if (!Number.isFinite(agreedSalary) || agreedSalary <= 0) {
+      throw new Error("checkPayslip: agreedSalary \u5FC5\u9808\u70BA > 0 \u7684\u6578\u5B57");
+    }
+    if (!Number.isFinite(actualDays) || actualDays < 0) {
+      throw new Error("checkPayslip: actualDays \u5FC5\u9808\u70BA \u2265 0");
+    }
+    if (!Number.isFinite(expectedDays) || expectedDays <= 0) {
+      throw new Error("checkPayslip: expectedDays \u5FC5\u9808\u70BA > 0");
+    }
+    if (!slip || typeof slip !== "object") {
+      throw new Error("checkPayslip: slip \u7269\u4EF6\u5FC5\u586B");
+    }
+    const basePay = Number(slip.basePay) || 0;
+    const otPay = Number(slip.overtimePay) || 0;
+    const attendanceBonus = Number(slip.attendanceBonus) || 0;
+    const otherAdd = Number(slip.otherAdd) || 0;
+    const laborIns = Number(slip.laborInsurance) || 0;
+    const healthIns = Number(slip.healthInsurance) || 0;
+    const taxWithhold = Number(slip.taxWithhold) || 0;
+    const otherDeduct = Number(slip.otherDeduct) || 0;
+    const netPay = Number(slip.netPay) || 0;
+    const expectedBasePay = actualDays >= expectedDays ? agreedSalary : roundCurrency3(agreedSalary * (actualDays / expectedDays));
+    const laborBracket = getLaborInsuranceBracket(agreedSalary);
+    const expectedLaborIns = roundCurrency3(laborBracket * LABOR_INS_WORKER_RATE);
+    const healthBracket = getNhiBracket(agreedSalary);
+    const expectedHealthIns = roundCurrency3(
+      healthBracket * HEALTH_INS_WORKER_RATE
+    );
+    let healthDependents = 0;
+    let isHealthMultiple = false;
+    if (healthIns > 0 && expectedHealthIns > 0) {
+      const ratio = healthIns / expectedHealthIns;
+      const rounded = Math.round(ratio);
+      if (rounded >= 1 && Math.abs(ratio - rounded) < HEALTH_MULTIPLE_TOLERANCE) {
+        isHealthMultiple = true;
+        healthDependents = rounded;
+      }
+    }
+    const slipGross = basePay + otPay + attendanceBonus + otherAdd;
+    const slipDeductions = laborIns + healthIns + taxWithhold + otherDeduct;
+    const calcNetPay = slipGross - slipDeductions;
+    const netPayDiff = netPay - calcNetPay;
+    const checks = {
+      basePay: {
+        level: Math.abs(basePay - expectedBasePay) < TOLERANCE ? "pass" : "fail",
+        actual: basePay,
+        expected: expectedBasePay,
+        diff: roundCurrency3(basePay - expectedBasePay)
+      },
+      laborIns: (() => {
+        const s = statusLabel(laborIns, expectedLaborIns, { toleranceAbs: 2 });
+        let level = "pass";
+        let note = "";
+        if (s === "missing") {
+          level = "warn";
+          note = "\u672A\u6263\u52DE\u4FDD\uFF08\u53EF\u80FD\u672A\u6295\u4FDD\uFF09";
+        } else if (s === "pass") {
+          level = "pass";
+        } else if (s === "underpaid") {
+          level = "fail";
+          note = "\u4F4E\u65BC\u61C9\u6263\uFF0C\u53EF\u80FD\u9AD8\u85AA\u4F4E\u5831\uFF08\u52DE\u4FDD\u689D\u4F8B\xA772 III\uFF09";
+        } else {
+          level = "warn";
+          note = "\u9AD8\u65BC\u61C9\u6263\uFF0C\u8ACB\u78BA\u8A8D\u7D1A\u8DDD";
+        }
+        return {
+          level,
+          actual: laborIns,
+          expected: expectedLaborIns,
+          bracket: laborBracket,
+          note
+        };
+      })(),
+      healthIns: (() => {
+        let level = "pass";
+        let note = "";
+        if (healthIns === 0) {
+          level = "warn";
+          note = "\u672A\u6263\u5065\u4FDD\uFF08\u53EF\u80FD\u672A\u6295\u4FDD\uFF09";
+        } else if (isHealthMultiple) {
+          level = "pass";
+          note = healthDependents > 1 ? `\u672C\u4EBA + ${healthDependents - 1} \u540D\u7737\u5C6C` : "\u672C\u4EBA";
+        } else if (healthIns < expectedHealthIns * 0.9) {
+          level = "fail";
+          note = "\u986F\u8457\u4F4E\u65BC\u61C9\u6263\uFF0C\u53EF\u80FD\u9AD8\u85AA\u4F4E\u5831";
+        } else {
+          level = "warn";
+          note = "\u8ACB\u78BA\u8A8D\u7737\u5C6C\u4EBA\u6578\u8207\u7D1A\u8DDD";
+        }
+        return {
+          level,
+          actual: healthIns,
+          expected: expectedHealthIns,
+          bracket: healthBracket,
+          dependents: isHealthMultiple ? healthDependents : null,
+          note
+        };
+      })(),
+      netPay: {
+        level: Math.abs(netPayDiff) < TOLERANCE ? "pass" : "fail",
+        actual: netPay,
+        expected: calcNetPay,
+        diff: roundCurrency3(netPayDiff),
+        direction: netPayDiff > 0 ? "over" : netPayDiff < 0 ? "under" : "match"
+      }
+    };
+    const allLevels = Object.values(checks).map((c) => c.level);
+    const overallLevel = allLevels.includes("fail") ? "fail" : allLevels.includes("warn") ? "warn" : "pass";
+    const trace = createTrace();
+    addStep(trace, {
+      label: "\u672C\u85AA\u6BD4\u5C0D",
+      formula: actualDays >= expectedDays ? "agreedSalary" : "agreedSalary \xD7 (actualDays / expectedDays)",
+      inputs: { agreedSalary, actualDays, expectedDays },
+      value: expectedBasePay,
+      note: `\u85AA\u8CC7\u55AE\u672C\u85AA ${basePay.toLocaleString()}\uFF0C\u5DEE ${(basePay - expectedBasePay).toLocaleString()}`
+    });
+    addStep(trace, {
+      label: "\u52DE\u4FDD\u81EA\u4ED8\u63A8\u7B97",
+      formula: "getLaborInsuranceBracket(agreedSalary) \xD7 2.5%",
+      inputs: {
+        bracket: laborBracket,
+        rate: Number(LABOR_INS_WORKER_RATE.toFixed(4))
+      },
+      value: expectedLaborIns,
+      note: checks.laborIns.note || "\u8207\u85AA\u8CC7\u55AE\u4E00\u81F4"
+    });
+    addStep(trace, {
+      label: "\u5065\u4FDD\u81EA\u4ED8\u63A8\u7B97",
+      formula: "getNhiBracket(agreedSalary) \xD7 1.551%",
+      inputs: {
+        bracket: healthBracket,
+        rate: Number(HEALTH_INS_WORKER_RATE.toFixed(4))
+      },
+      value: expectedHealthIns,
+      note: checks.healthIns.note || "\u8207\u85AA\u8CC7\u55AE\u4E00\u81F4"
+    });
+    addStep(trace, {
+      label: "\u5BE6\u9818\u6BD4\u5C0D",
+      formula: "gross \u2212 deductions = calcNet ?= \u85AA\u8CC7\u55AE net",
+      inputs: {
+        gross: slipGross,
+        deductions: slipDeductions,
+        calcNet: roundCurrency3(calcNetPay),
+        slipNet: netPay
+      },
+      value: roundCurrency3(netPayDiff),
+      note: Math.abs(netPayDiff) < TOLERANCE ? "\u4E00\u81F4" : netPayDiff < 0 ? "\u85AA\u8CC7\u55AE\u5BE6\u9818\u4F4E\u65BC\u8A08\u7B97\uFF08\u53EF\u80FD\u77ED\u4ED8\uFF09" : "\u85AA\u8CC7\u55AE\u5BE6\u9818\u9AD8\u65BC\u8A08\u7B97"
+    });
+    addLaw(trace, {
+      article: "\u52DE\u57FA\u6CD5\xA722 II",
+      description: "\u5DE5\u8CC7\u61C9\u5168\u984D\u76F4\u63A5\u7D66\u4ED8\u52DE\u5DE5\u3002"
+    });
+    addLaw(trace, {
+      article: "\u52DE\u5DE5\u4FDD\u96AA\u689D\u4F8B\xA713\u3001\xA714",
+      description: "\u666E\u901A\u4E8B\u6545\u4FDD\u96AA\u8CBB\u7387\u73FE\u884C 12.5%\uFF08\u542B\u5C31\u4FDD\uFF09\uFF0C\u500B\u4EBA\u81EA\u4ED8 20%\uFF1B\u6295\u4FDD\u85AA\u8CC7\u4F9D\u5206\u7D1A\u8868\u7533\u5831\u3002"
+    });
+    addLaw(trace, {
+      article: "\u5168\u6C11\u5065\u5EB7\u4FDD\u96AA\u6CD5\xA719\u3001\xA727",
+      description: "\u5065\u4FDD\u8CBB\u7387 5.17%\uFF1B\u53D7\u50F1\u8005\u8CA0\u64D4 30%\u3001\u96C7\u4E3B 60%\u3001\u653F\u5E9C 10%\u3002"
+    });
+    if (checks.laborIns.level === "fail" || checks.healthIns.level === "fail") {
+      addLaw(trace, {
+        article: "\u52DE\u5DE5\u4FDD\u96AA\u689D\u4F8B\xA772 III",
+        description: "\u9AD8\u85AA\u4F4E\u5831\u4E4B\u96C7\u4E3B\u8655\u61C9\u7E73\u4FDD\u96AA\u8CBB\u91D1\u984D 4 \u500D\u4E4B\u7F70\u9370\uFF0C\u4E26\u88DC\u7E73\u5DEE\u984D\uFF1B\u52DE\u5DE5\u5F97\u7533\u8A34\u52DE\u4FDD\u5C40\u67E5\u6838\u3002"
+      });
+    }
+    setSummary(
+      trace,
+      overallLevel === "pass" ? "\u85AA\u8CC7\u55AE\u8207\u7D1A\u8DDD + \u7D04\u5B9A\u85AA\u8CC7\u4E00\u81F4\u3002" : `${overallLevel === "fail" ? "\u53EF\u80FD\u9055\u898F" : "\u90E8\u5206\u9700\u78BA\u8A8D"}\uFF1A\u672C\u85AA${checks.basePay.level}\u3001\u52DE\u4FDD${checks.laborIns.level}\u3001\u5065\u4FDD${checks.healthIns.level}\u3001\u5BE6\u9818${checks.netPay.level}`
+    );
+    return {
+      expected: {
+        basePay: expectedBasePay,
+        laborBracket,
+        expectedLaborIns,
+        healthBracket,
+        expectedHealthIns,
+        healthDependents: isHealthMultiple ? healthDependents : 0
+      },
+      slip: {
+        gross: roundCurrency3(slipGross),
+        deductions: roundCurrency3(slipDeductions),
+        calcNetPay: roundCurrency3(calcNetPay)
+      },
+      checks,
+      netPayDiff: roundCurrency3(netPayDiff),
+      overallLevel,
+      trace
+    };
+  }
+
+  // ../../packages/core-labor/src/overtime-detail.js
+  var OVERTIME_TYPE_MAP = Object.freeze({
+    weekday: "weekday",
+    restday: "restday",
+    holiday: "statutory_holiday",
+    // §39 國定假日
+    mandatory: "mandatory_leave"
+    // §36/§40 例假日（出勤通常違法）
+  });
+  var OVERTIME_TYPE_LABELS = Object.freeze({
+    weekday: "\u5E73\u65E5",
+    restday: "\u4F11\u606F\u65E5",
+    holiday: "\u570B\u5B9A\u5047\u65E5",
+    mandatory: "\u4F8B\u5047\u65E5"
+  });
+  function emptyBucket() {
+    return { hours: 0, pay: 0, count: 0 };
+  }
+  function aggregateOvertimeEntries({
+    entries,
+    monthlySalary,
+    hasOvertimeAgreement = false,
+    emergency = false
+  }) {
+    if (!Array.isArray(entries)) {
+      throw new Error("aggregateOvertimeEntries: entries \u5FC5\u9808\u70BA\u9663\u5217");
+    }
+    if (!Number.isFinite(monthlySalary) || monthlySalary <= 0) {
+      throw new Error("aggregateOvertimeEntries: monthlySalary \u5FC5\u9808\u70BA > 0");
+    }
+    const hourlyWage = monthlyToHourly(monthlySalary);
+    const byType = {
+      weekday: emptyBucket(),
+      restday: emptyBucket(),
+      holiday: emptyBucket(),
+      mandatory: emptyBucket()
+    };
+    const perEntry = [];
+    let totalHours = 0;
+    let totalPay = 0;
+    const illegalEntries = [];
+    for (const e of entries) {
+      if (e == null || typeof e !== "object") continue;
+      const type = e.type in OVERTIME_TYPE_MAP ? e.type : "weekday";
+      const hours = Number(e.hours);
+      if (!Number.isFinite(hours) || hours <= 0) continue;
+      const shiftKind = OVERTIME_TYPE_MAP[type];
+      const result = calcOvertimePay({
+        shiftKind,
+        overtimeHours: hours,
+        hourlyWage,
+        // 例假日出勤合法化需§40 emergency；其他類型 emergency 旗標目前不影響倍率
+        emergency: type === "mandatory" ? emergency : false
+      });
+      const illegal = type === "mandatory" && !emergency;
+      const entryRecord = {
+        date: e.date ?? null,
+        type,
+        label: OVERTIME_TYPE_LABELS[type],
+        hours,
+        pay: result.totalAmount,
+        formula: result.formula,
+        segments: result.segments,
+        illegal
+      };
+      perEntry.push(entryRecord);
+      byType[type].hours += hours;
+      byType[type].pay += result.totalAmount;
+      byType[type].count += 1;
+      totalHours += hours;
+      totalPay += result.totalAmount;
+      if (illegal) illegalEntries.push(entryRecord);
+    }
+    const limit = hasOvertimeAgreement ? MONTHLY_OT_LIMIT_WITH_AGREEMENT : MONTHLY_OT_LIMIT_NO_AGREEMENT;
+    const otBilling = byType.weekday.hours + byType.restday.hours;
+    let level = "pass";
+    let exceedsBy = 0;
+    let note = "";
+    if (otBilling > limit) {
+      level = "fail";
+      exceedsBy = otBilling - limit;
+      note = `\u5408\u8A08 ${otBilling} \u5C0F\u6642\uFF0C\u8D85\u904E\xA732 II \u4E0A\u9650 ${limit} \u5C0F\u6642 ${exceedsBy} hr\u3002`;
+    } else if (hasOvertimeAgreement && otBilling > MONTHLY_OT_LIMIT_NO_AGREEMENT) {
+      level = "warn";
+      note = `\u5408\u8A08 ${otBilling} \u5C0F\u6642\uFF0C\u843D\u5728\u52DE\u8CC7\u5354\u8B70\u5EF6\u9577 46-54 \u5340\u9593\uFF1B3 \u500B\u6708\u4ECD\u9700 \u2264 138\u3002`;
+    } else {
+      level = "pass";
+      note = `\u5E73\u65E5 + \u4F11\u606F\u65E5\u5408\u8A08 ${otBilling} \u5C0F\u6642\uFF0C\u672A\u903E\xA732 II \u4E0A\u9650 ${limit} \u5C0F\u6642\u3002`;
+    }
+    const trace = createTrace();
+    addStep(trace, {
+      label: "\u6642\u85AA\u63DB\u7B97",
+      formula: "monthlySalary / 30 / 8",
+      inputs: { monthlySalary },
+      value: Number(hourlyWage.toFixed(2)),
+      note: "\u52DE\u57FA\u6CD5\u65BD\u884C\u7D30\u5247 + \u884C\u653F\u51FD\u91CB\uFF1A\u4EE5\u5E73\u65E5\u6BCF\u5C0F\u6642\u5DE5\u8CC7\u70BA\u57FA\u790E"
+    });
+    addStep(trace, {
+      label: "\u9010\u7B46\u52A0\u7E3D",
+      formula: "sum(perEntry.pay)",
+      inputs: {
+        entries: perEntry.length,
+        weekdayH: byType.weekday.hours,
+        restdayH: byType.restday.hours,
+        holidayH: byType.holiday.hours,
+        mandatoryH: byType.mandatory.hours
+      },
+      value: Math.round(totalPay)
+    });
+    addStep(trace, {
+      label: "\xA732 II \u6708\u52A0\u73ED\u4E0A\u9650\u6AA2\u67E5",
+      formula: "weekdayH + restdayH \u2264 (hasAgreement ? 54 : 46) ?",
+      inputs: { otBilling, limit, hasAgreement: hasOvertimeAgreement },
+      value: exceedsBy,
+      note
+    });
+    addLaw(trace, {
+      article: "\u52DE\u57FA\u6CD5\xA724 I",
+      description: "\u5E73\u65E5\u5EF6\u9577\u5DE5\u6642\u524D 2 \u5C0F\u6642 \xD7 4/3\u3001\u7B2C 3-4 \u5C0F\u6642 \xD7 5/3\uFF1B\u5929\u707D\u4E8B\u8B8A \xD7 2\u3002"
+    });
+    addLaw(trace, {
+      article: "\u52DE\u57FA\u6CD5\xA724 II",
+      description: "\u4F11\u606F\u65E5\u5DE5\u4F5C\u524D 2 \u5C0F\u6642 \xD7 4/3\u3001\u7B2C 3 \u5C0F\u6642\u8D77 \xD7 5/3\uFF08107 \u5E74\u4FEE\u6CD5\u5F8C\u6838\u5BE6\u8A08\u7B97\uFF09\u3002"
+    });
+    addLaw(trace, {
+      article: "\u52DE\u57FA\u6CD5\xA739",
+      description: "\u570B\u5B9A\u5047\u65E5 / \u7279\u5225\u4F11\u5047\u7D93\u52DE\u5DE5\u540C\u610F\u51FA\u52E4\uFF0C\u5DE5\u8CC7\u52A0\u500D\u767C\u7D66\u3002"
+    });
+    if (illegalEntries.length > 0) {
+      addLaw(trace, {
+        article: "\u52DE\u57FA\u6CD5\xA740",
+        description: "\u4F8B\u5047\u65E5\u51FA\u52E4\u9650\u65BC\u5929\u707D / \u4E8B\u8B8A / \u7A81\u767C\u4E8B\u4EF6\uFF0C\u4E14\u61C9\u4E8B\u5F8C 24 \u5C0F\u6642\u5167\u5831\u4E3B\u7BA1\u6A5F\u95DC\u6838\u5099\uFF1B\u9055\u8005\u4F9D\xA779 \u8655\u7F70\u3002"
+      });
+    }
+    addLaw(trace, {
+      article: "\u52DE\u57FA\u6CD5\xA732 II",
+      description: "\u5EF6\u9577\u5DE5\u6642\u6708 \u2264 46\uFF0C\u7D93\u5DE5\u6703 / \u52DE\u8CC7\u6703\u8B70\u540C\u610F\u53EF\u81F3 54\uFF0C\u6BCF 3 \u500B\u6708 \u2264 138\u3002"
+    });
+    setSummary(
+      trace,
+      `\u672C\u6708\u52A0\u73ED ${perEntry.length} \u7B46\u5171 ${totalHours} \u5C0F\u6642\uFF0C\u52A0\u73ED\u8CBB NT$ ${Math.round(totalPay).toLocaleString()}\uFF08${level}${illegalEntries.length > 0 ? ` \xB7 \u4F8B\u5047\u65E5\u9055\u6CD5 ${illegalEntries.length} \u7B46` : ""}\uFF09\u3002`
+    );
+    return {
+      perEntry,
+      totals: {
+        hours: totalHours,
+        pay: Math.round(totalPay),
+        count: perEntry.length
+      },
+      byType: {
+        weekday: { ...byType.weekday, pay: Math.round(byType.weekday.pay) },
+        restday: { ...byType.restday, pay: Math.round(byType.restday.pay) },
+        holiday: { ...byType.holiday, pay: Math.round(byType.holiday.pay) },
+        mandatory: { ...byType.mandatory, pay: Math.round(byType.mandatory.pay) }
+      },
+      hourlyWage: Number(hourlyWage.toFixed(2)),
+      monthlyLimit: { value: limit, exceedsBy, level, note, otBilling },
+      illegalEntries,
       trace
     };
   }
