@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>勞工自保存證信函產生器 — 資遣費／工資加班費／特休／職災｜LaborPro</title>
+<meta name="description" content="免費產生勞工自保存證信函：催告給付資遣費（勞基法§17、勞退條例§12）、積欠工資／加班費（§22、§24）、特休未休工資（§38）、職業災害補償（§59）。填欄位即產出可複製文字，附法律依據與勞資爭議調解／1955 管道。勞工角度、純自保。">
+<meta name="keywords" content="勞工存證信函,催告資遣費,催告工資,加班費催告,特休未休,職災補償,勞基法第17條,勞基法第24條,勞基法第38條,勞基法第59條">
+<link rel="canonical" href="https://labor.choulegal.com/labor-letter.html">
+<link rel="icon" type="image/svg+xml" href="choulegal-icon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/common.css">
+<script src="js/theme-boot.js"></script>
+<script src="js/ga.js" defer></script>
+<script src="js/_generated/core-labor.bundle.js"></script>
+<script src="js/doc-generator.js"></script>
+<style>
+  main { max-width: 760px; margin: 0 auto; padding: 24px 18px 60px; }
+  .page-head { margin-bottom: 18px; }
+  .page-head .eyebrow { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: .14em; color: var(--accent); text-transform: uppercase; }
+  .page-head h1 { font-family: 'Noto Serif TC', serif; font-size: 26px; margin: 8px 0; color: var(--ink); }
+  .page-head p { font-size: 14px; color: var(--muted); line-height: 1.8; }
+  .doc-grid { display: grid; gap: 14px; }
+  .doc-item { border: 1.5px solid var(--border); border-radius: 14px; padding: 18px 20px; background: var(--card); }
+  .doc-item h3 { margin: 0 0 6px; font-family: 'Noto Serif TC', serif; font-size: 17px; color: var(--ink); }
+  .doc-item p { margin: 0 0 6px; font-size: 13px; color: var(--muted); line-height: 1.7; }
+  .doc-item .doc-law { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--accent); letter-spacing: .04em; }
+  .selfhelp-note { margin-top: 18px; font-size: 13px; color: var(--muted); line-height: 1.8; border:1.5px solid var(--border); border-radius:12px; padding:14px 18px; background:var(--soft); }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" style="text-decoration:none;color:inherit">
+    <div class="parent-brand"><img class="cl-icon" src="choulegal-icon.svg" alt="周全法律科技">周全 <span>ChouLegal</span></div>
+    <div class="logo">Labor<span>Pro</span></div>
+  </a>
+  <div style="display:flex;align-items:center;gap:8px">
+    <a class="back-link" href="index.html">← 首頁</a>
+    <button id="themeToggle" type="button" aria-label="切換深色/淺色模式">☀</button>
+  </div>
+</header>
+
+<main>
+  <div class="page-head">
+    <div class="eyebrow">存證信函 · 勞工自保</div>
+    <h1>勞工自保存證信函產生器</h1>
+    <p>被資遣不發資遣費、雇主積欠工資或加班費、特休未休不折現、職災不補償？選情境、填欄位，立即產生可複製的存證信函內容，再到郵局辦理（一式三份）。本工具只主張你依法應得的款項，並導向勞資爭議調解；所有內容都在你的瀏覽器產生，不會上傳。各計算機算完也會就地出現對應信函按鈕並帶入金額。</p>
+  </div>
+
+  <div class="doc-grid">
+    <div class="doc-item">
+      <h3>催告給付資遣費</h3>
+      <p>被資遣（非自願離職）後，雇主未依法給付資遣費／預告期間工資。資遣費應於終止契約後 30 日內發給。</p>
+      <span class="doc-law">勞基法 §17、勞退條例 §12、§16</span>
+      <div id="m-severance"></div>
+    </div>
+    <div class="doc-item">
+      <h3>催告給付積欠工資／加班費</h3>
+      <p>雇主積欠工資或未足額給付延長工時工資（加班費）。工資應全額直接給付。</p>
+      <span class="doc-law">勞基法 §22 II、§24</span>
+      <div id="m-wage"></div>
+    </div>
+    <div class="doc-item">
+      <h3>催告給付特別休假未休工資</h3>
+      <p>年度終結或契約終止時，未休畢之特別休假日數，雇主應發給工資。</p>
+      <span class="doc-law">勞基法 §38</span>
+      <div id="m-leave"></div>
+    </div>
+    <div class="doc-item">
+      <h3>請求職業災害補償</h3>
+      <p>因執行職務發生職業災害（傷害／疾病／失能），雇主應依法補償（醫療／原領工資／失能／死亡）。建議檢附診斷證明等事證。</p>
+      <span class="doc-law">勞基法 §59</span>
+      <div id="m-injury"></div>
+    </div>
+  </div>
+
+  <div class="selfhelp-note">
+    交涉不成可撥<strong>勞工諮詢專線 1955</strong>，或向勞工所在地<strong>勞工局／勞動局申請勞資爭議調解</strong>（免費）。工資、加班費、特休未休工資之請求權時效為 5 年，宜及早主張並保全出勤紀錄、薪資單等證據。<br>本範本為一般情形之文字協助，非法律意見；重大爭議建議洽執業律師。
+  </div>
+</main>
+
+<div class="disclaimer-bar"><strong>免責聲明</strong>：本平台之計算結果與範本僅供初步參考，不構成法律意見或法律諮詢服務。實際案件因個案事實、適用法規及法院見解不同，結果可能有所差異，建議諮詢具執照之律師或相關法律專業人員。</div>
+
+<script>
+(function () {
+  if (!window.DocGen || !window.LC_CORE) return;
+  var who = [
+    { id: 'workerName', label: '你的姓名（勞工）', placeholder: '例如：王小明' },
+    { id: 'employerName', label: '雇主／公司名稱', placeholder: '例如：○○股份有限公司' },
+  ];
+
+  // 1. 資遣費（含預告工資）
+  window.DocGen.create({
+    docLabel: '存證信函', filenamePrefix: '催告給付資遣費存證信函',
+    subtitle: '催告雇主給付資遣費等離職應領款項。',
+    fields: who.concat([
+      { id: 'separationDate', label: '離職／終止契約日', placeholder: '例如：115年5月31日' },
+      { id: 'severanceAmount', label: '資遣費（NT$）', type: 'number', placeholder: '0', hint: '可先用「資遣費計算機」算出後填入。' },
+      { id: 'noticeAmount', label: '預告期間工資（NT$，選填）', type: 'number', placeholder: '0' },
+      { id: 'deadlineDays', label: '催告給付期限（日）', type: 'number', placeholder: '30', hint: '資遣費應於終止契約後 30 日內發給。' },
+    ]),
+    build: function (v) {
+      var items = [{ label: '資遣費', article: '勞動基準法§17、勞工退休金條例§12', amount: v.severanceAmount }];
+      if (v.noticeAmount > 0) items.push({ label: '預告期間工資', article: '勞動基準法§16', amount: v.noticeAmount });
+      return window.LC_CORE.buildLaborLetter({ kind: 'severance', workerName: v.workerName, employerName: v.employerName, separationDate: v.separationDate, items: items, deadlineDays: v.deadlineDays || 30 });
+    },
+  }).mountButton(document.getElementById('m-severance'), function () { return { deadlineDays: 30 }; }, '產生「催告給付資遣費」存證信函');
+
+  // 2. 工資／加班費
+  window.DocGen.create({
+    docLabel: '存證信函', filenamePrefix: '催告給付工資加班費存證信函',
+    subtitle: '催告雇主給付積欠之工資／加班費。',
+    fields: who.concat([
+      { id: 'wageAmount', label: '積欠工資（NT$，選填）', type: 'number', placeholder: '0' },
+      { id: 'otAmount', label: '加班費（NT$，選填）', type: 'number', placeholder: '0' },
+      { id: 'deadlineDays', label: '催告給付期限（日）', type: 'number', placeholder: '15' },
+    ]),
+    build: function (v) {
+      var items = [];
+      if (v.wageAmount > 0) items.push({ label: '積欠工資', article: '勞動基準法§22 II', amount: v.wageAmount });
+      if (v.otAmount > 0) items.push({ label: '加班費（延長工時工資）', article: '勞動基準法§24', amount: v.otAmount });
+      return window.LC_CORE.buildLaborLetter({ kind: 'wage', workerName: v.workerName, employerName: v.employerName, items: items, deadlineDays: v.deadlineDays || 15 });
+    },
+  }).mountButton(document.getElementById('m-wage'), function () { return { deadlineDays: 15 }; }, '產生「催告給付工資／加班費」存證信函');
+
+  // 3. 特休未休工資
+  window.DocGen.create({
+    docLabel: '存證信函', filenamePrefix: '催告給付特休未休工資存證信函',
+    subtitle: '催告雇主給付特別休假未休工資（§38 IV）。',
+    fields: who.concat([
+      { id: 'leaveAmount', label: '特休未休工資（NT$）', type: 'number', placeholder: '0', hint: '可先用「特休未休折現」工具算出後填入。' },
+      { id: 'deadlineDays', label: '催告給付期限（日）', type: 'number', placeholder: '15' },
+    ]),
+    build: function (v) {
+      return window.LC_CORE.buildLaborLetter({ kind: 'annual-leave', workerName: v.workerName, employerName: v.employerName, items: [{ label: '特別休假未休工資', article: '勞動基準法§38', amount: v.leaveAmount }], deadlineDays: v.deadlineDays || 15 });
+    },
+  }).mountButton(document.getElementById('m-leave'), function () { return { deadlineDays: 15 }; }, '產生「催告給付特休未休工資」存證信函');
+
+  // 4. 職災補償
+  window.DocGen.create({
+    docLabel: '存證信函', filenamePrefix: '請求職業災害補償存證信函',
+    subtitle: '請求雇主依勞基法§59給付職業災害補償。',
+    fields: who.concat([
+      { id: 'injuryDate', label: '職災發生日', placeholder: '例如：115年4月10日' },
+      { id: 'injuryAmount', label: '職災補償金額（NT$）', type: 'number', placeholder: '0', hint: '可先用「職災補償試算」工具算出後填入。' },
+      { id: 'deadlineDays', label: '催告給付期限（日）', type: 'number', placeholder: '15' },
+    ]),
+    build: function (v) {
+      return window.LC_CORE.buildLaborLetter({ kind: 'work-injury', workerName: v.workerName, employerName: v.employerName, injuryDate: v.injuryDate, items: [{ label: '職業災害補償', article: '勞動基準法§59', amount: v.injuryAmount }], deadlineDays: v.deadlineDays || 15 });
+    },
+  }).mountButton(document.getElementById('m-injury'), function () { return { deadlineDays: 15 }; }, '產生「請求職業災害補償」存證信函');
+})();
+</script>
+
+<script defer src="js/coffee-button.js"></script>
+</body>
+</html>

@@ -1224,6 +1224,12 @@
 const P = window.LP_PERSONA || 'worker';
 
 const ALL_TOOLS = {
+  'labor-letter': { href: 'labor-letter.html', featured: true,
+    name: { all: '存證信函產生器' },
+    desc: {
+      worker: '資遣費、工資加班費、特休未休、職災補償 — 填欄位即產出可複製的勞工自保存證信函',
+      employer: '資遣費、工資加班費、特休未休、職災補償 — 填欄位即產出可複製的存證信函範本'
+    }},
   severance: { href: 'severance.html', featured: true,
     name: { all: '資遣費計算機' },
     desc: {
@@ -1350,6 +1356,12 @@ const ALL_TOOLS = {
       worker: '離職後競業禁止有效嗎？§9-1五要件評估，無效主張建議',
       employer: '競業禁止協議合法性自檢，§9-1五要件、補償金額計算'
     }},
+  'self-help': { href: 'self-help.html', badge: 'new',
+    name: { all: '勞動權益自救指南' },
+    desc: {
+      worker: '被資遣沒拿錢、加班費不給、違法解僱、欠薪、職災？每種情況的法律依據與現在能做的步驟',
+      employer: '勞工權益受損情境總覽，含法律依據與處理步驟、求助管道'
+    }},
   'dispute-guide': { href: 'dispute-guide.html',
     name: { all: '勞資爭議調解導引' },
     desc: {
@@ -1397,8 +1409,8 @@ const TABS = [
   {
     id: 'compliance',
     label: '合規與爭議',
-    subtitle: '工時合規、職災補償、競業禁止、罰則速查、爭議調解。',
-    tools: ['work-hours', 'work-injury', 'non-compete', 'dispute-guide', 'penalty-lookup']
+    subtitle: '遇到問題怎麼辦、工時合規、職災補償、競業禁止、罰則速查、爭議調解。',
+    tools: ['self-help', 'work-hours', 'work-injury', 'non-compete', 'dispute-guide', 'penalty-lookup']
   },
   {
     id: 'employer-tools',
