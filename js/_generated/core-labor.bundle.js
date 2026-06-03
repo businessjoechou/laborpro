@@ -28,11 +28,13 @@ var LC_CORE = (() => {
     AVG_WAGE_DAY_DIVISOR: () => AVG_WAGE_DAY_DIVISOR,
     DAILY_HOURS_LIMIT: () => DAILY_HOURS_LIMIT,
     DAILY_INCL_OT_LIMIT: () => DAILY_INCL_OT_LIMIT,
+    DEFAULT_RESTAURANT_BANDS: () => DEFAULT_RESTAURANT_BANDS,
     DEFAULT_ROLE_WEIGHTS: () => DEFAULT_ROLE_WEIGHTS,
     DISABILITY_GRADE_DAYS: () => DISABILITY_GRADE_DAYS,
     HEALTH_INS_WORKER_RATE: () => HEALTH_INS_WORKER_RATE,
     LABOR_INSURANCE_BRACKETS_2026: () => LABOR_INSURANCE_BRACKETS_2026,
     LABOR_INS_WORKER_RATE: () => LABOR_INS_WORKER_RATE,
+    LABOR_LETTER_KINDS: () => LABOR_LETTER_KINDS,
     LABOR_PENALTIES: () => LABOR_PENALTIES,
     LABOR_RATES_2026: () => LABOR_RATES_2026,
     LABOR_UNDERREPORT_PENALTY_MULTIPLE: () => LABOR_UNDERREPORT_PENALTY_MULTIPLE,
@@ -81,6 +83,8 @@ var LC_CORE = (() => {
     aggregateOvertimeEntries: () => aggregateOvertimeEntries,
     analyzeNonCompete: () => analyzeNonCompete,
     analyzeWageStructure: () => analyzeWageStructure,
+    autoScheduleWeek: () => autoScheduleWeek,
+    buildLaborLetter: () => buildLaborLetter,
     calcCompensatoryLeave: () => calcCompensatoryLeave,
     calcEmployerInsuranceCost: () => calcEmployerInsuranceCost,
     calcHourlyWage: () => calcHourlyWage,
@@ -207,6 +211,87 @@ var LC_CORE = (() => {
     if (calendarMonths < 12) return { days: 10, amount: avgWage / 30 * 10, label: "3\u500B\u6708\u4EE5\u4E0A\u672A\u6EFF1\u5E74\uFF1A10\u65E5" };
     if (calendarMonths < 36) return { days: 20, amount: avgWage / 30 * 20, label: "1\u5E74\u4EE5\u4E0A\u672A\u6EFF3\u5E74\uFF1A20\u65E5" };
     return { days: 30, amount: avgWage / 30 * 30, label: "3\u5E74\u4EE5\u4E0A\uFF1A30\u65E5" };
+  }
+
+  // ../../packages/core-labor/src/labor-letter.js
+  var LABOR_LETTER_KINDS = {
+    "severance": "\u50AC\u544A\u7D66\u4ED8\u8CC7\u9063\u8CBB\uFF0F\u96E2\u8077\u61C9\u9818\u6B3E\u9805",
+    "wage": "\u50AC\u544A\u7D66\u4ED8\u7A4D\u6B20\u5DE5\u8CC7\uFF0F\u52A0\u73ED\u8CBB",
+    "annual-leave": "\u50AC\u544A\u7D66\u4ED8\u7279\u5225\u4F11\u5047\u672A\u4F11\u5DE5\u8CC7",
+    "work-injury": "\u8ACB\u6C42\u8077\u696D\u707D\u5BB3\u88DC\u511F"
+  };
+  var ph = (v, fallback) => v && String(v).trim() ? String(v).trim() : fallback;
+  var fmtMoney = (n) => "\u65B0\u81FA\u5E63 " + Math.round(n).toLocaleString("zh-TW") + " \u5143";
+  var CN_NUM = ["\u4E00", "\u4E8C", "\u4E09", "\u56DB", "\u4E94", "\u516D", "\u4E03", "\u516B", "\u4E5D", "\u5341"];
+  function buildLaborLetter(params) {
+    const { kind } = params;
+    if (!LABOR_LETTER_KINDS[kind]) throw new TypeError(`kind \u4E0D\u5408\u6CD5\uFF1A${kind}`);
+    const worker = ph(params.workerName, "\u3014\u52DE\u5DE5\u59D3\u540D\u3015");
+    const employer = ph(params.employerName, "\u3014\u96C7\u4E3B\uFF0F\u516C\u53F8\u540D\u7A31\u3015");
+    const items = Array.isArray(params.items) ? params.items.filter((it) => it && it.amount > 0) : [];
+    const total = items.reduce((s, it) => s + Math.round(it.amount), 0);
+    const totalStr = total > 0 ? fmtMoney(total) : "\u3014\u91D1\u984D\u3015\u5143";
+    const deadlineDays = params.deadlineDays > 0 ? Math.round(params.deadlineDays) : kind === "severance" ? 30 : 15;
+    const itemLines = items.length ? items.map((it, i) => `\u3000\uFF08${CN_NUM[i] || i + 1}\uFF09${it.label}\uFF1A${fmtMoney(it.amount)}` + (it.article ? `\uFF08${it.article}\uFF09` : "")).join("\n") : "\u3000\uFF08\u4E00\uFF09\u3014\u9805\u76EE\u3015\uFF1A\u3014\u91D1\u984D\u3015\u5143";
+    const signoff = `\u3000\u3000\u3000\u3000\u3000\u3000\u3000\u3000\u3000\u3000\u7ACB\u51FD\u4EBA\uFF08\u52DE\u5DE5\uFF09\uFF1A${worker}
+\u3000\u3000\u3000\u3000\u3000\u3000\u3000\u3000\u3000\u3000\u4E2D\u3000\u83EF\u3000\u6C11\u3000\u570B\u3000\u3014\u3000\u3015\u5E74\u3014\u3000\u3015\u6708\u3014\u3000\u3015\u65E5`;
+    const baseBasis = {
+      "severance": ["\u52DE\u52D5\u57FA\u6E96\u6CD5 \xA717\uFF08\u8CC7\u9063\u8CBB\uFF09", "\u52DE\u5DE5\u9000\u4F11\u91D1\u689D\u4F8B \xA712\uFF08\u65B0\u5236\u8CC7\u9063\u8CBB\uFF0C\u61C9\u65BC\u7D42\u6B62\u5951\u7D04\u5F8C 30 \u65E5\u5167\u767C\u7D66\uFF09", "\u52DE\u52D5\u57FA\u6E96\u6CD5 \xA716\uFF08\u9810\u544A\u671F\u9593\u5DE5\u8CC7\uFF09"],
+      "wage": ["\u52DE\u52D5\u57FA\u6E96\u6CD5 \xA722 II\uFF08\u5DE5\u8CC7\u61C9\u5168\u984D\u76F4\u63A5\u7D66\u4ED8\uFF09", "\u52DE\u52D5\u57FA\u6E96\u6CD5 \xA724\uFF08\u5EF6\u9577\u5DE5\u6642\u5DE5\u8CC7\uFF0F\u52A0\u73ED\u8CBB\uFF09"],
+      "annual-leave": ["\u52DE\u52D5\u57FA\u6E96\u6CD5 \xA738\uFF08\u5E74\u5EA6\u7D42\u7D50\u6216\u5951\u7D04\u7D42\u6B62\u672A\u4F11\u4E4B\u7279\u5225\u4F11\u5047\u65E5\u6578\uFF0C\u96C7\u4E3B\u61C9\u767C\u7D66\u5DE5\u8CC7\uFF09"],
+      "work-injury": ["\u52DE\u52D5\u57FA\u6E96\u6CD5 \xA759\uFF08\u8077\u696D\u707D\u5BB3\u88DC\u511F\uFF1A\u91AB\u7642\uFF0F\u539F\u9818\u5DE5\u8CC7\uFF0F\u5931\u80FD\uFF0F\u6B7B\u4EA1\u88DC\u511F\uFF09"]
+    }[kind];
+    const legalBasis = baseBasis.slice();
+    let title, subject, opening;
+    switch (kind) {
+      case "severance": {
+        const sepDate = ph(params.separationDate, "\u3014\u96E2\u8077\uFF0F\u7D42\u6B62\u5951\u7D04\u65E5\u3015");
+        title = "\u50AC\u544A\u7D66\u4ED8\u8CC7\u9063\u8CBB\u5B58\u8B49\u4FE1\u51FD";
+        subject = `\u8ACB\u53F0\u7AEF\u65BC\u6587\u5230 ${deadlineDays} \u65E5\u5167\u7D66\u4ED8\u8CC7\u9063\u8CBB\u7B49\u96E2\u8077\u61C9\u9818\u6B3E\u9805\u5408\u8A08 ${totalStr}`;
+        opening = `\u4E00\u3001\u672C\u4EBA\u539F\u53D7\u50F1\u65BC\u53F0\u7AEF\uFF0C\u5169\u9020\u52DE\u52D5\u5951\u7D04\u5DF2\u65BC ${sepDate} \u56E0\u96C7\u4E3B\u8CC7\u9063\uFF08\u975E\u81EA\u9858\u96E2\u8077\uFF09\u800C\u7D42\u6B62\u3002`;
+        break;
+      }
+      case "wage": {
+        title = "\u50AC\u544A\u7D66\u4ED8\u7A4D\u6B20\u5DE5\u8CC7\uFF0F\u52A0\u73ED\u8CBB\u5B58\u8B49\u4FE1\u51FD";
+        subject = `\u8ACB\u53F0\u7AEF\u65BC\u6587\u5230 ${deadlineDays} \u65E5\u5167\u7D66\u4ED8\u7A4D\u6B20\u4E4B\u5DE5\u8CC7\uFF0F\u52A0\u73ED\u8CBB\u5408\u8A08 ${totalStr}`;
+        opening = "\u4E00\u3001\u672C\u4EBA\u53D7\u50F1\u65BC\u53F0\u7AEF\u5F9E\u4E8B\u5DE5\u4F5C\uFF0C\u53F0\u7AEF\u61C9\u4F9D\u52DE\u52D5\u5951\u7D04\u53CA\u52DE\u52D5\u57FA\u6E96\u6CD5\u6309\u671F\u3001\u5168\u984D\u7D66\u4ED8\u5DE5\u8CC7\u3002";
+        break;
+      }
+      case "annual-leave": {
+        title = "\u50AC\u544A\u7D66\u4ED8\u7279\u5225\u4F11\u5047\u672A\u4F11\u5DE5\u8CC7\u5B58\u8B49\u4FE1\u51FD";
+        subject = `\u8ACB\u53F0\u7AEF\u65BC\u6587\u5230 ${deadlineDays} \u65E5\u5167\u7D66\u4ED8\u7279\u5225\u4F11\u5047\u672A\u4F11\u5DE5\u8CC7 ${totalStr}`;
+        opening = "\u4E00\u3001\u672C\u4EBA\u53D7\u50F1\u65BC\u53F0\u7AEF\uFF0C\u4F9D\u52DE\u52D5\u57FA\u6E96\u6CD5\u7B2C38\u689D\u4EAB\u6709\u7279\u5225\u4F11\u5047\uFF1B\u56E0\u5E74\u5EA6\u7D42\u7D50\u6216\u52DE\u52D5\u5951\u7D04\u7D42\u6B62\u800C\u672A\u4F11\u4E4B\u7279\u5225\u4F11\u5047\u65E5\u6578\uFF0C\u96C7\u4E3B\u61C9\u767C\u7D66\u5DE5\u8CC7\u3002";
+        break;
+      }
+      case "work-injury": {
+        const injDate = ph(params.injuryDate, "\u3014\u8077\u707D\u767C\u751F\u65E5\u3015");
+        title = "\u8ACB\u6C42\u8077\u696D\u707D\u5BB3\u88DC\u511F\u5B58\u8B49\u4FE1\u51FD";
+        subject = `\u8ACB\u53F0\u7AEF\u4F9D\u52DE\u52D5\u57FA\u6E96\u6CD5\u7B2C59\u689D\u7D66\u4ED8\u8077\u696D\u707D\u5BB3\u88DC\u511F ${totalStr}`;
+        opening = `\u4E00\u3001\u672C\u4EBA\u53D7\u50F1\u65BC\u53F0\u7AEF\uFF0C\u65BC ${injDate} \u56E0\u57F7\u884C\u8077\u52D9\u767C\u751F\u8077\u696D\u707D\u5BB3\uFF08\u50B7\u5BB3\uFF0F\u75BE\u75C5\uFF09\u3002\u4F9D\u52DE\u52D5\u57FA\u6E96\u6CD5\u7B2C59\u689D\uFF0C\u96C7\u4E3B\u61C9\u4E88\u88DC\u511F\u3002`;
+        break;
+      }
+      default:
+        throw new TypeError(`kind \u4E0D\u5408\u6CD5\uFF1A${kind}`);
+    }
+    const body = `\u53D7\u6587\u8005\uFF1A${employer}
+
+${opening}
+\u4E8C\u3001\u4F9D\u6CD5\u53F0\u7AEF\u61C9\u7D66\u4ED8\u672C\u4EBA\u4E0B\u5217\u6B3E\u9805\uFF1A
+${itemLines}
+\u3000\u3000\u4EE5\u4E0A\u5408\u8A08 ${totalStr}\u3002
+\u4E09\u3001\u7230\u4EE5\u672C\u51FD\u50AC\u544A\u53F0\u7AEF\uFF0C\u8ACB\u65BC\u51FD\u5230 ${deadlineDays} \u65E5\u5167\uFF0C\u5C07\u4E0A\u958B\u6B3E\u9805\u7D66\u4ED8\u4E88\u672C\u4EBA\u3014\u532F\u5165\u672C\u4EBA\u6307\u5B9A\u5E33\u6236\u3015\u3002
+\u56DB\u3001\u903E\u671F\u672A\u7372\u8655\u7406\uFF0C\u672C\u4EBA\u5C07\u6AA2\u5177\u4E8B\u8B49\u5411\u52DE\u5DE5\u4E3B\u7BA1\u6A5F\u95DC\u7533\u8ACB\u52DE\u8CC7\u722D\u8B70\u8ABF\u89E3\uFF0C\u6216\u5FAA\u7533\u8A34\u3001\u8A34\u8A1F\u7B49\u9014\u5F91\u4F9D\u6CD5\u4E3B\u5F35\u6B0A\u5229\u3002
+
+` + signoff;
+    const tips = [
+      "\u9644\u4E0A\u52DE\u52D5\u5951\u7D04\u3001\u51FA\u52E4\u7D00\u9304\u3001\u85AA\u8CC7\u55AE\uFF0F\u8F49\u5E33\u7D00\u9304\u3001\u96E2\u8077\u8B49\u660E\u6216\u5F80\u4F86\u8A0A\u606F\u4F5C\u70BA\u4F50\u8B49\u8F03\u6709\u529B\u3002",
+      "\u5B58\u8B49\u4FE1\u51FD\u81F3\u90F5\u5C40\u8FA6\u7406\u4E00\u5F0F\u4E09\u4EFD\uFF08\u81EA\u5B58\u3001\u5BC4\u51FA\u3001\u90F5\u5C40\u7559\u5B58\uFF09\uFF0C\u4FDD\u7559\u56DE\u57F7\u8B49\u660E\u9001\u9054\u65E5\u3002",
+      "\u53EF\u64A5\u52DE\u5DE5\u8AEE\u8A62\u5C08\u7DDA 1955\uFF0C\u6216\u5411\u52DE\u5DE5\u6240\u5728\u5730\u52DE\u5DE5\u5C40\uFF0F\u52DE\u52D5\u5C40\u7533\u8ACB\u52DE\u8CC7\u722D\u8B70\u8ABF\u89E3\uFF08\u514D\u8CBB\uFF09\u3002"
+    ];
+    if (kind === "wage" || kind === "annual-leave") {
+      tips.push("\u5DE5\u8CC7\uFF08\u542B\u52A0\u73ED\u8CBB\u3001\u7279\u4F11\u672A\u4F11\u5DE5\u8CC7\uFF09\u8ACB\u6C42\u6B0A\u6642\u6548\u70BA 5 \u5E74\uFF0C\u5B9C\u53CA\u65E9\u4E3B\u5F35\u4E26\u4FDD\u5168\u8B49\u64DA\u3002");
+    }
+    return { kind, title, subject, body, legalBasis, tips };
   }
 
   // ../../packages/core-labor/src/trace.js
@@ -2730,8 +2815,8 @@ var LC_CORE = (() => {
       effectiveFrom: "2026-01-01",
       monthly: 29500,
       hourly: 196,
-      publishedAt: "2025-09-04",
-      publishNo: "\u52DE\u52D5\u90E8 114.9.4 \u516C\u544A\uFF08\u5F85\u88DC\u6B63\u5F0F\u5B57\u865F\uFF09"
+      publishedAt: "2025-10-21",
+      publishNo: "\u52DE\u52D5\u90E8 114.10.21 \u52DE\u52D5\u689D 2 \u5B57\u7B2C 1140148807 \u865F"
     })
   ]);
   var LATEST_HOURLY_VERSION = MIN_HOURLY_WAGE_VERSIONS[MIN_HOURLY_WAGE_VERSIONS.length - 1];
@@ -3433,6 +3518,210 @@ var LC_CORE = (() => {
     { id: "R-34", statuteRef: "\u52DE\u57FA\u6CD5 \xA734 II", lawMojUrl: `${LAW_MOJ_BASE}34` },
     { id: "R-36", statuteRef: "\u52DE\u57FA\u6CD5 \xA736 I", lawMojUrl: `${LAW_MOJ_BASE}36` },
     { id: "R-38", statuteRef: "\u52DE\u57FA\u6CD5 \xA738", lawMojUrl: `${LAW_MOJ_BASE}38` }
+  ]);
+
+  // ../../packages/core-labor/src/auto-scheduler.js
+  var DEFAULT_MAX_DAYS_PER_WEEK = 5;
+  var DEFAULT_MAX_HOURS_PER_WEEK = 40;
+  var DEFAULT_MIN_GAP_HOURS = 11;
+  var DEFAULT_MAX_DAILY_HOURS = 12;
+  function hmToMin(hm) {
+    const [h, m] = String(hm).split(":").map(Number);
+    return (Number.isFinite(h) ? h : 0) * 60 + (Number.isFinite(m) ? m : 0);
+  }
+  function weekdayDate(weekStart, weekday) {
+    const [y, m, d] = weekStart.split("-").map(Number);
+    const dt = new Date(Date.UTC(y, m - 1, d));
+    dt.setUTCDate(dt.getUTCDate() + weekday);
+    return dt.toISOString().slice(0, 10);
+  }
+  function bandIntervalMs(dateStr, band) {
+    const [y, m, d] = dateStr.split("-").map(Number);
+    const base = Date.UTC(y, m - 1, d);
+    const startMin = hmToMin(band.start);
+    let endMin = hmToMin(band.end);
+    if (endMin <= startMin) endMin += 24 * 60;
+    return {
+      startMs: base + startMin * 6e4,
+      endMs: base + endMin * 6e4
+    };
+  }
+  function bandWorkHours(band) {
+    const startMin = hmToMin(band.start);
+    let endMin = hmToMin(band.end);
+    if (endMin <= startMin) endMin += 24 * 60;
+    return Math.max(0, (endMin - startMin) / 60 - (band.breakMinutes || 0) / 60);
+  }
+  function autoScheduleWeek(input) {
+    const weekStart = input && input.weekStart;
+    const bands = input && input.bands || [];
+    const demand = input && input.demand || [];
+    const employees = input && input.employees || [];
+    const opts = input && input.options || {};
+    const maxDaysGlobal = typeof opts.maxDaysPerWeek === "number" ? opts.maxDaysPerWeek : DEFAULT_MAX_DAYS_PER_WEEK;
+    const maxHoursGlobal = typeof opts.maxHoursPerWeek === "number" ? opts.maxHoursPerWeek : DEFAULT_MAX_HOURS_PER_WEEK;
+    const minGapHours = typeof opts.minShiftGapHours === "number" ? opts.minShiftGapHours : DEFAULT_MIN_GAP_HOURS;
+    const maxDailyHours = typeof opts.maxDailyHours === "number" ? opts.maxDailyHours : DEFAULT_MAX_DAILY_HOURS;
+    const bandByKey = new Map(bands.map((b) => [b.key, b]));
+    const state = /* @__PURE__ */ new Map();
+    employees.forEach((e, idx) => {
+      state.set(e.id, { weekHours: 0, workDates: /* @__PURE__ */ new Set(), shiftsMs: [], idx });
+    });
+    const assignments = [];
+    const unfilled = [];
+    const bandOrder = new Map(bands.map((b, i) => [b.key, i]));
+    const sortedDemand = [...demand].filter((c) => c && bandByKey.has(c.bandKey) && c.need > 0).sort((a, b) => a.weekday - b.weekday || (bandOrder.get(a.bandKey) ?? 0) - (bandOrder.get(b.bandKey) ?? 0));
+    for (const cell of sortedDemand) {
+      const band = bandByKey.get(cell.bandKey);
+      const date = weekdayDate(weekStart, cell.weekday);
+      const interval2 = bandIntervalMs(date, band);
+      const hours = bandWorkHours(band);
+      const rejectReason = (e) => {
+        const st = state.get(e.id);
+        if (st.shiftsMs.some((s) => s.date === date && s.bandKey === band.key)) {
+          return "\u5DF2\u6392\u6B64\u73ED";
+        }
+        const avail = e.availability && e.availability[cell.weekday];
+        if (Array.isArray(avail) && !avail.includes(band.key)) {
+          return "\u4E0D\u53EF\u51FA\u52E4";
+        }
+        const empMaxDays = typeof e.maxDaysPerWeek === "number" ? e.maxDaysPerWeek : maxDaysGlobal;
+        const empMaxHours = typeof e.maxHoursPerWeek === "number" ? e.maxHoursPerWeek : maxHoursGlobal;
+        const newDay = !st.workDates.has(date);
+        if (newDay && st.workDates.size >= empMaxDays) {
+          return `\xA736 \u5DF2\u9054\u6BCF\u9031 ${empMaxDays} \u5DE5\u4F5C\u65E5\uFF0C\u4FDD\u7559\u4F11\u606F`;
+        }
+        const dailyHours = st.shiftsMs.filter((s) => s.date === date).reduce((acc, s) => acc + s.hours, 0);
+        if (dailyHours + hours > maxDailyHours + 1e-9) {
+          return `\xA732 \u55AE\u65E5\u5C07\u9054 ${(dailyHours + hours).toFixed(1)}hr`;
+        }
+        if (st.weekHours + hours > empMaxHours + 1e-9) {
+          return `\xA730 \u9031\u5DE5\u6642\u5C07\u9054 ${(st.weekHours + hours).toFixed(1)}hr`;
+        }
+        for (const s of st.shiftsMs) {
+          if (s.date === date) continue;
+          const gapA = (interval2.startMs - s.endMs) / 36e5;
+          const gapB = (s.startMs - interval2.endMs) / 36e5;
+          const gap = gapA >= 0 ? gapA : gapB;
+          if (gap >= 0 && gap < minGapHours - 1e-9) {
+            return `\xA734 \u8207 ${s.date} \u73ED\u50C5\u9694 ${gap.toFixed(1)}hr`;
+          }
+        }
+        return null;
+      };
+      const reasons = /* @__PURE__ */ new Map();
+      let filled = 0;
+      for (let n = 0; n < cell.need; n++) {
+        const candidates = employees.map((e) => ({ e, reason: rejectReason(e) })).filter((c) => {
+          if (c.reason) {
+            reasons.set(c.reason, (reasons.get(c.reason) || 0) + 1);
+            return false;
+          }
+          return true;
+        }).map((c) => c.e).sort((a, b) => {
+          const sa = state.get(a.id);
+          const sb = state.get(b.id);
+          return sa.weekHours - sb.weekHours || sa.workDates.size - sb.workDates.size || sa.idx - sb.idx;
+        });
+        if (candidates.length === 0) break;
+        const pick = candidates[0];
+        const st = state.get(pick.id);
+        st.weekHours += hours;
+        st.workDates.add(date);
+        st.shiftsMs.push({ startMs: interval2.startMs, endMs: interval2.endMs, date, bandKey: band.key, hours });
+        assignments.push({
+          employeeId: pick.id,
+          employeeName: pick.name,
+          date,
+          weekday: cell.weekday,
+          bandKey: band.key,
+          bandLabel: band.label,
+          startTime: band.start,
+          endTime: band.end,
+          breakMinutes: band.breakMinutes || 0,
+          hours: Math.round(hours * 100) / 100,
+          shiftType: "regular"
+        });
+        filled++;
+      }
+      if (filled < cell.need) {
+        let topReason = "\u7121\u53EF\u7528\u4EBA\u529B";
+        let topCount = -1;
+        for (const [r, c] of reasons) {
+          if (c > topCount) {
+            topReason = r;
+            topCount = c;
+          }
+        }
+        unfilled.push({
+          date,
+          weekday: cell.weekday,
+          bandKey: band.key,
+          bandLabel: band.label,
+          need: cell.need,
+          filled,
+          shortBy: cell.need - filled,
+          reason: topReason
+        });
+      }
+    }
+    const violations = [];
+    for (const e of employees) {
+      const mine = assignments.filter((a) => a.employeeId === e.id).map((a) => ({
+        employeeId: e.id,
+        date: a.date,
+        startTime: a.startTime,
+        endTime: a.endTime === "24:00" ? "00:00" : a.endTime,
+        breakMinutes: a.breakMinutes,
+        shiftType: "regular"
+      }));
+      if (mine.length === 0) continue;
+      const vs = checkSchedule(mine, { id: e.id, identity: e.identity, startDate: e.startDate, isMonthly: !!e.isMonthly }, {
+        enableSection32Extension: !!opts.enableSection32Extension
+      });
+      for (const v of vs) {
+        violations.push({ employeeId: e.id, employeeName: e.name, ...v });
+      }
+    }
+    const allDates = bands.length ? Array.from({ length: 7 }, (_, i) => weekdayDate(weekStart, i)) : [];
+    const perEmployee = employees.map((e) => {
+      const st = state.get(e.id);
+      const workDates = [...st.workDates].sort();
+      const restDates = allDates.filter((d) => !st.workDates.has(d));
+      return {
+        id: e.id,
+        name: e.name,
+        hours: Math.round(st.weekHours * 100) / 100,
+        days: st.workDates.size,
+        workDates,
+        restDates
+      };
+    });
+    const totalNeed = sortedDemand.reduce((acc, c) => acc + c.need, 0);
+    const filledTotal = assignments.length;
+    const unfilledTotal = unfilled.reduce((acc, u) => acc + u.shortBy, 0);
+    return {
+      weekStart,
+      bands,
+      assignments,
+      unfilled,
+      perEmployee,
+      compliance: {
+        clean: violations.filter((v) => v.severity === "violation").length === 0,
+        violations
+      },
+      summary: {
+        totalNeed,
+        filled: filledTotal,
+        unfilled: unfilledTotal,
+        fillRate: totalNeed > 0 ? Math.round(filledTotal / totalNeed * 1e3) / 10 : 100
+      }
+    };
+  }
+  var DEFAULT_RESTAURANT_BANDS = Object.freeze([
+    { key: "morning", label: "\u65E9\u73ED", start: "09:00", end: "15:00", breakMinutes: 0 },
+    { key: "afternoon", label: "\u5348\u73ED", start: "15:00", end: "18:00", breakMinutes: 0 },
+    { key: "evening", label: "\u665A\u73ED", start: "18:00", end: "23:00", breakMinutes: 0 }
   ]);
 
   // ../../packages/core-labor/src/overtime-calculator.js

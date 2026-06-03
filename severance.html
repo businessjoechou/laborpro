@@ -30,6 +30,7 @@
 <link rel="stylesheet" href="css/common.css">
 <script src="js/_generated/core-labor.bundle.js"></script>
 <script src="js/calc-utils.js"></script>
+<script src="js/doc-generator.js"></script>
 <script src="js/animations.js" defer></script>
 <script src="js/law-basis.js" defer></script>
 <style>
@@ -356,6 +357,8 @@
       <div class="total-claim-amount" id="r_totalClaim">—</div>
     </div>
 
+    <div id="letterMount"></div>
+
     <!-- Persona 專區 -->
     <div class="worker-only" style="background:#eef8f2;border:1.5px solid var(--accent);border-radius:12px;padding:16px 20px;margin-bottom:14px;">
       <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:8px;">勞工權益提醒</div>
@@ -527,6 +530,30 @@
     return 'NT$ ' + Math.round(n).toLocaleString('zh-TW');
   }
 
+  // 催告給付資遣費存證信函（勞工自保）— build() 讀計算結果，使用者只填姓名/日期
+  var lastClaim = { severance: 0, notice: 0, endDate: '' };
+  var severanceGen = window.DocGen && window.DocGen.create({
+    docLabel: '存證信函',
+    subtitle: '催告雇主給付資遣費等離職應領款項。金額帶自試算，填寫姓名後可複製／下載／列印。',
+    filenamePrefix: '催告給付資遣費存證信函',
+    fields: [
+      { id: 'workerName', label: '你的姓名（勞工）', placeholder: '例如：王小明' },
+      { id: 'employerName', label: '雇主／公司名稱', placeholder: '例如：○○股份有限公司' },
+      { id: 'separationDate', label: '離職／終止契約日', placeholder: '例如：115年5月31日' },
+      { id: 'deadlineDays', label: '催告給付期限（日）', type: 'number', placeholder: '30',
+        hint: '資遣費應於終止契約後 30 日內發給（勞退條例§12 II）。' },
+    ],
+    build: function (v) {
+      var items = [{ label: '資遣費', article: '勞動基準法§17、勞工退休金條例§12', amount: lastClaim.severance }];
+      if (lastClaim.notice > 0) items.push({ label: '預告期間工資', article: '勞動基準法§16', amount: lastClaim.notice });
+      return window.LC_CORE.buildLaborLetter({
+        kind: 'severance',
+        workerName: v.workerName, employerName: v.employerName,
+        separationDate: v.separationDate, items: items, deadlineDays: v.deadlineDays || 30,
+      });
+    },
+  });
+
   function fmtTenure(y, m, d) {
     const parts = [];
     if (y > 0) parts.push(y + ' 年');
@@ -618,6 +645,18 @@
       noticePaid === '否' && notice.days > 0
         ? '含資遣費 + 預告薪資'
         : '資遣費';
+
+    // 催告信函（資遣費 > 0 才提供）
+    lastClaim = { severance: severancePay, notice: noticePayAmount, endDate: endDate };
+    var lm = document.getElementById('letterMount');
+    if (lm) {
+      lm.innerHTML = '';
+      if (severanceGen && severancePay > 0) {
+        severanceGen.mountButton(lm, function () {
+          return { separationDate: lastClaim.endDate, deadlineDays: 30 };
+        }, '生成「催告給付資遣費」存證信函（可複製到郵局辦理）');
+      }
+    }
   }
 
   // Init

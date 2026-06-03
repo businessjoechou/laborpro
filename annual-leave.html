@@ -26,6 +26,8 @@
 <link rel="stylesheet" href="css/common.css">
 <script src="js/animations.js" defer></script>
 <script src="js/law-basis.js" defer></script>
+<script src="js/_generated/core-labor.bundle.js"></script>
+<script src="js/doc-generator.js"></script>
 <style>
   body { background: var(--paper); color: var(--ink); }
   header { border-bottom: none; }
@@ -185,6 +187,7 @@
     <h2>特休未休折現結果</h2>
     <p class="subtitle">以下為依勞基法§38計算之特別休假天數及折現金額。</p>
     <div id="resultContent"></div>
+    <div id="letterMount"></div>
 
     <!-- 即時：本計算依據條文 -->
     <div data-law-basis
@@ -286,6 +289,27 @@
     window.scrollTo(0, 0);
   }
 
+  // 催告給付特休未休工資存證信函（勞工自保，§38）
+  var lastCashOut = 0;
+  var leaveGen = window.DocGen && window.DocGen.create({
+    docLabel: '存證信函',
+    subtitle: '催告雇主給付年度終結／契約終止未休之特別休假工資（§38 IV）。金額帶自試算。',
+    filenamePrefix: '催告給付特休未休工資存證信函',
+    fields: [
+      { id: 'workerName', label: '你的姓名（勞工）', placeholder: '例如：王小明' },
+      { id: 'employerName', label: '雇主／公司名稱', placeholder: '例如：○○股份有限公司' },
+      { id: 'deadlineDays', label: '催告給付期限（日）', type: 'number', placeholder: '15' },
+    ],
+    build: function (v) {
+      return window.LC_CORE.buildLaborLetter({
+        kind: 'annual-leave',
+        workerName: v.workerName, employerName: v.employerName,
+        items: [{ label: '特別休假未休工資', article: '勞動基準法§38', amount: lastCashOut }],
+        deadlineDays: v.deadlineDays || 15,
+      });
+    },
+  });
+
   function renderResults() {
     const totalMonths = diffMonths(state.startDate, state.calcDate);
     const fullYears = Math.floor(Math.floor(totalMonths) / 12);
@@ -360,6 +384,16 @@
         </div>
       </div>
     `;
+
+    lastCashOut = cashOut;
+    var lm = document.getElementById('letterMount');
+    if (lm) {
+      lm.innerHTML = '';
+      if (leaveGen && cashOut > 0) {
+        leaveGen.mountButton(lm, function () { return { deadlineDays: 15 }; },
+          '生成「催告給付特休未休工資」存證信函（可複製到郵局辦理）');
+      }
+    }
   }
 </script>
 <div class="disclaimer-bar"><strong>免責聲明</strong>：本平台之計算結果僅供初步參考，不構成法律意見或法律諮詢服務。實際案件因個案事實、適用法規及法院見解不同，結果可能有所差異，建議諮詢具執照之律師或相關法律專業人員。</div>

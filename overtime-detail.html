@@ -277,6 +277,8 @@
       <div class="result-hero-sub" id="totalHoursSub">共 0 小時加班</div>
     </div>
 
+    <div id="letterMount"></div>
+
     <div class="result-card" id="breakdownCard" style="display:none;">
       <div class="result-card-title">加班費明細（按類型分組）</div>
       <table class="breakdown-table">
@@ -349,10 +351,32 @@
 <script src="js/fmt.js"></script>
 <script src="js/_generated/core-labor.bundle.js"></script>
 <script src="js/calc-utils.js"></script>
+<script src="js/doc-generator.js"></script>
 <script>
 (function() {
   var records = [];
   var nextId = 1;
+  var lastOTPay = 0;
+
+  // 催告給付加班費存證信函（勞工自保，§24）— build() 讀計算結果
+  var wageGen = window.DocGen && window.DocGen.create({
+    docLabel: '存證信函',
+    subtitle: '催告雇主給付積欠之加班費（延長工時工資）。金額帶自試算。',
+    filenamePrefix: '催告給付加班費存證信函',
+    fields: [
+      { id: 'workerName', label: '你的姓名（勞工）', placeholder: '例如：王小明' },
+      { id: 'employerName', label: '雇主／公司名稱', placeholder: '例如：○○股份有限公司' },
+      { id: 'deadlineDays', label: '催告給付期限（日）', type: 'number', placeholder: '15' },
+    ],
+    build: function (v) {
+      return window.LC_CORE.buildLaborLetter({
+        kind: 'wage',
+        workerName: v.workerName, employerName: v.employerName,
+        items: [{ label: '加班費（延長工時工資）', article: '勞動基準法§24', amount: lastOTPay }],
+        deadlineDays: v.deadlineDays || 15,
+      });
+    },
+  });
 
   function getSalary() {
     return parseFloat(document.getElementById('monthlySalary').value) || 0;
@@ -532,10 +556,21 @@
     var hasRecords = records.length > 0 && hourly > 0;
     document.getElementById('summaryHero').style.display = hasRecords ? 'block' : 'none';
     document.getElementById('breakdownCard').style.display = hasRecords ? 'block' : 'none';
+    if (!hasRecords) { var lm0 = document.getElementById('letterMount'); if (lm0) lm0.innerHTML = ''; }
 
     if (hasRecords) {
       document.getElementById('totalOvertimePay').textContent = 'NT$ ' + Math.round(totalPay).toLocaleString('zh-TW');
       document.getElementById('totalHoursSub').textContent = '共 ' + totalHours + ' 小時加班，' + records.length + ' 筆記錄';
+
+      lastOTPay = totalPay;
+      var lm = document.getElementById('letterMount');
+      if (lm) {
+        lm.innerHTML = '';
+        if (wageGen && totalPay > 0) {
+          wageGen.mountButton(lm, function () { return { deadlineDays: 15 }; },
+            '生成「催告給付加班費」存證信函（可複製到郵局辦理）');
+        }
+      }
 
       // Overtime warning (>46h)
       var warnEl = document.getElementById('overtimeWarn');

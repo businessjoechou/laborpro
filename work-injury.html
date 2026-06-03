@@ -27,6 +27,8 @@
 <script src="js/case-law-render.js"></script>
 <link rel="stylesheet" href="css/common.css">
 <script src="js/animations.js" defer></script>
+<script src="js/_generated/core-labor.bundle.js"></script>
+<script src="js/doc-generator.js"></script>
 <style>
   body { background: var(--paper); color: var(--ink); }
   header { border-bottom: none; }
@@ -335,6 +337,7 @@
     <h2>職災補償試算結果</h2>
     <p class="subtitle">以下為依勞基法§59計算之職業災害補償金額試算。</p>
     <div id="resultContent"></div>
+    <div id="letterMount"></div>
   </div>
 
   <!-- HowTo — visible step list for HowTo schema -->
@@ -571,6 +574,28 @@
     window.scrollTo(0, 0);
   }
 
+  // 請求職業災害補償存證信函（勞工自保，§59）
+  var lastInjuryTotal = 0;
+  var injuryGen = window.DocGen && window.DocGen.create({
+    docLabel: '存證信函',
+    subtitle: '請求雇主依勞動基準法第59條給付職業災害補償。金額帶自試算，建議檢附診斷證明等事證。',
+    filenamePrefix: '請求職業災害補償存證信函',
+    fields: [
+      { id: 'workerName', label: '你的姓名（勞工）', placeholder: '例如：王小明' },
+      { id: 'employerName', label: '雇主／公司名稱', placeholder: '例如：○○股份有限公司' },
+      { id: 'injuryDate', label: '職災發生日', placeholder: '例如：115年4月10日' },
+      { id: 'deadlineDays', label: '催告給付期限（日）', type: 'number', placeholder: '15' },
+    ],
+    build: function (v) {
+      return window.LC_CORE.buildLaborLetter({
+        kind: 'work-injury',
+        workerName: v.workerName, employerName: v.employerName, injuryDate: v.injuryDate,
+        items: [{ label: '職業災害補償', article: '勞動基準法§59', amount: lastInjuryTotal }],
+        deadlineDays: v.deadlineDays || 15,
+      });
+    },
+  });
+
   function renderResults() {
     const type = state.injuryType;
     const origDaily = Math.round(state.originalDailyWage);  // §59-2 基礎
@@ -677,6 +702,16 @@
       </div>
     `;
     LaborPro.renderCaseLaw('workInjury', total, 'workInjuryResultHero');
+
+    lastInjuryTotal = total;
+    var lm = document.getElementById('letterMount');
+    if (lm) {
+      lm.innerHTML = '';
+      if (injuryGen && total > 0) {
+        injuryGen.mountButton(lm, function () { return { deadlineDays: 15 }; },
+          '生成「請求職業災害補償」存證信函（可複製到郵局辦理）');
+      }
+    }
   }
 </script>
 <div class="disclaimer-bar"><strong>免責聲明</strong>：本平台之計算結果僅供初步參考，不構成法律意見或法律諮詢服務。實際案件因個案事實、適用法規及法院見解不同，結果可能有所差異，建議諮詢具執照之律師或相關法律專業人員。</div>
