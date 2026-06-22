@@ -14,10 +14,10 @@
 
 [data-theme="light"]:root,
 [data-theme="light"] {
-  --ink: #f6faf4;
-  --paper: #1a1e1a;
+  --ink: #1a1e1a;
+  --paper: #f6faf4;
   --gold: #a87414;
-  --muted: #5e7a5a;
+  --muted: #4a6048;
   --border: #ccd8c8;
   --soft: #e4efe1;
   --card: #ffffff;
@@ -101,6 +101,9 @@
 
 [data-theme="light"] .case-law-panel { background: #ffffff; }
 [data-theme="light"] .cl-toggle:hover { color: #1a1e1a; }
+
+[data-theme="light"] .timeline-title { color: #1a1e1a; }
+[data-theme="light"] .timeline-desc { color: #4a6048; }
 
 [data-theme="light"] .related-tools-list a {
   background: #ffffff;
