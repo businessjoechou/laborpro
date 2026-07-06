@@ -1,144 +1,169 @@
-// auth-bar.js — LaborPro 版浮動登入 UI（綠色主題）
-import { supabase } from './auth.js';
+// Floating ChouLegal account UI for static public tools.
+import { ensureChouLegalAccount, supabase } from './auth.js';
 
 async function initAuthBar() {
+  if (document.getElementById('auth-bar-root')) return;
+
   const style = document.createElement('style');
   style.textContent = `
     .auth-bar {
       position: fixed;
-      bottom: calc(24px + env(safe-area-inset-bottom, 0px));
-      right: 20px;
+      right: 18px;
+      bottom: calc(18px + env(safe-area-inset-bottom, 0px));
       z-index: 9999;
       display: flex;
       align-items: center;
       gap: 8px;
+      font-family: 'Noto Sans TC', sans-serif;
     }
     .auth-pill {
-      display: flex;
+      display: inline-flex;
       align-items: center;
+      min-height: 38px;
       gap: 8px;
-      background: rgba(19, 28, 19, 0.92);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      border: 1px solid rgba(42, 110, 62, 0.3);
-      border-radius: 40px;
-      padding: 6px 14px 6px 8px;
-      cursor: pointer;
-      font-family: 'Noto Sans TC', sans-serif;
-      font-size: 12px;
-      color: rgba(238, 245, 236, 0.7);
+      background: rgba(22, 24, 30, 0.94);
+      border: 1px solid rgba(198, 151, 52, 0.38);
+      border-radius: 999px;
+      color: #fffaf0;
+      padding: 7px 14px 7px 8px;
       text-decoration: none;
-      transition: border-color 0.2s, color 0.2s;
-      user-select: none;
+      font-size: 12px;
+      font-weight: 600;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      cursor: pointer;
     }
-    .auth-pill:hover {
-      border-color: rgba(42, 110, 62, 0.6);
-      color: #eef5ec;
+    .auth-pill:hover { border-color: rgba(198, 151, 52, 0.72); }
+    .auth-pill:focus-visible {
+      outline: 2px solid #c69734;
+      outline-offset: 3px;
     }
     .auth-avatar {
-      width: 22px;
-      height: 22px;
+      width: 24px;
+      height: 24px;
       border-radius: 50%;
-      background: var(--accent, #2a6e3e);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, #185b39, #c69734);
+      color: #fffaf0;
       font-size: 11px;
-      font-weight: 700;
-      color: #fff;
-      flex-shrink: 0;
+      font-weight: 800;
+      flex: 0 0 auto;
     }
     #auth-dropdown {
       position: fixed;
-      bottom: calc(64px + env(safe-area-inset-bottom, 0px));
-      right: 20px;
-      background: #131c13;
-      border: 1px solid rgba(42, 110, 62, 0.3);
-      border-radius: 10px;
-      padding: 8px;
-      min-width: 148px;
+      right: 18px;
+      bottom: calc(66px + env(safe-area-inset-bottom, 0px));
+      width: min(220px, calc(100vw - 36px));
       z-index: 10000;
+      border-radius: 12px;
+      border: 1px solid rgba(198, 151, 52, 0.3);
+      background: #16181e;
+      box-shadow: 0 18px 46px rgba(0, 0, 0, 0.32);
+      padding: 8px;
       font-family: 'Noto Sans TC', sans-serif;
-      font-size: 13px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-      animation: authDropIn 0.15s ease both;
     }
     #auth-dropdown a,
-    #auth-dropdown .dropdown-item {
-      display: block;
-      padding: 8px 12px;
-      color: #eef5ec;
+    #auth-dropdown button {
+      display: flex;
+      width: 100%;
+      align-items: center;
+      min-height: 36px;
+      border: 0;
+      border-radius: 8px;
+      background: transparent;
+      color: #fffaf0;
+      padding: 8px 10px;
+      text-align: left;
       text-decoration: none;
-      border-radius: 6px;
+      font: inherit;
+      font-size: 13px;
       cursor: pointer;
-      transition: background 0.15s;
     }
     #auth-dropdown a:hover,
-    #auth-dropdown .dropdown-item:hover {
-      background: rgba(255, 255, 255, 0.07);
+    #auth-dropdown button:hover { background: rgba(255, 255, 255, 0.08); }
+    .auth-dropdown-meta {
+      padding: 8px 10px 10px;
+      color: rgba(255, 250, 240, 0.62);
+      font-size: 11px;
+      line-height: 1.5;
+      word-break: break-all;
     }
-    #auth-dropdown .dropdown-signout { color: var(--gold, #c8901a); }
-    #auth-dropdown .dropdown-divider {
+    .auth-dropdown-divider {
       height: 1px;
-      background: rgba(255,255,255,0.08);
+      background: rgba(255, 255, 255, 0.1);
       margin: 4px 0;
     }
-    @keyframes authDropIn {
-      from { opacity: 0; transform: translateY(6px); }
-      to   { opacity: 1; transform: translateY(0); }
+    @media (max-width: 520px) {
+      .auth-bar { right: 12px; bottom: calc(12px + env(safe-area-inset-bottom, 0px)); }
+      .auth-pill { min-height: 36px; padding-right: 12px; }
+      #auth-dropdown { right: 12px; bottom: calc(58px + env(safe-area-inset-bottom, 0px)); }
     }
     @media print { .auth-bar, #auth-dropdown { display: none !important; } }
   `;
   document.head.appendChild(style);
 
   const { data: { user } } = await supabase.auth.getUser();
+  if (user) await ensureChouLegalAccount();
 
   const bar = document.createElement('div');
   bar.className = 'auth-bar';
+  bar.id = 'auth-bar-root';
 
   if (!user) {
-    bar.innerHTML = `<a class="auth-pill" href="/login.html">
-      <div class="auth-avatar">?</div>登入
+    bar.innerHTML = `<a class="auth-pill" href="/login.html" aria-label="登入周全帳號">
+      <span class="auth-avatar" aria-hidden="true">周</span><span>登入周全帳號</span>
     </a>`;
   } else {
-    const initial = (user.email || 'U')[0].toUpperCase();
-    bar.innerHTML = `<div class="auth-pill" id="auth-menu-btn" role="button" tabindex="0" aria-label="帳號選單">
-      <div class="auth-avatar">${initial}</div>我的帳號
-    </div>`;
+    const initial = (user.email || '周')[0].toUpperCase();
+    bar.innerHTML = `<button class="auth-pill" id="auth-menu-btn" type="button" aria-haspopup="menu" aria-expanded="false" aria-label="開啟周全帳號選單">
+      <span class="auth-avatar" aria-hidden="true">${initial}</span><span>周全帳號</span>
+    </button>`;
 
     const menuBtn = bar.querySelector('#auth-menu-btn');
-    menuBtn.addEventListener('click', function(e) {
-      e.stopPropagation();
-      var existing = document.getElementById('auth-dropdown');
-      if (existing) { existing.remove(); return; }
+    const toggleDropdown = (event) => {
+      event.stopPropagation();
+      const existing = document.getElementById('auth-dropdown');
+      if (existing) {
+        existing.remove();
+        menuBtn.setAttribute('aria-expanded', 'false');
+        return;
+      }
 
-      var dropdown = document.createElement('div');
+      const dropdown = document.createElement('div');
       dropdown.id = 'auth-dropdown';
+      dropdown.setAttribute('role', 'menu');
       dropdown.innerHTML = `
-        <a href="/account.html">我的帳號</a>
-        <div class="dropdown-divider"></div>
-        <div class="dropdown-item dropdown-signout" id="auth-signout-btn">登出</div>
+        <div class="auth-dropdown-meta">${user.email || '已登入'}</div>
+        <a href="/account.html" role="menuitem">帳號與資料</a>
+        <a href="https://choulegal.com/professional.html" role="menuitem">專業版</a>
+        <a href="https://choulegal.com/education.html" role="menuitem">法律教育平台</a>
+        <div class="auth-dropdown-divider"></div>
+        <button type="button" id="auth-signout-btn" role="menuitem">登出</button>
       `;
       document.body.appendChild(dropdown);
+      menuBtn.setAttribute('aria-expanded', 'true');
 
-      dropdown.querySelector('#auth-signout-btn').addEventListener('click', async function() {
+      dropdown.querySelector('#auth-signout-btn').addEventListener('click', async () => {
         dropdown.remove();
         await supabase.auth.signOut();
         window.location.href = '/';
       });
 
-      setTimeout(function() {
-        document.addEventListener('click', function() {
-          var d = document.getElementById('auth-dropdown');
-          if (d) d.remove();
+      setTimeout(() => {
+        document.addEventListener('click', () => {
+          document.getElementById('auth-dropdown')?.remove();
+          menuBtn.setAttribute('aria-expanded', 'false');
         }, { once: true });
       }, 10);
-    });
+    };
+
+    menuBtn.addEventListener('click', toggleDropdown);
   }
 
   document.body.appendChild(bar);
-
-  window.__signOut = async function() {
+  window.__signOut = async () => {
     await supabase.auth.signOut();
     window.location.href = '/';
   };

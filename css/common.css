@@ -1,28 +1,28 @@
 /* ===== LaborPro Common Styles ===== */
 
 :root {
-  --ink: #131c13;
-  --paper: #eef5ec;
-  --gold: #c8901a;
-  --muted: #617a5e;
-  --border: #b0c8ac;
-  --soft: #d8ecd4;
+  --ink: #081220;
+  --paper: #f7f5f0;
+  --gold: #d4af37;
+  --muted: #47628f;
+  --border: #c2cfe0;
+  --soft: #eeeae0;
   --card: #ffffff;
-  --accent: #2a6e3e;
-  --danger: #8b2020;
+  --accent: #2d5a3d;
+  --danger: #8b2332;
 }
 
 [data-theme="light"]:root,
 [data-theme="light"] {
-  --ink: #1a1e1a;
-  --paper: #f6faf4;
-  --gold: #a87414;
-  --muted: #4a6048;
-  --border: #ccd8c8;
-  --soft: #e4efe1;
+  --ink: #081220;
+  --paper: #f7f5f0;
+  --gold: #b8941f;
+  --muted: #47628f;
+  --border: #c2cfe0;
+  --soft: #eeeae0;
   --card: #ffffff;
-  --accent: #1e7a38;
-  --danger: #a82828;
+  --accent: #2d5a3d;
+  --danger: #8b2332;
 }
 
 [data-theme="light"] body {
@@ -1553,3 +1553,49 @@ textarea:focus {
 .site-footer .footer-mark em { font-style: normal; color: var(--gold); }
 .site-footer .footer-links { margin-top: 10px; }
 .site-footer .footer-links a { margin: 0 8px; }
+
+/* ===== ChouLegal unified brand polish ===== */
+.site-header,
+header {
+  background: rgba(8, 18, 32, 0.96);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.16);
+}
+.site-header .brand .brand-parent,
+.parent-brand {
+  color: rgba(229, 196, 95, 0.68);
+}
+.site-header .brand .brand-child,
+.logo {
+  color: #fbfaf6;
+}
+.site-header nav a,
+.back-link {
+  color: rgba(251, 250, 246, 0.66);
+}
+.site-header nav a:hover,
+.back-link:hover {
+  color: var(--gold);
+}
+.wizard,
+.result-card,
+.action-card,
+.score-meter,
+.nav-bar,
+.notice-card,
+.info-card {
+  border-radius: 6px;
+  border-color: rgba(194, 207, 224, 0.72);
+  box-shadow: 0 1px 2px rgba(20, 42, 74, 0.04), 0 8px 24px -16px rgba(20, 42, 74, 0.12);
+}
+.btn-primary {
+  background: linear-gradient(135deg, #e5c45f, #d4af37 55%, #b8941f);
+  color: #081220;
+}
+.btn-primary:hover {
+  background: linear-gradient(135deg, #f0d87c, #d4af37 58%, #b8941f);
+}
+.site-footer {
+  background: #081220;
+  color: rgba(251, 250, 246, 0.58);
+  border-top: 1px solid rgba(212, 175, 55, 0.14);
+}
