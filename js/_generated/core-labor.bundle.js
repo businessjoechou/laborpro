@@ -69,6 +69,8 @@ var LC_CORE = (() => {
     PENSION_EMPLOYEE_RATE_CAP: () => PENSION_EMPLOYEE_RATE_CAP,
     PENSION_EMPLOYER_RATE_FLOOR: () => PENSION_EMPLOYER_RATE_FLOOR,
     REST_PATTERN_VALUES: () => REST_PATTERN_VALUES,
+    SALARY_WITHHOLDING_115: () => SALARY_WITHHOLDING_115,
+    SALARY_WITHHOLDING_BRACKETS_115: () => SALARY_WITHHOLDING_BRACKETS_115,
     SCHEDULE_RULES: () => SCHEDULE_RULES,
     SHIFT_GAP_MIN_HOURS: () => SHIFT_GAP_MIN_HOURS,
     SUPPORTED_OVERRIDE_RULES: () => SUPPORTED_OVERRIDE_RULES,
@@ -101,6 +103,8 @@ var LC_CORE = (() => {
     calcParentalLeavePackage: () => calcParentalLeavePackage,
     calcPensionNew: () => calcPensionNew,
     calcPensionOld: () => calcPensionOld,
+    calcProgressiveTax115: () => calcProgressiveTax115,
+    calcSalaryWithholdingTax115: () => calcSalaryWithholdingTax115,
     calcSeveranceNew: () => calcSeveranceNew,
     calcSeveranceNewTraced: () => calcSeveranceNewTraced,
     calcSeveranceOld: () => calcSeveranceOld,
@@ -290,6 +294,9 @@ ${itemLines}
     ];
     if (kind === "wage" || kind === "annual-leave") {
       tips.push("\u5DE5\u8CC7\uFF08\u542B\u52A0\u73ED\u8CBB\u3001\u7279\u4F11\u672A\u4F11\u5DE5\u8CC7\uFF09\u8ACB\u6C42\u6B0A\u6642\u6548\u70BA 5 \u5E74\uFF0C\u5B9C\u53CA\u65E9\u4E3B\u5F35\u4E26\u4FDD\u5168\u8B49\u64DA\u3002");
+    }
+    if (kind === "severance" || kind === "wage" || kind === "annual-leave") {
+      tips.push("\u26A0\uFE0F \u898B\u89E3\u5206\u6B67\uFF1A\u4E0A\u958B\u91D1\u984D\u4EE5\u300C\u5E73\u5747\u5DE5\u8CC7\uFF0F\u5DE5\u8CC7\u300D\u70BA\u8A08\u7B97\u57FA\u790E\uFF1B\u5168\u52E4\u734E\u91D1\u3001\u6309\u6708\u7E3E\u6548\u734E\u91D1\u7B49\u662F\u5426\u8A08\u5165\u5DE5\u8CC7\uFF0C\u5BE6\u52D9\u898B\u89E3\u4E0D\u4E00\uFF08\u96C7\u4E3B\u5E38\u4E3B\u5F35\u5C6C\u975E\u7D93\u5E38\u6027\u7D66\u8207\u800C\u4E0D\u8A08\u5165\uFF09\u3002\u82E5\u672C\u51FD\u91D1\u984D\u5DF2\u5C07\u6B64\u985E\u7D66\u8207\u8A08\u5165\uFF0C\u8ACB\u4FDD\u7559\u5404\u8A72\u7D66\u8207\u4E4B\u767C\u653E\u7D00\u9304\u8207\u767C\u653E\u898F\u5247\uFF0C\u4EE5\u5229\u65E5\u5F8C\u722D\u8B70\u6642\u8209\u8B49\u3002");
     }
     return { kind, title, subject, body, legalBasis, tips };
   }
@@ -5238,6 +5245,87 @@ ${itemLines}
       overallLevel,
       trace
     };
+  }
+
+  // ../../packages/core-labor/src/payroll-withholding.js
+  var SALARY_WITHHOLDING_115 = Object.freeze({
+    year: 115,
+    tableMaxMonthlyIncome: 5e5,
+    tableMaxDependents: 11,
+    tableStep: 500,
+    exemptionPerPerson: 101e3,
+    standardDeductionMarried: 272e3,
+    salarySpecialDeduction: 227e3,
+    minimumMonthlyWithholding: 2e3,
+    sourceUrl: "https://www.ntbca.gov.tw/singlehtml/a15c33c827e4470c9263930ab2087812?cntId=822c27718d4c4cb8beaf536773e81dca"
+  });
+  var SALARY_WITHHOLDING_BRACKETS_115 = Object.freeze([
+    { max: 61e4, rate: 0.05, progressiveDeduction: 0 },
+    { max: 138e4, rate: 0.12, progressiveDeduction: 42700 },
+    { max: 277e4, rate: 0.2, progressiveDeduction: 153100 },
+    { max: 519e4, rate: 0.3, progressiveDeduction: 430100 },
+    { max: Infinity, rate: 0.4, progressiveDeduction: 949100 }
+  ]);
+  function calcSalaryWithholdingTax115(params) {
+    const monthlySalaryIncome = toNonNegativeNumber(
+      params?.monthlySalaryIncome,
+      "monthlySalaryIncome"
+    );
+    const dependentsCount = toNonNegativeInteger(
+      params?.dependentsCount ?? 0,
+      "dependentsCount"
+    );
+    const usedOfficialTableRange = monthlySalaryIncome <= SALARY_WITHHOLDING_115.tableMaxMonthlyIncome && dependentsCount <= SALARY_WITHHOLDING_115.tableMaxDependents;
+    const calculationMonthlyIncome = usedOfficialTableRange ? toOfficialTableLowerBound(monthlySalaryIncome) : monthlySalaryIncome;
+    const annualSalaryIncome = calculationMonthlyIncome * 12;
+    const salaryDeduction = Math.min(
+      SALARY_WITHHOLDING_115.salarySpecialDeduction,
+      annualSalaryIncome
+    );
+    const exemptions = SALARY_WITHHOLDING_115.exemptionPerPerson * (1 + dependentsCount);
+    const deductions = exemptions + SALARY_WITHHOLDING_115.standardDeductionMarried + salaryDeduction;
+    const annualTaxableIncome = Math.max(0, annualSalaryIncome - deductions);
+    const monthlyTax = calcProgressiveTax115(annualTaxableIncome) / 12;
+    const amount = floorToTen(monthlyTax);
+    return {
+      amount: amount <= SALARY_WITHHOLDING_115.minimumMonthlyWithholding ? 0 : amount,
+      annualSalaryIncome: Math.round(annualSalaryIncome),
+      annualTaxableIncome: Math.round(annualTaxableIncome),
+      dependentsCount,
+      calculationMonthlyIncome,
+      usedOfficialTableRange,
+      sourceUrl: SALARY_WITHHOLDING_115.sourceUrl
+    };
+  }
+  function calcProgressiveTax115(annualTaxableIncome) {
+    const taxable = toNonNegativeNumber(
+      annualTaxableIncome,
+      "annualTaxableIncome"
+    );
+    const bracket = SALARY_WITHHOLDING_BRACKETS_115.find(
+      (item) => taxable <= item.max
+    );
+    if (!bracket) return 0;
+    return Math.max(0, taxable * bracket.rate - bracket.progressiveDeduction);
+  }
+  function toOfficialTableLowerBound(monthlySalaryIncome) {
+    if (monthlySalaryIncome <= 0) return 0;
+    return Math.floor((monthlySalaryIncome - 1) / SALARY_WITHHOLDING_115.tableStep) * SALARY_WITHHOLDING_115.tableStep;
+  }
+  function floorToTen(n) {
+    return Math.floor(n / 10) * 10;
+  }
+  function toNonNegativeNumber(value, label) {
+    if (typeof value !== "number" || !Number.isFinite(value) || value < 0) {
+      throw new Error(`invalid ${label}: ${String(value)}`);
+    }
+    return value;
+  }
+  function toNonNegativeInteger(value, label) {
+    if (!Number.isInteger(value) || value < 0) {
+      throw new Error(`invalid ${label}: ${String(value)}`);
+    }
+    return value;
   }
 
   // ../../packages/core-labor/src/overtime-detail.js

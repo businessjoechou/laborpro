@@ -146,7 +146,7 @@
     "url": "https://choulegal.com"
   }
 }
-</script>
+<script src="js/_generated/core-labor.bundle.js"></script>
 </head>
 <body>
 
@@ -434,9 +434,12 @@
   function calculate() {
     var startDate = document.getElementById('startDate').value;
     var endDate = document.getElementById('endDate').value;
-    var info = calcMonths(startDate, endDate);
-    var tier = getNoticeTier(info.fullCalendarMonths);
+    
+    var info = window.LC_CORE.calcMonths(startDate, endDate);
     var isResign = state.type === 'resign';
+    var wage = isResign ? 0 : (parseFloat(document.getElementById('avgWage').value) || 0);
+    
+    var r = window.LC_CORE.calcNotice(info.fullCalendarMonths, wage);
 
     // Title & subtitle
     if (isResign) {
@@ -452,20 +455,20 @@
     }
 
     // Notice days
-    if (tier.days === 0) {
+    if (r.days === 0) {
       document.getElementById('r_noticeDays').textContent = '無需預告';
     } else {
-      document.getElementById('r_noticeDays').textContent = tier.days + ' 天';
+      document.getElementById('r_noticeDays').textContent = r.days + ' 天';
     }
-    document.getElementById('r_noticeTier').textContent = tier.label;
+    document.getElementById('r_noticeTier').textContent = r.label;
 
     // Earliest date: today + notice days + 1 (翌日起算)
     var today = new Date();
     today.setHours(0, 0, 0, 0);
-    var earliest = addDays(today.toISOString().split('T')[0], tier.days + 1);
+    var earliest = addDays(today.toISOString().split('T')[0], r.days + 1);
     var targetDate = new Date(endDate);
 
-    if (tier.days === 0) {
+    if (r.days === 0) {
       document.getElementById('r_earliestDate').textContent = '隨時可離職';
       document.getElementById('r_dateSub').textContent = '年資未滿3個月，無預告期間限制';
     } else {
@@ -476,9 +479,9 @@
         document.getElementById('r_dateSub').textContent =
           '若今日提出' + (isResign ? '離職' : '資遣通知') + '，最早 ' +
           earliest.getFullYear() + '/' + (earliest.getMonth() + 1) + '/' + earliest.getDate() +
-          ' 生效（預告期 ' + tier.days + ' 天，翌日起算）';
+          ' 生效（預告期 ' + r.days + ' 天，翌日起算）';
       } else {
-        var needNotifyBy = addDays(endDate, -(tier.days + 1));
+        var needNotifyBy = addDays(endDate, -(r.days + 1));
         document.getElementById('r_dateSub').textContent =
           '若要在 ' + fmtDate(endDate) + ' 離職，須最晚於 ' +
           needNotifyBy.getFullYear() + '/' + (needNotifyBy.getMonth() + 1) + '/' + needNotifyBy.getDate() +
@@ -488,13 +491,11 @@
 
     // Notice wage (layoff only)
     var noticeWageCard = document.getElementById('noticeWageCard');
-    if (!isResign && tier.days > 0) {
-      var wage = parseFloat(document.getElementById('avgWage').value);
+    if (!isResign && r.days > 0) {
       var dailyWage = wage / 30;
-      var noticeWage = dailyWage * tier.days;
       noticeWageCard.style.display = 'block';
       document.getElementById('r_dailyWage').textContent = fmt(dailyWage);
-      document.getElementById('r_noticeWage').textContent = fmt(noticeWage);
+      document.getElementById('r_noticeWage').textContent = fmt(r.amount);
     } else {
       noticeWageCard.style.display = 'none';
     }

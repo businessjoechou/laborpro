@@ -161,7 +161,7 @@
     {"@type": "Question", "name": "雇主未達基本薪資，勞工可以怎麼辦？", "acceptedAnswer": {"@type": "Answer", "text": "勞工可向當地勞工行政主管機關（縣市政府勞工局處）提出申訴或檢舉。主管機關會進行勞動檢查並依勞基法§79裁罰；雇主應補足差額。勞工亦可依勞基法§14第1項第5款（雇主未依勞動契約給付工資）終止契約並請求資遣費。建議保留薪資單、出勤紀錄、勞動契約等證據。"}}
   ]
 }
-</script>
+<script src="js/_generated/core-labor.bundle.js"></script>
 </head>
 <body>
 
@@ -488,9 +488,6 @@
   let currentStep = 1;
   const totalSteps = 2;
 
-  const MIN_MONTHLY = 29500;
-  const MIN_HOURLY = 196;
-
   function fmt(n) {
     return '$' + Math.round(n).toLocaleString('zh-TW');
   }
@@ -580,37 +577,36 @@
     state.hourlySalary    = parseFloat(document.getElementById('hourlySalary').value)    || 0;
   }
 
-  function calcCountableWage(s) {
-    const mealCountable = Math.min(s.mealAllowance, 2400);
-    return s.baseSalary + mealCountable;
-  }
-
   function calculate() {
     const s = state;
     const isHourly = s.payType === '時薪制';
 
     // Update chips
     document.getElementById('r_payType').textContent = s.payType;
-    document.getElementById('r_minWageChip').textContent = isHourly ? '$196/hr' : '$29,500';
 
     if (isHourly) {
       // ── 時薪制 ──
       document.getElementById('r_monthlyResult').classList.add('hidden');
       document.getElementById('r_hourlyResult').classList.remove('hidden');
 
-      const h = s.hourlySalary;
-      const gap = h - MIN_HOURLY;
-      const impliedMonthly = h * s.weeklyHours * (52 / 12);
+      const r = window.LC_CORE.checkHourlyMinWage({
+        hourlyWage: s.hourlySalary,
+        weeklyHours: s.weeklyHours
+      });
 
-      document.getElementById('r_yourHourly').textContent      = fmt(h);
+      document.getElementById('r_minWageChip').textContent = '$' + r.minHourly + '/hr';
+
+      const gap = r.gap;
+
+      document.getElementById('r_yourHourly').textContent      = fmt(r.hourlyWage);
       document.getElementById('r_hourlyGap').textContent       = gap >= 0 ? fmt(gap) : fmt(gap) + ' (不足)';
-      document.getElementById('r_impliedMonthly').textContent  = fmt(impliedMonthly) + ' / 月';
-      document.getElementById('r_hourlyDisplay').textContent   = fmt(h);
-      document.getElementById('r_hourlyDisplayFail').textContent = fmt(h);
+      document.getElementById('r_impliedMonthly').textContent  = fmt(r.impliedMonthly) + ' / 月';
+      document.getElementById('r_hourlyDisplay').textContent   = fmt(r.hourlyWage);
+      document.getElementById('r_hourlyDisplayFail').textContent = fmt(r.hourlyWage);
 
       const passEl = document.getElementById('r_hourlyPassDirect');
       const failEl = document.getElementById('r_hourlyFailDirect');
-      if (h >= MIN_HOURLY) {
+      if (r.level === 'pass') {
         passEl.classList.remove('hidden');
         failEl.classList.add('hidden');
       } else {
@@ -623,10 +619,20 @@
       document.getElementById('r_monthlyResult').classList.remove('hidden');
       document.getElementById('r_hourlyResult').classList.add('hidden');
 
-      const mealCountable = Math.min(s.mealAllowance, 2400);
-      const mealExcluded  = Math.max(0, s.mealAllowance - 2400);
-      const countable     = calcCountableWage(s);
-      const gap           = MIN_MONTHLY - countable;
+      const r = window.LC_CORE.checkMonthlyMinWage({
+        baseSalary: s.baseSalary,
+        mealAllowance: s.mealAllowance,
+        fullAttendanceBonus: s.fullAttendBonus,
+        overtimePay: s.overtimePay,
+        weeklyHours: s.weeklyHours
+      });
+
+      document.getElementById('r_minWageChip').textContent = '$' + r.minMonthly.toLocaleString('zh-TW');
+
+      const mealCountable = r.countableBreakdown.mealCountable;
+      const mealExcluded  = r.countableBreakdown.mealExcluded;
+      const countable     = r.countableWage;
+      const gap           = r.gap;
 
       // Breakdown table
       document.getElementById('r_baseSalary').textContent      = fmt(s.baseSalary);
@@ -644,7 +650,7 @@
       document.getElementById('r_countableDisplay').textContent = fmt(countable);
       document.getElementById('r_failCountable').textContent    = fmt(countable);
 
-      if (countable >= MIN_MONTHLY) {
+      if (r.level === 'pass') {
         passCard.classList.remove('hidden');
         failCard.classList.add('hidden');
         gapCard.classList.add('hidden');
@@ -659,13 +665,13 @@
       }
 
       // Hourly cross-check
-      const impliedHourly = s.baseSalary / (52 / 12) / s.weeklyHours;
+      const impliedHourly = r.impliedHourly;
       document.getElementById('r_weeklyHoursDisplay').textContent = s.weeklyHours + ' 小時';
       document.getElementById('r_impliedHourly').textContent      = '$' + impliedHourly.toFixed(2);
 
       const hourlyPass = document.getElementById('r_hourlyPass');
       const hourlyFail = document.getElementById('r_hourlyFail');
-      if (impliedHourly >= MIN_HOURLY) {
+      if (r.impliedHourlyPasses) {
         hourlyPass.classList.remove('hidden');
         hourlyFail.classList.add('hidden');
       } else {
