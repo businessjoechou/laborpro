@@ -581,8 +581,18 @@ ${itemLines}
   function calcPensionOld(totalYears, avgWage, isDisabledRetirement = false) {
     if (!Number.isFinite(totalYears) || totalYears < 0) throw new TypeError("totalYears \u5FC5\u9808\u70BA\u975E\u8CA0\u6709\u9650\u6578");
     if (!Number.isFinite(avgWage) || avgWage < 0) throw new TypeError("avgWage \u5FC5\u9808\u70BA\u975E\u8CA0\u6709\u9650\u6578");
-    const first15 = Math.min(totalYears, 15) * 2;
-    const after15 = Math.max(totalYears - 15, 0) * 1;
+    const integerYears = Math.floor(totalYears);
+    const fraction = totalYears - integerYears;
+    let roundedYears = integerYears;
+    if (fraction > 1e-4) {
+      if (fraction < 0.5 - 1e-4) {
+        roundedYears += 0.5;
+      } else {
+        roundedYears += 1;
+      }
+    }
+    const first15 = Math.min(roundedYears, 15) * 2;
+    const after15 = Math.max(roundedYears - 15, 0) * 1;
     const baseUnitsRaw = first15 + after15;
     const baseUnits = Math.min(baseUnitsRaw, 45);
     const capped = baseUnitsRaw > 45;

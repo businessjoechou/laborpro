@@ -534,8 +534,12 @@
 
   function calcPension(st) {
     const months = monthsBetween(st.startDate, st.retireDate);
-    const employerMonthly = st.monthlySalary * 0.06;
-    const workerMonthly   = st.monthlySalary * (st.voluntaryRate / 100);
+    // 取得勞工退休金月提繳工資分級表對應級距，作為提撥計算基礎（勞退條例§14）
+    const bracket = window.LC_CORE && typeof window.LC_CORE.getPensionBracket === 'function'
+      ? window.LC_CORE.getPensionBracket(st.monthlySalary)
+      : st.monthlySalary;
+    const employerMonthly = bracket * 0.06;
+    const workerMonthly   = bracket * (st.voluntaryRate / 100);
     const totalMonthly    = employerMonthly + workerMonthly;
 
     const r = st.annualReturn / 100 / 12;

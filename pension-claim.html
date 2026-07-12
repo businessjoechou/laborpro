@@ -778,21 +778,32 @@
     const { startDate, retireDate, avgWage, retireReason, workDisability } = state;
     const tenure = calcYears(startDate, retireDate);
 
-    // Base units calculation
+    // 勞基法§55 舊制年資折算：未滿半年者以半年計（+0.5），滿半年者以一年計（+1.0）
     const fullYears = tenure.totalYears;
-    const first15   = Math.min(fullYears, 15) * 2;
-    const after15   = Math.max(fullYears - 15, 0) * 1;
-    let baseUnits   = first15 + after15;
-    baseUnits        = Math.min(baseUnits, 45);
-
-    // Disability bonus
-    let disabilityUnits = 0;
-    if (workDisability === 'yes') {
-      disabilityUnits = baseUnits * 0.2;
+    const integerYears = Math.floor(fullYears);
+    const fraction = fullYears - integerYears;
+    let roundedYears = integerYears;
+    if (fraction > 0.0001) {
+      if (fraction < 0.5 - 0.0001) {
+        roundedYears += 0.5;
+      } else {
+        roundedYears += 1.0;
+      }
     }
 
-    const totalUnits = baseUnits + disabilityUnits;
-    const totalPay   = totalUnits * avgWage;
+    // 呼叫 core 核心舊制退休金計算，確保使用單一真實來源 (SSOT)
+    const pensionRes = window.LC_CORE && typeof window.LC_CORE.calcPensionOld === 'function'
+      ? window.LC_CORE.calcPensionOld(tenure.totalYears, avgWage, workDisability === 'yes')
+      : (() => {
+          const first15 = Math.min(roundedYears, 15) * 2;
+          const after15 = Math.max(roundedYears - 15, 0) * 1;
+          const baseUnits = Math.min(first15 + after15, 45);
+          const disabilityUnits = workDisability === 'yes' ? baseUnits * 0.2 : 0;
+          const totalUnits = baseUnits + disabilityUnits;
+          return { first15, after15, baseUnits, disabilityUnits, totalUnits, totalPay: totalUnits * avgWage };
+        })();
+
+    const { first15, after15, baseUnits, disabilityUnits, totalUnits, totalPay } = pensionRes;
 
     // Show result sections
     document.getElementById('r_newCompare').style.display = 'none';
@@ -811,15 +822,13 @@
     document.getElementById('r_oldReason').textContent      =
       retireReason === 'voluntary' ? '自請退休（§53）' : '強制退休（§54）';
 
-    const first15Val = Math.min(fullYears, 15);
-    const after15Val = Math.max(fullYears - 15, 0);
     document.getElementById('r_oldFirst15').textContent =
-      'min(' + fullYears.toFixed(1) + ', 15) × 2 = ' + first15.toFixed(1) + ' 基數';
+      'min(' + roundedYears.toFixed(1) + ', 15) × 2 = ' + first15.toFixed(1) + ' 基數';
 
-    if (after15Val > 0) {
+    if (roundedYears > 15) {
       document.getElementById('r_oldAfter15Row').style.display = 'flex';
       document.getElementById('r_oldAfter15').textContent =
-        '(' + fullYears.toFixed(1) + ' - 15) × 1 = ' + after15.toFixed(1) + ' 基數';
+        '(' + roundedYears.toFixed(1) + ' - 15) × 1 = ' + after15.toFixed(1) + ' 基數';
     } else {
       document.getElementById('r_oldAfter15Row').style.display = 'flex';
       document.getElementById('r_oldAfter15').textContent = '0 基數（年資未超過15年）';
