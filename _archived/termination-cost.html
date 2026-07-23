@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<script src="js/theme-boot.js"></script>
+<script src="js/ga.js" defer></script>
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png" sizes="180x180">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>解僱成本估算機｜LaborPro</title>
+<meta name="description" content="雇主解僱成本試算：一鍵估算資遣費、預告薪資、特休折現，並比較合法解僱與違法解僱的總成本差異，避免不必要的罰鍰與訴訟風險。">
+<link rel="canonical" href="https://labor.choulegal.com/termination-cost.html">
+<meta property="og:title" content="解僱成本估算機｜LaborPro">
+<meta property="og:description" content="雇主解僱成本試算：一鍵估算資遣費、預告薪資、特休折現，並比較合法解僱與違法解僱的總成本差異，避免不必要的罰鍰與訴訟風險。">
+<meta name="keywords" content="解僱成本,資遣費計算,預告薪資,特休折現,違法解僱罰鍰,勞基法§17,勞基法§12,勞基法§78,雇主合規,台灣勞基法">
+<meta name="robots" content="index, follow">
+<meta name="author" content="LaborPro">
+<meta property="og:site_name" content="LaborPro">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:type" content="website">
+<meta property="og:title" content="解僱成本估算機｜LaborPro">
+<meta property="og:description" content="合法 vs 違法解僱成本比較，一目了然。資遣費＋預告薪資＋特休折現完整試算。">
+<meta property="og:image" content="https://labor.choulegal.com/choulegal-icon.svg">
+<meta property="og:image:width" content="400">
+<meta property="og:image:height" content="400">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="js/supabase-config.js"></script>
+<script src="js/persona.js"></script>
+<script type="module" src="js/auth-bar.js"></script>
+<script src="js/case-law-data.js"></script>
+<script src="js/case-law-render.js"></script>
+<link rel="stylesheet" href="css/common.css">
+<script src="js/animations.js" defer></script>
+<style>
+  .extra-field {
+    display: none;
+    margin-top: 12px;
+    padding: 14px;
+    background: #e8f4e4;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+  }
+  .extra-field.visible { display: block; }
+  .extra-field label {
+    font-size: 12px;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  /* Comparison grid */
+  .compare-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  .compare-card {
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .compare-card.legal {
+    background: #eef8f2;
+    border: 1.5px solid var(--accent);
+  }
+  .compare-card.illegal {
+    background: #fef2f2;
+    border: 1.5px solid var(--danger);
+  }
+  .compare-card-title {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+  }
+  .compare-card.legal .compare-card-title { color: var(--accent); }
+  .compare-card.illegal .compare-card-title { color: var(--danger); }
+  .compare-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 6px 0;
+    font-size: 12px;
+    line-height: 1.6;
+  }
+  .compare-row-label { color: var(--muted); flex: 1; }
+  .compare-row-val {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 12px;
+    font-weight: 500;
+    text-align: right;
+    margin-left: 8px;
+  }
+  .compare-card.legal .compare-row-val { color: var(--accent); }
+  .compare-card.illegal .compare-row-val { color: var(--danger); }
+  .compare-total {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1.5px solid rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .compare-total-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .compare-total-val {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 18px;
+    font-weight: 700;
+  }
+  .compare-card.legal .compare-total-val { color: var(--accent); }
+  .compare-card.illegal .compare-total-val { color: var(--danger); }
+  .compare-meta {
+    margin-top: 10px;
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  /* Multiplier warning */
+  .multiplier-box {
+    text-align: center;
+    padding: 18px 14px;
+  }
+  .multiplier-box .multiplier-num {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--danger);
+    line-height: 1.2;
+  }
+  .multiplier-box .multiplier-text {
+    font-size: 13px;
+    color: #6a1a1a;
+    margin-top: 6px;
+    line-height: 1.7;
+  }
+  .multiplier-box .multiplier-advice {
+    font-size: 12px;
+    color: var(--accent);
+    font-weight: 600;
+    margin-top: 10px;
+  }
+
+  @media (max-width: 480px) {
+    .compare-grid { grid-template-columns: 1fr; }
+    .compare-total-val { font-size: 15px; }
+    .multiplier-box .multiplier-num { font-size: 28px; }
+  }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "解僱成本估算機｜LaborPro",
+  "description": "雇主解僱成本試算：一鍵估算資遣費、預告薪資、特休折現，並比較合法解僱與違法解僱的總成本差異，避免不必要的罰鍰與訴訟風險。",
+  "url": "https://labor.choulegal.com/termination-cost.html",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "TWD"
+  },
+  "provider": {
+    "@type": "Organization",
+    "name": "周全法律科技 ChouLegal",
+    "url": "https://choulegal.com"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "LaborPro 首頁", "item": "https://labor.choulegal.com/"},
+    {"@type": "ListItem", "position": 2, "name": "解僱成本估算機", "item": "https://labor.choulegal.com/termination-cost.html"}
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "如何試算解僱成本（資遣費＋預告工資＋特休未休工資）",
+  "description": "依勞基法§17（舊制資遣費）、勞退條例§12（新制資遣費）、勞基法§16（預告期間）、勞基法§38 IV（特休未休折算）試算合法解僱與違法解僱之總成本。",
+  "step": [
+    {"@type": "HowToStep", "position": 1, "name": "輸入勞工基本資料", "text": "填入到職日、預計終止日、平均工資（依勞基法§2 第 4 款計算終止前 6 個月平均工資）、適用退休金制度（新制／舊制／併用）。新制依勞退條例§12，舊制依勞基法§17。"},
+    {"@type": "HowToStep", "position": 2, "name": "選擇終止事由", "text": "選擇勞基法§11（經濟性解僱）、§13（特殊情況）、§14（勞工不經預告終止）、§20（事業改組）、職災勞工保護法相關事由。事由不同會影響是否須給付資遣費、預告工資及預告期間。"},
+    {"@type": "HowToStep", "position": 3, "name": "輸入特休未休日數", "text": "依勞基法§38 第 4 項，勞工特別休假因年度終結或契約終止而未休之日數，雇主應發給工資。輸入未休日數後系統自動折算（未休日數 × 一日工資）。"},
+    {"@type": "HowToStep", "position": 4, "name": "比較合法 vs 違法解僱成本", "text": "工具並排顯示「合法解僱」（資遣費＋預告工資＋特休折現）與「違法解僱」（前述加上回復工作或損害賠償風險、勞檢罰鍰）的成本差距，凸顯依法解僱的成本可預測性。"},
+    {"@type": "HowToStep", "position": 5, "name": "依結果規劃解僱程序", "text": "確認終止事由有合法依據後，依勞基法§16 預告期間（年資 3 個月以上未滿 1 年 10 日、1 年以上未滿 3 年 20 日、3 年以上 30 日）通知勞工；未依規定預告者應給付預告期間工資。資遣前應依就業服務法§33 通報。"}
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type": "Question", "name": "新制與舊制資遣費的計算差在哪？", "acceptedAnswer": {"@type": "Answer", "text": "新制（適用勞工退休金條例）依§12：每滿 1 年發給 0.5 個月平均工資，未滿 1 年按比例計給，最高以 6 個月平均工資為限。舊制（94/7/1 前選擇繼續適用勞基法退休金規定者）依勞基法§17：每滿 1 年發給 1 個月平均工資，未滿 1 年按比例計給，無上限。94/7/1 前已任職、未選新制者，以該日為界分段計算（之前舊制、之後新制）。本工具依勞工選擇之制度自動計算。"}},
+    {"@type": "Question", "name": "預告期間怎麼算？沒預告就解僱會怎樣？", "acceptedAnswer": {"@type": "Answer", "text": "依勞基法§16，雇主依§11 或§13 但書終止勞動契約時，應依下列預告期間預告勞工：(1) 繼續工作 3 個月以上未滿 1 年者，於 10 日前；(2) 1 年以上 3 年未滿者，於 20 日前；(3) 3 年以上者，於 30 日前。雇主未依規定預告期間終止契約者，應給付預告期間之工資（即「預告工資」）。預告期間內勞工得請假找工作，每星期不得超過 2 日，工資照給。"}},
+    {"@type": "Question", "name": "特休沒休完一定要折錢嗎？可以強制當年休完不發錢嗎？", "acceptedAnswer": {"@type": "Answer", "text": "依勞基法§38 第 4 項，勞工特別休假因年度終結或契約終止而未休之日數，雇主應發給工資。雇主不得強制勞工放棄請領未休工資之權利。年度終結未休日數，經勞雇雙方協商遞延至次一年度實施者，於次一年度終結或契約終止仍未休之日數，雇主仍應發給工資（即遞延後仍須折算）。違反者依§79 第 1 項處 2 萬至 100 萬元罰鍰。"}},
+    {"@type": "Question", "name": "依勞基法§12（懲戒解僱）解僱要給資遣費嗎？", "acceptedAnswer": {"@type": "Answer", "text": "不用，但條件嚴格。勞基法§12 列舉勞工有下列六款情形之一者，雇主得不經預告終止契約：(1) 訂立契約時故為虛偽意思表示使雇主誤信而有受損害之虞；(2) 對雇主、家屬或其他勞工有暴行或重大侮辱；(3) 受有期徒刑以上判決確定；(4) 違反勞動契約或工作規則情節重大；(5) 故意損耗機器、原料、產品或洩漏技術營業秘密；(6) 無正當理由連續曠工 3 日或一個月內曠工 6 日。依§12 解僱無須給付資遣費及預告工資，但應在知悉後 30 日內為之（§12 II），且須證明情節重大；證明不足者可能被認定為違法解僱。"}},
+    {"@type": "Question", "name": "違法解僱會被告什麼？訴訟賠多少？", "acceptedAnswer": {"@type": "Answer", "text": "違法解僱（無§11、§12、§13 但書、§14、§20 等合法事由而終止契約）勞工得依民法§487 主張僱傭關係存在、請求按月給付被解僱期間之工資（最高法院實務多以「拒絕受領遲延」處理）。實務上勞工可請求項目通常包括：(1) 確認僱傭關係存在；(2) 自解僱日至判決確定日（或勞工另謀新職前）的工資；(3) 補繳勞健保及勞退提繳；(4) 提繳費用利息；(5) 精神慰撫金（情節嚴重者）。判決確定前訴訟費、律師費、時間成本均高於依法資遣，這也是本工具強調「合法 vs 違法成本對比」的核心理由。"}},
+    {"@type": "Question", "name": "資遣前要做哪些通報？沒通報會被罰嗎？", "acceptedAnswer": {"@type": "Answer", "text": "依就業服務法§33，雇主資遣勞工時應於員工離職之 10 日前，將被資遣員工之姓名、性別、年齡、住址、電話、擔任工作、資遣事由及需否就業輔導等事項列冊通報當地主管機關及公立就業服務機構。但其資遣係因天災、事變或其他不可抗力之情事所致者，應自被資遣員工離職之日起 3 日內為之。違反者依就業服務法§68 處新臺幣 3 萬元以上 15 萬元以下罰鍰。"}},
+    {"@type": "Question", "name": "合意離職與資遣的差別？合意離職還能領資遣費嗎？", "acceptedAnswer": {"@type": "Answer", "text": "合意離職（雙方協議終止勞動契約）原則上不適用勞基法§17 或勞退條例§12 之資遣費規定，雇主無法定給付義務；但實務上雇主常以「資遣費名義」或「離職金」作為協商對價以避免後續訴訟。建議：(1) 書面記載終止事由為「雙方合意」非「§11 資遣」；(2) 給付金額明確；(3) 簽署離職切結與互不訴追條款；(4) 約定離職後保密與競業條款（如有）。本工具僅試算依法資遣之成本，合意離職金額由雙方協商。"}}
+  ]
+}
+</script>
+</head>
+<body>
+
+<header>
+  <a href="index.html" style="text-decoration:none;color:inherit">
+    <div class="parent-brand"><img class="cl-icon" src="choulegal-icon.svg" alt="周全法律科技">周全 <span>ChouLegal</span></div>
+    <div class="logo">Labor<span>Pro</span></div>
+  </a>
+  <div style="display:flex;align-items:center;gap:8px">
+    <a class="back-link" href="index.html">← 首頁</a>
+    <button id="themeToggle" type="button" aria-label="切換深色/淺色模式">☀</button>
+  </div>
+</header>
+<div class="progress-bar">
+  <div class="progress-fill" id="progressFill" style="width: 50%"></div>
+</div>
+
+<main>
+
+  <!-- Step 1: Input -->
+  <div class="step active" id="step1">
+    <div class="step-header">
+      <div class="step-label">Step 1 of 2 · 輸入資料</div>
+      <h1 class="step-title">解僱成本估算機</h1>
+      <p class="step-sub">輸入員薪資料與解僱條件，系統將估算合法解僱總成本，並比較違法解僱的風險曝險。</p>
+    </div>
+
+    <!-- 員薪資料 -->
+    <div class="wizard">
+      <div class="wizard-section-title">員薪資料</div>
+
+      <div class="field-group">
+        <label>到職日期</label>
+        <input type="date" id="startDate">
+      </div>
+
+      <div class="field-group">
+        <label>預計解僱日期</label>
+        <input type="date" id="endDate">
+      </div>
+
+      <div class="field-group">
+        <label>平均薪資（月薪）<span class="hint">離職前6個月平均</span></label>
+        <input type="number" id="avgWage" placeholder="45000" min="0" inputmode="numeric">
+      </div>
+
+      <div class="field-group">
+        <label>適用退休制度</label>
+        <div class="select-wrap">
+          <select id="regime" onchange="onRegimeChange()">
+            <option value="new">新制（勞退條例§12）</option>
+            <option value="old">舊制（勞基法§17）</option>
+            <option value="both">兩制並計</option>
+          </select>
+        </div>
+        <div class="extra-field" id="switchDateGroup">
+          <label>新制起算日</label>
+          <input type="date" id="switchDate" value="2005-07-01">
+          <p style="font-size:11px;color:var(--muted);margin-top:6px;">通常為 2005 年 7 月 1 日（勞退新制施行日）</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 解僱條件 -->
+    <div class="wizard">
+      <div class="wizard-section-title">解僱條件</div>
+
+      <div class="field-group">
+        <label>解僱事由</label>
+        <div class="select-wrap">
+          <select id="reason">
+            <option value="labor-article-11-item-1">勞基法§11第1款 歇業或轉讓</option>
+            <option value="labor-article-11-item-2">勞基法§11第2款 虧損或業務緊縮</option>
+            <option value="labor-article-11-item-3">勞基法§11第3款 不可抗力暫停1個月以上</option>
+            <option value="labor-article-11-item-4">勞基法§11第4款 業務性質變更</option>
+            <option value="labor-article-11-item-5">勞基法§11第5款 勞工不能勝任工作</option>
+            <option value="§12">§12 懲戒解雇（重大違規）</option>
+            <option value="mutual">合意終止</option>
+            <option value="illegal">模擬違法解僱（無法定事由）</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label>是否給予預告期間？</label>
+        <div class="select-wrap">
+          <select id="noticePaid">
+            <option value="no">否（未給預告期間）</option>
+            <option value="yes">是（已給足預告期間）</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label>未休特休天數 <span class="hint">留空=依年資自動計算</span></label>
+        <input type="number" id="unusedLeave" placeholder="依年資自動計算" min="0" inputmode="numeric">
+      </div>
+    </div>
+
+    <div class="warn-box">
+      ⚠ 本計算機提供參考試算，實際解僱成本須依個案事實及法院見解而定，建議諮詢勞動局或專業律師。
+    </div>
+  </div>
+
+  <!-- Step 2: Results -->
+  <div class="step" id="step2">
+    <div class="step-header">
+      <div class="step-label">Step 2 of 2 · 估算結果</div>
+      <h1 class="step-title">解僱成本估算</h1>
+      <p class="step-sub" id="r_stepSub">依您輸入的資料，以下為合法解僱的預估總成本及違法解僱的風險曝險比較。</p>
+    </div>
+
+    <!-- Result Hero -->
+    <div class="result-hero" id="r_hero">
+      <div class="result-hero-label" id="r_heroLabel">合法解僱預估總成本</div>
+      <div class="result-hero-amount" id="r_heroAmount">—</div>
+      <div class="result-hero-sub" id="r_heroSub">—</div>
+    </div>
+
+    <!-- Legal Cost Breakdown -->
+    <div class="result-card" id="r_breakdownCard">
+      <div class="result-card-title">成本明細</div>
+      <div class="result-row">
+        <span class="result-row-label">資遣費</span>
+        <span class="result-row-val" id="r_severance">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">預告薪資</span>
+        <span class="result-row-val" id="r_noticePay">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label" id="r_leaveLabel">特休未休折現</span>
+        <span class="result-row-val" id="r_leaveCash">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label" style="font-weight:600;color:var(--ink);">合計</span>
+        <span class="result-row-val highlight" id="r_legalTotal">—</span>
+      </div>
+    </div>
+
+    <!-- Comparison Section -->
+    <div class="compare-grid" id="r_compareGrid">
+      <!-- Legal Card -->
+      <div class="compare-card legal">
+        <div class="compare-card-title">合法解僱</div>
+        <div class="compare-row">
+          <span class="compare-row-label">總成本</span>
+          <span class="compare-row-val" id="r_cmpLegalTotal">—</span>
+        </div>
+        <div class="compare-meta">
+          時程：30 天內給付<br>
+          風險：<span style="color:var(--accent);font-weight:600;">極低</span>
+        </div>
+      </div>
+      <!-- Illegal Card -->
+      <div class="compare-card illegal">
+        <div class="compare-card-title">違法解僱曝險</div>
+        <div class="compare-row">
+          <span class="compare-row-label">罰鍰（§78）</span>
+          <span class="compare-row-val" id="r_cmpFine">—</span>
+        </div>
+        <div class="compare-row">
+          <span class="compare-row-label">復職＋訴訟期間薪資</span>
+          <span class="compare-row-val" id="r_cmpBackPay">—</span>
+        </div>
+        <div class="compare-row">
+          <span class="compare-row-label">律師費估算</span>
+          <span class="compare-row-val" id="r_cmpLawyer">—</span>
+        </div>
+        <div class="compare-total">
+          <span class="compare-total-label">總曝險</span>
+          <span class="compare-total-val" id="r_cmpIllegalTotal">—</span>
+        </div>
+        <div class="compare-meta">
+          時程：1–2 年訴訟<br>
+          風險：<span style="color:var(--danger);font-weight:600;">極高</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cost Multiplier Warning -->
+    <div class="danger-box multiplier-box" id="r_multiplierBox">
+      <div class="multiplier-num" id="r_multiplier">—</div>
+      <div class="multiplier-text" id="r_multiplierText">違法解僱的總成本可能是合法解僱的 X 倍</div>
+      <div class="multiplier-advice">合法程序是保護公司的最佳策略</div>
+    </div>
+
+    <!-- Compliance Checklist -->
+    <div class="action-card" id="r_checklist">
+      <div class="action-card-title">合規檢查清單</div>
+      <div class="action-item">
+        <span class="action-num">01</span>
+        <span id="r_chk1">確認符合§11法定事由</span>
+      </div>
+      <div class="action-item">
+        <span class="action-num">02</span>
+        <span id="r_chk2">給予預告期間（X 天）</span>
+      </div>
+      <div class="action-item">
+        <span class="action-num">03</span>
+        <span>10 日前通報主管機關（就服法§33）</span>
+      </div>
+      <div class="action-item">
+        <span class="action-num">04</span>
+        <span>30 日內給付資遣費</span>
+      </div>
+      <div class="action-item">
+        <span class="action-num">05</span>
+        <span>開立非自願離職證明（§19）</span>
+      </div>
+      <div class="action-item">
+        <span class="action-num">06</span>
+        <span>大量解僱須提前 60 日通報（大解法§4）</span>
+      </div>
+    </div>
+
+    <!-- §12 special note -->
+    <div class="info-box" id="r_disciplinaryNote" style="display:none;">
+      依勞基法§12懲戒解雇，雇主無需給付資遣費及預告薪資。但仍須給付未休特休折現，並確保解僱事由確實符合§12各款規定，否則仍有被認定違法解僱之風險。
+    </div>
+
+    <!-- Law Note -->
+    <div class="law-note">
+      <strong>法律依據</strong><br>
+      · <strong>勞基法§17</strong>：舊制資遣費，每滿1年給付1個月平均薪資<br>
+      · <strong>勞退條例§12</strong>：新制資遣費，每滿1年給付0.5個月平均薪資，上限6個月<br>
+      · <strong>勞基法§16</strong>：預告期間；3個月以上未滿1年10日，1年以上未滿3年20日，3年以上30日<br>
+      · <strong>勞基法§12</strong>：懲戒解雇事由（重大違規），雇主無需預告及給付資遣費<br>
+      · <strong>勞基法§78</strong>：違反§17資遣費規定，處30萬至150萬元罰鍰<br>
+      · <strong>就服法§33</strong>：資遣10日前通報義務<br>
+      · <strong>勞基法§19</strong>：雇主應發給非自願離職證明書
+    </div>
+  </div>
+
+  <!-- HowTo — visible step list for HowTo schema -->
+  <section style="max-width:700px;margin:40px auto 24px;padding:0 4px">
+    <div style="font-family:'Noto Serif TC',serif;font-size:11px;color:var(--muted);letter-spacing:0.16em;text-transform:uppercase;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border)">使用步驟</div>
+    <ol style="padding-left:20px;color:var(--ink);font-size:13px;line-height:1.9">
+      <li><strong>輸入勞工基本資料：</strong>到職日、預計終止日、平均工資（依勞基法§2 第 4 款計算終止前 6 個月平均工資）、適用退休金制度（新制／舊制／併用）。</li>
+      <li><strong>選擇終止事由：</strong>勞基法§11（經濟性解僱）、§13（特殊情況）、§14（勞工不經預告終止）、§20（事業改組）等。事由不同會影響資遣費、預告工資及預告期間。</li>
+      <li><strong>輸入特休未休日數：</strong>依勞基法§38 IV，特休因年度終結或契約終止而未休之日數，雇主應發給工資。系統自動折算（未休日數 × 一日工資）。</li>
+      <li><strong>比較合法 vs 違法解僱成本：</strong>並排顯示「合法解僱」與「違法解僱」（含回復工作、損害賠償、勞檢罰鍰風險）的成本差距。</li>
+      <li><strong>依結果規劃解僱程序：</strong>依§16 預告期間（3 個月以上未滿 1 年 10 日、1 年以上未滿 3 年 20 日、3 年以上 30 日）通知勞工；依就業服務法§33 通報。</li>
+    </ol>
+  </section>
+
+  <!-- FAQ — visible content for FAQPage schema -->
+  <section style="max-width:700px;margin:0 auto 40px;padding:0 4px">
+    <div style="font-family:'Noto Serif TC',serif;font-size:11px;color:var(--muted);letter-spacing:0.16em;text-transform:uppercase;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border)">常見問題</div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">新制與舊制資遣費的計算差在哪？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">新制（勞工退休金條例§12）：每滿 1 年發給 0.5 個月平均工資，未滿 1 年按比例計給，最高 6 個月。舊制（勞基法§17）：每滿 1 年發給 1 個月平均工資，未滿 1 年按比例，無上限。94/7/1 前已任職、未選新制者，以該日為界分段計算（之前舊制、之後新制）。本工具依勞工選擇之制度自動計算。</div>
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">預告期間怎麼算？沒預告就解僱會怎樣？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">依勞基法§16，雇主依§11 或§13 但書終止勞動契約時，應依下列預告：(1) 繼續工作 3 個月以上未滿 1 年者，10 日前；(2) 1 年以上 3 年未滿者，20 日前；(3) 3 年以上者，30 日前。雇主未依規定預告期間終止契約者，應給付預告期間之工資。預告期間內勞工得請假找工作，每星期不得超過 2 日，工資照給。</div>
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">特休沒休完一定要折錢嗎？可以強制當年休完不發錢嗎？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">依勞基法§38 第 4 項，勞工特別休假因年度終結或契約終止而未休之日數，雇主應發給工資。雇主不得強制勞工放棄請領未休工資之權利。年度終結未休日數，經勞雇雙方協商遞延至次一年度實施者，於次一年度終結或契約終止仍未休之日數，雇主仍應發給工資。違反者依§79 第 1 項處 2 萬至 100 萬元罰鍰。</div>
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">依勞基法§12（懲戒解僱）解僱要給資遣費嗎？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">不用，但條件嚴格。勞基法§12 列舉六款情形（如對雇主或同事施暴、受有期徒刑判決確定、違反工作規則情節重大、無正當理由連續曠工 3 日或一個月內 6 日等），雇主得不經預告終止契約且免發資遣費及預告工資。但應在知悉後 30 日內為之（§12 II），且須證明情節重大；證明不足者可能被認定為違法解僱。</div>
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">違法解僱會被告什麼？訴訟賠多少？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">違法解僱（無§11、§12、§13 但書、§14、§20 等合法事由而終止契約）勞工得依民法§487 主張僱傭關係存在、請求按月給付被解僱期間之工資。實務上請求項目通常包括：確認僱傭關係存在、自解僱日至判決確定日的工資、補繳勞健保及勞退提繳、提繳費用利息、精神慰撫金（情節嚴重者）。訴訟費、律師費、時間成本均高於依法資遣。</div>
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">資遣前要做哪些通報？沒通報會被罰嗎？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">依就業服務法§33，雇主資遣勞工時應於員工離職之 10 日前，將被資遣員工資料列冊通報當地主管機關及公立就業服務機構。但因天災、事變或其他不可抗力者，應自離職之日起 3 日內為之。違反者依就業服務法§68 處新臺幣 3 萬元以上 15 萬元以下罰鍰。</div>
+    </div>
+    <div style="padding:14px 0">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">合意離職與資遣的差別？合意離職還能領資遣費嗎？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">合意離職（雙方協議終止勞動契約）原則上不適用勞基法§17 或勞退條例§12 之資遣費規定，雇主無法定給付義務；但實務上雇主常以「離職金」作為協商對價以避免後續訴訟。建議：書面記載終止事由為「雙方合意」非「§11 資遣」、給付金額明確、簽署離職切結與互不訴追條款。本工具僅試算依法資遣之成本，合意離職金額由雙方協商。</div>
+    </div>
+  </section>
+
+</main>
+
+<!-- Nav bar -->
+<div class="nav-bar" id="navBar">
+  <button class="btn btn-secondary" id="btnBack" onclick="goBack()" style="display:none;">← 上一步</button>
+  <button class="btn btn-primary" id="btnNext" onclick="goNext()">估算成本 →</button>
+  <button class="btn btn-reset" id="btnReset" onclick="resetAll()" style="display:none;">重新計算</button>
+</div>
+
+<script src="js/_generated/core-labor.bundle.js"></script>
+<script src="js/calc-utils.js"></script>
+<script src="js/fmt.js"></script>
+<script>
+  var LP = window.LaborPro;
+  var state = {};
+  var currentStep = 1;
+  var totalSteps = 2;
+
+  // ─── Reason labels ─────────────────────────────────────────────────────────
+  var reasonLabels = {
+    'labor-article-11-item-1': '勞基法§11第1款 歇業或轉讓',
+    'labor-article-11-item-2': '勞基法§11第2款 虧損或業務緊縮',
+    'labor-article-11-item-3': '勞基法§11第3款 不可抗力暫停1個月以上',
+    'labor-article-11-item-4': '勞基法§11第4款 業務性質變更',
+    'labor-article-11-item-5': '勞基法§11第5款 勞工不能勝任工作',
+    '§12':   '§12 懲戒解雇',
+    'mutual': '合意終止',
+    'illegal': '模擬違法解僱'
+  };
+
+  // ─── Step navigation ───────────────────────────────────────────────────────
+  function showStep(n) {
+    document.querySelectorAll('.step').forEach(function (s) { s.classList.remove('active'); });
+    document.getElementById('step' + n).classList.add('active');
+    document.getElementById('progressFill').style.width = (n / totalSteps * 100) + '%';
+    currentStep = n;
+
+    var btnBack  = document.getElementById('btnBack');
+    var btnNext  = document.getElementById('btnNext');
+    var btnReset = document.getElementById('btnReset');
+
+    if (n === 1) {
+      btnBack.style.display  = 'none';
+      btnNext.style.display  = 'flex';
+      btnReset.style.display = 'none';
+      btnNext.textContent    = '估算成本 →';
+    } else {
+      btnBack.style.display  = 'block';
+      btnNext.style.display  = 'none';
+      btnReset.style.display = 'flex';
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function goBack() { if (currentStep > 1) showStep(currentStep - 1); }
+
+  function goNext() {
+    if (currentStep === 1) {
+      if (!validateStep1()) return;
+      collectStep1();
+      calculate();
+      showStep(2);
+    }
+  }
+
+  function resetAll() { showStep(1); }
+
+  function onRegimeChange() {
+    var g = document.getElementById('switchDateGroup');
+    if (document.getElementById('regime').value === 'both') {
+      g.classList.add('visible');
+    } else {
+      g.classList.remove('visible');
+    }
+  }
+
+  // ─── Validation ────────────────────────────────────────────────────────────
+  function validateStep1() {
+    var start = document.getElementById('startDate').value;
+    var end   = document.getElementById('endDate').value;
+    var wage  = parseFloat(document.getElementById('avgWage').value);
+
+    if (!start)                          { alert('請填寫到職日期。');           return false; }
+    if (!end)                            { alert('請填寫預計解僱日期。');       return false; }
+    if (new Date(start) >= new Date(end)){ alert('解僱日期須晚於到職日期。');   return false; }
+    if (!wage || wage <= 0)              { alert('請輸入有效的平均薪資。');     return false; }
+
+    var regime = document.getElementById('regime').value;
+    if (regime === 'both') {
+      var sw = document.getElementById('switchDate').value;
+      if (!sw)                              { alert('請填寫新制起算日。');           return false; }
+      if (new Date(sw) <= new Date(start))  { alert('新制起算日須晚於到職日期。');   return false; }
+      if (new Date(sw) >= new Date(end))    { alert('新制起算日須早於解僱日期。');   return false; }
+    }
+    return true;
+  }
+
+  function collectStep1() {
+    state.startDate  = document.getElementById('startDate').value;
+    state.endDate    = document.getElementById('endDate').value;
+    state.avgWage    = parseFloat(document.getElementById('avgWage').value);
+    state.regime     = document.getElementById('regime').value;
+    state.switchDate = document.getElementById('switchDate').value;
+    state.reason     = document.getElementById('reason').value;
+    state.noticePaid = document.getElementById('noticePaid').value;
+
+    var leaveInput   = document.getElementById('unusedLeave').value;
+    state.unusedLeave = leaveInput !== '' ? parseFloat(leaveInput) : null;
+  }
+
+  // ─── Formatting helpers ────────────────────────────────────────────────────
+  function fmt(n) { return LP.fmt ? LP.fmt(n) : 'NT$ ' + Math.round(n).toLocaleString('zh-TW'); }
+  function fmtTenure(y, m, d) { return LP.fmtTenure ? LP.fmtTenure(y, m, d) : [y ? y+' 年':'', m ? m+' 個月':'', d ? d+' 天':''].filter(Boolean).join(' ') || '0 天'; }
+
+  // ─── Main calculation ──────────────────────────────────────────────────────
+  function calculate() {
+    var s = state;
+    var tenure = LP.calcMonths(s.startDate, s.endDate);
+    var isDisciplinary = s.reason === '§12';
+    var isIllegal      = s.reason === 'illegal';
+
+    // ── Severance ──
+    var severance = 0;
+    if (!isDisciplinary) {
+      if (s.regime === 'new') {
+        severance = LP.calcSeveranceNew(tenure.totalMonths, s.avgWage);
+      } else if (s.regime === 'old') {
+        severance = LP.calcSeveranceOld(tenure.totalMonths, s.avgWage);
+      } else {
+        var oldInfo = LP.calcMonths(s.startDate, s.switchDate);
+        var newInfo = LP.calcMonths(s.switchDate, s.endDate);
+        severance = LP.calcSeveranceOld(oldInfo.totalMonths, s.avgWage)
+                  + LP.calcSeveranceNew(newInfo.totalMonths, s.avgWage);
+      }
+    }
+
+    // ── Notice pay ──
+    var notice = LP.calcNotice(tenure.fullCalendarMonths, s.avgWage);
+    var noticePay = 0;
+    if (!isDisciplinary && s.noticePaid === 'no') {
+      noticePay = notice.amount;
+    }
+
+    // ── Leave cash out ──
+    var leaveDays = s.unusedLeave !== null ? s.unusedLeave : LP.getAnnualLeaveDays(tenure.fullCalendarMonths);
+    var leaveCash = leaveDays * (s.avgWage / 30);
+
+    // ── Legal total ──
+    var legalTotal = severance + noticePay + leaveCash;
+
+    // ── Illegal exposure ──
+    var fineMin = 300000, fineMax = 1500000;
+    var backPay = s.avgWage * 12;
+    var lawyerMin = 50000, lawyerMax = 300000;
+    var illegalMin = fineMin + backPay + lawyerMin;
+    var illegalMax = fineMax + backPay + lawyerMax;
+    var illegalMid = Math.round((illegalMin + illegalMax) / 2);
+
+    // ── Multiplier ──
+    var multiplier = legalTotal > 0 ? illegalMid / legalTotal : 0;
+
+    // ─── Render hero ──────────────────────────────────────────────────────────
+    document.getElementById('r_heroLabel').textContent = isDisciplinary ? '懲戒解雇預估成本' : '合法解僱預估總成本';
+    document.getElementById('r_heroAmount').textContent = fmt(legalTotal);
+    document.getElementById('r_heroSub').textContent =
+      fmtTenure(tenure.years, tenure.months, tenure.days) + '｜' + reasonLabels[s.reason];
+    LaborPro.renderCaseLaw('termination', legalTotal, 'r_hero');
+
+    // ─── Render breakdown ────────────────────────────────────────────────────
+    document.getElementById('r_severance').textContent = fmt(severance);
+    if (isDisciplinary) {
+      document.getElementById('r_severance').textContent = 'NT$ 0（免付）';
+    }
+
+    if (isDisciplinary) {
+      document.getElementById('r_noticePay').textContent = 'NT$ 0（免付）';
+    } else if (s.noticePaid === 'yes') {
+      document.getElementById('r_noticePay').textContent = '已給付';
+    } else {
+      document.getElementById('r_noticePay').textContent = fmt(noticePay) + (notice.days > 0 ? '（' + notice.days + '日）' : '');
+    }
+
+    document.getElementById('r_leaveLabel').textContent = '特休未休折現（' + leaveDays + '天）';
+    document.getElementById('r_leaveCash').textContent = fmt(leaveCash);
+    document.getElementById('r_legalTotal').textContent = fmt(legalTotal);
+
+    // ─── Render comparison ───────────────────────────────────────────────────
+    document.getElementById('r_cmpLegalTotal').textContent = fmt(legalTotal);
+    document.getElementById('r_cmpFine').textContent = 'NT$ 30萬～150萬';
+    document.getElementById('r_cmpBackPay').textContent = fmt(backPay) + '（約12個月）';
+    document.getElementById('r_cmpLawyer').textContent = 'NT$ 5萬～30萬';
+    document.getElementById('r_cmpIllegalTotal').textContent = fmt(illegalMin) + ' ～ ' + fmt(illegalMax);
+
+    // ─── Multiplier ──────────────────────────────────────────────────────────
+    var multiplierBox = document.getElementById('r_multiplierBox');
+    if (legalTotal > 0 && !isDisciplinary) {
+      multiplierBox.style.display = 'block';
+      document.getElementById('r_multiplier').textContent = multiplier.toFixed(1) + 'x';
+      document.getElementById('r_multiplierText').textContent =
+        '違法解僱的總成本可能是合法解僱的 ' + multiplier.toFixed(1) + ' 倍';
+    } else if (isDisciplinary) {
+      multiplierBox.style.display = 'block';
+      document.getElementById('r_multiplier').textContent = '⚠';
+      document.getElementById('r_multiplierText').textContent =
+        '懲戒解雇若事由不符§12各款規定，仍可能被認定為違法解僱';
+    } else {
+      multiplierBox.style.display = 'none';
+    }
+
+    // ─── Disciplinary note ───────────────────────────────────────────────────
+    document.getElementById('r_disciplinaryNote').style.display = isDisciplinary ? 'block' : 'none';
+
+    // ─── Checklist dynamic text ──────────────────────────────────────────────
+    if (isDisciplinary) {
+      document.getElementById('r_chk1').textContent = '確認符合§12懲戒解雇法定事由';
+      document.getElementById('r_chk2').textContent = '知悉事由後30日內行使解僱權';
+    } else {
+      document.getElementById('r_chk1').textContent = '確認符合§11法定事由';
+      document.getElementById('r_chk2').textContent = '給予預告期間（' + notice.days + ' 天）';
+    }
+
+    // ─── Illegal simulation sub text ─────────────────────────────────────────
+    if (isIllegal) {
+      document.getElementById('r_stepSub').textContent =
+        '模擬無法定事由解僱之情境：以下同時呈現合法程序成本與違法解僱的風險曝險。';
+    } else {
+      document.getElementById('r_stepSub').textContent =
+        '依您輸入的資料，以下為合法解僱的預估總成本及違法解僱的風險曝險比較。';
+    }
+  }
+
+  // Init
+  showStep(1);
+</script>
+<div class="disclaimer-bar"><strong>免責聲明</strong>：本平台之計算結果僅供初步參考，不構成法律意見或法律諮詢服務。實際案件因個案事實、適用法規及法院見解不同，結果可能有所差異，建議諮詢具執照之律師或相關法律專業人員。</div>
+<script defer src="js/coffee-button.js"></script>
+</body>
+</html>

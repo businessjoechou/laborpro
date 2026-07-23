@@ -196,7 +196,7 @@
     gap: 8px;
     background: var(--card);
     border: 1px solid var(--border);
-    border-radius: 20px;
+    border-radius: 8px;
     padding: 5px 14px;
     margin-bottom: 24px;
   }
@@ -391,7 +391,7 @@
 
     <!-- 總加班費 -->
     <div class="result-hero" id="otResultHero">
-      <div class="result-hero-label"><span class="worker-only">您的加班費應為</span><span class="employer-only">應付加班費成本</span></div>
+      <div class="result-hero-label">您的加班費應為</div>
       <div class="result-hero-amount" id="r_totalOT">—</div>
       <div class="result-hero-sub" id="r_totalSub">—</div>
     </div>
@@ -426,7 +426,7 @@
     <!-- §32 月加班上限警告 -->
     <div class="danger-box" id="r_otCapWarn" style="display:none;">
       <strong>⚠ 超過每月加班時數上限</strong>
-      依勞基法§32，每月延長工時不得超過 46 小時。本期加班總時數已超過法定上限，<span class="worker-only">您有權拒絕超時加班，雇主強制加班屬違法行為。</span><span class="employer-only">雇主可能面臨 2 萬至 100 萬元罰鍰（§79），且名單會被公布。</span>
+      依勞基法§32，每月延長工時不得超過 46 小時。本期加班總時數已超過法定上限，您有權拒絕超時加班，雇主強制加班屬違法行為。
     </div>
 
     <!-- 月加班時數追蹤 -->
@@ -447,23 +447,13 @@
     </div>
 
     <!-- Persona 專區 -->
-    <div class="worker-only" style="background:#eef8f2;border:1.5px solid var(--accent);border-radius:12px;padding:16px 20px;margin-bottom:14px;">
+    <div style="background:#eef8f2;border:1.5px solid var(--accent);border-radius:12px;padding:16px 20px;margin-bottom:14px;">
       <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:8px;">勞工權益提醒</div>
       <div style="font-size:12px;color:#1a3a28;line-height:1.9;">
         · 加班費應隨次月薪資發放，雇主不得拖延或以補休取代（除勞工同意）<br>
         · 如薪資單上加班費低於本計算結果，可向勞工局申訴<br>
         · 保留出勤紀錄（打卡紀錄、班表照片）作為證據<br>
         · 勞檢申訴專線：1955
-      </div>
-    </div>
-
-    <div class="employer-only" style="background:#fef8e8;border:1.5px solid #c8901a;border-radius:12px;padding:16px 20px;margin-bottom:14px;">
-      <div style="font-size:12px;font-weight:700;color:#8a5a10;margin-bottom:8px;">雇主合規提醒</div>
-      <div style="font-size:12px;color:#4a3a10;line-height:1.9;">
-        · 加班費未足額給付：罰 2 萬～100 萬（§79），累犯加重<br>
-        · 超時加班（月逾46小時）：同上罰鍰，且公布事業單位名稱<br>
-        · 出勤紀錄應保存 5 年，未置備者罰 9 萬～45 萬（§79）<br>
-        · 建議每月檢視員工加班時數，避免累計超標
       </div>
     </div>
 
@@ -594,7 +584,7 @@
   // §24 平日延長工時 / §24第2項休息日 / §39 國定例假
   // Source of truth: monorepo @choulegal/core-labor.calcOvertimeCost
   // API：(monthlySalary, hours, type) → cost；type ∈ 'weekday'|'restday'|'holiday'|'mixed'
-  // 法源解讀：§24 無 cap，§32 是工時上限不是費率上限，超時部分仍以 5/3 計（民眾版視角）
+  // 法源解讀：§24 無 cap，§32 是工時上限不是費率上限，超時部分仍以 5/3 計（勞工視角）
   // 法條變動時改 monorepo `packages/core-labor/src/overtime.js` 並重跑 npm run build:core
   function calcWeekdayOT(hours, hourly) {
     if (hours <= 0) return 0;

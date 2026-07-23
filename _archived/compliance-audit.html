@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<script src="js/theme-boot.js"></script>
+<script src="js/ga.js" defer></script>
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png" sizes="180x180">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>勞基法合規自檢｜LaborPro</title>
+<meta name="description" content="雇主勞基法合規自檢工具：涵蓋工時、薪資、勞健保、假別、解僱、職安、勞動契約七大面向，即時評估風險等級與罰鍰曝險，免費使用。">
+<meta name="keywords" content="勞基法合規,雇主自檢,勞動檢查,工時管理,加班費,勞健保,勞工退休金,特休,資遣,職業安全,勞動契約,罰鍰,台灣勞基法">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://labor.choulegal.com/compliance-audit.html">
+<meta property="og:title" content="勞基法合規自檢｜LaborPro">
+<meta property="og:description" content="七大面向自檢勞基法合規狀況，即時評估風險等級與罰鍰曝險。">
+<meta property="og:type" content="website">
+<meta name="author" content="LaborPro">
+<meta property="og:site_name" content="LaborPro">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://labor.choulegal.com/choulegal-icon.svg">
+<meta property="og:image:width" content="400">
+<meta property="og:image:height" content="400">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="js/supabase-config.js"></script>
+<script src="js/persona.js"></script>
+<script type="module" src="js/auth-bar.js"></script>
+<script src="js/case-law-data.js"></script>
+<script src="js/case-law-render.js"></script>
+<link rel="stylesheet" href="css/common.css">
+<script src="js/animations.js" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "勞基法合規自檢",
+  "description": "雇主勞基法合規自檢工具，涵蓋工時、薪資、勞健保、假別、解僱、職安、勞動契約七大面向。",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "All",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "TWD" }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "LaborPro 首頁", "item": "https://labor.choulegal.com/"},
+    {"@type": "ListItem", "position": 2, "name": "勞基法合規自檢", "item": "https://labor.choulegal.com/compliance-audit.html"}
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "如何完成勞基法合規自檢",
+  "description": "依工時、薪資、勞健保、假別、解僱、職安、勞動契約七大面向自檢，產出風險分數與罰鍰曝險。",
+  "step": [
+    {"@type": "HowToStep", "position": 1, "name": "填寫公司基本資料", "text": "選擇公司員工人數（5人以下／5–29／30–199／200以上）與產業類別。公司規模影響部分項目是否適用，例如 30 人以上須設安全衛生人員（職安法§23）、須報備工作規則（勞基法§70）。"},
+    {"@type": "HowToStep", "position": 2, "name": "回答七大面向自檢題目", "text": "針對工時、薪資、勞健保、假別、解僱、職安、勞動契約七大類，逐題回答「是」、「否」或「不確定」。「是」表示已符合該法定要求，「否」可能違規受罰，「不確定」代表無法確認，後續應重點查核。"},
+    {"@type": "HowToStep", "position": 3, "name": "檢視合規風險報告", "text": "系統自動計算合規分數（0–100）、風險等級、預估罰鍰曝險（依不符合項目之法定罰鍰下限合計）、各類別小結與關鍵違規警示。"},
+    {"@type": "HowToStep", "position": 4, "name": "依改善優先清單修正缺失", "text": "改善優先清單依違規嚴重度排序（罰鍰金額、可連續處罰、是否屬刑事責任）。建議優先處理勞基法§79 之高額罰鍰項目（2萬至100萬，可連續處罰）。"},
+    {"@type": "HowToStep", "position": 5, "name": "定期複檢與保留紀錄", "text": "建議每季自檢一次，並於人事制度變更、組織異動時即時複檢。保留自檢紀錄可作為勞檢時的善意配合證明，有助於減輕裁罰。"}
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type": "Question", "name": "勞檢一年大概來幾次？哪些公司比較容易被檢查？", "acceptedAnswer": {"@type": "Answer", "text": "勞動部及各地方政府勞動檢查機構依年度勞檢計畫進行例行檢查，並依勞工申訴、職災通報、媒體報導進行專案檢查。下列情形較易被列為檢查對象：(1) 勞工檢舉案件；(2) 高風險產業（製造業、營造業、餐飲業）；(3) 已有違規前科之事業單位；(4) 大型事件或重大職災後之同業普查。沒有固定頻率，重點是「隨時要能通過檢查」。"}},
+    {"@type": "Question", "name": "勞基法違規最高罰多少？會連續處罰嗎？", "acceptedAnswer": {"@type": "Answer", "text": "依勞基法§79，違反工時、加班費、特休、資遣等核心義務者，處新臺幣 2 萬元以上 100 萬元以下罰鍰；違反勞動契約終止規定者依§78 處 30 萬元以上 150 萬元以下罰鍰。同條第 4 項規定主管機關得加重至罰鍰最高額二分之一，且依§80-1 應公布事業單位名稱、負責人姓名、處分期日及金額，並令限期改善；屆期未改善者可按次處罰（連續處罰）。"}},
+    {"@type": "Question", "name": "我們是 5 人以下小公司，勞基法都要遵守嗎？", "acceptedAnswer": {"@type": "Answer", "text": "原則上仍適用勞基法。勞基法§3 列舉強制適用之行業；§3 第 3 項及第 4 項授權勞動部得指定特定行業或工作者不適用。實務上絕大多數受僱關係（含 5 人以下小公司）均適用勞基法之工時、加班費、特休、資遣費等規定。少數例外（如部分自然人雇主僱用之家事勞工、特定身分者）才有不適用之可能，建議查詢勞動部最新公告或諮詢勞動法顧問。"}},
+    {"@type": "Question", "name": "30 人以上才要備工作規則嗎？沒備會怎樣？", "acceptedAnswer": {"@type": "Answer", "text": "依勞基法§70，雇主僱用勞工人數在 30 人以上者，應依勞工人數、工作性質訂立工作規則並報請主管機關核備後公開揭示。未訂立或未報備者，依§79 第 1 項處 2 萬元至 100 萬元罰鍰；得限期改善，屆期未改善按次處罰。30 人以下雖無此義務，仍建議自願制訂以明確勞動條件。"}},
+    {"@type": "Question", "name": "「不確定」該怎麼選？會影響分數嗎？", "acceptedAnswer": {"@type": "Answer", "text": "若對某項法定要求不確定是否符合，建議選「不確定」而非猜測「是」。本工具將「不確定」視為潛在風險（高於「是」、低於「否」），會降低合規分數但不計入罰鍰曝險。後續應將「不確定」項目列為優先查核對象——通常表示制度未明文化或文件不完整，這本身就是勞檢時的扣分項。"}},
+    {"@type": "Question", "name": "已經出問題的事項，自檢後馬上改還來得及嗎？", "acceptedAnswer": {"@type": "Answer", "text": "視違規類型而定。多數行政罰違反屬「狀態犯」或「繼續犯」，主動改善並補發欠款（如積欠加班費、未休特休工資）可降低裁罰額度，但已成立的違規行為主管機關仍可裁處。建議發現缺失後：(1) 立即停止違規行為；(2) 補發欠款並取得勞工簽收憑證；(3) 修訂內部制度與工作規則；(4) 留存自檢紀錄與改善證據，作為日後勞檢時的善意配合證明。"}},
+    {"@type": "Question", "name": "本自檢結果可以代替正式法律意見嗎？", "acceptedAnswer": {"@type": "Answer", "text": "不能。本工具以勞基法、勞工保險條例、勞工退休金條例、職業安全衛生法、就業服務法之主要條文為基準進行初步篩查，不涵蓋所有特殊行業規定（如責任制工作者、變形工時行業、特殊危險作業）、地方政府自治法規、團體協約效力等變數。實際合規判定應以主管機關認定為準，建議搭配執業律師或勞動法顧問做完整合規盤點。"}}
+  ]
+}
+</script>
+<style>
+  /* Question item */
+  .q-item {
+    padding: 14px;
+    margin-bottom: 8px;
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    color: var(--ink);
+  }
+  .q-item-text {
+    font-size: 13px;
+    line-height: 1.6;
+    margin-bottom: 10px;
+  }
+  .q-item-num {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 11px;
+    color: var(--muted);
+    margin-right: 6px;
+  }
+  .q-item-critical {
+    display: inline-block;
+    font-family: 'Noto Serif TC', serif;
+    font-size: 9px;
+    padding: 1px 6px;
+    border-radius: 10px;
+    background: rgba(139,32,32,0.1);
+    color: var(--danger);
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+  .q-item-ref {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+  .q-options {
+    display: flex;
+    gap: 8px;
+  }
+  .q-opt {
+    flex: 1;
+    padding: 10px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    background: var(--card);
+    font-size: 13px;
+    font-family: 'Noto Sans TC', sans-serif;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+    color: var(--ink);
+  }
+  .q-opt:hover { border-color: var(--accent); }
+  .q-opt.yes-selected { border-color: var(--accent); background: #eef8f2; color: var(--accent); font-weight: 600; }
+  .q-opt.no-selected { border-color: var(--danger); background: #fef2f2; color: var(--danger); font-weight: 600; }
+  .q-opt.na-selected { border-color: var(--gold); background: #fffbe8; color: #8a6010; font-weight: 600; }
+
+  /* Category header */
+  .cat-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+    margin-top: 24px;
+  }
+  .cat-header:first-child { margin-top: 0; }
+  .cat-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .cat-title {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .cat-count {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  /* Result category card */
+  .cat-result {
+    margin-bottom: 14px;
+  }
+  .cat-result-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px;
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 12px 12px 0 0;
+    cursor: pointer;
+    color: var(--ink);
+  }
+  .cat-result-header.collapsed {
+    border-radius: 12px;
+  }
+  .cat-result-title {
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .cat-result-body {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-top: none;
+    border-radius: 0 0 12px 12px;
+    padding: 0 20px;
+    color: var(--ink);
+  }
+  .cat-result-body.hidden { display: none; }
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--soft);
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .check-item:last-child { border-bottom: none; }
+  .check-icon { flex-shrink: 0; font-size: 16px; margin-top: 1px; }
+
+  /* Penalty exposure hero */
+  .result-hero.danger-hero {
+    border: 1.5px solid rgba(139,32,32,0.3);
+  }
+
+  /* Employer info box */
+  .employer-info {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  .employer-info-title {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 10px;
+    color: var(--gold);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .employer-info p {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.75;
+  }
+  .employer-info strong { color: var(--ink); }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" style="text-decoration:none;color:inherit">
+    <div class="parent-brand"><img class="cl-icon" src="choulegal-icon.svg" alt="周全法律科技">周全 <span>ChouLegal</span></div>
+    <div class="logo">Labor<span>Pro</span></div>
+  </a>
+  <div style="display:flex;align-items:center;gap:8px">
+    <a class="back-link" href="index.html">&larr; 首頁</a>
+    <button id="themeToggle" type="button" aria-label="切換深色/淺色模式">☀</button>
+  </div>
+</header>
+<div class="progress-bar">
+  <div class="progress-fill" id="progressFill" style="width: 33%"></div>
+</div>
+
+<main>
+
+  <!-- ===== Step 1: 公司基本資料 ===== -->
+  <div class="step active" id="step1">
+    <div class="step-header">
+      <div class="step-label">Step 1 of 3 &middot; 公司基本資料</div>
+      <h1 class="step-title">勞基法合規自檢</h1>
+      <p class="step-sub">依七大面向自檢貴公司勞動法令遵循狀況，即時評估風險等級與潛在罰鍰。</p>
+    </div>
+
+    <div class="employer-info employer-only">
+      <div class="employer-info-title">為什麼要自檢？</div>
+      <p>
+        <strong>主動合規 = 降低風險。</strong>勞動檢查近年大幅增加，違規罰鍰由 2 萬起跳、最高 150 萬，且可連續處罰。透過定期自檢，可在勞檢前發現並修正缺失，避免裁罰及勞資爭議。<br><br>
+        建議每季進行一次自檢，並於制度變更、人事異動時即時複檢。
+      </p>
+    </div>
+
+    <div class="wizard">
+      <div class="wizard-section-title">公司規模與行業</div>
+      <div class="field-group">
+        <label>公司員工人數</label>
+        <div class="select-wrap">
+          <select id="companySize">
+            <option value="" disabled selected>請選擇</option>
+            <option value="under5">5 人以下</option>
+            <option value="5to29">5 - 29 人</option>
+            <option value="30to199">30 - 199 人</option>
+            <option value="200up">200 人以上</option>
+          </select>
+        </div>
+      </div>
+      <div class="field-group">
+        <label>產業類別</label>
+        <div class="select-wrap">
+          <select id="industry">
+            <option value="" disabled selected>請選擇</option>
+            <option value="general">一般行業</option>
+            <option value="manufacturing">製造業</option>
+            <option value="service">服務業（餐飲零售）</option>
+            <option value="construction">營造業</option>
+            <option value="other">其他</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-box">
+      公司規模會影響部分項目是否適用（如 30 人以上須設安全衛生人員、須報備工作規則）。
+    </div>
+  </div>
+
+  <!-- ===== Step 2: 七大面向自檢 ===== -->
+  <div class="step" id="step2">
+    <div class="step-header">
+      <div class="step-label">Step 2 of 3 &middot; 七大面向自檢</div>
+      <h1 class="step-title">合規檢核問卷</h1>
+      <p class="step-sub">請依貴公司實際情形回答以下問題。每題選「是」、「否」或「不確定」。</p>
+    </div>
+
+    <div id="questionnaire"></div>
+
+    <div class="warn-box" style="margin-top:18px;">
+      &#9888; 「是」表示已符合該法定要求，「否」表示未符合（可能違規受罰），「不確定」代表無法確認。
+    </div>
+  </div>
+
+  <!-- ===== Step 3: 結果 ===== -->
+  <div class="step" id="step3">
+    <div class="step-header">
+      <div class="step-label">Step 3 of 3 &middot; 合規評估結果</div>
+      <h1 class="step-title">合規風險報告</h1>
+      <p class="step-sub" id="s3Sub">依自檢結果評估整體合規風險。</p>
+    </div>
+
+    <!-- Score meter -->
+    <div class="score-meter" id="scoreMeter">
+      <div class="score-value" id="scoreValue" style="color:var(--accent);">--</div>
+      <div class="score-label" id="scoreLabel">合規分數</div>
+      <div class="score-bar">
+        <div class="score-bar-fill" id="scoreBarFill" style="width:0%;background:var(--accent);"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:6px;font-size:10px;color:var(--muted);font-family:'Noto Serif TC',monospace;">
+        <span>嚴重風險 0</span><span>低風險 100</span>
+      </div>
+    </div>
+
+    <!-- Risk badge -->
+    <div id="riskBadge" style="text-align:center;margin-bottom:14px;"></div>
+
+    <!-- Critical violations -->
+    <div class="danger-box" id="criticalAlert" style="display:none;"></div>
+
+    <!-- Penalty exposure -->
+    <div class="result-hero danger-hero" id="penaltyHero" style="display:none;">
+      <div class="result-hero-label">預估罰鍰曝險（下限合計）</div>
+      <div class="result-hero-amount" id="penaltyAmount" style="color:var(--danger);">--</div>
+      <div class="result-hero-sub" id="penaltySub">依不符合項目之法定罰鍰下限估算，實際金額依主管機關裁量。</div>
+    </div>
+
+    <!-- Per-category results -->
+    <div id="categoryResults"></div>
+
+    <!-- Improvement priority -->
+    <div class="action-card" id="priorityCard" style="display:none;">
+      <div class="action-card-title">改善優先清單</div>
+      <div id="priorityList"></div>
+    </div>
+
+    <div class="law-note">
+      <strong>法律依據</strong><br>
+      &middot; <strong>勞基法</strong>：工時（&sect;30）、加班（&sect;32、&sect;24）、薪資（&sect;21、&sect;23）、特休（&sect;38）、資遣（&sect;11、&sect;16）、產假（&sect;50）。<br>
+      &middot; <strong>勞工保險條例</strong>：投保（&sect;6、&sect;11、&sect;14）。<br>
+      &middot; <strong>勞工退休金條例</strong>：提繳（&sect;14）、資遣費（&sect;12）。<br>
+      &middot; <strong>職業安全衛生法</strong>：安全衛生人員（&sect;23）、安全檢查（&sect;6）、職災通報（&sect;37）。<br>
+      &middot; <strong>就業服務法</strong>：通報（&sect;33）。
+    </div>
+  </div>
+
+  <!-- HowTo — visible step list for HowTo schema -->
+  <section style="max-width:700px;margin:40px auto 24px;padding:0 4px">
+    <div style="font-family:'Noto Serif TC',serif;font-size:11px;color:var(--muted);letter-spacing:0.16em;text-transform:uppercase;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border)">使用步驟</div>
+    <ol style="padding-left:20px;color:var(--ink);font-size:13px;line-height:1.9">
+      <li><strong>填寫公司基本資料：</strong>選擇員工人數與產業類別。公司規模影響部分項目是否適用，例如 30 人以上須設安全衛生人員（職安法&sect;23）、須報備工作規則（勞基法&sect;70）。</li>
+      <li><strong>回答七大面向自檢題目：</strong>逐題回答「是」、「否」或「不確定」。「是」表示已符合法定要求，「否」可能違規受罰，「不確定」代表無法確認，後續應重點查核。</li>
+      <li><strong>檢視合規風險報告：</strong>系統自動計算合規分數（0–100）、風險等級、預估罰鍰曝險、各類別小結與關鍵違規警示。</li>
+      <li><strong>依改善優先清單修正缺失：</strong>清單依違規嚴重度排序（罰鍰金額、可連續處罰、是否屬刑事責任）。優先處理勞基法&sect;79 之高額罰鍰項目。</li>
+      <li><strong>定期複檢與保留紀錄：</strong>建議每季自檢一次，於人事制度變更時即時複檢。保留紀錄可作為勞檢時的善意配合證明，有助於減輕裁罰。</li>
+    </ol>
+  </section>
+
+  <!-- FAQ — visible content for FAQPage schema -->
+  <section style="max-width:700px;margin:0 auto 40px;padding:0 4px">
+    <div style="font-family:'Noto Serif TC',serif;font-size:11px;color:var(--muted);letter-spacing:0.16em;text-transform:uppercase;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border)">常見問題</div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">勞檢一年大概來幾次？哪些公司比較容易被檢查？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">勞動部及各地方政府勞動檢查機構依年度勞檢計畫進行例行檢查，並依勞工申訴、職災通報、媒體報導進行專案檢查。下列情形較易被列為對象：(1) 勞工檢舉案件；(2) 高風險產業（製造、營造、餐飲）；(3) 已有違規前科之事業；(4) 大型事件或重大職災後之同業普查。沒有固定頻率，重點是「隨時要能通過檢查」。</div>
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">勞基法違規最高罰多少？會連續處罰嗎？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">依勞基法&sect;79，違反工時、加班費、特休、資遣等核心義務者，處新臺幣 2 萬元以上 100 萬元以下罰鍰；違反勞動契約終止規定者依&sect;78 處 30 萬元以上 150 萬元以下。同條第 4 項規定主管機關得加重至罰鍰最高額二分之一，並依&sect;80-1 公布事業單位名稱、負責人姓名、處分期日及金額；屆期未改善者可按次處罰。</div>
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">我們是 5 人以下小公司，勞基法都要遵守嗎？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">原則上仍適用勞基法。勞基法&sect;3 列舉強制適用之行業；&sect;3 第 3 項及第 4 項授權勞動部得指定特定行業或工作者不適用。實務上絕大多數受僱關係（含 5 人以下小公司）均適用勞基法之工時、加班費、特休、資遣費等規定。少數例外才有不適用之可能，建議查詢勞動部最新公告或諮詢勞動法顧問。</div>
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">30 人以上才要備工作規則嗎？沒備會怎樣？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">依勞基法&sect;70，雇主僱用勞工人數在 30 人以上者，應依勞工人數、工作性質訂立工作規則並報請主管機關核備後公開揭示。未訂立或未報備者依&sect;79 第 1 項處 2 萬元至 100 萬元罰鍰；得限期改善，屆期未改善按次處罰。30 人以下雖無此義務，仍建議自願制訂以明確勞動條件。</div>
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">「不確定」該怎麼選？會影響分數嗎？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">若對某項法定要求不確定是否符合，建議選「不確定」而非猜測「是」。本工具將「不確定」視為潛在風險（高於「是」、低於「否」），會降低合規分數但不計入罰鍰曝險。後續應將「不確定」項目列為優先查核對象——通常表示制度未明文化或文件不完整，這本身就是勞檢時的扣分項。</div>
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">已經出問題的事項，自檢後馬上改還來得及嗎？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">視違規類型而定。多數行政罰違反屬「狀態犯」或「繼續犯」，主動改善並補發欠款（如積欠加班費、未休特休工資）可降低裁罰額度，但已成立的違規行為主管機關仍可裁處。建議發現缺失後：立即停止違規、補發欠款並取得簽收憑證、修訂內部制度與工作規則、留存自檢紀錄與改善證據。</div>
+    </div>
+    <div style="padding:14px 0">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">本自檢結果可以代替正式法律意見嗎？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">不能。本工具以勞基法、勞保條例、勞退條例、職安法、就業服務法之主要條文為基準進行初步篩查，不涵蓋所有特殊行業規定（責任制、變形工時、特殊危險作業）、地方自治法規、團體協約效力等變數。實際合規判定應以主管機關認定為準，建議搭配執業律師或勞動法顧問做完整合規盤點。</div>
+    </div>
+  </section>
+
+</main>
+
+<div class="nav-bar" id="navBar">
+  <button class="btn btn-secondary" id="btnBack" onclick="goBack()" style="display:none;">&larr; 上一步</button>
+  <button class="btn btn-primary" id="btnNext" onclick="goNext()">開始自檢 &rarr;</button>
+  <button class="btn btn-reset" id="btnReset" onclick="resetAll()" style="display:none;">重新自檢</button>
+</div>
+
+<div class="disclaimer-bar">
+  <strong>免責聲明</strong>：本工具之檢核結果僅供雇主自我評估參考，不構成法律意見或法律諮詢服務。實際合規判定應以主管機關認定為準，建議諮詢專業律師或勞動法顧問。
+</div>
+
+<script>
+/* ========================================
+   勞基法合規自檢 — Compliance Self-Audit
+   ======================================== */
+
+/* === 問卷定義 === */
+const CATEGORIES = [
+  {
+    id: 'A',
+    name: '工時管理',
+    icon: '\u23F0',
+    iconBg: '#eef8f2',
+    questions: [
+      { id:'a1', text:'員工每週正常工時不超過 40 小時？', ref:'\u00A730', weight:15, critical:true, penalty:'2\u842C-100\u842C', penaltyMin:20000 },
+      { id:'a2', text:'每月加班不超過 46 小時？', ref:'\u00A732', weight:15, critical:true, penalty:'2\u842C-100\u842C', penaltyMin:20000 },
+      { id:'a3', text:'有完整出勤紀錄系統？', ref:'\u00A730', weight:12, critical:true, penalty:'9\u842C-45\u842C', penaltyMin:90000 },
+      { id:'a4', text:'出勤紀錄保存至少 5 年？', ref:'\u00A730', weight:10, critical:false, penalty:'9\u842C-45\u842C', penaltyMin:90000 },
+      { id:'a5', text:'輪班換班間隔達 11 小時？', ref:'\u00A734', weight:8, critical:false, penalty:'2\u842C-100\u842C', penaltyMin:20000 }
+    ]
+  },
+  {
+    id: 'B',
+    name: '薪資與加班費',
+    icon: '\uD83D\uDCB0',
+    iconBg: '#fff8e8',
+    questions: [
+      { id:'b1', text:'加班費依法定倍率計算？', ref:'\u00A724', weight:15, critical:true, penalty:'2\u842C-100\u842C', penaltyMin:20000 },
+      { id:'b2', text:'所有員工達基本薪資？', ref:'\u00A721', weight:15, critical:true, penalty:'2\u842C-100\u842C', penaltyMin:20000 },
+      { id:'b3', text:'薪資每月至少發放 2 次？', ref:'\u00A723', weight:10, critical:false, penalty:'2\u842C-100\u842C', penaltyMin:20000 },
+      { id:'b4', text:'有發放薪資明細？', ref:'\u00A723', weight:8, critical:false, penalty:'2\u842C-100\u842C', penaltyMin:20000 }
+    ]
+  },
+  {
+    id: 'C',
+    name: '勞健保與勞退',
+    icon: '\uD83C\uDFE5',
+    iconBg: '#f0f0ff',
+    questions: [
+      { id:'c1', text:'全員加入勞保？', ref:'\u52DE\u4FDD\u00A76', weight:12, critical:true, penalty:'\u8FFD\u7E73+\u7F70\u92B0', penaltyMin:20000 },
+      { id:'c2', text:'投保薪資按實際薪資申報？', ref:'\u52DE\u4FDD\u00A714', weight:12, critical:true, penalty:'\u8FFD\u7E73+\u7F70\u92B0', penaltyMin:20000 },
+      { id:'c3', text:'勞退按月提繳 6%？', ref:'\u52DE\u9000\u00A714', weight:12, critical:true, penalty:'6\u842C-30\u842C', penaltyMin:60000 },
+      { id:'c4', text:'到職日同日加保？', ref:'\u52DE\u4FDD\u00A711', weight:8, critical:false, penalty:'\u8FFD\u7E73+\u7F70\u92B0', penaltyMin:20000 }
+    ]
+  },
+  {
+    id: 'D',
+    name: '假別管理',
+    icon: '\uD83D\uDCC5',
+    iconBg: '#eef8f2',
+    questions: [
+      { id:'d1', text:'特休依年資正確給予？', ref:'\u00A738', weight:10, critical:false, penalty:'2\u842C-100\u842C', penaltyMin:20000 },
+      { id:'d2', text:'特休未休年終折現？', ref:'\u00A738', weight:10, critical:false, penalty:'2\u842C-100\u842C', penaltyMin:20000 },
+      { id:'d3', text:'產假 8 週且薪資照給？', ref:'\u00A750', weight:8, critical:true, penalty:'2\u842C-30\u842C', penaltyMin:20000 },
+      { id:'d4', text:'請假有合法准駁程序？', ref:'\u52DE\u57FA\u6CD5', weight:5, critical:false, penalty:null, penaltyMin:0 }
+    ]
+  },
+  {
+    id: 'E',
+    name: '解僱與資遣',
+    icon: '\u26A0\uFE0F',
+    iconBg: '#fef2f2',
+    questions: [
+      { id:'e1', text:'資遣有法定事由？', ref:'\u00A711', weight:12, critical:true, penalty:'30\u842C-150\u842C', penaltyMin:300000 },
+      { id:'e2', text:'遵守預告期間？', ref:'\u00A716', weight:10, critical:false, penalty:'2\u842C-30\u842C', penaltyMin:20000 },
+      { id:'e3', text:'資遣費 30 日內給付？', ref:'\u52DE\u9000\u00A712', weight:10, critical:false, penalty:'30\u842C-150\u842C', penaltyMin:300000 },
+      { id:'e4', text:'通報主管機關及就服機構？', ref:'\u5C31\u670D\u6CD5\u00A733', weight:8, critical:false, penalty:'3\u842C-15\u842C', penaltyMin:30000 },
+      { id:'e5', text:'開立非自願離職證明？', ref:'\u00A719', weight:8, critical:false, penalty:'2\u842C-30\u842C', penaltyMin:20000 }
+    ]
+  },
+  {
+    id: 'F',
+    name: '職業安全',
+    icon: '\uD83D\uDEE1\uFE0F',
+    iconBg: '#fff8e8',
+    questions: [
+      { id:'f1', text:'有設安全衛生人員？', ref:'\u8077\u5B89\u6CD5\u00A723', weight:10, critical:false, penalty:'3\u842C-30\u842C', penaltyMin:30000, requireSize:'30to199,200up' },
+      { id:'f2', text:'定期安全檢查？', ref:'\u8077\u5B89\u6CD5\u00A76', weight:8, critical:false, penalty:'3\u842C-30\u842C', penaltyMin:30000 },
+      { id:'f3', text:'有職災通報機制？', ref:'\u00A759\u3001\u8077\u5B89\u6CD5\u00A737', weight:8, critical:false, penalty:'3\u842C-30\u842C', penaltyMin:30000 }
+    ]
+  },
+  {
+    id: 'G',
+    name: '勞動契約',
+    icon: '\uD83D\uDCDD',
+    iconBg: '#f0f0ff',
+    questions: [
+      { id:'g1', text:'有書面勞動契約？', ref:'\u52DE\u57FA\u6CD5', weight:8, critical:false, penalty:null, penaltyMin:0 },
+      { id:'g2', text:'工作規則報備？', ref:'\u00A770\uFF0C30\u4EBA\u4EE5\u4E0A\u5F37\u5236', weight:10, critical:false, penalty:'2\u842C-30\u842C', penaltyMin:20000, requireSize:'30to199,200up', criticalForSize:'30to199,200up' },
+      { id:'g3', text:'競業禁止符合 \u00A79-1？', ref:'\u00A79-1', weight:5, critical:false, penalty:null, penaltyMin:0 }
+    ]
+  }
+];
+
+let answers = {};
+let companySize = '';
+let industry = '';
+let currentStep = 1;
+const totalSteps = 3;
+
+/* === Check if question is applicable === */
+function isApplicable(q) {
+  if (!q.requireSize) return true;
+  const sizes = q.requireSize.split(',');
+  return sizes.includes(companySize);
+}
+
+/* === Check if question is critical for current size === */
+function isCritical(q) {
+  if (q.critical) return true;
+  if (q.criticalForSize) {
+    const sizes = q.criticalForSize.split(',');
+    return sizes.includes(companySize);
+  }
+  return false;
+}
+
+/* === Build questionnaire === */
+function buildQuestionnaire() {
+  const container = document.getElementById('questionnaire');
+  container.innerHTML = '';
+  answers = {};
+  let globalIdx = 0;
+
+  CATEGORIES.forEach(cat => {
+    const applicableQs = cat.questions.filter(isApplicable);
+    if (applicableQs.length === 0) return;
+
+    container.innerHTML += `
+      <div class="cat-header">
+        <div class="cat-icon" style="background:${cat.iconBg};">${cat.icon}</div>
+        <div>
+          <div class="cat-title">${cat.id}. ${cat.name}</div>
+          <div class="cat-count">${applicableQs.length} 題</div>
+        </div>
+      </div>
+    `;
+
+    applicableQs.forEach(q => {
+      globalIdx++;
+      answers[q.id] = null;
+      const criticalTag = isCritical(q) ? '<span class="q-item-critical">CRITICAL</span>' : '';
+      container.innerHTML += `
+        <div class="q-item" id="qi_${q.id}">
+          <div class="q-item-text">
+            <span class="q-item-num">${globalIdx}.</span>${q.text}${criticalTag}
+          </div>
+          <div class="q-item-ref">法源：${q.ref}</div>
+          <div class="q-options" style="margin-top:8px;">
+            <button class="q-opt" id="${q.id}_yes" onclick="answer('${q.id}','yes')">是</button>
+            <button class="q-opt" id="${q.id}_no" onclick="answer('${q.id}','no')">否</button>
+            <button class="q-opt" id="${q.id}_na" onclick="answer('${q.id}','na')">不確定</button>
+          </div>
+        </div>
+      `;
+    });
+  });
+}
+
+function answer(qid, val) {
+  answers[qid] = val;
+  ['yes','no','na'].forEach(function(v) {
+    var el = document.getElementById(qid + '_' + v);
+    if (el) el.className = 'q-opt' + (v === val ? ' ' + v + '-selected' : '');
+  });
+}
+
+/* === Wizard navigation === */
+function showStep(n) {
+  document.querySelectorAll('.step').forEach(function(s) { s.classList.remove('active'); });
+  document.getElementById('step' + n).classList.add('active');
+  document.getElementById('progressFill').style.width = ((n / totalSteps) * 100) + '%';
+  currentStep = n;
+
+  var btnBack = document.getElementById('btnBack');
+  var btnNext = document.getElementById('btnNext');
+  var btnReset = document.getElementById('btnReset');
+
+  if (n === 1) {
+    btnBack.style.display = 'none';
+    btnNext.style.display = 'flex';
+    btnReset.style.display = 'none';
+    btnNext.textContent = '\u958B\u59CB\u81EA\u6AA2 \u2192';
+  } else if (n === 2) {
+    btnBack.style.display = 'block';
+    btnNext.style.display = 'flex';
+    btnReset.style.display = 'none';
+    btnNext.textContent = '\u67E5\u770B\u7D50\u679C \u2192';
+  } else {
+    btnBack.style.display = 'block';
+    btnNext.style.display = 'none';
+    btnReset.style.display = 'flex';
+  }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function goBack() {
+  if (currentStep > 1) showStep(currentStep - 1);
+}
+
+function goNext() {
+  if (currentStep === 1) {
+    companySize = document.getElementById('companySize').value;
+    industry = document.getElementById('industry').value;
+    if (!companySize || !industry) {
+      alert('\u8ACB\u5148\u9078\u64C7\u516C\u53F8\u898F\u6A21\u8207\u7522\u696D\u985E\u5225\u3002');
+      return;
+    }
+    buildQuestionnaire();
+    showStep(2);
+  } else if (currentStep === 2) {
+    // Check all applicable questions answered
+    var unanswered = 0;
+    CATEGORIES.forEach(function(cat) {
+      cat.questions.filter(isApplicable).forEach(function(q) {
+        if (answers[q.id] === null) unanswered++;
+      });
+    });
+    if (unanswered > 0) {
+      alert('\u8ACB\u56DE\u7B54\u6240\u6709\u554F\u984C\uFF08\u5C1A\u6709 ' + unanswered + ' \u984C\u672A\u56DE\u7B54\uFF09\u3002');
+      return;
+    }
+    evaluate();
+    showStep(3);
+  }
+}
+
+function resetAll() {
+  document.getElementById('companySize').selectedIndex = 0;
+  document.getElementById('industry').selectedIndex = 0;
+  companySize = '';
+  industry = '';
+  answers = {};
+  showStep(1);
+}
+
+/* === Evaluate results === */
+function evaluate() {
+  var totalWeight = 0;
+  var earnedWeight = 0;
+  var uncertainWeight = 0;
+  var hasCriticalFail = false;
+  var criticalFails = [];
+  var totalPenaltyMin = 0;
+  var failedItems = [];
+  var catResults = [];
+
+  CATEGORIES.forEach(function(cat) {
+    var applicableQs = cat.questions.filter(isApplicable);
+    if (applicableQs.length === 0) return;
+
+    var catPasses = 0;
+    var catFails = 0;
+    var catWarns = 0;
+    var catItems = [];
+
+    applicableQs.forEach(function(q) {
+      var a = answers[q.id];
+      var critical = isCritical(q);
+      totalWeight += q.weight;
+
+      var status, icon, color;
+      if (a === 'yes') {
+        earnedWeight += q.weight;
+        status = 'pass'; icon = '\u2713'; color = 'var(--accent)';
+        catPasses++;
+      } else if (a === 'no') {
+        status = 'fail'; icon = '\u2717'; color = 'var(--danger)';
+        catFails++;
+        if (critical) {
+          hasCriticalFail = true;
+          criticalFails.push({ text: q.text, ref: q.ref, penalty: q.penalty });
+        }
+        if (q.penaltyMin > 0) {
+          totalPenaltyMin += q.penaltyMin;
+        }
+        failedItems.push({ text: q.text, ref: q.ref, weight: q.weight, penalty: q.penalty, critical: critical, catName: cat.name });
+      } else {
+        uncertainWeight += q.weight * 0.3;
+        status = 'warn'; icon = '?'; color = 'var(--gold)';
+        catWarns++;
+      }
+
+      catItems.push({ text: q.text, ref: q.ref, status: status, icon: icon, color: color, critical: critical });
+    });
+
+    var catStatus = 'pass';
+    if (catFails > 0) catStatus = 'fail';
+    else if (catWarns > 0) catStatus = 'warn';
+
+    catResults.push({
+      id: cat.id,
+      name: cat.name,
+      icon: cat.icon,
+      status: catStatus,
+      passes: catPasses,
+      fails: catFails,
+      warns: catWarns,
+      total: applicableQs.length,
+      items: catItems
+    });
+  });
+
+  var score = Math.round(((earnedWeight + uncertainWeight) / totalWeight) * 100);
+
+  // Determine risk level
+  var riskLevel, riskColor, riskBadgeClass, riskText;
+  if (score >= 90 && !hasCriticalFail) {
+    riskLevel = '\u4F4E\u98A8\u96AA'; riskColor = 'var(--accent)'; riskBadgeClass = 'badge-green';
+    riskText = '\u5408\u898F\u72C0\u6CC1\u826F\u597D\uFF0C\u5EFA\u8B70\u5B9A\u671F\u8907\u6AA2';
+  } else if (score >= 70 && !hasCriticalFail) {
+    riskLevel = '\u4E2D\u5EA6\u98A8\u96AA'; riskColor = 'var(--gold)'; riskBadgeClass = 'badge-gold';
+    riskText = '\u90E8\u5206\u9805\u76EE\u5F85\u6539\u5584\uFF0C\u5EFA\u8B70\u512A\u5148\u8655\u7406';
+  } else if (score >= 50 || hasCriticalFail) {
+    riskLevel = '\u9AD8\u98A8\u96AA'; riskColor = 'var(--danger)'; riskBadgeClass = 'badge-red';
+    riskText = '\u5B58\u5728\u91CD\u5927\u9055\u898F\u98A8\u96AA\uFF0C\u61C9\u7ACB\u5373\u6539\u5584';
+  } else {
+    riskLevel = '\u56B4\u91CD\u98A8\u96AA'; riskColor = '#4a0e0e'; riskBadgeClass = 'badge-red';
+    riskText = '\u5168\u9762\u6027\u9055\u898F\uFF0C\u6975\u53EF\u80FD\u906D\u53D7\u88C1\u7F70';
+  }
+
+  // Render score
+  document.getElementById('scoreValue').textContent = score;
+  document.getElementById('scoreValue').style.color = riskColor;
+  document.getElementById('scoreBarFill').style.width = score + '%';
+  document.getElementById('scoreBarFill').style.background = riskColor;
+  document.getElementById('scoreLabel').textContent = riskLevel;
+  document.getElementById('scoreLabel').style.color = riskColor;
+
+  // Risk badge
+  document.getElementById('riskBadge').innerHTML =
+    '<span class="badge ' + riskBadgeClass + '" style="font-size:12px;padding:4px 12px;">' + riskLevel + ' \u2014 ' + riskText + '</span>';
+
+  // Subtitle
+  document.getElementById('s3Sub').textContent = '\u5408\u898F\u5206\u6578 ' + score + '/100 \u2014 ' + riskLevel;
+
+  // Critical violations alert
+  var criticalEl = document.getElementById('criticalAlert');
+  if (hasCriticalFail) {
+    var html = '<strong>\u26A0 \u95DC\u9375\u9055\u898F\u8B66\u544A</strong><br><br>';
+    html += '\u4EE5\u4E0B\u70BA\u95DC\u9375\u5408\u898F\u9805\u76EE\u672A\u901A\u904E\uFF0C\u53EF\u80FD\u9762\u81E8\u91CD\u5927\u88C1\u7F70\uFF1A<br>';
+    criticalFails.forEach(function(cf) {
+      html += '\u2022 ' + cf.text + '\uFF08' + cf.ref + '\uFF09';
+      if (cf.penalty) html += ' \u2014 \u7F70\u92B0 ' + cf.penalty;
+      html += '<br>';
+    });
+    criticalEl.innerHTML = html;
+    criticalEl.style.display = 'block';
+  } else {
+    criticalEl.style.display = 'none';
+  }
+
+  // Penalty exposure
+  var penaltyHero = document.getElementById('penaltyHero');
+  if (totalPenaltyMin > 0) {
+    document.getElementById('penaltyAmount').textContent = 'NT$ ' + totalPenaltyMin.toLocaleString();
+    penaltyHero.style.display = 'block';
+    LaborPro.renderCaseLaw('compliance', totalPenaltyMin, 'penaltyHero');
+  } else {
+    penaltyHero.style.display = 'none';
+  }
+
+  // Per-category results
+  var catContainer = document.getElementById('categoryResults');
+  catContainer.innerHTML = '';
+  catResults.forEach(function(cr) {
+    var statusIcon, statusColor, statusText;
+    if (cr.status === 'pass') {
+      statusIcon = '\u2713'; statusColor = 'var(--accent)'; statusText = '\u901A\u904E';
+    } else if (cr.status === 'fail') {
+      statusIcon = '\u2717'; statusColor = 'var(--danger)'; statusText = cr.fails + ' \u9805\u4E0D\u7B26';
+    } else {
+      statusIcon = '?'; statusColor = 'var(--gold)'; statusText = cr.warns + ' \u9805\u5F85\u78BA\u8A8D';
+    }
+
+    var itemsHtml = '';
+    cr.items.forEach(function(item) {
+      var critTag = item.critical ? ' <span style="font-family:\'Noto Serif TC\',monospace;font-size:9px;color:var(--danger);">CRITICAL</span>' : '';
+      itemsHtml += '<div class="check-item">' +
+        '<span class="check-icon" style="color:' + item.color + ';">' + item.icon + '</span>' +
+        '<span style="flex:1;">' + item.text + critTag + '</span>' +
+        '<span style="font-size:11px;font-family:\'Noto Serif TC\',monospace;color:' + item.color + ';flex-shrink:0;">' +
+        (item.status === 'pass' ? 'Pass' : item.status === 'fail' ? 'Fail' : 'Warn') +
+        '</span></div>';
+    });
+
+    catContainer.innerHTML += '<div class="cat-result">' +
+      '<div class="cat-result-header" onclick="toggleCat(this)">' +
+        '<span class="cat-result-title">' + cr.icon + ' ' + cr.id + '. ' + cr.name +
+        ' <span style="font-size:12px;color:var(--muted);font-weight:400;">(' + cr.passes + '/' + cr.total + ' \u901A\u904E)</span></span>' +
+        '<span style="font-size:13px;font-weight:600;color:' + statusColor + ';">' + statusIcon + ' ' + statusText + '</span>' +
+      '</div>' +
+      '<div class="cat-result-body">' + itemsHtml + '</div>' +
+    '</div>';
+  });
+
+  // Improvement priority list
+  var priorityCard = document.getElementById('priorityCard');
+  var priorityList = document.getElementById('priorityList');
+  if (failedItems.length > 0) {
+    failedItems.sort(function(a, b) { return b.weight - a.weight; });
+    var pHtml = '';
+    failedItems.forEach(function(fi, idx) {
+      var critTag = fi.critical ? ' <span style="color:var(--danger);font-size:11px;">[CRITICAL]</span>' : '';
+      var penaltyTag = fi.penalty ? '<br><span style="font-size:11px;color:var(--muted);">\u7F70\u92B0\u7BC4\u570D\uFF1A' + fi.penalty + '</span>' : '';
+      pHtml += '<div class="action-item">' +
+        '<span class="action-num">' + (idx + 1) + '.</span>' +
+        '<span>' + fi.text + critTag + '<br><span style="font-size:11px;color:var(--muted);">\u9762\u5411\uFF1A' + fi.catName + ' \u2502 \u6CD5\u6E90\uFF1A' + fi.ref + '</span>' + penaltyTag + '</span>' +
+      '</div>';
+    });
+    priorityList.innerHTML = pHtml;
+    priorityCard.style.display = 'block';
+  } else {
+    priorityCard.style.display = 'none';
+  }
+}
+
+/* === Toggle category expand/collapse === */
+function toggleCat(header) {
+  var body = header.nextElementSibling;
+  body.classList.toggle('hidden');
+  header.classList.toggle('collapsed');
+}
+
+/* === Init === */
+showStep(1);
+</script>
+<script defer src="js/coffee-button.js"></script>
+</body>
+</html>

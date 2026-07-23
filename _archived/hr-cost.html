@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<script src="js/theme-boot.js"></script>
+<script src="js/ga.js" defer></script>
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png" sizes="180x180">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>人事成本計算機｜LaborPro</title>
+<meta name="description" content="精算每位員工的真實人事成本，含薪資、勞保、健保、勞退提撥、加班費，年度預算一目了然。">
+<link rel="canonical" href="https://labor.choulegal.com/hr-cost.html">
+<meta property="og:title" content="人事成本計算機｜LaborPro">
+<meta property="og:description" content="精算每位員工的真實人事成本，含薪資、勞保、健保、勞退提撥、加班費，年度預算一目了然。">
+<meta name="keywords" content="人事成本,僱用成本,勞保費用,健保費用,勞退提撥,加班費成本,員工成本計算,台灣人事成本">
+<meta name="robots" content="index, follow">
+<meta name="author" content="LaborPro">
+<meta property="og:title" content="人事成本計算機｜LaborPro">
+<meta property="og:description" content="精算每位員工真實成本——薪資＋勞健保＋勞退＋加班費。">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="LaborPro">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://labor.choulegal.com/choulegal-icon.svg">
+<meta property="og:image:width" content="400">
+<meta property="og:image:height" content="400">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="js/supabase-config.js"></script>
+<script src="js/persona.js"></script>
+<script type="module" src="js/auth-bar.js"></script>
+<link rel="stylesheet" href="css/common.css">
+<script src="js/animations.js" defer></script>
+<style>
+  .cost-table { width: 100%; border-collapse: collapse; }
+  .cost-table th {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-align: right;
+    padding: 0 0 10px;
+    border-bottom: 1px solid var(--soft);
+    font-weight: 500;
+  }
+  .cost-table th:first-child { text-align: left; }
+  .cost-table td {
+    padding: 10px 0;
+    font-size: 13px;
+    border-bottom: 1px solid var(--soft);
+  }
+  .cost-table td:first-child { color: var(--ink); }
+  .cost-table td:not(:first-child) {
+    text-align: right;
+    font-family: 'Noto Serif TC', serif;
+  }
+  .cost-table tr:last-child td { border-bottom: none; }
+  .cost-table .row-total td {
+    font-weight: 700;
+    border-top: 2px solid var(--soft);
+    color: var(--accent);
+  }
+  .td-pct { color: var(--muted); font-size: 11px; }
+
+  .insight-box {
+    background: var(--ink);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 22px;
+    margin-bottom: 14px;
+    text-align: center;
+  }
+  .insight-label {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .insight-value {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--gold);
+    margin-bottom: 4px;
+  }
+  .insight-sub {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .annual-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .annual-box {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    text-align: center;
+    color: var(--ink);
+  }
+  .annual-value {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--gold);
+    margin-bottom: 4px;
+  }
+  .annual-label {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  @media (max-width: 400px) {
+    .annual-grid { grid-template-columns: 1fr; }
+    .insight-value { font-size: 22px; }
+  }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "人事成本計算機｜LaborPro",
+  "description": "精算每位員工的真實人事成本，含薪資、勞保、健保、勞退提撥、加班費，年度預算一目了然。",
+  "url": "https://labor.choulegal.com/hr-cost.html",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "TWD"
+  },
+  "provider": {
+    "@type": "Organization",
+    "name": "周全法律科技 ChouLegal",
+    "url": "https://choulegal.com"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "LaborPro 首頁", "item": "https://labor.choulegal.com/"},
+    {"@type": "ListItem", "position": 2, "name": "人事成本計算機", "item": "https://labor.choulegal.com/hr-cost.html"}
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "如何試算雇主每位員工的真實人事成本",
+  "description": "依勞工保險條例§13 §15、全民健康保險法§27、勞工退休金條例§14、勞工職業災害保險及保護法、勞動基準法§24，試算雇主每月每位員工之薪資、勞保、健保、勞退、職保、加班費等完整成本。",
+  "step": [
+    {"@type": "HowToStep", "position": 1, "name": "輸入薪資設定", "text": "填入員工月薪及其他經常性給與（伙食津貼、交通津貼、職務加給等）。經常性給與依勞動基準法§2 第 3 款屬工資定義，應計入勞保／健保投保薪資及勞退提繳工資。"},
+    {"@type": "HowToStep", "position": 2, "name": "輸入人力規模與眷屬數", "text": "填入員工人數及平均眷屬人數（影響雇主健保負擔，依全民健康保險法§19、§27，眷屬保險費由要保人負擔，雇主依比例分擔）。"},
+    {"@type": "HowToStep", "position": 3, "name": "輸入加班預估", "text": "估算每月平均加班時數及加班型態（平日 §24 I、休息日 §24 II、混合）。系統依勞基法§24 套用倍率計算加班費成本，並注意§32 II 月上限 46 小時（經工會同意得放寬至 54 小時）。"},
+    {"@type": "HowToStep", "position": 4, "name": "計算法定負擔小計", "text": "系統自動套用：勞保普通事故（依勞保條例§15，投保單位負擔 70% × 普通事故費率）、職災保險（依勞工職業災害保險及保護法 §16 §17，雇主全額負擔，一般行業約 0.21%）、健保（依全民健保法§27，雇主負擔 60%，含眷屬比例）、勞退提繳（依勞退條例§14，雇主每月提繳不低於月工資 6%）。"},
+    {"@type": "HowToStep", "position": 5, "name": "閱讀年度預算與成本倍數", "text": "結果頁顯示每人每月總成本、薪資成本倍數（每支付 1 元薪資的實際支出倍數）、單人年度成本及全公司年度成本。並提示高薪低報（投保薪資 < 實際薪資）將面臨追繳並依勞保條例§72 處罰之風險。"}
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type": "Question", "name": "雇主每月實際支出大概是員工月薪的幾倍？", "acceptedAnswer": {"@type": "Answer", "text": "視薪資水準與加班量而定，一般約 1.18–1.30 倍。以月薪 45,000 元、無眷屬、平日加班 10 小時為例：薪資 45,000 + 勞保（投保單位 70% × 12% × 投保薪資）約 4,000 + 職災保險約 100 + 健保（60% × 5.17% × 投保薪資）約 1,400 + 勞退提繳（薪資 × 6%）2,700 + 加班費約 6,000 ≈ 59,000 元，倍數約 1.31。實際因投保薪資級距、行業別職災費率、眷屬數、加班型態而異。"}},
+    {"@type": "Question", "name": "雇主負擔的勞保、健保、勞退比例分別是多少？", "acceptedAnswer": {"@type": "Answer", "text": "(1) 勞保（普通事故）：依勞工保險條例§15 第 1 款，受僱員工被保險人負擔 20%、投保單位負擔 70%、中央政府負擔 10%。普通事故費率現行為 12%（依勞保條例§13，自 2017 年起每年調升 0.5% 至 12%）。(2) 健保：依全民健康保險法§27 第 1 款，受僱者被保險人負擔 30%、投保單位負擔 60%、中央政府負擔 10%；現行費率 5.17%。(3) 勞退：依勞工退休金條例§14 第 1 項，雇主每月提繳率不得低於勞工每月工資之 6%，全額由雇主負擔（不得從工資扣除）。(4) 職災保險：依勞工職業災害保險及保護法，由投保單位全額負擔（行業別費率不同，一般行業約 0.21%）。"}},
+    {"@type": "Question", "name": "勞退提撥 6% 是用實際薪資還是投保薪資計算？", "acceptedAnswer": {"@type": "Answer", "text": "用「月提繳工資」計算，原則上應以實際薪資為基礎，依勞工退休金條例§14 第 1 項：「雇主應為第 7 條第 1 項規定之勞工負擔提繳之退休金，不得低於勞工每月工資百分之六。」依§7、§15 應依實際工資申報月提繳工資（按勞工退休金月提繳工資分級表級距）。雇主若以低於實際薪資申報（高薪低報），依§15 II、§52 處新臺幣 5,000 元以上 25,000 元以下罰鍰；未按時提繳或短繳者，另依§53 I 自期限屆滿次日起每日加徵應提繳金額 3% 滯納金（上限應提繳金額 1 倍）並追繳。實務上勞保、健保投保薪資與勞退月提繳工資為三套不同分級表，但都應以實際工資為基礎申報。"}},
+    {"@type": "Question", "name": "勞退雇主提撥 6% 算員工的所得嗎？要扣所得稅嗎？", "acceptedAnswer": {"@type": "Answer", "text": "不算員工所得，不扣所得稅。依勞工退休金條例§14 第 3 項：「雇主依本條第 1 項提繳之退休金，不計入該勞工每月工資所得課稅。」也就是雇主依法定 6% 提繳到勞工個人退休金專戶之金額，不計入勞工當年度綜合所得稅。但勞工自願提繳部分（§14 III 規定勞工得在每月工資 6% 範圍內自願另行提繳）則可從當年度個人綜合所得總額中全數扣除（§14 III）。"}},
+    {"@type": "Question", "name": "「職災保險」跟「勞保職災給付」是同一個嗎？", "acceptedAnswer": {"@type": "Answer", "text": "不同。「勞工職業災害保險及保護法」於 2022 年 5 月 1 日施行，將原勞工保險條例之職業災害保險獨立出來。新法將強制納保對象擴大至所有受僱勞工（包括 4 人以下事業單位），並由雇主全額負擔保費（行業別費率，一般行業約 0.21%）。原勞保普通事故仍依勞工保險條例規定運作（雇主負擔 70%）。雇主應分別繳納：(1) 勞保普通事故（與被保險人、政府共同分擔）；(2) 職災保險（雇主全額負擔）。本工具計算時兩者分項列示。"}},
+    {"@type": "Question", "name": "投保薪資申報太低（高薪低報）會有什麼後果？", "acceptedAnswer": {"@type": "Answer", "text": "面臨追繳保費差額並依各法處罰，且影響勞工各項給付權益。(1) 勞保依勞工保險條例§72 第 3 項：投保單位將投保薪資金額以多報少或以少報多者，自事實發生之日起，按其短報或多報之保險費金額，處 4 倍罰鍰。(2) 健保依全民健康保險法§84：投保金額以多報少或以少報多者，按其短繳或溢繳之保險費金額，處 2 倍至 4 倍罰鍰。(3) 勞退依勞工退休金條例§15 II、§52：違反月提繳工資申報、通知規定（含申報不實／高薪低報）者，處新臺幣 5,000 元以上 25,000 元以下罰鍰；如未按時提繳或繳足，另依§53 I 自期限屆滿次日起每日加徵應提繳金額 3% 滯納金（上限應提繳金額 1 倍），並由勞保局追繳差額。(4) 影響勞工失能、老年、死亡給付及育嬰留職停薪津貼計算金額（皆以投保薪資為基準）。"}},
+    {"@type": "Question", "name": "這個工具計算結果跟我實際繳的金額不一樣，為什麼？", "acceptedAnswer": {"@type": "Answer", "text": "本工具採取一般行業標準費率估算，實際繳費受下列因素影響：(1) 投保薪資級距：勞保、健保、勞退分級表並非連續金額，而是分級跳動（例如月薪 45,001 元與 45,800 元同級）。(2) 行業別職災費率：依勞工職業災害保險及保護法之行業別費率表，營造業、礦業等高風險行業費率高於一般行業，可能達 1%–3%。(3) 經常性給與認定：津貼、獎金是否屬工資（依勞基法§2 III）影響投保薪資基礎。(4) 加班型態混合比例：本工具採估算模型，實際依逐筆計算為準。(5) 勞退自願提繳：員工自願提繳部分另計。如需精算，建議依個案投保證明文件與薪資結構諮詢勞保局或會計師。"}}
+  ]
+}
+</script>
+</head>
+<body>
+
+<header>
+  <a href="index.html" style="text-decoration:none;color:inherit">
+    <div class="parent-brand"><img class="cl-icon" src="choulegal-icon.svg" alt="周全法律科技">周全 <span>ChouLegal</span></div>
+    <div class="logo">Labor<span>Pro</span></div>
+  </a>
+  <div style="display:flex;align-items:center;gap:8px">
+    <a class="back-link" href="index.html">← 首頁</a>
+    <button id="themeToggle" type="button" aria-label="切換深色/淺色模式">☀</button>
+  </div>
+</header>
+<div class="progress-bar">
+  <div class="progress-fill" id="progressFill" style="width: 50%"></div>
+</div>
+
+<main>
+
+  <!-- Step 1 -->
+  <div class="step active" id="step1">
+    <div class="step-header">
+      <div class="step-label">Step 1 of 2 · 薪資與人力</div>
+      <h1 class="step-title">人事成本計算機</h1>
+      <p class="step-sub">輸入員工薪資與人力規模，精算每位員工的真實僱用成本——薪資只是冰山一角。</p>
+    </div>
+
+    <div class="wizard">
+      <div class="wizard-section-title">薪資設定</div>
+      <div class="field-group">
+        <label>員工月薪（元）</label>
+        <input type="number" id="monthlySalary" placeholder="45000" min="0" inputmode="numeric">
+      </div>
+      <div class="field-group">
+        <label>其他經常性給與（元）<span class="hint">伙食津貼、交通津貼等固定發放項目</span></label>
+        <input type="number" id="allowances" placeholder="0" min="0" inputmode="numeric">
+      </div>
+    </div>
+
+    <div class="wizard">
+      <div class="wizard-section-title">人力規模</div>
+      <div class="field-group">
+        <label>員工人數</label>
+        <input type="number" id="headcount" placeholder="10" min="1" inputmode="numeric">
+      </div>
+      <div class="field-group">
+        <label>平均眷屬人數 <span class="hint">影響雇主健保負擔（0=無眷屬）</span></label>
+        <input type="number" id="dependents" placeholder="0" min="0" max="5" step="1" inputmode="numeric">
+      </div>
+    </div>
+
+    <div class="wizard">
+      <div class="wizard-section-title">加班預估</div>
+      <div class="field-group">
+        <label>平均每月加班時數</label>
+        <input type="number" id="avgOTHours" placeholder="10" min="0" max="54" step="0.5" inputmode="decimal">
+      </div>
+      <div class="field-group">
+        <label>加班型態</label>
+        <div class="select-wrap">
+          <select id="otType">
+            <option value="none">無加班</option>
+            <option value="weekday">平日延長工時（§24 I）</option>
+            <option value="mixed" selected>混合（平日＋休息日）</option>
+            <option value="restday">主要為休息日（§24 II）</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-box">
+      * 月薪 45,000 的員工，加上勞健保、勞退、加班費，雇主每月實際支出約 55,000–60,000 元。
+    </div>
+  </div>
+
+  <!-- Step 2: Results -->
+  <div class="step" id="step2">
+    <div class="step-header">
+      <div class="step-label">Step 2 of 2 · 計算結果</div>
+      <h1 class="step-title">人事成本分析</h1>
+      <p class="step-sub">以下為每位員工的完整僱用成本，含法定義務項目。</p>
+    </div>
+
+    <!-- Hero -->
+    <div class="result-hero">
+      <div class="result-hero-label">每人每月總成本</div>
+      <div class="result-hero-amount" id="r_totalPerPerson">—</div>
+      <div class="result-hero-sub" id="r_heroSub">—</div>
+    </div>
+
+    <!-- Cost multiplier insight -->
+    <div class="insight-box">
+      <div class="insight-label">薪資成本倍數</div>
+      <div class="insight-value" id="r_multiplier">—</div>
+      <div class="insight-sub" id="r_multiplierSub">—</div>
+    </div>
+
+    <!-- Breakdown -->
+    <div class="result-card">
+      <div class="result-card-title">單人每月成本明細</div>
+      <table class="cost-table">
+        <thead>
+          <tr><th>項目</th><th>金額</th><th>佔比</th></tr>
+        </thead>
+        <tbody id="r_breakdownBody"></tbody>
+      </table>
+    </div>
+
+    <!-- Annual projection -->
+    <div class="result-card">
+      <div class="result-card-title">年度人事成本預估</div>
+      <div class="annual-grid">
+        <div class="annual-box">
+          <div class="annual-value" id="r_annualPer">—</div>
+          <div class="annual-label">單人年度</div>
+        </div>
+        <div class="annual-box">
+          <div class="annual-value" id="r_annualTotal">—</div>
+          <div class="annual-label">全公司年度</div>
+        </div>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">員工人數</span>
+        <span class="result-row-val" id="r_headcount">—</span>
+      </div>
+    </div>
+
+    <!-- Insurance detail -->
+    <div class="result-card">
+      <div class="result-card-title">社會保險雇主負擔明細</div>
+      <div class="result-row">
+        <span class="result-row-label">投保薪資級距</span>
+        <span class="result-row-val" id="r_bracket">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">勞保（普通事故 12% × 70%）</span>
+        <span class="result-row-val" id="r_laborIns">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">職災保險（~0.21% × 100%）</span>
+        <span class="result-row-val" id="r_laborAcc">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">健保（5.17% × 60% × (1+眷屬)）</span>
+        <span class="result-row-val" id="r_nhi">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">勞退提撥（薪資 × 6%）</span>
+        <span class="result-row-val" id="r_pension">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">法定負擔小計</span>
+        <span class="result-row-val highlight" id="r_insTotal">—</span>
+      </div>
+    </div>
+
+    <!-- Warnings -->
+    <div class="warn-box">
+      ⚠ <strong>注意事項</strong><br>
+      · 勞退提撥以「實際薪資」計算，非投保薪資<br>
+      · 投保薪資低於實際薪資（高薪低報）將面臨追繳＋罰鍰<br>
+      · 本計算以一般行業費率估算，特殊行業職災費率可能不同
+    </div>
+
+    <!-- Law note -->
+    <div class="law-note">
+      <strong>法律依據</strong><br>
+      · <strong>勞退條例§14</strong>：雇主每月提繳不低於月薪資 6%<br>
+      · <strong>勞保條例§15</strong>：雇主負擔普通事故保費 70%<br>
+      · <strong>全民健保法§27</strong>：雇主負擔保費 60%<br>
+      · <strong>勞基法§24</strong>：加班費計算標準
+    </div>
+  </div>
+
+  <!-- HowTo — visible step list for HowTo schema -->
+  <section style="max-width:700px;margin:32px auto 16px;padding:0 4px">
+    <div style="font-family:'Noto Serif TC',serif;font-size:11px;color:var(--muted);letter-spacing:0.16em;text-transform:uppercase;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border)">使用步驟</div>
+    <ol style="padding-left:20px;color:var(--ink);font-size:13px;line-height:1.9">
+      <li><strong>輸入薪資設定：</strong>月薪及其他經常性給與。經常性給與依勞基法§2 III 屬工資定義，應計入勞保／健保投保薪資及勞退提繳工資。</li>
+      <li><strong>輸入人力規模與眷屬數：</strong>影響雇主健保負擔（依全民健保法§19、§27）。</li>
+      <li><strong>輸入加班預估：</strong>依勞基法§24 套用倍率計算加班費成本，注意§32 II 月上限 46 小時。</li>
+      <li><strong>計算法定負擔小計：</strong>勞保（§15 投保單位 70% × 普通事故費率）、職災保險（職保法 雇主全額負擔約 0.21%）、健保（§27 雇主 60%）、勞退提繳（§14 雇主每月 ≥ 6%）。</li>
+      <li><strong>閱讀年度預算與成本倍數：</strong>顯示每人每月總成本、薪資成本倍數、單人年度與全公司年度。注意高薪低報之追繳與罰鍰風險（勞保條例§72）。</li>
+    </ol>
+  </section>
+
+  <!-- FAQ — visible content for FAQPage schema -->
+  <section style="max-width:700px;margin:0 auto 32px;padding:0 4px">
+    <div style="font-family:'Noto Serif TC',serif;font-size:11px;color:var(--muted);letter-spacing:0.16em;text-transform:uppercase;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border)">常見問題</div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">雇主每月實際支出大概是員工月薪的幾倍？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">視薪資水準與加班量而定，一般約 1.18–1.30 倍。以月薪 45,000 元、無眷屬、平日加班 10 小時為例，雇主每月實際成本約 59,000 元，倍數約 1.31。實際因投保薪資級距、行業別職災費率、眷屬數、加班型態而異。</div>
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">勞保、健保、勞退、職保 雇主負擔比例分別是多少？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">勞保（普通事故）：依勞工保險條例§15 第 1 款，被保險人 20%、投保單位 70%、政府 10%，普通事故費率 12%。健保：依全民健保法§27 第 1 款，受僱者 30%、投保單位 60%、政府 10%，現行費率 5.17%。勞退：依勞工退休金條例§14 I，雇主每月不得低於月工資 6%，全額由雇主負擔。職災保險：依勞工職業災害保險及保護法，由投保單位全額負擔（一般行業約 0.21%）。</div>
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">勞退提撥 6% 是用實際薪資還是投保薪資算？</div>
+      <!-- 驗證來源：law.moj.gov.tw/LawClass/LawAll.aspx?pcode=N0030020（勞工退休金條例，全文 58 條，無§50-1 亦無§79）
+           §52 原文：「雇主違反第十五條第二項、第二十一條第一項或第三十九條申報、通知規定者，處新臺幣五千元以上二萬五千元以下罰鍰。」
+           §53 I 原文：「雇主違反第十四條第一項、第十九條第一項或第二十條第二項規定，未按時提繳或繳足退休金者，自期限屆滿之次日起至完繳前一日止，每逾一日加徵其應提繳金額百分之三滯納金至應提繳金額之一倍為止。」
+           查核日：2026-05-03 -->
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">用「月提繳工資」，原則上以實際薪資為基礎依勞退月提繳工資分級表級距申報。雇主若以低於實際薪資申報（高薪低報），依勞工退休金條例§15 II、§52，處新臺幣 5,000 元以上 25,000 元以下罰鍰；如已逾期未提繳或短繳，另依§53 I 自期限屆滿次日起每日加徵應提繳金額 3% 滯納金，最高至應提繳金額之 1 倍，並由勞保局逕行更正、追繳差額。勞保、健保、勞退三套分級表獨立但都應以實際工資為基礎。</div>
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">勞退雇主提撥 6% 算員工的所得嗎？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">不算。依勞退條例§14 第 3 項：「雇主依本條第 1 項提繳之退休金，不計入該勞工每月工資所得課稅。」也就是 6% 強制提繳不計入勞工綜合所得。但勞工自願提繳部分（同條 III）可從當年度綜合所得總額中全數扣除。</div>
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">「職災保險」跟「勞保職災給付」是同一個嗎？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">不同。「勞工職業災害保險及保護法」於 2022/05/01 施行，將原勞保條例之職災保險獨立出來；強制納保擴大至所有受僱勞工（含 4 人以下事業單位），由雇主全額負擔保費（行業別費率，一般約 0.21%）。原勞保普通事故仍依勞工保險條例運作（雇主 70%）。雇主應分別繳納。</div>
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">投保薪資申報太低（高薪低報）會怎樣？</div>
+      <!-- 驗證來源：law.moj.gov.tw/LawClass/LawAll.aspx?pcode=N0030020 §52、§53 I（查核日 2026-05-03，勞工退休金條例全文僅 58 條，無§50-1） -->
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">面臨追繳保費差額並罰鍰：勞保條例§72 III 處短報金額 4 倍罰鍰；全民健保法§84 處 2–4 倍罰鍰；勞工退休金條例§15 II 違反申報、通知規定者，依§52 處 5,000–25,000 元罰鍰，未按時提繳或短繳另依§53 I 每日加徵 3% 滯納金（上限應提繳金額 1 倍）並追繳差額；同時影響勞工失能、老年、死亡給付及育嬰留停津貼計算金額（皆以投保薪資為基準）。</div>
+    </div>
+    <div style="padding:14px 0">
+      <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">為什麼計算結果跟我實際繳的金額不一樣？</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.8">本工具採一般行業標準費率估算，實際受 (1) 投保薪資級距分級跳動；(2) 行業別職災費率（高風險行業可達 1%–3%）；(3) 經常性給與認定；(4) 加班型態混合比例；(5) 勞退自願提繳等因素影響。如需精算建議依個案投保證明與薪資結構諮詢勞保局或會計師。</div>
+    </div>
+  </section>
+
+</main>
+
+<div class="nav-bar">
+  <button class="btn btn-secondary" id="btnBack" onclick="goBack()" style="display:none;">← 上一步</button>
+  <button class="btn btn-primary" id="btnNext" onclick="goNext()">計算人事成本 →</button>
+  <button class="btn btn-reset" id="btnReset" onclick="resetAll()" style="display:none;">重新計算</button>
+</div>
+
+<script src="js/_generated/core-labor.bundle.js"></script>
+<script src="js/calc-utils.js"></script>
+<script src="js/fmt.js"></script>
+<script>
+  const state = {};
+  let currentStep = 1;
+  const totalSteps = 2;
+
+  function showStep(n) {
+    document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+    document.getElementById('step' + n).classList.add('active');
+    document.getElementById('progressFill').style.width = (n / totalSteps * 100) + '%';
+    currentStep = n;
+    const btnBack = document.getElementById('btnBack');
+    const btnNext = document.getElementById('btnNext');
+    const btnReset = document.getElementById('btnReset');
+    if (n === 1) {
+      btnBack.style.display = 'none'; btnNext.style.display = 'flex'; btnReset.style.display = 'none';
+    } else {
+      btnBack.style.display = 'block'; btnNext.style.display = 'none'; btnReset.style.display = 'flex';
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function goBack() { if (currentStep > 1) showStep(currentStep - 1); }
+
+  function goNext() {
+    if (currentStep === 1) {
+      const salary = parseFloat(document.getElementById('monthlySalary').value);
+      if (!salary || salary <= 0) { alert('請輸入有效的月薪金額。'); return; }
+      const hc = parseInt(document.getElementById('headcount').value) || 1;
+      if (hc < 1) { alert('員工人數至少為 1。'); return; }
+      state.salary = salary;
+      state.allowances = parseFloat(document.getElementById('allowances').value) || 0;
+      state.headcount = hc;
+      state.dependents = parseFloat(document.getElementById('dependents').value) || 0;
+      state.otHours = parseFloat(document.getElementById('avgOTHours').value) || 0;
+      state.otType = document.getElementById('otType').value;
+      calculate();
+      showStep(2);
+    }
+  }
+
+  function resetAll() {
+    document.querySelectorAll('input[type="number"]').forEach(i => i.value = '');
+    showStep(1);
+  }
+
+  function fmt(n) { return 'NT$ ' + Math.round(n).toLocaleString('zh-TW'); }
+  function pct(n, total) { return total > 0 ? (n / total * 100).toFixed(1) + '%' : '—'; }
+
+  function calculate() {
+    const { salary, allowances, headcount, dependents, otHours, otType } = state;
+    const totalWage = salary + allowances;
+    const LP = window.LaborPro;
+
+    // Insurance costs
+    const ins = LP.calcEmployerInsuranceCost(totalWage, dependents);
+
+    // OT cost
+    const otCost = (otType === 'none' || otHours <= 0) ? 0 : Math.round(LP.calcOvertimeCost(salary, otHours, otType));
+
+    // Total per person
+    const perPerson = totalWage + ins.total + otCost;
+
+    // Multiplier
+    const multiplier = (perPerson / totalWage).toFixed(2);
+
+    // Hero
+    document.getElementById('r_totalPerPerson').textContent = fmt(perPerson);
+    document.getElementById('r_heroSub').textContent =
+      '月薪 ' + fmt(totalWage) + '｜法定負擔 ' + fmt(ins.total) + '｜加班費 ' + fmt(otCost);
+
+    // Multiplier
+    document.getElementById('r_multiplier').textContent = multiplier + 'x';
+    document.getElementById('r_multiplierSub').textContent =
+      '每支付 NT$1 薪資，實際成本為 NT$' + multiplier + '。法定負擔佔薪資 ' + pct(ins.total, totalWage) + '。';
+
+    // Breakdown table
+    const tbody = document.getElementById('r_breakdownBody');
+    const rows = [
+      ['月薪＋經常性給與', totalWage],
+      ['勞保費（雇主 70%）', ins.laborIns],
+      ['職災保險（雇主 100%）', ins.laborAccident],
+      ['健保費（雇主 60%）', ins.nhi],
+      ['勞退提撥（6%）', ins.pension],
+      ['加班費預估', otCost]
+    ];
+    tbody.innerHTML = rows.map(r =>
+      `<tr><td>${r[0]}</td><td>${fmt(r[1])}</td><td class="td-pct">${pct(r[1], perPerson)}</td></tr>`
+    ).join('') +
+      `<tr class="row-total"><td><strong>每人每月總成本</strong></td><td>${fmt(perPerson)}</td><td class="td-pct">100%</td></tr>`;
+
+    // Annual
+    const annualPer = perPerson * 12;
+    const annualAll = annualPer * headcount;
+    document.getElementById('r_annualPer').textContent = fmt(annualPer);
+    document.getElementById('r_annualTotal').textContent = fmt(annualAll);
+    document.getElementById('r_headcount').textContent = headcount + ' 人';
+
+    // Insurance detail
+    document.getElementById('r_bracket').textContent = fmt(ins.bracket);
+    document.getElementById('r_laborIns').textContent = fmt(ins.laborIns);
+    document.getElementById('r_laborAcc').textContent = fmt(ins.laborAccident);
+    document.getElementById('r_nhi').textContent = fmt(ins.nhi);
+    document.getElementById('r_pension').textContent = fmt(ins.pension);
+    document.getElementById('r_insTotal').textContent = fmt(ins.total);
+  }
+
+  showStep(1);
+</script>
+<div class="disclaimer-bar"><strong>免責聲明</strong>：本平台之計算結果僅供初步參考，實際費用依投保級距、行業別職災費率、個別勞動條件而異。</div>
+<script defer src="js/coffee-button.js"></script>
+</body>
+</html>

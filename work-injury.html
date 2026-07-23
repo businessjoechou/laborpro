@@ -664,7 +664,7 @@
 
     document.getElementById('resultContent').innerHTML = `
       <div class="result-hero" id="workInjuryResultHero">
-        <div class="result-hero-label"><span class="worker-only">您可請求的補償</span><span class="employer-only">雇主補償責任</span></div>
+        <div class="result-hero-label">您可請求的補償</div>
         <div class="result-hero-amount">${total > 0 ? fmt(total) : '—'}</div>
         <div class="result-hero-sub">${typeLabel[type]} ／ 原領日薪 NT$ ${origDaily.toLocaleString('zh-TW')}・平均日工資 NT$ ${avgDaily.toLocaleString('zh-TW')}</div>
       </div>
