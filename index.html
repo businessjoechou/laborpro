@@ -1,733 +1,308 @@
-<!DOCTYPE html>
-<html lang="zh-TW">
+<!doctype html>
+<html lang="zh-Hant" data-design-system="choulegal-editorial-v1">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LaborPro｜勞基法事件包與權益工具</title>
-<meta name="description" content="LaborPro 從被資遣、遭解雇、加班費、特休、職災與薪資單問題出發，整理權益、期限、證據與必要試算。">
-<meta name="robots" content="index, follow">
-<link rel="canonical" href="https://labor.choulegal.com/">
-<meta property="og:title" content="LaborPro｜勞基法事件包與權益工具">
-<meta property="og:description" content="LaborPro 從被資遣、遭解雇、加班費、特休、職災與薪資單問題出發，整理權益、期限、證據與必要試算。">
-<meta property="og:type" content="website">
-<meta property="og:locale" content="zh_TW">
-<meta name="twitter:card" content="summary">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700&family=Noto+Sans+TC:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="icon" type="image/svg+xml" href="favicon.svg">
-<style>
-  :root {
-    --paper: #f7f7f1;
-    --paper-strong: #ffffff;
-    --ink: #18211f;
-    --muted: #65716d;
-    --line: #d9ded5;
-    --line-strong: #b9c2bb;
-    --teal: #176b63;
-    --clay: #a6422b;
-    --gold: #b6821f;
-    --plum: #6e4b72;
-    --green: #58734d;
-    --shadow: 0 18px 48px rgba(24, 33, 31, 0.11);
-    --radius: 8px;
-    --sans: 'Noto Sans TC', system-ui, sans-serif;
-    --serif: 'Noto Serif TC', serif;
-    --mono: 'DM Mono', ui-monospace, monospace;
-  }
-
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
-  body {
-    background:
-      linear-gradient(90deg, rgba(24,33,31,0.035) 1px, transparent 1px),
-      linear-gradient(rgba(24,33,31,0.025) 1px, transparent 1px),
-      var(--paper);
-    background-size: 34px 34px, 34px 34px, auto;
-    color: var(--ink);
-    font-family: var(--sans);
-    font-size: 15px;
-    line-height: 1.7;
-    min-height: 100vh;
-    -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
-  }
-
-  a { color: inherit; text-decoration: none; }
-  *:focus-visible { outline: 3px solid rgba(23, 107, 99, 0.38); outline-offset: 3px; border-radius: 4px; }
-
-  .site-header {
-    position: sticky;
-    top: 0;
-    z-index: 20;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 18px;
-    padding: 18px clamp(18px, 4vw, 42px);
-    background: rgba(247, 247, 241, 0.86);
-    border-bottom: 1px solid var(--line);
-    backdrop-filter: blur(16px);
-  }
-
-  .brand {
-    display: inline-flex;
-    align-items: center;
-    gap: 12px;
-    min-width: 0;
-  }
-
-  .brand-mark {
-    width: 34px;
-    height: 34px;
-    border: 1px solid var(--ink);
-    border-radius: 50%;
-    display: grid;
-    place-items: center;
-    font-family: var(--serif);
-    font-weight: 700;
-    color: var(--paper);
-    background: var(--ink);
-    flex: 0 0 auto;
-  }
-
-  .brand-text {
-    display: grid;
-    gap: 0;
-  }
-
-  .brand-parent {
-    font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: 0.18em;
-    color: var(--muted);
-    text-transform: uppercase;
-  }
-
-  .brand-child {
-    font-family: var(--serif);
-    font-size: 17px;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-  }
-
-  .site-header nav {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-  }
-
-  .site-header nav a,
-  .nav-pill {
-    border: 1px solid transparent;
-    border-radius: 999px;
-    padding: 8px 12px;
-    color: var(--muted);
-    font-size: 13px;
-    line-height: 1;
-  }
-
-  .site-header nav a:hover,
-  .nav-pill:hover {
-    color: var(--ink);
-    border-color: var(--line-strong);
-    background: rgba(255, 255, 255, 0.58);
-  }
-
-  .nav-primary {
-    color: #fff !important;
-    background: var(--teal);
-    border-color: var(--teal) !important;
-  }
-
-  main { overflow: hidden; }
-
-  .hero {
-    position: relative;
-    min-height: min(760px, calc(100vh - 72px));
-    display: grid;
-    align-items: end;
-    padding: clamp(56px, 8vw, 96px) clamp(18px, 4vw, 42px) 34px;
-    border-bottom: 1px solid var(--line);
-  }
-
-  .hero::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background:
-      linear-gradient(120deg, rgba(23,107,99,0.14), transparent 36%),
-      linear-gradient(295deg, rgba(166,66,43,0.12), transparent 42%);
-    pointer-events: none;
-  }
-
-  .hero-inner {
-    position: relative;
-    width: min(1180px, 100%);
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: minmax(0, 1.08fr) minmax(320px, 0.92fr);
-    gap: clamp(28px, 5vw, 72px);
-    align-items: end;
-  }
-
-  .eyebrow {
-    font-family: var(--mono);
-    color: var(--clay);
-    text-transform: uppercase;
-    letter-spacing: 0.18em;
-    font-size: 11px;
-    margin-bottom: 18px;
-  }
-
-  h1 {
-    font-family: var(--serif);
-    font-size: clamp(42px, 7.5vw, 92px);
-    line-height: 1.02;
-    letter-spacing: 0;
-    font-weight: 700;
-    max-width: 900px;
-  }
-
-  h1 span { color: var(--teal); }
-  .mobile-break { display: none; }
-
-  .lead {
-    max-width: 650px;
-    margin-top: 22px;
-    color: #44514d;
-    font-size: clamp(16px, 1.5vw, 19px);
-    line-height: 1.9;
-  }
-
-  .hero-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    margin-top: 30px;
-  }
-
-  .button {
-    min-height: 44px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    border-radius: 999px;
-    padding: 11px 18px;
-    font-weight: 700;
-    border: 1px solid var(--line-strong);
-    background: var(--paper-strong);
-    transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
-  }
-
-  .button:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow);
-    border-color: var(--teal);
-  }
-
-  .button.primary {
-    background: var(--ink);
-    border-color: var(--ink);
-    color: #fff;
-  }
-
-  .docket {
-    align-self: stretch;
-    display: grid;
-    gap: 12px;
-    padding: 18px;
-    background: rgba(255, 255, 255, 0.72);
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-  }
-
-  .docket-title {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    font-family: var(--mono);
-    color: var(--muted);
-    font-size: 11px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    padding-bottom: 12px;
-    border-bottom: 1px solid var(--line);
-  }
-
-  .triage-row {
-    display: grid;
-    grid-template-columns: 92px 1fr;
-    gap: 14px;
-    padding: 12px 0;
-    border-bottom: 1px solid var(--line);
-  }
-
-  .triage-row:last-child { border-bottom: 0; }
-  .triage-tag {
-    color: var(--teal);
-    font-family: var(--mono);
-    font-size: 11px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-  .triage-row strong {
-    display: block;
-    font-family: var(--serif);
-    font-size: 17px;
-    line-height: 1.35;
-    margin-bottom: 3px;
-  }
-  .triage-row p { color: var(--muted); font-size: 13px; line-height: 1.55; }
-
-  .band {
-    padding: clamp(54px, 7vw, 92px) clamp(18px, 4vw, 42px);
-    border-bottom: 1px solid var(--line);
-  }
-
-  .band.alt { background: rgba(255, 255, 255, 0.45); }
-
-  .section-inner {
-    width: min(1180px, 100%);
-    margin: 0 auto;
-  }
-
-  .section-head {
-    display: flex;
-    justify-content: space-between;
-    align-items: end;
-    gap: 24px;
-    margin-bottom: 24px;
-  }
-
-  h2 {
-    font-family: var(--serif);
-    font-size: clamp(28px, 4vw, 48px);
-    line-height: 1.14;
-    letter-spacing: 0;
-  }
-
-  .section-note {
-    max-width: 430px;
-    color: var(--muted);
-    line-height: 1.8;
-  }
-
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 14px;
-  }
-
-  .grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .grid.four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-
-  .card {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-    min-height: 210px;
-    padding: 20px;
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    background: rgba(255, 255, 255, 0.72);
-    transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
-  }
-
-  .card:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--shadow);
-    border-color: var(--line-strong);
-  }
-
-  .card.kit { border-top: 5px solid var(--teal); }
-  .card.calc { border-top: 5px solid var(--clay); }
-  .card.rights { border-top: 5px solid var(--plum); }
-  .card.doc { border-top: 5px solid var(--gold); }
-  .card.labor { border-top-color: var(--green); }
-
-  .card-topline {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-    color: var(--muted);
-    font-family: var(--mono);
-    font-size: 11px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-  }
-
-  .card h3 {
-    font-family: var(--serif);
-    font-size: 21px;
-    line-height: 1.35;
-    letter-spacing: 0;
-  }
-
-  .card p {
-    color: var(--muted);
-    font-size: 14px;
-    line-height: 1.72;
-  }
-
-  .card-footer {
-    margin-top: auto;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-    padding-top: 12px;
-    border-top: 1px solid var(--line);
-    color: var(--teal);
-    font-weight: 700;
-    font-size: 13px;
-  }
-
-  .rail {
-    display: grid;
-    grid-template-columns: 0.95fr 1.05fr;
-    gap: 18px;
-    align-items: start;
-  }
-
-  .route-list,
-  .tool-list {
-    display: grid;
-    gap: 10px;
-  }
-
-  .route-item,
-  .tool-item {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 18px;
-    align-items: center;
-    min-height: 72px;
-    padding: 16px 18px;
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    background: rgba(255, 255, 255, 0.74);
-  }
-
-  .route-item:hover,
-  .tool-item:hover {
-    border-color: var(--teal);
-    box-shadow: 0 10px 26px rgba(24, 33, 31, 0.08);
-  }
-
-  .route-item strong,
-  .tool-item strong {
-    display: block;
-    font-family: var(--serif);
-    font-size: 18px;
-    line-height: 1.35;
-    margin-bottom: 3px;
-  }
-
-  .route-item span,
-  .tool-item span {
-    color: var(--muted);
-    font-size: 13px;
-  }
-
-  .type-label {
-    color: var(--clay);
-    font-family: var(--mono);
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    white-space: nowrap;
-  }
-
-  .split-note {
-    border-left: 4px solid var(--teal);
-    padding: 18px 20px;
-    background: rgba(23, 107, 99, 0.08);
-    border-radius: 0 var(--radius) var(--radius) 0;
-  }
-
-  .split-note strong {
-    display: block;
-    font-family: var(--serif);
-    font-size: 22px;
-    margin-bottom: 8px;
-  }
-
-  .split-note p { color: #44514d; }
-
-  .footer {
-    padding: 36px clamp(18px, 4vw, 42px);
-    color: var(--muted);
-    font-size: 13px;
-  }
-
-  .footer-inner {
-    width: min(1180px, 100%);
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    gap: 18px;
-    flex-wrap: wrap;
-  }
-
-  .footer a { color: var(--teal); font-weight: 700; }
-
-  @media (max-width: 920px) {
-    .hero { min-height: auto; }
-    .hero-inner,
-    .rail { grid-template-columns: 1fr; }
-    .grid,
-    .grid.two,
-    .grid.four { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .docket { margin-top: 10px; }
-  }
-
-  @media (max-width: 640px) {
-    .site-header { align-items: flex-start; flex-direction: column; }
-    .site-header nav { justify-content: flex-start; }
-    .hero { padding-top: 44px; }
-    h1 { font-size: 38px; line-height: 1.08; }
-    .mobile-break { display: block; }
-    .grid,
-    .grid.two,
-    .grid.four { grid-template-columns: 1fr; }
-    .section-head { display: block; }
-    .section-note { margin-top: 10px; }
-    .triage-row { grid-template-columns: 1fr; gap: 6px; }
-    .route-item,
-    .tool-item { grid-template-columns: 1fr; gap: 8px; }
-    .type-label { white-space: normal; }
-  }
-  /* ===== ChouLegal unified product-line polish ===== */
-  :root {
-    --paper: #f7f5f0;
-    --paper-strong: #ffffff;
-    --ink: #081220;
-    --muted: #47628f;
-    --line: #c2cfe0;
-    --line-strong: rgba(212, 175, 55, 0.42);
-    --teal: #2e4a78;
-    --clay: #8b2332;
-    --gold: #d4af37;
-    --plum: #142a4a;
-    --green: #2d5a3d;
-    --shadow: 0 1px 2px rgba(20, 42, 74, 0.04), 0 16px 34px -24px rgba(20, 42, 74, 0.3);
-    --radius: 6px;
-  }
-  body {
-    background:
-      linear-gradient(90deg, rgba(20, 42, 74, 0.035) 1px, transparent 1px),
-      linear-gradient(rgba(20, 42, 74, 0.025) 1px, transparent 1px),
-      var(--paper);
-  }
-  *:focus-visible { outline-color: rgba(212, 175, 55, 0.5); }
-  .site-header {
-    background: rgba(8, 18, 32, 0.96);
-    border-bottom-color: rgba(212, 175, 55, 0.16);
-  }
-  .brand-mark {
-    background: linear-gradient(135deg, #e5c45f, #d4af37 55%, #b8941f);
-    color: #081220;
-  }
-  .brand-parent { color: rgba(229, 196, 95, 0.7); }
-  .brand-name,
-  .site-header nav a,
-  .nav-primary { color: rgba(251, 250, 246, 0.88); }
-  .site-header nav a:hover,
-  .nav-primary:hover { color: #e5c45f; }
-  .nav-primary {
-    background: rgba(212, 175, 55, 0.12);
-    border-color: rgba(212, 175, 55, 0.3);
-  }
-  .button.primary {
-    background: linear-gradient(135deg, #e5c45f, #d4af37 55%, #b8941f);
-    color: #081220;
-  }
-  .button.secondary,
-  .card,
-  .case-docket,
-  .stat {
-    border-color: rgba(194, 207, 224, 0.8);
-    border-radius: 6px;
-  }
-</style>
-<script src="js/ga.js" defer></script>
-<script src="js/supabase-config.js"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>勞動權益平台｜ChouLegal</title>
+  <meta name="description" content="遇到欠薪、加班、資遣、職災或不合理管理時，先保存出勤與通知，釐清勞動關係和期限，再找到可採取的申訴、調解、文件與試算工具。">
+  <link rel="canonical" href="https://labor.choulegal.com/">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="zh_TW">
+  <meta property="og:title" content="勞動權益平台｜ChouLegal">
+  <meta property="og:description" content="遇到欠薪、加班、資遣、職災或不合理管理時，先保存出勤與通知，釐清勞動關係和期限，再找到可採取的申訴、調解、文件與試算工具。">
+  <meta property="og:url" content="https://labor.choulegal.com/">
+  <meta name="theme-color" content="#17243a">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@500&family=Noto+Sans+TC:wght@400;700&family=Noto+Serif+TC:wght@700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/choulegal-home.css">
+  <script src="js/ga.js" defer></script>
+  <script src="js/choulegal-home.js" defer></script>
 </head>
-<body>
-
-<header class="site-header">
-  <a class="brand" href="https://people.choulegal.com/">
-    <span class="brand-mark">周</span>
-    <span class="brand-text">
-      <span class="brand-parent">周全 · CHOULEGAL</span>
-      <span class="brand-child">LaborPro</span>
-    </span>
-  </a>
-  <nav>
-    <a class="nav-primary" href="#events">事件入口</a>
-    <a class="" href="#calculators">計算工具</a>
-    <a class="" href="#rights">權益查詢</a>
-  </nav>
-</header>
-<main>
-  <section class="hero">
-    <div class="hero-inner">
+<body data-platform="labor">
+  <a class="skip-link" href="#main">跳至主要內容</a>
+  
+  <header class="site-header">
+    
+  <div class="network-row shell">
+    <p class="network-kicker">ChouLegal · 六大平台</p>
+    <button class="network-toggle" type="button" data-network-toggle aria-expanded="false" aria-controls="network-nav">切換平台</button>
+    <nav class="network-nav" id="network-nav" data-network data-open="false" aria-label="六大平台">
+      <a class="network-link" href="https://inheritance.choulegal.com/">民事財產</a><a class="network-link" href="https://labor.choulegal.com/" aria-current="page">勞動權益</a><a class="network-link" href="https://consumer.choulegal.com/">消費爭議</a><a class="network-link" href="https://rental.choulegal.com/">租屋權益</a><a class="network-link" href="https://people.choulegal.com/public-servant.html">公職教師</a><a class="network-link" href="https://criminal.choulegal.com/">刑事權益</a>
+    </nav>
+  </div>
+    <div class="brand-row shell">
+      <a class="brand-mark" href="https://people.choulegal.com/" aria-label="ChouLegal 民眾版首頁">CL</a>
+      <div class="brand-copy">
+        <p class="brand-name">LaborPro</p>
+        <p class="brand-descriptor">工資、工時、資遣、職災與勞資爭議的處理入口</p>
+      </div>
+      <div class="brand-utility">
+        <span class="free-label">100% 免費</span>
+        <a class="utility-link" href="account.html">我的帳號 →</a>
+      </div>
+    </div>
+  </header>
+  <main id="main">
+    
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero-grid shell">
       <div>
-        <div class="eyebrow">勞基法權益 · Public product</div>
-        <h1>LaborPro<br class="mobile-break">勞基法權益</h1>
-        <p class="lead">被資遣、沒拿到加班費、特休被吃掉、職災或薪資單看不懂時，先看事件路線。需要金額時再進入資遣費、加班費、職災補償等工具。</p>
-        <div class="hero-actions">
-          <a class="button primary" href="#events">先看事件入口 <span>→</span></a>
-          <a class="button" href="#calculators">直接找計算工具</a>
+        <p class="eyebrow" data-enter style="--enter-index: 0">CL / 02</p>
+        <h1 id="hero-title" data-enter style="--enter-index: 1">勞動權益平台</h1>
+        <p class="hero-deck" data-enter style="--enter-index: 2">遇到欠薪、加班、資遣、職災或不合理管理時，先保存出勤與通知，釐清勞動關係和期限，再找到可採取的申訴、調解、文件與試算工具。</p>
+        <div class="hero-actions" data-enter style="--enter-index: 3">
+          <a class="button button-primary" href="#events">找出我的處理步驟</a>
+          <a class="button button-secondary" href="#tools">查詢與試算權益</a>
         </div>
       </div>
-      <div class="docket" aria-label="LaborPro 使用路線">
-        <div class="docket-title"><span>Start here</span><span>勞基法權益</span></div>
-        <div class="triage-row"><span class="triage-tag">被資遣</span><div><strong>被資遣</strong><p>先確認理由、預告、資遣費、非自願離職證明和調解資料。</p></div></div><div class="triage-row"><span class="triage-tag">薪資爭議</span><div><strong>薪資爭議</strong><p>先看薪資單、本薪、津貼、加班紀錄和投保級距。</p></div></div><div class="triage-row"><span class="triage-tag">職災</span><div><strong>職災</strong><p>先保留診斷、事故紀錄、工資資料和保險給付線索。</p></div></div>
+      <aside class="hero-docket" data-enter style="--enter-index: 4" aria-label="開始前先做三件事">
+        <h2 class="docket-title">先做三件事</h2>
+        <ol class="docket-list">
+          <li>保存出勤、薪資與對話紀錄</li><li>分清終止、工資與保險問題</li><li>再選申訴、調解或文件</li>
+        </ol>
+        <div class="urgent-note">
+          <strong>先保存原始紀錄</strong>
+          打卡、班表、薪資單、匯款、工作群組與書面通知，常是釐清工資、工時與終止爭議的重要資料。不要只留下轉述。
+        </div>
+      </aside>
+    </div>
+  </section>
+    
+  <section class="section" id="events" aria-labelledby="events-title">
+    <div class="shell">
+      
+  <div class="section-heading">
+    <span class="section-index">01 / 事件索引</span>
+    <h2 id="events-title">你的問題，通常從一個事件開始</h2>
+    <p class="section-intro">不必先知道法條名稱。先選最接近現在狀況的一項，再沿著資料、期限與行動往下走。</p>
+  </div>
+      <div class="event-index">
+        
+              <a class="event-row" href="dismissal-checklist.html">
+                <span class="event-number">01</span>
+                <div class="event-copy">
+                  <h3>突然被資遣或要求離職</h3>
+                  <p>先區分資遣、自願離職與解僱，再整理通知、理由與應結清項目。</p>
+                </div>
+                <span class="event-arrow" aria-hidden="true">↗</span>
+              </a>
+              <a class="event-row" href="overtime-detail.html">
+                <span class="event-number">02</span>
+                <div class="event-copy">
+                  <h3>加班很多，薪資看不懂</h3>
+                  <p>用出勤與工資資料逐日整理，不先假設所有時段都用同一公式。</p>
+                </div>
+                <span class="event-arrow" aria-hidden="true">↗</span>
+              </a>
+              <a class="event-row" href="wage-analysis.html">
+                <span class="event-number">03</span>
+                <div class="event-copy">
+                  <h3>薪資、獎金或扣款有爭議</h3>
+                  <p>對照約定、薪資單與實際給付，建立差額與證據清單。</p>
+                </div>
+                <span class="event-arrow" aria-hidden="true">↗</span>
+              </a>
+              <a class="event-row" href="work-injury.html">
+                <span class="event-number">04</span>
+                <div class="event-copy">
+                  <h3>工作受傷或疑似職業災害</h3>
+                  <p>先處理醫療與通報，再整理工作關聯、保險與補償資料。</p>
+                </div>
+                <span class="event-arrow" aria-hidden="true">↗</span>
+              </a>
+              <a class="event-row" href="non-compete.html">
+                <span class="event-number">05</span>
+                <div class="event-copy">
+                  <h3>競業禁止或離職條款卡住</h3>
+                  <p>把職務、範圍、期間、補償與雇主主張拆開檢視。</p>
+                </div>
+                <span class="event-arrow" aria-hidden="true">↗</span>
+              </a>
+              <a class="event-row" href="dispute-guide.html">
+                <span class="event-number">06</span>
+                <div class="event-copy">
+                  <h3>想申訴、調解但不知道怎麼說</h3>
+                  <p>把事實、日期、請求與附件整理成可被理解的案件。</p>
+                </div>
+                <span class="event-arrow" aria-hidden="true">↗</span>
+              </a>
       </div>
     </div>
   </section>
-
-  <section id="events" class="band">
-    <div class="section-inner">
-      <div class="section-head">
-        <h2>先從事件開始</h2>
-        <p class="section-note">這一區放處理路線。頁面會先提醒期限、證據和下一步，再帶到需要的工具。</p>
+    
+  <section class="section process-section" id="path" aria-labelledby="path-title">
+    <div class="shell">
+      
+  <div class="section-heading">
+    <span class="section-index">02 / 處理路徑</span>
+    <h2 id="path-title">先把事情變成可以處理的四步</h2>
+    <p class="section-intro">法律問題很複雜，但起手行動可以清楚。每一步都留下可交接、可查證的資料。</p>
+  </div>
+      <div class="process-track" data-process-track>
+        
+              <article class="process-step">
+                <span class="step-number">01</span>
+                <div>
+                  <h3>留下紀錄</h3>
+                  <p>保存出勤、薪資、契約、通知、對話與工作內容。</p>
+                </div>
+              </article>
+              <article class="process-step">
+                <span class="step-number">02</span>
+                <div>
+                  <h3>拆分爭點</h3>
+                  <p>把工資、工時、終止、保險、職災與管理措施分開。</p>
+                </div>
+              </article>
+              <article class="process-step">
+                <span class="step-number">03</span>
+                <div>
+                  <h3>核對權益</h3>
+                  <p>依僱用型態、日期與適用法規確認計算和程序。</p>
+                </div>
+              </article>
+              <article class="process-step">
+                <span class="step-number">04</span>
+                <div>
+                  <h3>提出請求</h3>
+                  <p>準備書面、申訴或調解資料，清楚寫出事實與希望的處理。</p>
+                </div>
+              </article>
       </div>
-      <div class="grid">
-      <a class="card kit labor" href="wrongful-dismissal.html">
-        <div class="card-topline"><span>事件</span><span>解雇</span></div>
-        <h3>被資遣或遭解雇</h3>
-        <p>先看雇主理由、程序、預告工資、資遣費和復職或調解方向。</p>
-        <div class="card-footer"><span>開始</span><span>→</span></div>
-      </a>
-      <a class="card calc labor" href="payslip-checker.html">
-        <div class="card-topline"><span>事件</span><span>薪資</span></div>
-        <h3>薪資單看不懂或覺得少給</h3>
-        <p>拆開本薪、津貼、獎金、扣款、投保和加班費。</p>
-        <div class="card-footer"><span>開始</span><span>→</span></div>
-      </a>
-      <a class="card calc labor" href="overtime-detail.html">
-        <div class="card-topline"><span>事件</span><span>加班</span></div>
-        <h3>加班費和工時爭議</h3>
-        <p>逐日整理工時、休息日、例假和國定假日。</p>
-        <div class="card-footer"><span>開始</span><span>→</span></div>
-      </a>
-      <a class="card rights labor" href="annual-leave.html">
-        <div class="card-topline"><span>事件</span><span>休假</span></div>
-        <h3>特休、請假與育嬰留停</h3>
-        <p>先確認年資、未休工資、請假扣薪和復職權。</p>
-        <div class="card-footer"><span>開始</span><span>→</span></div>
-      </a>
-      <a class="card calc labor" href="work-injury.html">
-        <div class="card-topline"><span>事件</span><span>職災</span></div>
-        <h3>職業災害與補償</h3>
-        <p>醫療、原領工資、失能、死亡補償和勞保給付分開看。</p>
-        <div class="card-footer"><span>開始</span><span>→</span></div>
-      </a>
-      <a class="card doc labor" href="labor-letter.html">
-        <div class="card-topline"><span>事件</span><span>催告</span></div>
-        <h3>雇主不回或不給資料</h3>
-        <p>整理工資、資遣費、特休、職災等催告文字。</p>
-        <div class="card-footer"><span>開始</span><span>→</span></div>
-      </a></div>
     </div>
   </section>
-
-  <section id="calculators" class="band alt">
-    <div class="section-inner rail">
-      <div class="split-note">
-        <strong>真正需要計算的項目</strong>
-        <p>這些項目有明確輸入與輸出，例如金額、日期、比例或級距。它們保留為工具，但不再是首頁唯一入口。</p>
+    
+  <section class="section" id="evidence" aria-labelledby="evidence-title">
+    <div class="shell">
+      
+  <div class="section-heading">
+    <span class="section-index">03 / 資料準備</span>
+    <h2 id="evidence-title">先把記憶變成可用的資料</h2>
+    <p class="section-intro">不需要一次蒐集完所有文件。從最容易遺失、最能固定時間的資料先開始。</p>
+  </div>
+      <div class="prep-grid">
+        
+              <article class="prep-panel">
+                <h3>工作關係</h3>
+                <ul class="check-list"><li>勞動契約與到職日期</li><li>職務內容與僱用型態</li><li>公司及實際指揮者資料</li></ul>
+              </article>
+              <article class="prep-panel">
+                <h3>工資與工時</h3>
+                <ul class="check-list"><li>打卡、班表與加班紀錄</li><li>薪資單、匯款與扣款</li><li>休假、請假與排班通知</li></ul>
+              </article>
+              <article class="prep-panel">
+                <h3>爭議經過</h3>
+                <ul class="check-list"><li>解僱、資遣或調職文件</li><li>工作群組與電子郵件</li><li>醫療、通報或協商資料</li></ul>
+              </article>
       </div>
+    </div>
+  </section>
+    
+  <section class="section" id="tools" aria-labelledby="tools-title">
+    <div class="shell">
+      
+  <div class="section-heading">
+    <span class="section-index">04 / 自助工具</span>
+    <h2 id="tools-title">計算只是其中一步，重點是留下下一步</h2>
+    <p class="section-intro">每個工具都對應一個具體任務：辨識、盤點、試算、寫文件或找到求助路徑。</p>
+  </div>
       <div class="tool-list">
-      <a class="tool-item" href="severance.html">
-        <span>
-          <strong>資遣費試算</strong>
-          <span>舊制、新制與年資。</span>
-        </span>
-        <span class="type-label">CALC</span>
-      </a>
-      <a class="tool-item" href="notice-calc.html">
-        <span>
-          <strong>預告工資</strong>
-          <span>10、20、30 日預告期。</span>
-        </span>
-        <span class="type-label">CALC</span>
-      </a>
-      <a class="tool-item" href="overtime.html">
-        <span>
-          <strong>加班費試算</strong>
-          <span>平日、休息日與例假。</span>
-        </span>
-        <span class="type-label">CALC</span>
-      </a>
-      <a class="tool-item" href="annual-leave.html">
-        <span>
-          <strong>特休天數</strong>
-          <span>年資對照與未休工資。</span>
-        </span>
-        <span class="type-label">CALC</span>
-      </a>
-      <a class="tool-item" href="pension.html">
-        <span>
-          <strong>勞退試算</strong>
-          <span>舊制、新制與自提。</span>
-        </span>
-        <span class="type-label">CALC</span>
-      </a>
-      <a class="tool-item" href="labor-insurance.html">
-        <span>
-          <strong>勞保 / 健保投保</strong>
-          <span>投保級距與保費。</span>
-        </span>
-        <span class="type-label">CALC</span>
-      </a></div>
-    </div>
-  </section>
-
-  <section id="rights" class="band">
-    <div class="section-inner">
-      <div class="section-head">
-        <h2>權益查詢與文件</h2>
-        <p class="section-note">不需要硬算的內容，改用查詢、流程、檢核或文件型態呈現。</p>
+        
+              <a class="tool-row" href="dismissal-checklist.html">
+                <span class="tool-kind">清單</span>
+                <div class="tool-copy">
+                  <h3>解僱與資遣檢查</h3>
+                  <p>先釐清終止類型與應保存資料。</p>
+                </div>
+                <span class="tool-action">開始使用</span>
+              </a>
+              <a class="tool-row" href="severance.html">
+                <span class="tool-kind">試算</span>
+                <div class="tool-copy">
+                  <h3>資遣費初步試算</h3>
+                  <p>依年資與制度輸入資料，了解計算構成。</p>
+                </div>
+                <span class="tool-action">開始使用</span>
+              </a>
+              <a class="tool-row" href="overtime-detail.html">
+                <span class="tool-kind">分析</span>
+                <div class="tool-copy">
+                  <h3>工時與加班整理</h3>
+                  <p>逐日建立工時資料，再檢視可能差額。</p>
+                </div>
+                <span class="tool-action">開始使用</span>
+              </a>
+              <a class="tool-row" href="labor-letter.html">
+                <span class="tool-kind">文件</span>
+                <div class="tool-copy">
+                  <h3>勞動權益書面</h3>
+                  <p>整理催告、協商或申訴需要的事實。</p>
+                </div>
+                <span class="tool-action">開始使用</span>
+              </a>
+              <a class="tool-row" href="dispute-guide.html">
+                <span class="tool-kind">路徑</span>
+                <div class="tool-copy">
+                  <h3>勞資爭議處理指南</h3>
+                  <p>比較內部協商、申訴、調解與其他途徑。</p>
+                </div>
+                <span class="tool-action">開始使用</span>
+              </a>
       </div>
-      <div class="grid two">
-      <a class="card rights" href="dismissal-checklist.html">
-        <div class="card-topline"><span>CHECK</span><span>→</span></div>
-        <h3>解僱程序檢核</h3>
-        <p>第 11 條與第 12 條程序。</p>
-        <div class="card-footer"><span>查看</span><span>→</span></div>
-      </a>
-      <a class="card rights" href="non-compete.html">
-        <div class="card-topline"><span>RIGHTS</span><span>→</span></div>
-        <h3>競業禁止條款</h3>
-        <p>補償、期間、地域與職務範圍。</p>
-        <div class="card-footer"><span>查看</span><span>→</span></div>
-      </a>
-      <a class="card rights" href="penalty-lookup.html">
-        <div class="card-topline"><span>LOOKUP</span><span>→</span></div>
-        <h3>罰則查詢</h3>
-        <p>違規條文對應罰鍰。</p>
-        <div class="card-footer"><span>查看</span><span>→</span></div>
-      </a>
-      <a class="card rights" href="dispute-guide.html">
-        <div class="card-topline"><span>GUIDE</span><span>→</span></div>
-        <h3>爭議流程指引</h3>
-        <p>調解、仲裁與訴訟路徑。</p>
-        <div class="card-footer"><span>查看</span><span>→</span></div>
-      </a></div>
     </div>
   </section>
-</main>
-<footer class="footer"><div class="footer-inner"><span>周全法律科技 ChouLegal · LaborPro</span><span><a href="https://people.choulegal.com/">民眾版入口</a> · <a href="privacy.html">隱私權</a> · <a href="terms.html">使用條款</a></span></div></footer>
-<script type="module" src="js/auth-bar.js"></script>
+    
+  <section class="section" id="sources" aria-labelledby="sources-title">
+    <div class="shell">
+      
+  <div class="section-heading">
+    <span class="section-index">05 / 官方來源</span>
+    <h2 id="sources-title">重要決定，回到官方資料確認</h2>
+    <p class="section-intro">勞動權益會受僱用型態、工作場所、日期與特別法規影響；工具結果不是雇主應付金額的保證。</p>
+  </div>
+      <div class="sources-grid">
+        
+              <a class="source-link" href="https://www.mol.gov.tw/1607/28690/87756/87780/nodelist" target="_blank" rel="noopener noreferrer">
+                <strong>勞動部｜勞動條件基準 ↗</strong>
+                <span>工資、工時、休假與部分工時權益的官方說明。</span>
+              </a>
+              <a class="source-link" href="https://www.mol.gov.tw/1607/28162/28166/28180/" target="_blank" rel="noopener noreferrer">
+                <strong>勞動部｜工資 ↗</strong>
+                <span>工資認定、給付、加班與積欠工資的官方專區。</span>
+              </a>
+              <a class="source-link" href="https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=N0030001" target="_blank" rel="noopener noreferrer">
+                <strong>全國法規資料庫｜勞動基準法 ↗</strong>
+                <span>勞動條件最低標準的官方法規全文。</span>
+              </a>
+      </div>
+      <p class="source-date">官方來源整理日：2026-07-24</p>
+    </div>
+  </section>
+    
+  <section class="disclaimer" id="disclaimer" aria-labelledby="disclaimer-title">
+    <div class="disclaimer-grid shell">
+      <h2 id="disclaimer-title">使用前請先知道</h2>
+      <p>本平台內容與工具 100% 免費，供一般法律資訊、自助整理與初步試算；結果依使用者輸入及公開法規產生，不構成個案法律意見、律師委任或結果保證。法規、程序與機關作法可能變動，請以主管機關最新公告為準。如涉及人身安全、搜索拘捕、即將屆期或重大權益，請儘速聯絡警方、主管機關、法律扶助基金會或律師。</p>
+    </div>
+  </section>
+  </main>
+  
+  <footer class="site-footer">
+    <div class="footer-grid shell">
+      <div>
+        <div class="footer-brand">ChouLegal 周全法律科技</div>
+        <p class="footer-code">CL / 02</p>
+      </div>
+      <div>
+        <nav class="footer-links" aria-label="頁尾連結">
+          <a href="privacy.html">隱私政策</a><a href="terms.html">使用條款</a>
+          <a href="#sources">官方來源</a>
+          <a href="#disclaimer">免責聲明</a>
+        </nav>
+        <p class="footer-note">© <span data-year>2026</span> ChouLegal. 讓資訊幫人看清下一步，但不把一般資料包裝成個案保證。</p>
+      </div>
+    </div>
+  </footer>
 </body>
 </html>
