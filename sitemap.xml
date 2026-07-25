@@ -25,4 +25,8 @@
   <url><loc>https://labor.choulegal.com/pension-claim.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://labor.choulegal.com/notice-calc.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://labor.choulegal.com/self-help.html</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://labor.choulegal.com/guide.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://labor.choulegal.com/labor-letter.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://labor.choulegal.com/privacy.html</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://labor.choulegal.com/terms.html</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
 </urlset>

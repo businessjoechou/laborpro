@@ -1,9 +1,9 @@
 /**
  * LaborPro — Persona visibility utility
  *
- * 2026-05-25 三模組重整：民眾版只保留勞工視角；雇主視角全搬到周全專業版
+ * 2026-05-25 三模組重整：本工具只保留勞工視角；雇主視角移至企業合規管理情境
  * (memory project_pro_three_modules_2026_05_23.md + feedback_consumer_seller_angle_split)。
- * persona 強制 'worker'，舊 localStorage 也覆寫；.employer-only 永遠隱藏。
+ * persona 強制 'worker'，舊 localStorage 也覆寫。
  */
 (function () {
   // iOS Safe Area
@@ -20,7 +20,4 @@
   try { localStorage.setItem('lp_persona', 'worker'); } catch (_) {}
   window.LP_PERSONA = 'worker';
 
-  const style = document.createElement('style');
-  style.textContent = '.employer-only{display:none!important}';
-  (document.head || document.documentElement).appendChild(style);
 })();

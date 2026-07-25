@@ -8,6 +8,10 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png" sizes="180x180">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>資遣費計算機｜LaborPro</title>
+<meta property="og:url" content="https://labor.choulegal.com/severance.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="資遣費計算機｜LaborPro">
+<meta name="twitter:description" content="依勞基法§17（舊制）與勞工退休金條例§12（新制）精準計算資遣費與預告薪資，含年資試算、新舊制對照。免費使用，立即試算。">
 <meta name="description" content="依勞基法§17（舊制）與勞工退休金條例§12（新制）精準計算資遣費與預告薪資，含年資試算、新舊制對照。免費使用，立即試算。">
 <link rel="canonical" href="https://labor.choulegal.com/severance.html">
 <meta property="og:title" content="資遣費計算機｜LaborPro">
@@ -21,7 +25,6 @@
 <meta property="og:image" content="https://labor.choulegal.com/choulegal-icon.svg">
 <meta property="og:image:width" content="400">
 <meta property="og:image:height" content="400">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="js/supabase-config.js"></script>
 <script src="js/persona.js"></script>
 <script type="module" src="js/auth-bar.js"></script>
@@ -166,6 +169,7 @@
 </script>
 </head>
 <body>
+<a class="skip-link" href="#main-content">跳至主要內容</a>
 
 <header>
   <a href="index.html" style="text-decoration:none;color:inherit">
@@ -181,7 +185,7 @@
   <div class="progress-fill" id="progressFill" style="width: 50%"></div>
 </div>
 
-<main>
+<main id="main-content">
 
   <!-- Step 1 -->
   <div class="step active" id="step1">
@@ -216,12 +220,12 @@
 
       <div class="field-group">
         <label>到職日期</label>
-        <input type="date" id="startDate">
+        <input type="date" id="startDate" aria-label="到職日期">
       </div>
 
       <div class="field-group">
         <label>離職日期</label>
-        <input type="date" id="endDate">
+        <input type="date" id="endDate" aria-label="離職日期">
       </div>
     </div>
 
@@ -269,7 +273,7 @@
   <div class="step" id="step2">
     <div class="step-header">
       <div class="step-label">Step 2 of 2 · 計算結果</div>
-      <h1 class="step-title">資遣費試算結果</h1>
+      <h2 class="step-title">資遣費試算結果</h2>
       <p class="step-sub">依您輸入的資料，以下為應領資遣費及相關金額試算。</p>
     </div>
 
@@ -652,5 +656,6 @@
 </script>
 <div class="disclaimer-bar"><strong>免責聲明</strong>：本平台之計算結果僅供初步參考，不構成法律意見或法律諮詢服務。實際案件因個案事實、適用法規及法院見解不同，結果可能有所差異，建議諮詢具執照之律師或相關法律專業人員。</div>
 <script defer src="js/coffee-button.js"></script>
+<script type="module" src="js/choulegal-plain-language-ui.js"></script>
 </body>
 </html>

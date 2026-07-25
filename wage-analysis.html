@@ -8,6 +8,10 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png" sizes="180x180">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>薪資認定分析器｜LaborPro</title>
+<meta property="og:url" content="https://labor.choulegal.com/wage-analysis.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="薪資認定分析器｜LaborPro">
+<meta name="twitter:description" content="依勞基法第2條第3款「經常性給與」認定薪資項目，自動計算薪資總額、時薪、日薪，標示爭議項目，免費使用。">
 <meta name="description" content="依勞基法第2條第3款「經常性給與」認定薪資項目，自動計算薪資總額、時薪、日薪，標示爭議項目，免費使用。">
 <meta name="keywords" content="薪資認定,經常性給與,勞基法第2條,薪資結構分析,薪資計算,時薪計算,日薪計算,台灣勞基法">
 <meta name="robots" content="index, follow">
@@ -21,7 +25,6 @@
 <meta property="og:image" content="https://labor.choulegal.com/choulegal-icon.svg">
 <meta property="og:image:width" content="400">
 <meta property="og:image:height" content="400">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="js/supabase-config.js"></script>
 <script src="js/persona.js"></script>
 <script type="module" src="js/auth-bar.js"></script>
@@ -140,7 +143,7 @@
     font-family: 'Noto Serif TC', serif;
     font-size: 10px;
     padding: 2px 8px;
-    border-radius: 20px;
+    border-radius: 8px;
     letter-spacing: 0.04em;
   }
   .wage-tag.yes { background: rgba(42,110,62,0.12); color: var(--accent); }
@@ -171,6 +174,7 @@
 </style>
 </head>
 <body>
+<a class="skip-link" href="#main-content">跳至主要內容</a>
 
 <header>
   <a href="index.html" style="text-decoration:none;color:inherit">
@@ -186,7 +190,7 @@
   <div class="progress-fill" id="progressFill" style="width: 33%"></div>
 </div>
 
-<main>
+<main id="main-content">
 
   <!-- Step 1: 輸入薪資項目 -->
   <div class="step active" id="step1">
@@ -213,7 +217,7 @@
   <div class="step" id="step2">
     <div class="step-header">
       <div class="step-label">Step 2 of 3 &middot; 薪資判定</div>
-      <h1 class="step-title">各項認定結果</h1>
+      <h2 class="step-title">各項認定結果</h2>
       <p class="step-sub">依勞基法&sect;2第3款及施行細則&sect;10，判定各薪資項目是否為「薪資」。</p>
     </div>
 
@@ -232,7 +236,7 @@
   <div class="step" id="step3">
     <div class="step-header">
       <div class="step-label">Step 3 of 3 &middot; 計算結果</div>
-      <h1 class="step-title">薪資總額試算</h1>
+      <h2 class="step-title">薪資總額試算</h2>
       <p class="step-sub">依認定結果計算薪資總額及衍生數值。</p>
     </div>
 

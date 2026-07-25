@@ -8,6 +8,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png" sizes="180x180">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>育嬰假與津貼試算｜LaborPro</title>
+<meta name="twitter:description" content="依台灣性別工作平等法、就業保險法試算育嬰留職停薪津貼、產假薪資、陪產檢假，含完整時程時間軸與金額breakdown。">
 <meta name="description" content="依台灣性別工作平等法、就業保險法試算育嬰留職停薪津貼、產假薪資、陪產檢假，含完整時程時間軸與金額breakdown。">
 <meta name="keywords" content="育嬰假計算,育嬰留職停薪,育嬰津貼,產假薪資,陪產檢假,就業保險法,性別工作平等法,台灣勞基法">
 <meta name="robots" content="index, follow">
@@ -75,7 +76,6 @@
   ]
 }
 </script>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="js/supabase-config.js"></script>
 <script src="js/persona.js"></script>
 <script type="module" src="js/auth-bar.js"></script>
@@ -177,6 +177,7 @@
 </style>
 </head>
 <body>
+<a class="skip-link" href="#main-content">跳至主要內容</a>
 
 <header>
   <a href="index.html" style="text-decoration:none;color:inherit">
@@ -192,7 +193,7 @@
   <div class="progress-fill" id="progressFill" style="width: 33%"></div>
 </div>
 
-<main>
+<main id="main-content">
 
   <!-- Step 1 -->
   <div class="step active" id="step1">
@@ -213,7 +214,7 @@
       </div>
       <div class="field-group">
         <label>到職日期</label>
-        <input type="date" id="startDate">
+        <input type="date" id="startDate" aria-label="到職日期">
       </div>
     </div>
 
@@ -233,7 +234,7 @@
       <div class="wizard-section-title">預產期 / 子女出生日</div>
       <div class="field-group">
         <label>預產期或子女出生日</label>
-        <input type="date" id="dueDate">
+        <input type="date" id="dueDate" aria-label="預產期或子女出生日">
       </div>
       <div class="field-group" id="maternityModeGroup" style="display:none;">
         <label>產假分配方式</label>

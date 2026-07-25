@@ -1,5 +1,5 @@
 /**
- * law-basis.js — 民眾版計算頁「本計算依據條文」widget
+ * law-basis.js — 權益工具計算頁「本計算依據條文」widget
  *
  * Phase 3 對外 surface（北極星：法律結構化資料公司）
  *   - 顯示計算頁所依據的條文清單 + 最後修正日期
@@ -11,7 +11,7 @@
  *   <script defer src="js/law-basis.js"></script>
  *
  * 資料源 = ai-triage worker `/law-impact/by-formulas` lean endpoint。
- * 不直接打民眾版 Supabase（民眾版用 nayqg... 專案；law_corpus / diffs 在 brbz... 專案 = ai-triage）。
+ * 不直接打前台 Supabase（權益工具用 nayqg... 專案；law_corpus / diffs 在 brbz... 專案 = ai-triage）。
  *
  * 故意不擋 init 失敗：widget 失敗就靜默不渲染，計算頁主體不受影響。
  */

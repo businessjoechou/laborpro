@@ -8,6 +8,10 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png" sizes="180x180">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>最低薪資合規檢查｜LaborPro</title>
+<meta property="og:url" content="https://labor.choulegal.com/min-wage.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="最低薪資合規檢查｜LaborPro">
+<meta name="twitter:description" content="免費檢查月薪或時薪是否符合台灣2026年基本薪資規定（月薪29,500元／時薪196元），列出計薪基礎項目，自動計算差額與違規罰鍰風險。">
 <meta name="description" content="免費檢查月薪或時薪是否符合台灣2026年基本薪資規定（月薪29,500元／時薪196元），列出計薪基礎項目，自動計算差額與違規罰鍰風險。">
 <link rel="canonical" href="https://labor.choulegal.com/min-wage.html">
 <meta property="og:title" content="最低薪資合規檢查｜LaborPro">
@@ -21,7 +25,6 @@
 <meta property="og:image" content="https://labor.choulegal.com/choulegal-icon.svg">
 <meta property="og:image:width" content="400">
 <meta property="og:image:height" content="400">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="js/supabase-config.js"></script>
 <script src="js/persona.js"></script>
 <script type="module" src="js/auth-bar.js"></script>
@@ -92,7 +95,7 @@
   .gap-detail .gap-line:last-child { border-bottom: none; }
   .gap-detail .gap-line strong { font-family: 'Noto Serif TC', serif; font-size: 14px; color: #c0392b; }
 
-  .salary-chip { display: inline-flex; align-items: center; gap: 8px; background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 5px 14px; margin-bottom: 24px; }
+  .salary-chip { display: inline-flex; align-items: center; gap: 8px; background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 5px 14px; margin-bottom: 24px; }
   .salary-chip-label { font-family: 'Noto Serif TC', serif; font-size: 11px; color: var(--muted); letter-spacing: 0.08em; }
   .salary-chip-val { font-family: 'Noto Serif TC', serif; font-size: 13px; color: var(--gold); font-weight: 500; }
 
@@ -161,9 +164,11 @@
     {"@type": "Question", "name": "雇主未達基本薪資，勞工可以怎麼辦？", "acceptedAnswer": {"@type": "Answer", "text": "勞工可向當地勞工行政主管機關（縣市政府勞工局處）提出申訴或檢舉。主管機關會進行勞動檢查並依勞基法§79裁罰；雇主應補足差額。勞工亦可依勞基法§14第1項第5款（雇主未依勞動契約給付工資）終止契約並請求資遣費。建議保留薪資單、出勤紀錄、勞動契約等證據。"}}
   ]
 }
+</script>
 <script src="js/_generated/core-labor.bundle.js"></script>
 </head>
 <body>
+<a class="skip-link" href="#main-content">跳至主要內容</a>
 
 <header>
   <a href="index.html" style="text-decoration:none;color:inherit">
@@ -179,7 +184,7 @@
   <div class="progress-fill" id="progressFill" style="width: 50%"></div>
 </div>
 
-<main>
+<main id="main-content">
 
   <!-- Step 1 — 薪資結構 -->
   <div class="step active" id="step1">

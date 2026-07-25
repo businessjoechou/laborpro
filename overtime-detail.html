@@ -8,6 +8,10 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png" sizes="180x180">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>加班費逐筆結算｜LaborPro</title>
+<meta property="og:url" content="https://labor.choulegal.com/overtime-detail.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="加班費逐筆結算｜LaborPro">
+<meta name="twitter:description" content="依台灣勞基法§24計算加班費，支援平日、休息日、國定假日、例假日加班，逐筆記錄即時結算，月度彙總與超時警告。">
 <meta name="description" content="依台灣勞基法§24計算加班費，支援平日、休息日、國定假日、例假日加班，逐筆記錄即時結算，月度彙總與超時警告。">
 <meta name="keywords" content="加班費計算,勞基法加班費,平日加班,休息日加班,國定假日加班,勞基法第24條,加班時數上限,台灣勞基法">
 <meta name="robots" content="index, follow">
@@ -21,7 +25,6 @@
 <meta property="og:image" content="https://labor.choulegal.com/choulegal-icon.svg">
 <meta property="og:image:width" content="400">
 <meta property="og:image:height" content="400">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="js/supabase-config.js"></script>
 <script src="js/persona.js"></script>
 <script type="module" src="js/auth-bar.js"></script>
@@ -84,7 +87,7 @@
   .salary-bar {
     background: var(--paper);
     color: var(--ink);
-    border-radius: 16px;
+    border-radius: 8px;
     padding: 20px 24px;
     margin-bottom: 14px;
     display: flex;
@@ -233,6 +236,7 @@
 </style>
 </head>
 <body>
+<a class="skip-link" href="#main-content">跳至主要內容</a>
 
 <header>
   <a href="index.html" style="text-decoration:none;color:inherit">
@@ -245,7 +249,7 @@
   </div>
 </header>
 
-<main>
+<main id="main-content">
   <div class="step-header">
     <div class="step-label">加班費計算 · 勞基法§24</div>
     <h1 class="step-title">加班費逐筆結算</h1>
@@ -606,5 +610,6 @@
 </script>
 <div class="disclaimer-bar"><strong>免責聲明</strong>：本平台之計算結果僅供初步參考，不構成法律意見或法律諮詢服務。實際加班費計算須依個別勞動契約及薪資認定。</div>
 <script defer src="js/coffee-button.js"></script>
+<script type="module" src="js/choulegal-plain-language-ui.js"></script>
 </body>
 </html>

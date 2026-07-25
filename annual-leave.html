@@ -7,6 +7,10 @@
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>特休未休折現計算機｜LaborPro</title>
+<meta property="og:url" content="https://labor.choulegal.com/annual-leave.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="特休未休折現計算機｜LaborPro">
+<meta name="twitter:description" content="依勞基法§38計算特別休假天數與未休折現金額，涵蓋6個月至30年以上年資對照，自動換算每日薪資。免費使用，立即試算。">
 <meta name="description" content="依勞基法§38計算特別休假天數與未休折現金額，涵蓋6個月至30年以上年資對照，自動換算每日薪資。免費使用，立即試算。">
 <meta property="og:title" content="特休未休折現計算機｜LaborPro">
 <meta property="og:description" content="依勞基法§38計算特別休假天數及未休折現金額，自動依年資試算應有特休天數。">
@@ -19,7 +23,6 @@
 <meta property="og:image:width" content="400">
 <meta property="og:image:height" content="400">
 <link rel="canonical" href="https://labor.choulegal.com/annual-leave.html">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="js/supabase-config.js"></script>
 <script src="js/persona.js"></script>
 <script type="module" src="js/auth-bar.js"></script>
@@ -124,6 +127,7 @@
 </script>
 </head>
 <body>
+<a class="skip-link" href="#main-content">跳至主要內容</a>
 
 <header>
   <a href="index.html" style="text-decoration:none;color:inherit">
@@ -137,12 +141,12 @@
 </header>
 <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:33%"></div></div>
 
-<main>
+<main id="main-content">
 
   <!-- Step 1 -->
   <div class="step active" id="step1">
     <div class="step-label">Step 1 of 2 · 基本資料</div>
-    <h2>特休未休折現計算</h2>
+    <h1>特休未休折現計算</h1>
     <p class="subtitle">輸入到職日期與計算基準日，系統依勞基法§38自動計算應有特休天數及未休折現金額。</p>
 
     <div class="info-box">
@@ -152,7 +156,7 @@
     <div class="card">
       <div class="field-group">
         <label>到職日期</label>
-        <input type="date" id="startDate" onchange="state.startDate = this.value">
+        <input type="date" id="startDate" aria-label="到職日期" onchange="state.startDate = this.value">
       </div>
       <div class="field-group">
         <label>計算基準日 <span class="label-sub">（年度終結或離職日）</span></label>
@@ -184,7 +188,7 @@
   <!-- Step 2 / Results -->
   <div class="step" id="step2">
     <div class="step-label">結果 · 特休折現試算</div>
-    <h2>特休未休折現結果</h2>
+    <h1>特休未休折現結果</h1>
     <p class="subtitle">以下為依勞基法§38計算之特別休假天數及折現金額。</p>
     <div id="resultContent"></div>
     <div id="letterMount"></div>

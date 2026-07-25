@@ -8,6 +8,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png" sizes="180x180">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>離職結算檢查表｜LaborPro</title>
+<meta name="twitter:description" content="依台灣勞基法逐項計算離職時應領與應扣款項，含未付薪資、特休折現、資遣費、預告薪資、勞健保扣繳，支援資遣、自願離職、退休等5種離職類型。">
 <meta name="description" content="依台灣勞基法逐項計算離職時應領與應扣款項，含未付薪資、特休折現、資遣費、預告薪資、勞健保扣繳，支援資遣、自願離職、退休等5種離職類型。">
 <meta name="keywords" content="離職結算,離職應領款項,資遣費計算,特休未休折現,預告薪資,勞保自付額,健保自付額,台灣勞基法離職">
 <meta name="robots" content="index, follow">
@@ -78,7 +79,6 @@
   ]
 }
 </script>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="js/supabase-config.js"></script>
 <script src="js/persona.js"></script>
 <script type="module" src="js/auth-bar.js"></script>
@@ -151,7 +151,7 @@
   .settle-add { color: var(--accent); }
   .settle-deduct { color: var(--danger); }
   .settle-total-box {
-    background: linear-gradient(135deg, #c8901a, #a07218);
+    background: #b8941f;
     color: #fff;
     border-radius: 14px;
     padding: 24px;
@@ -216,6 +216,7 @@
 </style>
 </head>
 <body>
+<a class="skip-link" href="#main-content">跳至主要內容</a>
 
 <header>
   <a href="index.html" style="text-decoration:none;color:inherit">
@@ -231,7 +232,7 @@
   <div class="progress-fill" id="progressFill" style="width: 33%"></div>
 </div>
 
-<main>
+<main id="main-content">
 
   <!-- Step 1 -->
   <div class="step active" id="step1">
@@ -288,11 +289,11 @@
       <div class="wizard-section-title">服務年資與薪資</div>
       <div class="field-group">
         <label>到職日期</label>
-        <input type="date" id="startDate">
+        <input type="date" id="startDate" aria-label="到職日期">
       </div>
       <div class="field-group">
         <label>離職日期</label>
-        <input type="date" id="endDate">
+        <input type="date" id="endDate" aria-label="離職日期">
       </div>
       <div class="field-group">
         <label>月薪（元） <span class="hint">含經常性給與</span></label>

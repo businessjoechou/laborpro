@@ -8,6 +8,10 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png" sizes="180x180">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>資遣合法性檢查｜LaborPro</title>
+<meta property="og:url" content="https://labor.choulegal.com/dismissal-checklist.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="資遣合法性檢查｜LaborPro">
+<meta name="twitter:description" content="依勞基法§11經濟性解雇及§12懲戒解雇逐項檢核資遣合法性，評估風險等級，提供行動建議，免費使用。">
 <meta name="description" content="依勞基法§11經濟性解雇及§12懲戒解雇逐項檢核資遣合法性，評估風險等級，提供行動建議，免費使用。">
 <meta name="keywords" content="資遣合法性,解雇檢核,勞基法第11條,勞基法第12條,經濟性解雇,懲戒解雇,違法解雇,最後手段原則,台灣勞基法">
 <meta name="robots" content="index, follow">
@@ -21,7 +25,6 @@
 <meta property="og:image" content="https://labor.choulegal.com/choulegal-icon.svg">
 <meta property="og:image:width" content="400">
 <meta property="og:image:height" content="400">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="js/supabase-config.js"></script>
 <script src="js/persona.js"></script>
 <script type="module" src="js/auth-bar.js"></script>
@@ -106,7 +109,7 @@
     font-family: 'Noto Serif TC', serif;
     font-size: 10px;
     padding: 2px 8px;
-    border-radius: 20px;
+    border-radius: 8px;
     background: rgba(42,110,62,0.1);
     color: var(--accent);
     margin-bottom: 8px;
@@ -193,6 +196,7 @@
 </style>
 </head>
 <body>
+<a class="skip-link" href="#main-content">跳至主要內容</a>
 
 <header>
   <a href="index.html" style="text-decoration:none;color:inherit">
@@ -208,7 +212,7 @@
   <div class="progress-fill" id="progressFill" style="width: 33%"></div>
 </div>
 
-<main>
+<main id="main-content">
 
   <!-- Step 1: 選擇解雇類型 -->
   <div class="step active" id="step1">
@@ -237,7 +241,7 @@
   <div class="step" id="step2">
     <div class="step-header">
       <div class="step-label">Step 2 of 3 &middot; 合法性檢核</div>
-      <h1 class="step-title" id="s2Title">檢核問卷</h1>
+      <h2 class="step-title" id="s2Title">檢核問卷</h2>
       <p class="step-sub" id="s2Sub">請依實際情形回答以下問題。</p>
     </div>
 
@@ -252,7 +256,7 @@
   <div class="step" id="step3">
     <div class="step-header">
       <div class="step-label">Step 3 of 3 &middot; 風險評估</div>
-      <h1 class="step-title">合法性評估結果</h1>
+      <h2 class="step-title">合法性評估結果</h2>
       <p class="step-sub" id="s3Sub">依檢核結果評估解雇之合法性風險。</p>
     </div>
 
@@ -614,5 +618,6 @@ function evaluate() {
 showStep(1);
 </script>
 <script defer src="js/coffee-button.js"></script>
+<script type="module" src="js/choulegal-plain-language-ui.js"></script>
 </body>
 </html>

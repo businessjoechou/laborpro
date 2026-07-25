@@ -8,6 +8,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png" sizes="180x180">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>全假別權益計算機｜LaborPro</title>
+<meta name="twitter:description" content="依台灣勞基法§38、勞工請假規則、性別工作平等法，一次計算特休、病假、事假、婚假、喪假、產假、陪產檢假、生理假、家庭照顧假等所有假別天數與薪資影響。">
 <meta name="description" content="依台灣勞基法§38、勞工請假規則、性別工作平等法，一次計算特休、病假、事假、婚假、喪假、產假、陪產檢假、生理假、家庭照顧假等所有假別天數與薪資影響。">
 <meta name="keywords" content="特休計算,假別計算,勞基法特休,勞工請假規則,病假天數,事假天數,婚假天數,產假天數,台灣勞基法假別">
 <meta name="robots" content="index, follow">
@@ -75,7 +76,6 @@
   ]
 }
 </script>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="js/supabase-config.js"></script>
 <script src="js/persona.js"></script>
 <script type="module" src="js/auth-bar.js"></script>
@@ -136,6 +136,7 @@
 </style>
 </head>
 <body>
+<a class="skip-link" href="#main-content">跳至主要內容</a>
 
 <header>
   <a href="index.html" style="text-decoration:none;color:inherit">
@@ -151,7 +152,7 @@
   <div class="progress-fill" id="progressFill" style="width: 33%"></div>
 </div>
 
-<main>
+<main id="main-content">
 
   <!-- Step 1 -->
   <div class="step active" id="step1">
@@ -165,11 +166,11 @@
       <div class="wizard-section-title">服務年資</div>
       <div class="field-group">
         <label>到職日期</label>
-        <input type="date" id="startDate">
+        <input type="date" id="startDate" aria-label="到職日期">
       </div>
       <div class="field-group">
         <label>計算基準日 <span class="hint">預設今天</span></label>
-        <input type="date" id="baseDate">
+        <input type="date" id="baseDate" aria-label="計算基準日">
       </div>
     </div>
 

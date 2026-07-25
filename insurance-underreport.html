@@ -7,6 +7,10 @@
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>我被高薪低報了嗎？投保薪資自查｜LaborPro</title>
+<meta property="og:url" content="https://labor.choulegal.com/insurance-underreport.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="我被高薪低報了嗎？投保薪資自查｜LaborPro">
+<meta name="twitter:description" content="輸入實際月薪與勞保投保薪資，檢查雇主是否高薪低報，並試算被低報後老年年金、失業給付少領多少。免費使用，附申訴管道。">
 <meta name="description" content="輸入實際月薪與勞保投保薪資，檢查雇主是否高薪低報，並試算被低報後老年年金、失業給付少領多少。免費使用，附申訴管道。">
 <meta property="og:title" content="我被高薪低報了嗎？投保薪資自查｜LaborPro">
 <meta property="og:description" content="檢查雇主是否高薪低報投保薪資，試算老年年金、失業給付縮水金額。">
@@ -19,7 +23,6 @@
 <meta property="og:image:width" content="400">
 <meta property="og:image:height" content="400">
 <link rel="canonical" href="https://labor.choulegal.com/insurance-underreport.html">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="js/supabase-config.js"></script>
 <script src="js/persona.js"></script>
 <script src="js/_generated/core-labor.bundle.js"></script>
@@ -84,6 +87,7 @@
 </script>
 </head>
 <body>
+<a class="skip-link" href="#main-content">跳至主要內容</a>
 
 <header>
   <a href="index.html" style="text-decoration:none;color:inherit">
@@ -97,12 +101,12 @@
 </header>
 <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:50%"></div></div>
 
-<main>
+<main id="main-content">
 
   <!-- Step 1 -->
   <div class="step active" id="step1">
     <div class="step-label">Step 1 of 2 · 基本資料</div>
-    <h2>我被高薪低報了嗎？</h2>
+    <h1>我被高薪低報了嗎？</h1>
     <p class="subtitle">高薪低報＝雇主用低於你實際薪水的金額投保，雖然你每月扣的勞健保變少，但退休金、失業給付、職災給付都會跟著縮水。輸入下面三個數字就能自查。</p>
 
     <div class="info-box">
@@ -140,7 +144,7 @@
   <!-- Step 2 / Results -->
   <div class="step" id="step2">
     <div class="step-label">結果 · 給付影響</div>
-    <h2>自查結果</h2>
+    <h1>自查結果</h1>
     <p class="subtitle">以下為被低報後各項勞保給付的縮水估算。</p>
     <div id="resultContent"></div>
   </div>

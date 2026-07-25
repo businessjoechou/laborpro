@@ -8,6 +8,10 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png" sizes="180x180">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>平均薪資精算器｜LaborPro</title>
+<meta property="og:url" content="https://labor.choulegal.com/avg-wage.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="平均薪資精算器｜LaborPro">
+<meta name="twitter:description" content="依勞基法第2條第4款精算平均薪資，支援資遣、退休、職災等事由，自動排除產假、職災醫療、留停期間，免費使用。">
 <meta name="description" content="依勞基法第2條第4款精算平均薪資，支援資遣、退休、職災等事由，自動排除產假、職災醫療、留停期間，免費使用。">
 <meta name="keywords" content="平均薪資計算,勞基法平均薪資,資遣費平均薪資,退休金平均薪資,勞基法第2條,日平均薪資,台灣勞基法">
 <meta name="robots" content="index, follow">
@@ -21,7 +25,6 @@
 <meta property="og:image" content="https://labor.choulegal.com/choulegal-icon.svg">
 <meta property="og:image:width" content="400">
 <meta property="og:image:height" content="400">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="js/supabase-config.js"></script>
 <script src="js/persona.js"></script>
 <script type="module" src="js/auth-bar.js"></script>
@@ -142,6 +145,7 @@
 </style>
 </head>
 <body>
+<a class="skip-link" href="#main-content">跳至主要內容</a>
 
 <header>
   <a href="index.html" style="text-decoration:none;color:inherit">
@@ -157,7 +161,7 @@
   <div class="progress-fill" id="progressFill" style="width: 33%"></div>
 </div>
 
-<main>
+<main id="main-content">
 
   <!-- Step 1: 事由選擇 -->
   <div class="step active" id="step1">
@@ -181,7 +185,7 @@
       </div>
       <div class="field-group">
         <label>事由發生日</label>
-        <input type="date" id="eventDate">
+        <input type="date" id="eventDate" aria-label="事由發生日">
       </div>
     </div>
 
@@ -263,8 +267,8 @@
   </div>
 
   <!-- HowTo — visible step list for HowTo schema -->
-  <section style="margin:32px auto 24px;padding:0 4px;max-width:680px">
-    <div style="font-family:'Noto Serif TC',serif;font-size:11px;color:var(--muted);letter-spacing:0.16em;text-transform:uppercase;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border)">使用步驟</div>
+  <section class="tool-howto" style="margin:32px auto 24px;padding:0 4px;max-width:680px">
+    <div class="tool-section-label" style="font-family:'Noto Serif TC',serif;font-size:11px;color:var(--muted);letter-spacing:0.16em;text-transform:uppercase;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border)">使用步驟</div>
     <ol style="padding-left:20px;color:var(--ink);font-size:13px;line-height:1.9">
       <li><strong>選擇計算事由與事由發生日：</strong>資遣（§17）、退休（§55）、職災補償（§59）。系統自動推算「事由發生當日前 6 個月」期間。</li>
       <li><strong>輸入前 6 個月各月工資與工作日數：</strong>工資依§2 第 3 款定義（經常性給與），排除年終、紅利等§2 但書非經常性給與。</li>
@@ -274,33 +278,33 @@
   </section>
 
   <!-- FAQ — visible content for FAQPage schema -->
-  <section style="margin:0 auto 32px;padding:0 4px;max-width:680px">
-    <div style="font-family:'Noto Serif TC',serif;font-size:11px;color:var(--muted);letter-spacing:0.16em;text-transform:uppercase;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border)">常見問題</div>
-    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+  <section class="tool-faq" style="margin:0 auto 32px;padding:0 4px;max-width:680px">
+    <div class="tool-section-label" style="font-family:'Noto Serif TC',serif;font-size:11px;color:var(--muted);letter-spacing:0.16em;text-transform:uppercase;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border)">常見問題</div>
+    <div class="tool-faq-item" style="padding:14px 0;border-bottom:1px solid var(--soft)">
       <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">「平均工資」的法定定義是什麼？</div>
       <div style="font-size:13px;color:var(--muted);line-height:1.8">依勞基法§2 第 4 款：「平均工資：謂計算事由發生之當日前 6 個月內所得工資總額除以該期間之總日數所得之金額。」此即所謂「日平均工資」。實務上計算月平均工資時，再以日平均工資 × 30 換算。資遣費、退休金、職災補償、預告期間工資均以此為計算基礎。</div>
     </div>
-    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+    <div class="tool-faq-item" style="padding:14px 0;border-bottom:1px solid var(--soft)">
       <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">為什麼是「前 6 個月」不是「前 3 個月」？</div>
       <div style="font-size:13px;color:var(--muted);line-height:1.8">勞基法§2 第 4 款明文規定為「前 6 個月」，不是 3 個月。3 個月為其他制度的計算基礎（例如某些保險或所得稅扣繳的查驗期），常被混淆。請以勞基法 6 個月為準。資遣費（§17）、退休金（§55、勞退條例§12）、職災補償（§59）、預告期間工資（§16）等均以此「前 6 個月平均工資」為計算基礎。</div>
     </div>
-    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+    <div class="tool-faq-item" style="padding:14px 0;border-bottom:1px solid var(--soft)">
       <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">獎金、加班費、年終要算進工資嗎？</div>
       <div style="font-size:13px;color:var(--muted);line-height:1.8">依勞基法§2 第 3 款，工資指勞工因工作而獲得之報酬，包括按計時、計日、計月、計件以現金或實物等方式給付之獎金、津貼及其他任何名義之經常性給與。應計入：本薪、固定津貼（伙食、交通、職務）、加班費、全勤獎金、依績效計算之經常性獎金。不計入（§2 但書 / 細則§10）：年終獎金、節金、紅利、競賽獎金、不休假獎金、慰勞金、結婚生育補助、職災補償、退休金等非經常性給與。</div>
     </div>
-    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+    <div class="tool-faq-item" style="padding:14px 0;border-bottom:1px solid var(--soft)">
       <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">職災醫療、產假、留停期間要不要列入計算？</div>
       <div style="font-size:13px;color:var(--muted);line-height:1.8">不列入。依勞基法施行細則§2，下列各款期間之工資及日數均不列入平均工資之計算：發生計算事由之當日；因職業災害尚在醫療中者；依§50 第 2 項減半發給工資者（產假）；雇主因天災、事變或其他不可抗力致勞工未能工作者；依勞工請假規則請普通傷病假者；依性別平等工作法請生理假、產假、家庭照顧假、育嬰留職停薪、安胎休養等假者；留職停薪者。本工具於各月卡片提供「排除此月」勾選功能。</div>
     </div>
-    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+    <div class="tool-faq-item" style="padding:14px 0;border-bottom:1px solid var(--soft)">
       <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">工作未滿 6 個月怎麼算？</div>
       <div style="font-size:13px;color:var(--muted);line-height:1.8">依勞基法§2 第 4 款後段，工作未滿 6 個月者，平均工資為「工作期間所得工資總額除以工作期間之總日數」。例如工作 4 個月發生資遣事由，即以這 4 個月之工資總額除以實際工作日數計算。本工具支援此情形：可在前幾個月卡片勾選「排除」（如該月份在到職前），系統會自動只計算實際工作期間。</div>
     </div>
-    <div style="padding:14px 0;border-bottom:1px solid var(--soft)">
+    <div class="tool-faq-item" style="padding:14px 0;border-bottom:1px solid var(--soft)">
       <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">按件計酬、計時工資的勞工會不會被低估？</div>
       <div style="font-size:13px;color:var(--muted);line-height:1.8">勞基法§2 第 4 款已有保護機制：「工資按工作日數、時數或論件計算者，其依上述方式計算之平均工資，如低於該期內工資總額除以實際工作日數所得金額 60% 者，以 60% 計。」即「日平均工資 ≥ (期內工資總額 ÷ 實際工作日數) × 60%」之保障下限，避免因日數攤分過度稀釋。本工具未自動套用此 60% 保障下限，按件計酬勞工建議諮詢律師確認最有利計算方式。</div>
     </div>
-    <div style="padding:14px 0">
+    <div class="tool-faq-item" style="padding:14px 0">
       <div style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px">舊制退休金的「平均工資」也是這樣算嗎？</div>
       <div style="font-size:13px;color:var(--muted);line-height:1.8">舊制退休金（勞基法§55）平均工資計算原則同§2 第 4 款（前 6 個月工資總額 ÷ 期間總日數），但若工資按月給付者，§55 第 2 項另設保障下限。新制退休金（勞退條例）則採個人專戶制，按月提撥（雇主提繳率不低於月提繳工資 6%），請領時以個人退休金專戶累計本息一次或月退休金，無「平均工資」概念。新舊制計算方式完全不同。</div>
     </div>
